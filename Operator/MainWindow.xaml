@@ -1,0 +1,109 @@
+﻿<Window x:Class="Operator.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        Title="MainWindow" Width="600" Height="400" WindowState="Maximized">
+    <Window.Resources>
+        <BitmapImage x:Key="face" UriSource="/Images/face.jpg"/>
+        <BitmapImage x:Key="screen" UriSource="/Images/screen.jpg"/>
+        <BitmapImage x:Key="clapper" UriSource="/Images/clapperboard.png"/>
+        <BitmapImage x:Key="trash" UriSource="/Images/trash.png"/>
+        <BitmapImage x:Key="question" UriSource="/Images/question.png"/>
+        <Storyboard x:Key="statusFadeout">
+            <DoubleAnimation
+                                Storyboard.TargetName="Status"
+                                Storyboard.TargetProperty="Opacity"
+                                From="1"
+                                To="1"
+                                BeginTime="0:0:0"
+                                Duration="0:0:0"/>
+            <DoubleAnimation
+                                Storyboard.TargetName="Status"
+                                Storyboard.TargetProperty="Opacity"
+                                From="1"
+                                To="0"
+                                BeginTime="0:0:0"
+                                Duration="0:0:1"/>
+        </Storyboard>
+        </Window.Resources>
+    <DockPanel>
+        <DockPanel DockPanel.Dock="Top">
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                <Image x:Name="Status"
+                        Width="100"
+                        Height="100"
+                        Source="{StaticResource trash}"/>
+
+                <Image 
+                Width="100"
+                Height="100"
+                x:Name="VideoSource" 
+                Source="{StaticResource face}"/>
+
+            </StackPanel>
+            <StackPanel
+                Orientation="Horizontal"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                DockPanel.Dock="Right">
+                <StackPanel Orientation="Vertical">
+                    <Label 
+                       x:Name="ClockFromLastCommit" 
+                       HorizontalContentAlignment="Center"
+                       FontSize="40" 
+                       Content="00:00" 
+                       FontFamily="Courier New" 
+                       FontWeight="Bold">
+                    </Label>
+                    <Label
+                       HorizontalContentAlignment="Center"
+                       FontSize="18" 
+                       Content="Current" 
+                       FontFamily="Courier New" 
+                       FontWeight="Bold">
+                    </Label>
+                </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <Label 
+                       x:Name="ClockGoodInCurrentPart" 
+                       HorizontalContentAlignment="Center"
+                       FontSize="40" 
+                       Content="00:00" 
+                       FontFamily="Courier New" 
+                       FontWeight="Bold">
+                    </Label>
+                    <Label
+                       HorizontalContentAlignment="Center"
+                       FontSize="18" 
+                       Content="Part" 
+                       FontFamily="Courier New" 
+                       FontWeight="Bold">
+                    </Label>
+                </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <Label 
+                       x:Name="ClockGoodTotal" 
+                       HorizontalContentAlignment="Center"
+                       FontSize="40" 
+                       Content="00:00" 
+                       FontFamily="Courier New" 
+                       FontWeight="Bold">
+                    </Label>
+                    <Label
+                       HorizontalContentAlignment="Center"
+                       FontSize="18" 
+                       Content="Total" 
+                       FontFamily="Courier New" 
+                       FontWeight="Bold">
+                    </Label>
+                </StackPanel>
+            </StackPanel>
+            
+        </DockPanel>
+        <ScrollViewer x:Name="Scroller">  
+        <FlowDocumentScrollViewer x:Name="Viewer" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden">
+            <FlowDocument x:Name="Sufler"  />
+        </FlowDocumentScrollViewer>
+        </ScrollViewer>
+    </DockPanel>
+</Window>
