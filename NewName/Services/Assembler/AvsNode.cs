@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NewName.Services.Assembler
+namespace Tuto.Services.Assembler
 {
     internal abstract class AvsNode
     {

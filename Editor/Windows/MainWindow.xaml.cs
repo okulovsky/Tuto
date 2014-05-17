@@ -16,7 +16,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
-using VideoLib;
 
 namespace Editor
 {
@@ -240,7 +239,8 @@ namespace Editor
                 ModelIO.Save(model);
                 return;
             }
-           currentMode.ProcessKey(e);
+            
+           currentMode.ProcessKey(KeyMap.KeyboardCommandData(e));
             e.Handled=true;
 
         }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NewName.Services.Assembler
+namespace Tuto.Services.Assembler
 {
     class AvsAutoLevels : AvsNode
     {

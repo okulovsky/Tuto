@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Editor;
 
-namespace NewName.Services
+namespace Tuto.Services
 {
     public abstract class Service
     {

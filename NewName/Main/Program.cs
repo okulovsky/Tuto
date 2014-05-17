@@ -1,5 +1,5 @@
 ﻿using Editor;
-using NewName.Services;
+using Tuto.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 
-namespace NewName
+namespace Tuto
 {
     class Program
     {

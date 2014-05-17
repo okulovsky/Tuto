@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Editor;
-using NewName.Services.Assembler;
-using NewName.Services.Montager;
+using Tuto.Services.Assembler;
+using Tuto.Services.Montager;
 
-namespace NewName.Services
+namespace Tuto.Services
 {
     enum AssemblerMode
     {

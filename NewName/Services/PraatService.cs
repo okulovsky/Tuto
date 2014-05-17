@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NewName.Services
+namespace Tuto.Services
 {
     public class PraatService : Service
     {

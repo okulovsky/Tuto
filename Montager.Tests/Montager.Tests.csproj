@@ -55,10 +55,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Montager\Montager.csproj">
-      <Project>{880F2AC7-CAB0-4FC8-8234-8BD033972100}</Project>
-      <Name>Montager</Name>
-    </ProjectReference>
     <ProjectReference Include="..\VideoLib\VideoLib.csproj">
       <Project>{F54F3A10-472A-421B-895F-EFD5A5086ACA}</Project>
       <Name>VideoLib</Name>

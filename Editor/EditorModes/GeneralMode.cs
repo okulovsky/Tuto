@@ -39,84 +39,80 @@ namespace Editor
         }
 
 
-        public void ProcessKey(System.Windows.Input.KeyEventArgs e)
+        public void ProcessKey(KeyboardCommandData key)
         {
             var value = 0.0;
-            if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+            if (key.Shift)
                 value = -1;
-            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+            if (key.Ctrl)
                 value = -1.5;
            
-            
-            var ctrl = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
-
-            switch (e.Key)
+          
+            switch (key.Command)
             {
-                case Key.D2:
-                case Key.Left:
+                case KeyboardCommands.Left:
                     model.WindowState.CurrentPosition=((int)(model.WindowState.CurrentPosition - 1000 * Math.Pow(5, value)));
                     return;
 
-                case Key.D3:
-                case Key.Right:
+                case KeyboardCommands.Right:
                     model.WindowState.CurrentPosition = ((int)(model.WindowState.CurrentPosition + 1000 * Math.Pow(5, value)));
                     return;
                    
-                case Key.D1:
+                case KeyboardCommands.LargeLeft:
                     PrevChunk();
                     return;
 
-                case Key.D4:
+                case KeyboardCommands.LargeRight:
                     NextChunk();
                     return;
 
-                case Key.D0:
-                    model.SetChunkMode(Mode.Face, ctrl);
+                case KeyboardCommands.Face:
+                    model.SetChunkMode(Mode.Face, key.Ctrl);
                     return;
                 
-                case Key.OemMinus:
-                    model.SetChunkMode(Mode.Screen, ctrl);
+                case KeyboardCommands.Desktop:
+                    model.SetChunkMode(Mode.Screen, key.Ctrl);
                     return;
 
-                case Key.OemPlus:
-                    model.SetChunkMode(Mode.Drop, ctrl);
+                case KeyboardCommands.Drop:
+                    model.SetChunkMode(Mode.Drop, key.Ctrl);
                     return;
                 
-                case Key.Back:
+                case KeyboardCommands.Clear:
                     RemoveChunk();
 
                     return;
 
-                case Key.Q:
+                case KeyboardCommands.LeftToLeft:
                     ShiftLeft(-200);
                     return;
 
-                case Key.W:
+                case KeyboardCommands.LeftToRight:
                     ShiftLeft(200);
                     return;
 
-                case Key.O:
+                case KeyboardCommands.RightToLeft:
                     ShiftRight(-200);
                     return;
                 
-                case Key.P:
+                case KeyboardCommands.RightToRight:
                     ShiftRight(200);
                     return;
 
-                case Key.Up:
+                case KeyboardCommands.SpeedUp:
                     model.WindowState.SpeedRatio+=0.5;
                     return;
 
-                case Key.Down:
+                case KeyboardCommands.SpeedDown:
                     model.WindowState.SpeedRatio -= 0.5;
                     return;
 
-                case Key.Space:
+                case KeyboardCommands.PauseResume:
                     model.WindowState.Paused = !model.WindowState.Paused;
                     return;
 
 
-                case Key.D9:
+                case KeyboardCommands.NewEpisodeHere:
                     var index = montage.Chunks.FindChunkIndex(model.WindowState.CurrentPosition);
                     if (index != -1)
                     {

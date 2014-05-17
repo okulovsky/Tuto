@@ -7,7 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using System.Windows;
-using VideoLib;
+
+
 namespace Editor
 {
     class Program
@@ -33,7 +34,7 @@ namespace Editor
 
             if (model.Montage.Intervals == null || model.Montage.Intervals.Count == 0)
             {
-                new NewName.Services.PraatService().DoWork(model);
+                new Tuto.Services.PraatService().DoWork(model);
             }
 
             var window = new MainWindow();

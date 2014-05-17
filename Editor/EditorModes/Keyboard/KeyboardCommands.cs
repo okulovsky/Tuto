@@ -31,6 +31,8 @@ namespace Editor
         LeftToLeft,
         LeftToRight,
         RightToLeft,
-        RightToRight
+        RightToRight,
+
+        NewEpisodeHere
     }
 }

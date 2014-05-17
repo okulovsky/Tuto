@@ -2,7 +2,7 @@
 using System.IO;
 using System.Web.UI.WebControls;
 
-namespace NewName.Services.Assembler
+namespace Tuto.Services.Assembler
 {
     class AvsChunk : AvsNode
     {

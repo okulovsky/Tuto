@@ -1,4 +1,4 @@
-﻿namespace NewName.Services.Assembler
+﻿namespace Tuto.Services.Assembler
 {
     class AvsChangeFramerate : AvsNode
     {

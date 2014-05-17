@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Reflection;
 
-namespace NewName.Services.Assembler
+namespace Tuto.Services.Assembler
 {
     class AvsWatermark : AvsNode
     {
