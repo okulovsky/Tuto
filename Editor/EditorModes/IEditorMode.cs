@@ -11,6 +11,6 @@ namespace Editor
     {
         void CheckTime();
         void MouseClick(int SelectedLocation, MouseButtonEventArgs button);
-        void ProcessKey(KeyEventArgs key);
+        void ProcessKey(KeyboardCommandData key);
     }
 }

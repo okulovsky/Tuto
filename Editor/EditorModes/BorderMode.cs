@@ -124,7 +124,7 @@ namespace Editor
         }
 
 
-        public void ProcessKey(KeyEventArgs e)
+        public void ProcessKey(KeyboardCommandData key)
         {
             var borderIndex = montage.Borders.FindBorder(model.WindowState.CurrentPosition);
             if (borderIndex == -1) return;
@@ -144,29 +144,29 @@ namespace Editor
             }
 
             var value = 200;
-            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+            if (key.Shift)
                 value = 50;
             
 
-            switch (e.Key)
+            switch (key.Command)
             {
-                case Key.Q:
+                case KeyboardCommands.LeftToLeft:
                     Shift(rightBorderIndex, value);
                     return;
 
-                case Key.W:
+                case KeyboardCommands.LeftToRight:
                     Shift(rightBorderIndex, -value);
                     return;
 
-                case Key.O:
+                case KeyboardCommands.RightToLeft:
                     Shift(leftBorderIndex, value);
                     return;
 
-                case Key.P:
+                case KeyboardCommands.RightToRight:
                     Shift(leftBorderIndex, -value);
                     return;
 
-                case Key.Space:
+                case KeyboardCommands.PauseResume:
                     model.WindowState.Paused = !model.WindowState.Paused;
                     return;
             }

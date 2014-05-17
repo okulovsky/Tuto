@@ -10,7 +10,6 @@ namespace Editor
     public static class KeyMap
     {
         static Dictionary<Keys, KeyboardCommands> map;
-        static List<KeyboardCommands> modeSpecific;
 
         static KeyMap()
         {
@@ -39,21 +38,9 @@ namespace Editor
             map[Keys.O] = KeyboardCommands.RightToLeft;
             map[Keys.P] = KeyboardCommands.RightToRight;
 
-            modeSpecific = new List<KeyboardCommands>
-            {
-                KeyboardCommands.LargeRight,
-                KeyboardCommands.LargeLeft,
-                KeyboardCommands.LeftToLeft,
-                KeyboardCommands.LeftToRight,
-                KeyboardCommands.RightToRight, 
-                KeyboardCommands.RightToLeft
-            };
         }
 
-        public static bool IsModeSpecific(KeyboardCommands cmd)
-        {
-            return modeSpecific.Contains(cmd);
-        }
+
 
         public static KeyboardCommands GetCommand(Keys key)
         {
