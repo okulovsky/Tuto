@@ -31,9 +31,34 @@ namespace Editor
             Global = new GlobalData();
         }
 
+
+        #region I'm not sure EditorModel is a right place for that
+
         public void SetChunkMode(Mode mode, bool ctrl)
         {
             SetChunkMode(WindowState.CurrentPosition, mode, ctrl);
+            Montage.SetChanged();
+        }
+
+        public void RemoveChunk()
+        {
+
+            var position = WindowState.CurrentPosition;
+            var index = Montage.Chunks.FindChunkIndex(position);
+            if (index == -1) return;
+            var chunk = Montage.Chunks[index];
+            chunk.Mode = Mode.Undefined;
+            if (index != Montage.Chunks.Count - 1 && Montage.Chunks[index + 1].Mode == Mode.Undefined)
+            {
+                chunk.Length += Montage.Chunks[index + 1].Length;
+                Montage.Chunks.RemoveAt(index + 1);
+            }
+            if (index != 0 && Montage.Chunks[index - 1].Mode == Mode.Undefined)
+            {
+                chunk.StartTime = Montage.Chunks[index - 1].StartTime;
+                chunk.Length += Montage.Chunks[index - 1].Length;
+                Montage.Chunks.RemoveAt(index - 1);
+            }
             Montage.SetChanged();
         }
 
@@ -136,6 +161,18 @@ namespace Editor
                 oldChunk = currentChunk;
             }
         }
+
+        public void NewEpisodeHere()
+        {
+            var index = Montage.Chunks.FindChunkIndex(WindowState.CurrentPosition);
+            if (index != -1)
+            {
+                Montage.Chunks[index].StartsNewEpisode = !Montage.Chunks[index].StartsNewEpisode;
+                Montage.SetChanged();
+            }
+        }
+
+        #endregion
     }
 }
 

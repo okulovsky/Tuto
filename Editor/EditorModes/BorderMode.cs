@@ -12,6 +12,8 @@ namespace Editor
     {
         const int Margin = 3000;
 
+        double FastSpeed = 2;
+
         EditorModel model;
 
         public MontageModel montage { get { return model.Montage; } }
@@ -96,7 +98,7 @@ namespace Editor
             model.WindowState.FaceVideoIsVisible = montage.Chunks[index].Mode == Mode.Face;
             model.WindowState.DesktopVideoIsVisible = montage.Chunks[index].Mode == Mode.Screen;
 
-            double speed = 2.5;
+            double speed = FastSpeed;
             var bindex = montage.Borders.FindBorder(ms);
             if (bindex != -1)
             {
@@ -126,6 +128,9 @@ namespace Editor
 
         public void ProcessKey(KeyboardCommandData key)
         {
+            if (CommonKeyboardProcessing.ProcessCommonKeys(model, key)) return;
+
+
             var borderIndex = montage.Borders.FindBorder(model.WindowState.CurrentPosition);
             if (borderIndex == -1) return;
             int leftBorderIndex = -1;
@@ -166,8 +171,19 @@ namespace Editor
                     Shift(leftBorderIndex, -value);
                     return;
 
-                case KeyboardCommands.PauseResume:
-                    model.WindowState.Paused = !model.WindowState.Paused;
+                case KeyboardCommands.LargeRight:
+                    if (borderIndex + 1 < montage.Borders.Count)
+                        model.WindowState.CurrentPosition = montage.Borders[borderIndex + 1].StartTime;
+                    return;
+                case KeyboardCommands.LargeLeft:
+                    if (borderIndex - 1 >= 0)
+                        model.WindowState.CurrentPosition = montage.Borders[borderIndex-1].StartTime;
+                    return;
+                case KeyboardCommands.SpeedDown:
+                    FastSpeed -= 0.5;
+                    return;
+                case KeyboardCommands.SpeedUp:
+                    FastSpeed += 0.5;
                     return;
             }
         }

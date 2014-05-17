@@ -41,24 +41,14 @@ namespace Editor
 
         public void ProcessKey(KeyboardCommandData key)
         {
-            var value = 0.0;
-            if (key.Shift)
-                value = -1;
-            if (key.Ctrl)
-                value = -1.5;
+            var shiftValue = 200;
+            if (key.Shift || key.Ctrl) shiftValue = 50;
+            if (CommonKeyboardProcessing.ProcessCommonKeys(model, key)) return;
            
           
             switch (key.Command)
             {
-                case KeyboardCommands.Left:
-                    model.WindowState.CurrentPosition=((int)(model.WindowState.CurrentPosition - 1000 * Math.Pow(5, value)));
-                    return;
-
-                case KeyboardCommands.Right:
-                    model.WindowState.CurrentPosition = ((int)(model.WindowState.CurrentPosition + 1000 * Math.Pow(5, value)));
-                    return;
-                   
-                case KeyboardCommands.LargeLeft:
+                 case KeyboardCommands.LargeLeft:
                     PrevChunk();
                     return;
 
@@ -66,37 +56,21 @@ namespace Editor
                     NextChunk();
                     return;
 
-                case KeyboardCommands.Face:
-                    model.SetChunkMode(Mode.Face, key.Ctrl);
-                    return;
                 
-                case KeyboardCommands.Desktop:
-                    model.SetChunkMode(Mode.Screen, key.Ctrl);
-                    return;
-
-                case KeyboardCommands.Drop:
-                    model.SetChunkMode(Mode.Drop, key.Ctrl);
-                    return;
-                
-                case KeyboardCommands.Clear:
-                    RemoveChunk();
-
-                    return;
-
                 case KeyboardCommands.LeftToLeft:
-                    ShiftLeft(-200);
+                    ShiftLeft(-shiftValue);
                     return;
 
                 case KeyboardCommands.LeftToRight:
-                    ShiftLeft(200);
+                    ShiftLeft(shiftValue);
                     return;
 
                 case KeyboardCommands.RightToLeft:
-                    ShiftRight(-200);
+                    ShiftRight(-shiftValue);
                     return;
                 
                 case KeyboardCommands.RightToRight:
-                    ShiftRight(200);
+                    ShiftRight(shiftValue);
                     return;
 
                 case KeyboardCommands.SpeedUp:
@@ -106,74 +80,26 @@ namespace Editor
                 case KeyboardCommands.SpeedDown:
                     model.WindowState.SpeedRatio -= 0.5;
                     return;
-
-                case KeyboardCommands.PauseResume:
-                    model.WindowState.Paused = !model.WindowState.Paused;
-                    return;
-
-
-                case KeyboardCommands.NewEpisodeHere:
-                    var index = montage.Chunks.FindChunkIndex(model.WindowState.CurrentPosition);
-                    if (index != -1)
-                    {
-                        montage.Chunks[index].StartsNewEpisode = !montage.Chunks[index].StartsNewEpisode;
-                        model.Montage.SetChanged();
-                    }
-                    return;
-
             }
 
         }
 
-        void RemoveChunk()
+
+
+        void ShiftLeft(int value)
         {
-            var position = model.WindowState.CurrentPosition;
-            var index = montage.Chunks.FindChunkIndex(position);
+            var index = model.Montage.Chunks.FindChunkIndex(model.WindowState.CurrentPosition);
             if (index == -1) return;
-            var chunk = montage.Chunks[index];
-            chunk.Mode = Mode.Undefined;
-            if (index != montage.Chunks.Count - 1 && montage.Chunks[index + 1].Mode == Mode.Undefined)
-            {
-                chunk.Length += montage.Chunks[index + 1].Length;
-                montage.Chunks.RemoveAt(index + 1);
-            }
-            if (index != 0 && montage.Chunks[index - 1].Mode == Mode.Undefined)
-            {
-                chunk.StartTime = montage.Chunks[index - 1].StartTime;
-                chunk.Length += montage.Chunks[index - 1].Length;
-                montage.Chunks.RemoveAt(index - 1);
-            }
-            montage.SetChanged();
+            model.Montage.Chunks.ShiftLeftBorderToRight(index, value);
+            model.WindowState.CurrentPosition = model.Montage.Chunks[index].StartTime;
         }
 
-        void ShiftLeft(int delta)
+        void ShiftRight(int value)
         {
-            var position = model.WindowState.CurrentPosition;
-            var index = montage.Chunks.FindChunkIndex(position);
-            if (index == -1 || index == 0) return;
-            if (delta < 0 && montage.Chunks[index - 1].Length < -delta) return;
-            if (delta > 0 && montage.Chunks[index].Length < delta) return ;
-            montage.Chunks[index].StartTime += delta;
-            montage.Chunks[index].Length -= delta;
-            montage.Chunks[index - 1].Length += delta;
-
-            model.WindowState.CurrentPosition = montage.Chunks[index].StartTime;
-            montage.SetChanged();
-        }
-
-        void ShiftRight(int delta)
-        {
-            var position = model.WindowState.CurrentPosition;
-            var index = montage.Chunks.FindChunkIndex(position);
-            if (index == -1 || index == montage.Chunks.Count - 1) return;
-            if (delta < 0 && montage.Chunks[index].Length < -delta) return;
-            if (delta > 0 && montage.Chunks[index + 1].Length < delta) return;
-            montage.Chunks[index].Length += delta;
-            montage.Chunks[index + 1].Length -= delta;
-            montage.Chunks[index + 1].StartTime += delta;
-
-            model.WindowState.CurrentPosition = montage.Chunks[index + 1].StartTime - 2000;
-            montage.SetChanged();
+            var index = model.Montage.Chunks.FindChunkIndex(model.WindowState.CurrentPosition);
+            if (index == -1) return;
+            model.Montage.Chunks.ShiftRightBorderToRight(index, value);
+            model.WindowState.CurrentPosition = model.Montage.Chunks[index].EndTime-2000;
         }
 
         void NextChunk()
