@@ -34,6 +34,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -47,20 +48,25 @@
     <Compile Include="Main\Shell.cs" />
     <Compile Include="Model\Current\FileContainer.cs" />
     <Compile Include="Model\Current\Locations.cs" />
-    <Compile Include="Model\Current\Montage\Borders\Border.cs" />
-    <Compile Include="Model\Current\Montage\Borders\BorderList.cs" />
-    <Compile Include="Model\Current\Montage\Chunks\ChunkData.cs" />
-    <Compile Include="Model\Current\Montage\Chunks\ChunkList.cs" />
-    <Compile Include="Model\Current\Montage\Chunks\ChunkMode.cs" />
     <Compile Include="Model\Current\EditorModel.cs" />
-    <Compile Include="Model\Current\Montage\Chunks\FileChunk.cs" />
-    <Compile Include="Model\Current\Montage\Intervals\Interval.cs" />
+    <Compile Include="Model\Current\Montage\StreamChunk.cs" />
+    <Compile Include="Model\Current\Montage\StreamToken.cs" />
+    <Compile Include="Model\Current\Montage\StreamTokenArray.cs" />
     <Compile Include="Model\Current\WindowState\EditorModes.cs" />
-    <Compile Include="Model\Current\Montage\Information\EpisodInfo.cs" />
-    <Compile Include="Model\Current\Montage\Information\VideoInformation.cs" />
-    <Compile Include="Model\Current\Montage\MontageModel.cs" />
     <Compile Include="Model\Current\WindowState\WindowState.cs" />
     <Compile Include="Model\ModelIO.cs" />
+    <Compile Include="Model\Obsolete\Backup\MontageData\Border.cs" />
+    <Compile Include="Model\Obsolete\Backup\MontageData\BorderList.cs" />
+    <Compile Include="Model\Obsolete\Backup\MontageData\ChunkData.cs" />
+    <Compile Include="Model\Obsolete\Backup\MontageData\ChunkList.cs" />
+    <Compile Include="Model\Obsolete\Backup\MontageData\ChunkMode.cs" />
+    <Compile Include="Model\Obsolete\Backup\MontageData\EpisodInfo.cs" />
+    <Compile Include="Model\Obsolete\Backup\MontageData\FileChunk.cs" />
+    <Compile Include="Model\Obsolete\Backup\MontageData\Interval.cs" />
+    <Compile Include="Model\Obsolete\Backup\MontageData\MontageModel.cs" />
+    <Compile Include="Model\Obsolete\Backup\MontageData\VideoInformation.cs" />
+    <Compile Include="Model\Obsolete\Backup\VideoLib\MontageCommand.cs" />
+    <Compile Include="Model\Obsolete\Backup\VideoLib\MontageCommandIO.cs" />
     <Compile Include="Model\Obsolete\InvervalsV2.cs" />
     <Compile Include="Model\Obsolete\MontageModel.cs" />
     <Compile Include="Main\Program.cs" />
@@ -97,12 +103,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\VideoLib\VideoLib.csproj">
-      <Project>{f54f3a10-472a-421b-895f-efd5a5086aca}</Project>
-      <Name>VideoLib</Name>
-    </ProjectReference>
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

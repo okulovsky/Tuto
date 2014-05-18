@@ -16,8 +16,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tuto", "NewName\Tuto.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelCreator", "ModelCreator\ModelCreator.csproj", "{410F6739-6DD8-4B1C-9B80-6375FE715836}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoLib", "VideoLib\VideoLib.csproj", "{F54F3A10-472A-421B-895F-EFD5A5086ACA}"
-EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Video.vsmdi
@@ -62,16 +60,6 @@ Global
 		{410F6739-6DD8-4B1C-9B80-6375FE715836}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{410F6739-6DD8-4B1C-9B80-6375FE715836}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{410F6739-6DD8-4B1C-9B80-6375FE715836}.Release|x86.ActiveCfg = Release|Any CPU
-		{F54F3A10-472A-421B-895F-EFD5A5086ACA}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{F54F3A10-472A-421B-895F-EFD5A5086ACA}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{F54F3A10-472A-421B-895F-EFD5A5086ACA}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{F54F3A10-472A-421B-895F-EFD5A5086ACA}.Debug|x86.ActiveCfg = Debug|x86
-		{F54F3A10-472A-421B-895F-EFD5A5086ACA}.Debug|x86.Build.0 = Debug|x86
-		{F54F3A10-472A-421B-895F-EFD5A5086ACA}.Release|Any CPU.ActiveCfg = Release|x86
-		{F54F3A10-472A-421B-895F-EFD5A5086ACA}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{F54F3A10-472A-421B-895F-EFD5A5086ACA}.Release|Mixed Platforms.Build.0 = Release|x86
-		{F54F3A10-472A-421B-895F-EFD5A5086ACA}.Release|x86.ActiveCfg = Release|x86
-		{F54F3A10-472A-421B-895F-EFD5A5086ACA}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
