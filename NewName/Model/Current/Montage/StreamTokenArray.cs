@@ -15,6 +15,8 @@ namespace Tuto.Model
         [DataMember]
         public readonly int StreamLength;
 
+        public int Count { get { return tokens.Count; } }
+
         public StreamTokenArray(int StreamLength)
         {
             this.StreamLength = StreamLength;
@@ -60,20 +62,23 @@ namespace Tuto.Model
             return Tuple.Create(index, tokens[index]);
         }
 
+        Tuple<int, StreamChunk> FindIndexAndChunk(int time)
+        {
+            var index = FindIndex(time);
+            return Tuple.Create(index, this[index]);
+        }
+
         public void Mark(int time, bool[] streams, bool replace)
         {
             var toks = FindIndexAndToken(time);
             if (!toks.Item2.Defined)
             {
-                toks.Item2.Defined = true;
-                toks.Item2.CopyStreams(streams);
+                toks.Item2.SetDefined(streams);
                 if (!replace)
                 {
                     var token = new StreamToken()
                     {
                         Time = time,
-                        Defined = false,
-                        StartsNewEpisode = false
                     };
                     tokens.Insert(toks.Item1 + 1, token);
                 }
@@ -83,8 +88,31 @@ namespace Tuto.Model
                 toks.Item2.CopyStreams(streams);
             }
         }
-        
 
+        public void Clear(int tokenIndex)
+        {
+            tokens[tokenIndex].SetUndefined();
+            while (tokenIndex != tokens.Count - 1)
+                if (!tokens[tokenIndex + 1].Defined) tokens.RemoveAt(tokenIndex + 1);
+                else break;
+            while (tokenIndex != 0)
+                if (!tokens[tokenIndex - 1].Defined) tokens.RemoveAt(tokenIndex);
+                else break;
+        }
+
+        public void MoveToken(int index, int newTime)
+        {
+            if (index < 0 || index >= tokens.Count) throw new ArgumentException();
+            tokens[index].Time = newTime;
+            for (int i = index - 1; i >= 0; i--)
+                if (tokens[i].Time > newTime) tokens[i].Time = newTime;
+                else break;
+            for (int i = index + 1; i < tokens.Count; i++)
+                if (tokens[i].Time < newTime) tokens[i].Time = newTime;
+                else break;
+        }
+
+   
 
         #endregion
     }

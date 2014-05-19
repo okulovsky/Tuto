@@ -49,12 +49,16 @@
     <Compile Include="Model\Current\FileContainer.cs" />
     <Compile Include="Model\Current\Locations.cs" />
     <Compile Include="Model\Current\EditorModel.cs" />
+    <Compile Include="Model\Current\Montage\EpisodInfo.cs" />
+    <Compile Include="Model\Current\Montage\MontageModel.cs" />
     <Compile Include="Model\Current\Montage\StreamChunk.cs" />
     <Compile Include="Model\Current\Montage\StreamToken.cs" />
     <Compile Include="Model\Current\Montage\StreamTokenArray.cs" />
+    <Compile Include="Model\Current\Montage\VideoInfo.cs" />
     <Compile Include="Model\Current\WindowState\EditorModes.cs" />
     <Compile Include="Model\Current\WindowState\WindowState.cs" />
     <Compile Include="Model\ModelIO.cs" />
+    <Compile Include="Model\Current\Montage\Border.cs" />
     <Compile Include="Model\Obsolete\Backup\MontageData\Border.cs" />
     <Compile Include="Model\Obsolete\Backup\MontageData\BorderList.cs" />
     <Compile Include="Model\Obsolete\Backup\MontageData\ChunkData.cs" />
@@ -62,6 +66,7 @@
     <Compile Include="Model\Obsolete\Backup\MontageData\ChunkMode.cs" />
     <Compile Include="Model\Obsolete\Backup\MontageData\EpisodInfo.cs" />
     <Compile Include="Model\Obsolete\Backup\MontageData\FileChunk.cs" />
+    <Compile Include="Model\Current\Montage\SoundInterval.cs" />
     <Compile Include="Model\Obsolete\Backup\MontageData\Interval.cs" />
     <Compile Include="Model\Obsolete\Backup\MontageData\MontageModel.cs" />
     <Compile Include="Model\Obsolete\Backup\MontageData\VideoInformation.cs" />

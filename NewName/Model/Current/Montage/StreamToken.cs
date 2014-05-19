@@ -22,7 +22,19 @@ namespace Tuto.Model
         public bool StartsNewEpisode { get; internal set; }
 
         [DataMember]
-        public bool Defined { get; internal set; }
+        public bool Defined { get; private set; }
+
+        public void SetUndefined()
+        {
+            Defined = false;
+            for (int i = 0; i < StreamCount; i++) FromStream[i] = false;
+        }
+
+        public void SetDefined(bool[] data)
+        {
+            Defined = true;
+            CopyStreams(data);
+        }
 
         /// <summary>
         /// This array shows the video from which streams should be included in the chunk
@@ -34,6 +46,15 @@ namespace Tuto.Model
         {
             if (data.Length != FromStream.Length) throw new ArgumentException();
             for (int i = 0; i < data.Length; i++) FromStream[i] = data[i];
+        }
+
+        public bool HasTheSameType(StreamToken token)
+        {
+            if (Defined != token.Defined) return false;
+            if (!Defined) return true;
+            for (int i = 0; i < StreamCount; i++)
+                if (FromStream[i] != token.FromStream[i]) return false;
+            return true;
         }
     }
 }
