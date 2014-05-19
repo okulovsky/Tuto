@@ -15,7 +15,7 @@ namespace Editor
 
 
 
-        static bool ParseV3(EditorModel model)
+        static bool ParseV3(EditorModelV4 model)
         {
             var file = model.VideoFolder.GetFiles(Locations.LocalFileName).FirstOrDefault();
             if (file == null) return false;
@@ -28,7 +28,7 @@ namespace Editor
             return true;
         }
 
-        static bool ParseV2(EditorModel model)
+        static bool ParseV2(EditorModelV4 model)
         {
             var file = model.VideoFolder.GetFiles(Locations.LocalFileNameV2).FirstOrDefault();
             if (file == null) return false;
@@ -54,13 +54,13 @@ namespace Editor
             return true;
         }
 
-        static bool ParseV1(EditorModel model)
+        static bool ParseV1(EditorModelV4 model)
         {
             var file = model.VideoFolder.GetFiles(Locations.LocalFileNameV1).FirstOrDefault();
             if (file == null) return false;
             var montageModel=new JavaScriptSerializer().Deserialize<MontageModelV1>(File.ReadAllText(file.FullName));
             
-            model.Montage= new MontageModel
+            model.Montage= new MontageModelV4
                 {
                     Borders = montageModel.Borders,
                     Chunks = montageModel.Chunks,
@@ -101,7 +101,7 @@ namespace Editor
             return subdirectory;
         }
 
-        public static EditorModel Load(string subdirectory)
+        public static EditorModelV4 Load(string subdirectory)
         {
             var localDirectory = new DirectoryInfo(subdirectory);
             if (!localDirectory.Exists) throw new Exception("Local directory '"+subdirectory+"' is not found");
@@ -122,7 +122,7 @@ namespace Editor
 
             var programFolder = new FileInfo(Assembly.GetExecutingAssembly().FullName).Directory;
 
-            var editorModel = new EditorModel { 
+            var editorModel = new EditorModelV4 { 
                 ProgramFolder = programFolder, 
                 VideoFolder = localDirectory,
                 ChunkFolder = localDirectory.CreateSubdirectory("chunks"),
@@ -132,7 +132,7 @@ namespace Editor
           
             if (!ParseV3(editorModel) && !ParseV2(editorModel) && !ParseV1(editorModel))
             {
-                editorModel.Montage = new MontageModel
+                editorModel.Montage = new MontageModelV4
                     {
                         Shift = 0,
                         TotalLength = 90 * 60 * 1000 //TODO: как-то по-разумному определить это время
@@ -143,12 +143,12 @@ namespace Editor
         }
 
 
-        public static void Save(EditorModel model)
+        public static void Save(EditorModelV4 model)
         {
             SaveV2(model);
         }
 
-        static void SaveV2(EditorModel model)
+        static void SaveV2(EditorModelV4 model)
         {
             model.CreateFileChunks();
             var container = new FileContainer()
@@ -165,7 +165,7 @@ namespace Editor
         }
 
 
-        static void SaveV1(DirectoryInfo rootFolder, DirectoryInfo videoFolder, MontageModel model)
+        static void SaveV1(DirectoryInfo rootFolder, DirectoryInfo videoFolder, MontageModelV4 model)
         {
             
             using (var stream = new StreamWriter(videoFolder.FullName+"\\montage.editor"))
@@ -175,7 +175,7 @@ namespace Editor
             ExportV0(rootFolder, videoFolder, model);
         }
 
-        static void ExportV0(DirectoryInfo rootFolder, DirectoryInfo videoFolder, MontageModel model)
+        static void ExportV0(DirectoryInfo rootFolder, DirectoryInfo videoFolder, MontageModelV4 model)
         {
             File.WriteAllLines(videoFolder.FullName+"\\titles.txt", model.Information.Episodes.Select(z => z.Name).Where(z => z != null).ToArray(), Encoding.UTF8);
 

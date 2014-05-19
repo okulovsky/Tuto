@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Editor;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,22 +14,24 @@ namespace Tuto.Model
     {
         public readonly int StartTime;
         public readonly int EndTime;
-        public readonly bool IsUndefined;
-        public readonly bool IsDrop;
-        public readonly bool IsFace;
-        public readonly bool IsDesktop;
+        public readonly Mode Mode;
         public readonly bool StartsNewEpisode;
-        public int Length { get { return EndTime - StartTime; } }
 
-        public StreamChunk(int index, int startTime, int endTime, bool isUndefined, bool isDrop, bool isFace, bool isDesktop, bool startsNewEpisode)
+        public int Length { get { return EndTime - StartTime; } }
+        public bool IsActive { get { return Mode != Editor.Mode.Undefined && Mode != Editor.Mode.Drop; } }
+        
+   
+        public StreamChunk(int startTime, int endTime, Mode mode, bool startsNewEpisode)
         {
             StartsNewEpisode = startsNewEpisode;
             StartTime = startTime;
             EndTime = endTime;
-            IsUndefined = isUndefined;
-            IsFace = isFace;
-            IsDrop = isDrop;
-            IsDesktop = isDesktop;
+            Mode = mode;
+         }
+
+        public bool Contains(int ms)
+        {
+            return StartTime <= ms && ms < EndTime;
         }
     }
 }

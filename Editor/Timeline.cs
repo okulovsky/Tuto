@@ -11,8 +11,8 @@ namespace Editor
 {
     public class TimelineBase : FrameworkElement
     {
-        protected EditorModel editorModel { get { return (EditorModel)DataContext; } }
-        protected MontageModel model { get { return editorModel.Montage; } }
+        protected EditorModelV4 editorModel { get { return (EditorModelV4)DataContext; } }
+        protected MontageModelV4 model { get { return editorModel.Montage; } }
 
         protected readonly int RowHeight = 20;
         protected readonly int msInRow = 300000;

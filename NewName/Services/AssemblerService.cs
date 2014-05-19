@@ -29,7 +29,7 @@ namespace Tuto.Services
             get { return HelpString; }
         }
 
-        public void DoWork(EditorModel model, bool print)
+        public void DoWork(EditorModelV4 model, bool print)
         {
             
             var epsodes = ListEpisodes(model.Montage.FileChunks).Select(e => MakeEpisode(model, e));
@@ -58,7 +58,7 @@ namespace Tuto.Services
             
         }
 
-        private AvsNode MakeEpisode(EditorModel model, List<FileChunk> fileChunks)
+        private AvsNode MakeEpisode(EditorModelV4 model, List<FileChunk> fileChunks)
         {
             var avsChunks = new AvsConcatList{Items = new List<AvsNode>()};
 

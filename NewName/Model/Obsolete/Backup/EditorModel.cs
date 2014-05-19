@@ -1,5 +1,4 @@
-﻿using Editor;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -8,9 +7,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace Tuto.Model
+namespace Editor
 {
-    public class EditorModel
+
+    public class EditorModelV4
     {
         public DirectoryInfo RootFolder { get; set; }
         public DirectoryInfo VideoFolder { get; set; }
@@ -20,121 +20,82 @@ namespace Tuto.Model
         public Locations Locations { get; private set; }
 
         public GlobalData Global { get; set; }
-        public MontageModel Montage { get; set; }
+        public MontageModelV4 Montage { get; set; }
 
         public WindowState WindowState { get; set; }
 
-        public event EventHandler MontageModelChanged;
-
-        public void OnMontageModelChanged()
+        public EditorModelV4()
         {
-            if (MontageModelChanged != null)
-                MontageModelChanged(this, EventArgs.Empty);
-        }
-
-
-        public EditorModel()
-        {
-            Montage = new MontageModel(360000);
-            //Locations = new Locations(this);
+            Montage = new MontageModelV4();
+            Locations = new Locations(this);
             WindowState = new WindowState();
             Global = new GlobalData();
         }
 
 
-        #region Basic algorithms
+        #region I'm not sure EditorModel is a right place for that
 
-        private StreamTokenArray Tokens { get { return Montage.Tokens; } }
-
-        public int FindChunkIndex(int time)
+        public void SetChunkMode(Mode mode, bool ctrl)
         {
-            return Tokens.FindIndex(time);
+            SetChunkMode(WindowState.CurrentPosition, mode, ctrl);
+            Montage.SetChanged();
         }
 
-        public void MoveLeftChunkBorder(int index, int newTime)
+        public void RemoveChunk()
         {
-            if (index == 0) return;
-            Tokens.MoveToken(index, newTime);
-            OnMontageModelChanged();
+
+            var position = WindowState.CurrentPosition;
+            var index = Montage.Chunks.FindChunkIndex(position);
+            if (index == -1) return;
+            var chunk = Montage.Chunks[index];
+            chunk.Mode = Mode.Undefined;
+            if (index != Montage.Chunks.Count - 1 && Montage.Chunks[index + 1].Mode == Mode.Undefined)
+            {
+                chunk.Length += Montage.Chunks[index + 1].Length;
+                Montage.Chunks.RemoveAt(index + 1);
+            }
+            if (index != 0 && Montage.Chunks[index - 1].Mode == Mode.Undefined)
+            {
+                chunk.StartTime = Montage.Chunks[index - 1].StartTime;
+                chunk.Length += Montage.Chunks[index - 1].Length;
+                Montage.Chunks.RemoveAt(index - 1);
+            }
+            Montage.SetChanged();
         }
 
-        public void MoveRightChunkBorder(int index, int newTime)
+        public void SetChunkMode(int position, Mode mode, bool ctrl)
         {
-            if (index == Tokens.Count - 1) return;
-            Tokens.MoveToken(index + 1, newTime);
-            OnMontageModelChanged();
-
-        }
-
-        public void ShiftLeftChunkBorder(int index, int deltaTime)
-        {
-            if (index == 0) return;
-            Tokens.MoveToken(index, Tokens[index].StartTime + deltaTime);
-            OnMontageModelChanged();
-
-        }
-
-        public void ShiftRightChunkBorder(int index, int deltaTime)
-        {
-            if (index == Tokens.Count - 1) return;
-            Tokens.MoveToken(index + 1, Tokens[index].EndTime + deltaTime);
-            OnMontageModelChanged();
-        }
-        
-        #endregion
-
-        #region Algorithms using WindowState properies
-
-        bool[] ModeToBools(Mode mode)
-        {
-            if (mode == Mode.Drop) return new bool[] { false, false };
-            if (mode == Mode.Face) return new bool[] { true, false };
-            if (mode == Mode.Screen) return new bool[] { false, true};
-            throw new ArgumentException();
-
-        }
-
-        public void MarkHere(Mode mode, bool ctrl)
-        {
-            var time=WindowState.CurrentPosition;
-            Tokens.Mark(time, ModeToBools(mode), !ctrl);
-            var index = Tokens.FindIndex(time);
+            var index = Montage.Chunks.FindChunkIndex(position);
+            if (index == -1) return;
+            var chunk = Montage.Chunks[index];
+            if (chunk.Mode == Mode.Undefined && chunk.Length > 500 && !ctrl)
+            {
+                var chunk1 = new ChunkData { StartTime = chunk.StartTime, Length = position - chunk.StartTime, Mode = mode };
+                var chunk2 = new ChunkData { StartTime = position, Length = chunk.Length - chunk1.Length, Mode = Mode.Undefined };
+                Montage.Chunks.RemoveAt(index);
+                Montage.Chunks.Insert(index, chunk1);
+                Montage.Chunks.Insert(index + 1, chunk2);
+            }
+            else
+            {
+                chunk.Mode = mode;
+            }
             CorrectBorderBetweenChunksBySound(index - 1);
             CorrectBorderBetweenChunksBySound(index);
-            OnMontageModelChanged();
-        }
 
-        public void RemoveChunkHere()
-        {
-            var position = WindowState.CurrentPosition;
-            var index = Tokens.FindIndex(position);
-            Tokens.Clear(index);
-            OnMontageModelChanged();
         }
-
-        
-        public void NewEpisodeHere()
-        {
-            var index = Tokens.FindIndex(WindowState.CurrentPosition);
-            if (index != -1)
-            {
-                Tokens.NewEpisode(index);
-                OnMontageModelChanged();
-            }
-        }
-        #endregion
 
 
         public void CorrectBorderBetweenChunksBySound(int leftChunkIndex)
         {
             if (leftChunkIndex < 0) return;
             var rightChunkIndex = leftChunkIndex + 1;
-            if (rightChunkIndex >= Tokens.Count) return;
-            var leftChunk = Tokens[leftChunkIndex];
-            var rightChunk = Tokens[rightChunkIndex];
-            if (leftChunk.Mode== Mode.Undefined || rightChunk.Mode == Mode.Undefined) return;
-
-            var interval = Montage.SoundIntervals
+            if (rightChunkIndex >= Montage.Chunks.Count) return;
+            var leftChunk = Montage.Chunks[leftChunkIndex];
+            var rightChunk = Montage.Chunks[rightChunkIndex];
+            if (leftChunk.Mode == Mode.Undefined || rightChunk.Mode == Mode.Undefined) return;
+            
+            var interval = Montage.Intervals
                 .Where(z => !z.HasVoice && z.DistanceTo(rightChunk.StartTime) < Global.VoiceSettings.MaxDistanceToSilence)
                 .FirstOrDefault();
             if (interval == null) return;
@@ -143,7 +104,7 @@ namespace Tuto.Model
             var rightDistance = Math.Abs(interval.EndTime - rightChunk.StartTime);
             var distance = interval.DistanceTo(rightChunk.StartTime);
             bool LeftIn = leftDistance < Global.VoiceSettings.MaxDistanceToSilence;
-            bool RightIn = rightDistance < Global.VoiceSettings.MaxDistanceToSilence;
+            bool RightIn = rightDistance  < Global.VoiceSettings.MaxDistanceToSilence;
 
             if (!LeftIn && !RightIn) return;
 
@@ -151,7 +112,7 @@ namespace Tuto.Model
             if (LeftIn && RightIn)
             {
                 //значит, оба конца интервала - близко от точки сечения, и точку нужно передвинуть на середину интервада
-                NewStart = interval.MiddleTime;
+                NewStart = interval.MiddleTimeMS;
             }
             else if (LeftIn && !RightIn)
             {
@@ -169,20 +130,23 @@ namespace Tuto.Model
             //не выскочили за границы чанков при перемещении
             if (!rightChunk.Contains(NewStart) && !leftChunk.Contains(NewStart)) return;
 
-            Tokens.MoveToken(rightChunkIndex, NewStart);
+            Montage.Chunks.ShiftLeftBorderToRight(rightChunkIndex, rightChunk.StartTime-NewStart);
         }
 
         public void CreateFileChunks()
         {
             // Collapse adjacent chunks of same type into one FileChunk
             Montage.FileChunks = new List<FileChunk>();
-            var activeChunks = Tokens.Chunks.Where(c => c.IsActive).ToList();
-            activeChunks.Add(new StreamChunk(activeChunks.Last().EndTime,activeChunks.Last().EndTime,Mode.Undefined,true));
+            var activeChunks = Montage.Chunks.Where(c => c.IsActive).ToList();
+            activeChunks.Add(new ChunkData
+            {
+                StartsNewEpisode = true
+            });
             var oldChunk = activeChunks[0];
             for (var i = 1; i < activeChunks.Count; i++)
             {
                 var currentChunk = activeChunks[i];
-                var prevChunk = activeChunks[i - 1];
+                var prevChunk =  activeChunks[i-1];
                 // collect adjacent chunks starting with oldChunk
                 if (!currentChunk.StartsNewEpisode && currentChunk.Mode == oldChunk.Mode)
                     continue;
@@ -198,6 +162,18 @@ namespace Tuto.Model
                 oldChunk = currentChunk;
             }
         }
-}
+
+        public void NewEpisodeHere()
+        {
+            var index = Montage.Chunks.FindChunkIndex(WindowState.CurrentPosition);
+            if (index != -1)
+            {
+                Montage.Chunks[index].StartsNewEpisode = !Montage.Chunks[index].StartsNewEpisode;
+                Montage.SetChanged();
+            }
+        }
+
+        #endregion
+    }
 }
 

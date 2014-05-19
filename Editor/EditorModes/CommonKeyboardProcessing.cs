@@ -10,7 +10,7 @@ namespace Editor
     {
 
 
-        public static bool ProcessCommonKeys(EditorModel model, KeyboardCommandData key)
+        public static bool ProcessCommonKeys(EditorModelV4 model, KeyboardCommandData key)
         {
             var delta = 1000;
             if (key.Shift) delta = 200;

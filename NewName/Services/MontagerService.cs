@@ -31,7 +31,7 @@ namespace Tuto.Services
             get { return HelpString; }
         }
 
-        public void DoWork(EditorModel model, bool print)
+        public void DoWork(EditorModelV4 model, bool print)
         {
             model.ChunkFolder.Delete(true);
             model.ChunkFolder.Create();

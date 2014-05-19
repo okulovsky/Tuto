@@ -9,11 +9,11 @@ namespace Editor
 {
     public class GeneralMode : IEditorMode
     {
-        EditorModel model;
+        EditorModelV4 model;
 
-        MontageModel montage { get { return model.Montage; } }
+        MontageModelV4 montage { get { return model.Montage; } }
 
-        public GeneralMode(EditorModel edModel)
+        public GeneralMode(EditorModelV4 edModel)
         {
             this.model = edModel;
             model.WindowState.FaceVideoIsVisible = model.WindowState.DesktopVideoIsVisible = true;

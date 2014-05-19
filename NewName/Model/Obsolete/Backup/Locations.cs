@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tuto.Model
+namespace Editor
 {
     public class Locations
     {
-        readonly EditorModel model;
-        internal Locations(EditorModel model) { this.model = model; }
+        readonly EditorModelV4 model;
+        internal Locations(EditorModelV4 model) { this.model = model; }
 
         internal FileInfo Make(DirectoryInfo info, string fname)
         {

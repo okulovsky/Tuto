@@ -11,12 +11,12 @@ namespace Tuto.Services.Montager
     class ProcessingCommands
     {   
 
-        public static IEnumerable<FFMPEGCommand> Processing(EditorModel model, List<FileChunk> chunks)
+        public static IEnumerable<FFMPEGCommand> Processing(EditorModelV4 model, List<FileChunk> chunks)
         {
             return chunks.SelectMany(z => Commands(model, z));
         }
 
-        public static IEnumerable<FFMPEGCommand> Commands(EditorModel model, FileChunk chunk)
+        public static IEnumerable<FFMPEGCommand> Commands(EditorModelV4 model, FileChunk chunk)
         {
             switch (chunk.Mode)
             {

@@ -14,9 +14,9 @@ namespace Editor
 
         double FastSpeed = 2;
 
-        EditorModel model;
+        EditorModelV4 model;
 
-        public MontageModel montage { get { return model.Montage; } }
+        public MontageModelV4 montage { get { return model.Montage; } }
 
 
         /*
@@ -61,7 +61,7 @@ namespace Editor
          
         }
 
-        public BorderMode(EditorModel editorModel)
+        public BorderMode(EditorModelV4 editorModel)
         {
             this.model = editorModel;
             GenerateBorders();

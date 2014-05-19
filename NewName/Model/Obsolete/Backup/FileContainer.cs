@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Editor
 {
-    public class FileContainer
+    public class FileContainerV4
     {
         public MontageModelV4 Montage { get; set; }
         public WindowState WindowState { get; set; }

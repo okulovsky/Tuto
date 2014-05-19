@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Editor
 {
 
-    public partial class MontageModel
+    public partial class MontageModelV4
     {
         public int TotalLength { get; set; }
         public int Shift { get; set; }
@@ -32,7 +32,7 @@ namespace Editor
                 Changed(this, EventArgs.Empty);
         }
 
-        public MontageModel()
+        public MontageModelV4()
         {
             Chunks = new List<ChunkData>();
             FileChunks = new List<FileChunk>();

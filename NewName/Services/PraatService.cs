@@ -45,7 +45,7 @@ namespace Tuto.Services
             ModelIO.Save(model);
         }
 
-        public void DoWork(EditorModel model)
+        public void DoWork(EditorModelV4 model)
         {
             // model.Locations.PraatVoice.Delete();
             model.Locations.PraatOutput.Delete();

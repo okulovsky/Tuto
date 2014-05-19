@@ -24,7 +24,7 @@ namespace Editor
     /// </summary>
     public partial class MainWindow : Window
     {
-        EditorModel model;
+        EditorModelV4 model;
 
 
 
@@ -43,7 +43,7 @@ namespace Editor
 
         void MainWindow_Initialized(object sender, EventArgs e)
         {
-            model = (EditorModel)DataContext;
+            model = (EditorModelV4)DataContext;
             model.WindowState.PropertyChanged += WindowState_PropertyChanged;
 
 

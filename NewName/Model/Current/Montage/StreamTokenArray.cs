@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Editor;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -35,15 +36,32 @@ namespace Tuto.Model
                 var endTime = StreamLength;
                 if (index != tokens.Count - 1)
                     endTime = tokens[index + 1].Time;
+
+                var mode = Mode.Undefined;
+                if (tokens[index].Defined)
+                {
+                    if (tokens[index].FromStream[0])
+                        mode = Mode.Face;
+                    else if (tokens[index].FromStream[1])
+                        mode = Mode.Screen;
+                    else
+                        mode = Mode.Drop;
+                };
+
                 return new StreamChunk(
-                    index,
                     tokens[index].Time,
                     endTime,
-                    !tokens[index].Defined,
-                    !tokens[index].FromStream[0] && !tokens[index].FromStream[1],
-                    tokens[index].FromStream[0],
-                    tokens[index].FromStream[1],
+                    mode,
                     tokens[index].StartsNewEpisode);
+            }
+        }
+
+        public IEnumerable<StreamChunk> Chunks
+        {
+            get
+            {
+                for (int i = 0; i < Count; i++)
+                    yield return this[i];
             }
         }
 
@@ -112,6 +130,11 @@ namespace Tuto.Model
                 else break;
         }
 
+
+        public void NewEpisode(int index)
+        {
+            tokens[index].StartsNewEpisode = !tokens[index].StartsNewEpisode;
+        }
    
 
         #endregion
