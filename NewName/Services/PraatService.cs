@@ -40,9 +40,9 @@ namespace Tuto.Services
         {
             var folder = args[1];
 
-            var model = ModelIO.Load(folder);
+            var model = ObsoleteModelIO.Load(folder);
             DoWork(model);
-            ModelIO.Save(model);
+            ObsoleteModelIO.Save(model);
         }
 
         public void DoWork(EditorModelV4 model)

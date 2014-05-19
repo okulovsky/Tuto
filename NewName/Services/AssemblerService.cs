@@ -141,7 +141,7 @@ namespace Tuto.Services
                 throw (new ArgumentException(String.Format("Unknown mode: {0}", args[2])));
             var print = mode == AssemblerMode.Print;
 
-            var model = ModelIO.Load(folder);
+            var model = ObsoleteModelIO.Load(folder);
             DoWork(model, print);
             // ModelIO.Save(model);
         }

@@ -51,9 +51,9 @@ namespace Tuto.Services
                 throw (new ArgumentException(String.Format("Unknown mode: {0}", args[2])));
             var print = mode == MontagerMode.Print;
 
-            var model = ModelIO.Load(folder);
+            var model = ObsoleteModelIO.Load(folder);
             DoWork(model, print);
-            ModelIO.Save(model);
+            ObsoleteModelIO.Save(model);
         }
         const string DescriptionString =
 @"MontagerService service. Muxes audio and video from different sources to chunks for assembling.";

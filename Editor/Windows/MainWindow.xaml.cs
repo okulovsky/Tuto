@@ -71,7 +71,7 @@ namespace Editor
 
             Save.Click += (s, a) =>
             {
-                ModelIO.Save(model);
+                ObsoleteModelIO.Save(model);
             };
 
             Synchronize.Click += Synchronize_Click;
@@ -88,7 +88,7 @@ namespace Editor
             }
             model.Montage.Shift = model.WindowState.CurrentPosition;
             model.WindowState.CurrentPosition = model.WindowState.CurrentPosition + 1;
-            ModelIO.Save(model);
+            ObsoleteModelIO.Save(model);
         }
 
        
@@ -125,7 +125,7 @@ namespace Editor
             var wnd = new InfoWindow();
             wnd.DataContext = model.Montage.Information;
             wnd.ShowDialog();
-            ModelIO.Save(model);
+            ObsoleteModelIO.Save(model);
         }
 
 
@@ -236,7 +236,7 @@ namespace Editor
         {
             if (e.Key == Key.S)
             {
-                ModelIO.Save(model);
+                ObsoleteModelIO.Save(model);
                 return;
             }
             

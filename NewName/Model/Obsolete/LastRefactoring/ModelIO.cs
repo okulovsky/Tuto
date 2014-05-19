@@ -6,14 +6,51 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
+using Tuto.Model;
 using VideoLib;
 
 namespace Editor
 {
-    public class ModelIO
+    public class ObsoleteModelIO
     {
+        public static EditorModel LoadAndConvert(string subdirectory)
+        {
+            var v4 = Load(subdirectory);
+            var model = new EditorModel();
 
+            int index=0;
+            foreach (var e in v4.Montage.Chunks)
+            {
+                model.Montage.Tokens.Mark(e.EndTime, EditorModel.ModeToBools(e.Mode), false);
+                if (e.StartsNewEpisode)
+                    model.Montage.Tokens.NewEpisode(index);
+                index++;
+            }
+            foreach (var e in v4.Montage.Intervals)
+            {
+                model.Montage.SoundIntervals.Add(new SoundInterval
+                {
+                    StartTime = e.StartTime,
+                    EndTime = e.EndTime,
+                    HasVoice = e.HasVoice
+                });
+            }
+            foreach (var e in v4.Montage.Information.Episodes)
+            {
+                model.Montage.Information.Episodes.Add(new Tuto.Model.EpisodInfo
+                {
+                    AuthorId = e.AuthorId,
+                    TopicId = e.LectureId,
+                    NumberInTopic = e.NumberInTopic,
+                    Name = e.Name,
+                    Duration = e.Duration
+                });
+            }
+            return model;
 
+        }
+
+    
 
         static bool ParseV3(EditorModelV4 model)
         {

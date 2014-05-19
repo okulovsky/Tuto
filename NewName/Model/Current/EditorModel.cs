@@ -85,7 +85,7 @@ namespace Tuto.Model
 
         #region Algorithms using WindowState properies
 
-        bool[] ModeToBools(Mode mode)
+        static public bool[] ModeToBools(Mode mode)
         {
             if (mode == Mode.Drop) return new bool[] { false, false };
             if (mode == Mode.Face) return new bool[] { true, false };

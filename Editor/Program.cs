@@ -30,7 +30,7 @@ namespace Editor
             }
 
 
-            var model = ModelIO.Load(ModelIO.DebugSubdir(args[0]));
+            var model = ObsoleteModelIO.Load(ObsoleteModelIO.DebugSubdir(args[0]));
 
             if (model.Montage.Intervals == null || model.Montage.Intervals.Count == 0)
             {
