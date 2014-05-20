@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Editor
 {
-    public class GlobalData
+    public class GlobalDataV4
     {
-        public VoiceSettings VoiceSettings { get; set; }
+        public VoiceSettingsV4 VoiceSettings { get; set; }
 
-        public GlobalData()
+        public GlobalDataV4()
         {
-            VoiceSettings = new VoiceSettings();
+            VoiceSettings = new VoiceSettingsV4();
         }
     }
 }

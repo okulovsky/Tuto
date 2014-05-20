@@ -68,7 +68,7 @@ namespace Tuto.Services
                     MinSilentInterval,
                     MinSoundInterval));
 
-            model.Montage.Intervals = new List<Interval>();
+            model.Montage.Intervals = new List<IntervalV4>();
             using (var reader = new StreamReader(model.Locations.PraatOutput.FullName))
             {
 
@@ -82,7 +82,7 @@ namespace Tuto.Services
                     var endTime = double.Parse(reader.ReadLine(), CultureInfo.InvariantCulture);
                     var hasVoice = reader.ReadLine() == '"' + SoundLabel + '"';
                     model.Montage.Intervals.Add(
-                        new Interval(
+                        new IntervalV4(
                             (int)Math.Round(startTime*1000), 
                             (int)Math.Round(1000*endTime), 
                             hasVoice));

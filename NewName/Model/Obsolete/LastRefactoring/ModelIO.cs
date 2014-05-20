@@ -85,10 +85,10 @@ namespace Editor
                 model.Montage.Information = container.Montage.Information;
                 model.Montage.Shift = container.Montage.Shift;
                 model.Montage.TotalLength = container.Montage.TotalLength;
-                model.Montage.Intervals = new List<Interval>();
+                model.Montage.Intervals = new List<IntervalV4>();
                 if (container.Montage.Intervals!=null)
                 foreach (var e in container.Montage.Intervals)
-                    model.Montage.Intervals.Add(new Interval(
+                    model.Montage.Intervals.Add(new IntervalV4(
                         (int)Math.Round(e.StartTime * 1000),
                         (int)Math.Round(e.EndTime * 1000),
                         e.HasVoice));
@@ -112,7 +112,7 @@ namespace Editor
                     TotalLength = montageModel.TotalLength,
                     Information = montageModel.Information
                 };
-            model.WindowState= new WindowState
+            model.WindowState= new WindowStateV4
                 {
                     CurrentMode = montageModel.EditorMode,
                     CurrentPosition = montageModel.CurrentPosition,
@@ -125,7 +125,7 @@ namespace Editor
                 {
                     var lines = File.ReadAllLines(titles[0].FullName);
                     foreach (var e in lines)
-                        model.Montage.Information.Episodes.Add(new EpisodInfo { Name = e });
+                        model.Montage.Information.Episodes.Add(new EpisodInfoV4 { Name = e });
                 }
             }
             return true;
@@ -183,7 +183,7 @@ namespace Editor
                         Shift = 0,
                         TotalLength = 90 * 60 * 1000 //TODO: как-то по-разумному определить это время
                     };
-                editorModel.Montage.Chunks.Add(new ChunkData { StartTime = 0, Length = editorModel.Montage.TotalLength, Mode = Mode.Undefined });
+                editorModel.Montage.Chunks.Add(new ChunkDataV4 { StartTime = 0, Length = editorModel.Montage.TotalLength, Mode = Mode.Undefined });
             }
             return editorModel;
         }
@@ -234,7 +234,7 @@ namespace Editor
 
 
             var list = model.Chunks.ToList();
-            list.Add(new ChunkData
+            list.Add(new ChunkDataV4
             {
                 StartTime = list[list.Count - 1].StartTime + list[list.Count - 1].Length,
                 Length = 0,

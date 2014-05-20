@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Editor
 {
 
-    public class Interval
+    public class IntervalV4
     {
         public int StartTime { get; set; }
         public int EndTime { get; set; }
@@ -15,9 +15,9 @@ namespace Editor
 
         public bool HasVoice { get; set; }
 
-        public Interval() { }
+        public IntervalV4() { }
 
-        public Interval(int start, int end, bool hasVoice)
+        public IntervalV4(int start, int end, bool hasVoice)
         {
             StartTime = start;
             EndTime = end;

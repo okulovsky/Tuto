@@ -19,17 +19,17 @@ namespace Editor
 
         public LocationsV4 Locations { get; private set; }
 
-        public GlobalData Global { get; set; }
+        public GlobalDataV4 Global { get; set; }
         public MontageModelV4 Montage { get; set; }
 
-        public WindowState WindowState { get; set; }
+        public WindowStateV4 WindowState { get; set; }
 
         public EditorModelV4()
         {
             Montage = new MontageModelV4();
             Locations = new LocationsV4(this);
-            WindowState = new WindowState();
-            Global = new GlobalData();
+            WindowState = new WindowStateV4();
+            Global = new GlobalDataV4();
         }
 
 
@@ -70,8 +70,8 @@ namespace Editor
             var chunk = Montage.Chunks[index];
             if (chunk.Mode == Mode.Undefined && chunk.Length > 500 && !ctrl)
             {
-                var chunk1 = new ChunkData { StartTime = chunk.StartTime, Length = position - chunk.StartTime, Mode = mode };
-                var chunk2 = new ChunkData { StartTime = position, Length = chunk.Length - chunk1.Length, Mode = Mode.Undefined };
+                var chunk1 = new ChunkDataV4 { StartTime = chunk.StartTime, Length = position - chunk.StartTime, Mode = mode };
+                var chunk2 = new ChunkDataV4 { StartTime = position, Length = chunk.Length - chunk1.Length, Mode = Mode.Undefined };
                 Montage.Chunks.RemoveAt(index);
                 Montage.Chunks.Insert(index, chunk1);
                 Montage.Chunks.Insert(index + 1, chunk2);
@@ -138,7 +138,7 @@ namespace Editor
             // Collapse adjacent chunks of same type into one FileChunk
             Montage.FileChunks = new List<FileChunk>();
             var activeChunks = Montage.Chunks.Where(c => c.IsActive).ToList();
-            activeChunks.Add(new ChunkData
+            activeChunks.Add(new ChunkDataV4
             {
                 StartsNewEpisode = true
             });

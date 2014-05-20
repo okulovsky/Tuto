@@ -8,7 +8,7 @@ namespace Editor
 {
     public static class ChunkListExtensions 
     {
-        public static int FindChunkIndex(this List<ChunkData> data, int ms)
+        public static int FindChunkIndex(this List<ChunkDataV4> data, int ms)
         {
             for (int i = 0; i < data.Count; i++)
             {
@@ -18,7 +18,7 @@ namespace Editor
             return -1;
         }
 
-        static void ShiftLeftBorderToLeftInternal(this List<ChunkData> data, int chunkIndex, int delta)
+        static void ShiftLeftBorderToLeftInternal(this List<ChunkDataV4> data, int chunkIndex, int delta)
         {
             if (delta < 0) throw new ArgumentException();
 
@@ -44,7 +44,7 @@ namespace Editor
             data[chunkIndex].Length += delta-remain;
         }
 
-        static void ShiftRightBorderToRightInternal(this List<ChunkData> data, int chunkIndex, int delta)
+        static void ShiftRightBorderToRightInternal(this List<ChunkDataV4> data, int chunkIndex, int delta)
         {
             if (delta < 0) throw new ArgumentException();
             var remain = delta;
@@ -71,14 +71,14 @@ namespace Editor
         }
 
 
-        public static void ShiftLeftBorderToRight(this List<ChunkData> data, int chunkIndex, int delta)
+        public static void ShiftLeftBorderToRight(this List<ChunkDataV4> data, int chunkIndex, int delta)
         {
             if (chunkIndex == 0) throw new Exception("This is leftmost chunk, cannot shift");
             if (delta > 0) ShiftLeftBorderToLeftInternal(data, chunkIndex, delta);
             else ShiftRightBorderToRightInternal(data, chunkIndex - 1, -delta);
         }
 
-        public static void ShiftRightBorderToRight(this List<ChunkData> data, int chunkIndex, int delta)
+        public static void ShiftRightBorderToRight(this List<ChunkDataV4> data, int chunkIndex, int delta)
         {
             if (chunkIndex == data.Count - 1) throw new Exception("This is rightmost chunk, cannot shift");
             if (delta > 0) ShiftRightBorderToRightInternal(data, chunkIndex, delta);

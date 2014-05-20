@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Editor
 {
-    public class Border
+    public class BorderV4
     {
         public bool IsLeftBorder { get; set; }
         public int StartTime { get; set; }
@@ -14,13 +14,13 @@ namespace Editor
         public int LeftChunk { get; set; }
         public int RightChunk { get; set; }
 
-        public static Border Left(int border, int margin, int leftIndex, int rightIndex)
+        public static BorderV4 Left(int border, int margin, int leftIndex, int rightIndex)
         {
-            return new Border { IsLeftBorder = true, StartTime = border, EndTime = border + margin, LeftChunk = leftIndex, RightChunk=rightIndex};
+            return new BorderV4 { IsLeftBorder = true, StartTime = border, EndTime = border + margin, LeftChunk = leftIndex, RightChunk=rightIndex};
         }
-        public static Border Right(int border, int margin, int leftIndex, int rightIndex)
+        public static BorderV4 Right(int border, int margin, int leftIndex, int rightIndex)
         {
-            return new Border { IsLeftBorder = false, StartTime = border - margin, EndTime = border, LeftChunk = leftIndex, RightChunk = rightIndex };
+            return new BorderV4 { IsLeftBorder = false, StartTime = border - margin, EndTime = border, LeftChunk = leftIndex, RightChunk = rightIndex };
         }
 
         public bool IsInside(int timeInMs)

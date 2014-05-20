@@ -22,8 +22,8 @@ namespace ModelCreator
             }
             for (int i = 0; i < 1000; i++)
             {
-                model.Montage.Intervals.Add(new Interval { StartTime = i * 3000, EndTime = i * 3000 + 500, HasVoice = false });
-                model.Montage.Intervals.Add(new Interval { StartTime = i * 3000+500, EndTime = i * 3000+ 3000, HasVoice = true });
+                model.Montage.Intervals.Add(new IntervalV4 { StartTime = i * 3000, EndTime = i * 3000 + 500, HasVoice = false });
+                model.Montage.Intervals.Add(new IntervalV4 { StartTime = i * 3000+500, EndTime = i * 3000+ 3000, HasVoice = true });
             }
             ObsoleteModelIO.Save(model);
         }

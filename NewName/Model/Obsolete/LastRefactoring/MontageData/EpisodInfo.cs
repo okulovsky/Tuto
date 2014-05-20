@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Editor
 {
-    public class EpisodInfo
+    public class EpisodInfoV4
     {
         public string Name { get; set; }
         public Guid LectureId { get; set; }

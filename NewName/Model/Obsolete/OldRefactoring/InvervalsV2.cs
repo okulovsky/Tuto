@@ -21,20 +21,20 @@ namespace Editor
 
 
 
-        public List<ChunkData> Chunks { get; set; }
+        public List<ChunkDataV4> Chunks { get; set; }
 
 
-        public List<Border> Borders { get; set; }
+        public List<BorderV4> Borders { get; set; }
 
         public List<IntervalV2> Intervals { get; set; }
 
 
-        public VideoInformation Information { get; set; }
+        public VideoInformationV4 Information { get; set; }
     }
 
     public class FileContainerV2
     {
         public MontageModelV2 Montage { get; set; }
-        public WindowState WindowState { get; set; }
+        public WindowStateV4 WindowState { get; set; }
     }
 }

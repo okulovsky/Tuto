@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Editor
 {
-    public class ChunkData
+    public class ChunkDataV4
     {
         public bool StartsNewEpisode { get; set; }
         public int StartTime { get; set; }

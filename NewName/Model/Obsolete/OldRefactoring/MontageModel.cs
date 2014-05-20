@@ -41,20 +41,20 @@ namespace Editor
 
 
 
-        public List<ChunkData> Chunks { get; set; }
+        public List<ChunkDataV4> Chunks { get; set; }
 
 
-        public List<Border> Borders { get; set; }
+        public List<BorderV4> Borders { get; set; }
 
         
 
-        public VideoInformation Information { get; set; }
+        public VideoInformationV4 Information { get; set; }
 
         public MontageModelV1()
         {
-            Chunks = new List<ChunkData>();
-            Borders = new List<Border>();
-            Information = new VideoInformation();
+            Chunks = new List<ChunkDataV4>();
+            Borders = new List<BorderV4>();
+            Information = new VideoInformationV4();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

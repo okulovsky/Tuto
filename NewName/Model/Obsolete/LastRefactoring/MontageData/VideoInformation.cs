@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Editor
 {
-    public class VideoInformation
+    public class VideoInformationV4
     {
-        public List<EpisodInfo> Episodes { get;  set; }
-        public VideoInformation()
+        public List<EpisodInfoV4> Episodes { get;  set; }
+        public VideoInformationV4()
         {
-            Episodes = new List<EpisodInfo>();
+            Episodes = new List<EpisodInfoV4>();
         }
 
     }

@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Editor
 {
-    public class VoiceSettings
+    public class VoiceSettingsV4
     {
         public int MaxDistanceToSilence { get; set; }
         public int SilenceMargin { get; set; }
 
-        public VoiceSettings()
+        public VoiceSettingsV4()
         {
             MaxDistanceToSilence = 1000;
             SilenceMargin = 300;

@@ -9,7 +9,7 @@ namespace Editor
     public class FileContainerV4
     {
         public MontageModelV4 Montage { get; set; }
-        public WindowState WindowState { get; set; }
+        public WindowStateV4 WindowState { get; set; }
         public string FileFormat { get; set; }
 
        

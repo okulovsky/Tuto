@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Editor
 {
-    public class WindowState
+    public class WindowStateV4
     {
         EditorModes currentMode;
         public EditorModes CurrentMode
@@ -97,7 +97,7 @@ namespace Editor
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public WindowState()
+        public WindowStateV4()
         {
             Paused = true;
             CurrentMode = EditorModes.General;

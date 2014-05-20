@@ -36,7 +36,7 @@ namespace Editor
         }
 
 
-        protected IEnumerable<Rect> GetRects(ChunkData chunk)
+        protected IEnumerable<Rect> GetRects(ChunkDataV4 chunk)
         {
             double SWidth = ActualWidth / msInRow;
 

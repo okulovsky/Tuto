@@ -24,7 +24,7 @@ namespace Editor
          * Правая граница - это когда последующий чанк неактивен. Играется с -Margin до правой границы
          * Если области левой и правой границ перекрываются, делается пополам
          */
-        IEnumerable<Border> GenerateBordersPreview()
+        IEnumerable<BorderV4> GenerateBordersPreview()
         {
             for (int i = 1; i < montage.Chunks.Count; i++)
             {
@@ -32,12 +32,12 @@ namespace Editor
                 {
                     if (montage.Chunks[i - 1].IsActive)
                     {
-                        yield return Border.Right(montage.Chunks[i].StartTime, Margin, i - 1, i);
+                        yield return BorderV4.Right(montage.Chunks[i].StartTime, Margin, i - 1, i);
                     }
                 
                     if (montage.Chunks[i].IsActive)
                     {
-                        yield return Border.Left(montage.Chunks[i].StartTime, Margin, i - 1, i);
+                        yield return BorderV4.Left(montage.Chunks[i].StartTime, Margin, i - 1, i);
                     }
                 }
             }
