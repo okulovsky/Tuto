@@ -6,13 +6,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using Tuto.Model;
 
 namespace Editor
 {
     public class TimelineBase : FrameworkElement
     {
-        protected EditorModelV4 editorModel { get { return (EditorModelV4)DataContext; } }
-        protected MontageModelV4 model { get { return editorModel.Montage; } }
+        protected EditorModel editorModel { get { return (EditorModel)DataContext; } }
+        protected MontageModel model { get { return editorModel.Montage; } }
 
         protected readonly int RowHeight = 20;
         protected readonly int msInRow = 300000;
@@ -36,7 +37,7 @@ namespace Editor
         }
 
 
-        protected IEnumerable<Rect> GetRects(ChunkDataV4 chunk)
+        protected IEnumerable<Rect> GetRects(StreamChunk chunk)
         {
             double SWidth = ActualWidth / msInRow;
 
@@ -119,7 +120,7 @@ namespace Editor
         {
             this.DataContextChanged += (s, a) => { 
                 InvalidateVisual();
-                editorModel.Montage.Changed += (ss, aa) => InvalidateVisual();
+                editorModel.MontageModelChanged += (ss, aa) => InvalidateVisual();
             };
         }
 
@@ -138,9 +139,9 @@ namespace Editor
                    }
                }
 
-           if (model.Intervals != null)
+           if (model.SoundIntervals != null)
            {
-               foreach (var i in model.Intervals)
+               foreach (var i in model.SoundIntervals)
                {
                    if (!i.HasVoice)
                        DrawLine(drawingContext, border, i.StartTime, i.EndTime, RowHeight - 3);

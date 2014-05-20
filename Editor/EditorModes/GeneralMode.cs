@@ -4,16 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Tuto.Model;
 
 namespace Editor
 {
     public class GeneralMode : IEditorMode
     {
-        EditorModelV4 model;
+        EditorModel model;
 
-        MontageModelV4 montage { get { return model.Montage; } }
+        MontageModel montage { get { return model.Montage; } }
 
-        public GeneralMode(EditorModelV4 edModel)
+        public GeneralMode(EditorModel edModel)
         {
             this.model = edModel;
             model.WindowState.FaceVideoIsVisible = model.WindowState.DesktopVideoIsVisible = true;
@@ -28,7 +29,7 @@ namespace Editor
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-                var index = montage.Chunks.FindChunkIndex(selectedLocation);
+                var index = montage.Chunks.FindIndex(selectedLocation);
                 if (index == -1) return;
                 model.WindowState.CurrentPosition=montage.Chunks[index].StartTime;
             }
@@ -88,23 +89,23 @@ namespace Editor
 
         void ShiftLeft(int value)
         {
-            var index = model.Montage.Chunks.FindChunkIndex(model.WindowState.CurrentPosition);
+            var index = model.Montage.Chunks.FindIndex(model.WindowState.CurrentPosition);
             if (index == -1) return;
-            model.Montage.Chunks.ShiftLeftBorderToRight(index, value);
+            model.ShiftLeftChunkBorder(index, value);
             model.WindowState.CurrentPosition = model.Montage.Chunks[index].StartTime;
         }
 
         void ShiftRight(int value)
         {
-            var index = model.Montage.Chunks.FindChunkIndex(model.WindowState.CurrentPosition);
+            var index = model.Montage.Chunks.FindIndex(model.WindowState.CurrentPosition);
             if (index == -1) return;
-            model.Montage.Chunks.ShiftRightBorderToRight(index, value);
+            model.ShiftRightChunkBorder(index, value);
             model.WindowState.CurrentPosition = model.Montage.Chunks[index].EndTime-2000;
         }
 
         void NextChunk()
         {
-            var index = montage.Chunks.FindChunkIndex(model.WindowState.CurrentPosition);
+            var index = montage.Chunks.FindIndex(model.WindowState.CurrentPosition);
             index++;
             if (index < 0 || index >= montage.Chunks.Count) return;
             model.WindowState.CurrentPosition=montage.Chunks[index].StartTime;
@@ -112,7 +113,7 @@ namespace Editor
 
         void PrevChunk()
         {
-            var index = montage.Chunks.FindChunkIndex(model.WindowState.CurrentPosition);
+            var index = montage.Chunks.FindIndex(model.WindowState.CurrentPosition);
             index--;
             if (index < 0 || index >= montage.Chunks.Count) return;
             model.WindowState.CurrentPosition=montage.Chunks[index].StartTime;

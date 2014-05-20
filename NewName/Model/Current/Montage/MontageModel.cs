@@ -18,7 +18,7 @@ namespace Tuto.Model
         /// Tokens of the episode
         /// </summary>
         [DataMember]
-        public StreamTokenArray Tokens { get; private set; }
+        public StreamTokenArray Chunks { get; private set; }
 
         /// <summary>
         /// Intervals of sound and silence
@@ -35,6 +35,9 @@ namespace Tuto.Model
         [DataMember]
         public List<FileChunk> FileChunks { get; set; }
 
+        [DataMember]
+        public int SynchronizationShift { get; set; }
+
         /// <summary>
         /// Borders of each chunks. This information is required by one of the editor mode, but it is completely determined by tokens, so it is not stored
         /// </summary>
@@ -42,7 +45,7 @@ namespace Tuto.Model
 
         public MontageModel(int totalLength)
         {
-            Tokens = new StreamTokenArray(totalLength);
+            Chunks = new StreamTokenArray(totalLength);
             Borders = new List<Border>();
             Information = new VideoInformation();
             SoundIntervals = new List<SoundInterval>();

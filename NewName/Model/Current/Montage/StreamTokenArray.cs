@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Tuto.Model
 {
     [DataContract]
-    public class StreamTokenArray
+    public class StreamTokenArray : IEnumerable<StreamChunk>
     {
         [DataMember]
         private readonly List<StreamToken> tokens = new List<StreamToken>();
@@ -56,13 +56,15 @@ namespace Tuto.Model
             }
         }
 
-        public IEnumerable<StreamChunk> Chunks
+        public IEnumerator<StreamChunk> GetEnumerator()
         {
-            get
-            {
-                for (int i = 0; i < Count; i++)
-                    yield return this[i];
-            }
+            for (int i = 0; i < Count; i++)
+                yield return this[i];
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
 
         #region Algorithms
@@ -138,5 +140,7 @@ namespace Tuto.Model
    
 
         #endregion
+
+ 
     }
 }

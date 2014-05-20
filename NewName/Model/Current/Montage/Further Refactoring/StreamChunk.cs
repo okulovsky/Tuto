@@ -19,7 +19,8 @@ namespace Tuto.Model
 
         public int Length { get { return EndTime - StartTime; } }
         public bool IsActive { get { return Mode != Editor.Mode.Undefined && Mode != Editor.Mode.Drop; } }
-        
+        public bool IsNotActive { get { return !IsActive; } } 
+
    
         public StreamChunk(int startTime, int endTime, Mode mode, bool startsNewEpisode)
         {

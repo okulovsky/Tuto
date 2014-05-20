@@ -48,7 +48,7 @@ namespace Tuto.Model
 
         #region Basic algorithms
 
-        private StreamTokenArray Tokens { get { return Montage.Tokens; } }
+        private StreamTokenArray Tokens { get { return Montage.Chunks; } }
 
         public int FindChunkIndex(int time)
         {
@@ -179,7 +179,7 @@ namespace Tuto.Model
         {
             // Collapse adjacent chunks of same type into one FileChunk
             Montage.FileChunks = new List<FileChunk>();
-            var activeChunks = Tokens.Chunks.Where(c => c.IsActive).ToList();
+            var activeChunks = Tokens.Where(c => c.IsActive).ToList();
             activeChunks.Add(new StreamChunk(activeChunks.Last().EndTime,activeChunks.Last().EndTime,Mode.Undefined,true));
             var oldChunk = activeChunks[0];
             for (var i = 1; i < activeChunks.Count; i++)

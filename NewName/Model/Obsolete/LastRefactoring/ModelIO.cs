@@ -28,9 +28,9 @@ namespace Editor
             int index=0;
             foreach (var e in v4.Montage.Chunks)
             {
-                model.Montage.Tokens.Mark(e.EndTime, EditorModel.ModeToBools(e.Mode), false);
+                model.Montage.Chunks.Mark(e.EndTime, EditorModel.ModeToBools(e.Mode), false);
                 if (e.StartsNewEpisode)
-                    model.Montage.Tokens.NewEpisode(index);
+                    model.Montage.Chunks.NewEpisode(index);
                 index++;
             }
             foreach (var e in v4.Montage.Intervals)

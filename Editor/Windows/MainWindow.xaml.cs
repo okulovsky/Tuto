@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using Tuto.Model;
 
 namespace Editor
 {
@@ -24,7 +25,7 @@ namespace Editor
     /// </summary>
     public partial class MainWindow : Window
     {
-        EditorModelV4 model;
+        EditorModel model;
 
 
 
@@ -43,7 +44,7 @@ namespace Editor
 
         void MainWindow_Initialized(object sender, EventArgs e)
         {
-            model = (EditorModelV4)DataContext;
+            model = (EditorModel)DataContext;
             model.WindowState.PropertyChanged += WindowState_PropertyChanged;
 
 
@@ -71,7 +72,7 @@ namespace Editor
 
             Save.Click += (s, a) =>
             {
-                ObsoleteModelIO.Save(model);
+                model.Save();
             };
 
             Synchronize.Click += Synchronize_Click;
@@ -81,14 +82,14 @@ namespace Editor
 
         void Synchronize_Click(object sender, RoutedEventArgs e)
         {
-            if (model.Montage.Shift != 0)
+            if (model.Montage.SynchronizationShift != 0)
             {
                 var response = MessageBox.Show("Вы уже синхронизировали это видео. Точно хотите пересинхронизировать?", "", MessageBoxButton.YesNoCancel);
                 if (response != MessageBoxResult.Yes) return;
             }
-            model.Montage.Shift = model.WindowState.CurrentPosition;
+            model.Montage.SynchronizationShift = model.WindowState.CurrentPosition;
             model.WindowState.CurrentPosition = model.WindowState.CurrentPosition + 1;
-            ObsoleteModelIO.Save(model);
+            model.Save();
         }
 
        
@@ -110,13 +111,13 @@ namespace Editor
 
             if (model.Montage.Information.Episodes.Count == 0)
             {
-                model.Montage.Information.Episodes.AddRange(Enumerable.Range(0, times.Count).Select(z => new EpisodInfoV4()));
+                model.Montage.Information.Episodes.AddRange(Enumerable.Range(0, times.Count).Select(z => new EpisodInfo()));
             }
             else if (model.Montage.Information.Episodes.Count != times.Count)
             {
                 MessageBox.Show("The stored information contains wrong count of records, i.e. describes wrong number of episodes. Please check it", "", MessageBoxButton.OK, MessageBoxImage.Information);
                 while (model.Montage.Information.Episodes.Count < times.Count)
-                    model.Montage.Information.Episodes.Add(new EpisodInfoV4());
+                    model.Montage.Information.Episodes.Add(new EpisodInfo());
             }
 
             for (int i = 0; i < times.Count; i++)
@@ -125,7 +126,7 @@ namespace Editor
             var wnd = new InfoWindow();
             wnd.DataContext = model.Montage.Information;
             wnd.ShowDialog();
-            ObsoleteModelIO.Save(model);
+            model.Save();
         }
 
 
@@ -177,7 +178,7 @@ namespace Editor
             }
 
             FaceVideo.Position = TimeSpan.FromMilliseconds(model.WindowState.CurrentPosition);
-            ScreenVideo.Position = TimeSpan.FromMilliseconds(model.WindowState.CurrentPosition - model.Montage.Shift);
+            ScreenVideo.Position = TimeSpan.FromMilliseconds(model.WindowState.CurrentPosition - model.Montage.SynchronizationShift);
 
         }
 
@@ -236,7 +237,7 @@ namespace Editor
         {
             if (e.Key == Key.S)
             {
-                ObsoleteModelIO.Save(model);
+                model.Save();
                 return;
             }
             

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Editor
 {
-    public enum EditorModes
+    public enum EditorModesV4
     {
         General,
         Border

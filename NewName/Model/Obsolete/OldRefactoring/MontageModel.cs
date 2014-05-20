@@ -15,7 +15,7 @@ namespace Editor
         public int TotalLength { get; set; }
         public int Shift { get; set; }
 
-        public EditorModes EditorMode { get; set; }
+        public EditorModesV4 EditorMode { get; set; }
 
         Mode currentMode;
         public Mode CurrentMode

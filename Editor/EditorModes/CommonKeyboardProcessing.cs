@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tuto.Model;
 
 namespace Editor
 {
@@ -10,7 +11,7 @@ namespace Editor
     {
 
 
-        public static bool ProcessCommonKeys(EditorModelV4 model, KeyboardCommandData key)
+        public static bool ProcessCommonKeys(EditorModel model, KeyboardCommandData key)
         {
             var delta = 1000;
             if (key.Shift) delta = 200;
@@ -27,19 +28,19 @@ namespace Editor
                     return true;
 
                 case KeyboardCommands.Face:
-                    model.SetChunkMode(Mode.Face, key.Ctrl);
+                    model.MarkHere(Mode.Face, key.Ctrl);
                     return true;
 
                 case KeyboardCommands.Desktop:
-                    model.SetChunkMode(Mode.Screen, key.Ctrl);
+                    model.MarkHere(Mode.Screen, key.Ctrl);
                     return true;
 
                 case KeyboardCommands.Drop:
-                    model.SetChunkMode(Mode.Drop, key.Ctrl);
+                    model.MarkHere(Mode.Drop, key.Ctrl);
                     return true;
 
                 case KeyboardCommands.Clear:
-                    model.RemoveChunk();
+                    model.RemoveChunkHere();
                     return true;
 
                 case KeyboardCommands.PauseResume:

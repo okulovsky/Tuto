@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Tuto.Model;
 
 namespace Editor
 {
@@ -14,9 +15,9 @@ namespace Editor
 
         double FastSpeed = 2;
 
-        EditorModelV4 model;
+        EditorModel model;
 
-        public MontageModelV4 montage { get { return model.Montage; } }
+        public MontageModel montage { get { return model.Montage; } }
 
 
         /*
@@ -24,7 +25,7 @@ namespace Editor
          * Правая граница - это когда последующий чанк неактивен. Играется с -Margin до правой границы
          * Если области левой и правой границ перекрываются, делается пополам
          */
-        IEnumerable<BorderV4> GenerateBordersPreview()
+        IEnumerable<Border> GenerateBordersPreview()
         {
             for (int i = 1; i < montage.Chunks.Count; i++)
             {
@@ -32,12 +33,12 @@ namespace Editor
                 {
                     if (montage.Chunks[i - 1].IsActive)
                     {
-                        yield return BorderV4.Right(montage.Chunks[i].StartTime, Margin, i - 1, i);
+                        yield return Border.Right(montage.Chunks[i].StartTime, Margin, i - 1, i);
                     }
                 
                     if (montage.Chunks[i].IsActive)
                     {
-                        yield return BorderV4.Left(montage.Chunks[i].StartTime, Margin, i - 1, i);
+                        yield return Border.Left(montage.Chunks[i].StartTime, Margin, i - 1, i);
                     }
                 }
             }
@@ -61,7 +62,7 @@ namespace Editor
          
         }
 
-        public BorderMode(EditorModelV4 editorModel)
+        public BorderMode(EditorModel editorModel)
         {
             this.model = editorModel;
             GenerateBorders();
@@ -75,7 +76,7 @@ namespace Editor
         public void CheckTime(int ms)
         {
 
-            var index = montage.Chunks.FindChunkIndex(ms);
+            var index = montage.Chunks.FindIndex(ms);
             if (index == -1)
             {
                 model.WindowState.Paused = true;
@@ -192,11 +193,11 @@ namespace Editor
         {
             if (borderIndex == -1) return;
             var border = montage.Borders[borderIndex];
-            montage.Chunks.ShiftLeftBorderToRight(border.RightChunk, shiftSize);
+            model.ShiftLeftChunkBorder(border.RightChunk, shiftSize);
             GenerateBorders();
             model.WindowState.CurrentPosition = montage.Borders[borderIndex].StartTime;
             if (montage.Borders[borderIndex].IsLeftBorder) model.WindowState.SpeedRatio = 1;
-            montage.SetChanged();
+            model.OnMontageModelChanged();
         }
     }
 }

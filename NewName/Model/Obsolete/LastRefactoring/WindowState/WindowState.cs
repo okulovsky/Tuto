@@ -9,8 +9,8 @@ namespace Editor
 {
     public class WindowStateV4
     {
-        EditorModes currentMode;
-        public EditorModes CurrentMode
+        EditorModesV4 currentMode;
+        public EditorModesV4 CurrentMode
         {
             get { return currentMode; }
             set
@@ -100,7 +100,7 @@ namespace Editor
         public WindowStateV4()
         {
             Paused = true;
-            CurrentMode = EditorModes.General;
+            CurrentMode = EditorModesV4.General;
             speedRatio = 1;
             FaceVideoIsVisible = DesktopVideoIsVisible = true;
         }
