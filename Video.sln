@@ -8,7 +8,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Video.vsmdi = Video.vsmdi
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Editor", "Editor\Editor.csproj", "{68C87361-E095-4312-BC36-089CD63B79C3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tuto.Editor", "Editor\Tuto.Editor.csproj", "{68C87361-E095-4312-BC36-089CD63B79C3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Refactored", "Refactored", "{DE3470BC-8CE1-4F5E-BA45-2118846740B2}"
 EndProject

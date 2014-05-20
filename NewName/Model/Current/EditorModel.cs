@@ -204,6 +204,19 @@ namespace Tuto.Model
         #endregion
         #region Saving and loading
 
+        public static string SubstituteDebugDirectories(string subdirectory)
+        {
+            if (subdirectory.StartsWith("debug\\"))
+            {
+                subdirectory = subdirectory.Replace("debug\\", "..\\..\\..\\TestModels\\");
+            }
+            else if (subdirectory.StartsWith("work\\"))
+            {
+                subdirectory = subdirectory.Replace("work\\", "..\\..\\..\\..\\..\\AIML-VIDEO\\");
+            }
+            return subdirectory;
+        }
+
         public static EditorModel Load(string subdirectory)
         {
             var localDirectory = new DirectoryInfo(subdirectory);
