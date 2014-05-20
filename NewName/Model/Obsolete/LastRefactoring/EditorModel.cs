@@ -17,7 +17,7 @@ namespace Editor
         public DirectoryInfo ChunkFolder { get; set; }
         public DirectoryInfo ProgramFolder { get; set; }
 
-        public Locations Locations { get; private set; }
+        public LocationsV4 Locations { get; private set; }
 
         public GlobalData Global { get; set; }
         public MontageModelV4 Montage { get; set; }
@@ -27,7 +27,7 @@ namespace Editor
         public EditorModelV4()
         {
             Montage = new MontageModelV4();
-            Locations = new Locations(this);
+            Locations = new LocationsV4(this);
             WindowState = new WindowState();
             Global = new GlobalData();
         }

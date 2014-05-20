@@ -13,10 +13,17 @@ namespace Editor
 {
     public class ObsoleteModelIO
     {
+
+        static bool FilesWereNotFound;
+
         public static EditorModel LoadAndConvert(string subdirectory)
         {
             var v4 = Load(subdirectory);
-            var model = new EditorModel();
+
+            if (!FilesWereNotFound)
+                return null;
+
+            var model = new EditorModel(v4.VideoFolder, v4.RootFolder, v4.ProgramFolder);
 
             int index=0;
             foreach (var e in v4.Montage.Chunks)
@@ -54,9 +61,9 @@ namespace Editor
 
         static bool ParseV3(EditorModelV4 model)
         {
-            var file = model.VideoFolder.GetFiles(Locations.LocalFileName).FirstOrDefault();
+            var file = model.VideoFolder.GetFiles(LocationsV4.LocalFileName).FirstOrDefault();
             if (file == null) return false;
-            var container = new JavaScriptSerializer().Deserialize<FileContainer>(File.ReadAllText(file.FullName));
+            var container = new JavaScriptSerializer().Deserialize<FileContainerV4>(File.ReadAllText(file.FullName));
             
             if (container.Montage!=null)
                 model.Montage = container.Montage;
@@ -67,7 +74,7 @@ namespace Editor
 
         static bool ParseV2(EditorModelV4 model)
         {
-            var file = model.VideoFolder.GetFiles(Locations.LocalFileNameV2).FirstOrDefault();
+            var file = model.VideoFolder.GetFiles(LocationsV4.LocalFileNameV2).FirstOrDefault();
             if (file == null) return false;
             var container = new JavaScriptSerializer().Deserialize<FileContainerV2>(File.ReadAllText(file.FullName));
 
@@ -93,7 +100,7 @@ namespace Editor
 
         static bool ParseV1(EditorModelV4 model)
         {
-            var file = model.VideoFolder.GetFiles(Locations.LocalFileNameV1).FirstOrDefault();
+            var file = model.VideoFolder.GetFiles(LocationsV4.LocalFileNameV1).FirstOrDefault();
             if (file == null) return false;
             var montageModel=new JavaScriptSerializer().Deserialize<MontageModelV1>(File.ReadAllText(file.FullName));
             
@@ -151,9 +158,9 @@ namespace Editor
                 }
                 catch
                 {
-                    throw new Exception("Root directory is not found. Root directory must be a parent of '"+localDirectory.FullName+"' and contain global data file '"+Locations.GlobalFileName+"'");
+                    throw new Exception("Root directory is not found. Root directory must be a parent of '"+localDirectory.FullName+"' and contain global data file '"+LocationsV4.GlobalFileName+"'");
                 }
-                if (rootDirectory.GetFiles(Locations.GlobalFileName).Length!=0)
+                if (rootDirectory.GetFiles(LocationsV4.GlobalFileName).Length!=0)
                     break;
             }
 
@@ -166,9 +173,11 @@ namespace Editor
                 RootFolder = rootDirectory
             };
 
-          
+
+            FilesWereNotFound = false;
             if (!ParseV3(editorModel) && !ParseV2(editorModel) && !ParseV1(editorModel))
             {
+                FilesWereNotFound = true;
                 editorModel.Montage = new MontageModelV4
                     {
                         Shift = 0,
@@ -188,13 +197,13 @@ namespace Editor
         static void SaveV2(EditorModelV4 model)
         {
             model.CreateFileChunks();
-            var container = new FileContainer()
+            var container = new FileContainerV4()
             {
                 FileFormat = "V3",
                 Montage = model.Montage,
                 WindowState = model.WindowState
             };
-            using (var stream = new StreamWriter(Path.Combine(model.VideoFolder.FullName,Locations.LocalFileName)))
+            using (var stream = new StreamWriter(Path.Combine(model.VideoFolder.FullName,LocationsV4.LocalFileName)))
             {
                 stream.WriteLine(new JavaScriptSerializer().Serialize(container));
             }

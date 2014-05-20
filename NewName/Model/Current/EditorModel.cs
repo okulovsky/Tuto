@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,10 +14,10 @@ namespace Tuto.Model
 {
     public class EditorModel
     {
-        public DirectoryInfo RootFolder { get; set; }
-        public DirectoryInfo VideoFolder { get; set; }
-        public DirectoryInfo ChunkFolder { get; set; }
-        public DirectoryInfo ProgramFolder { get; set; }
+        public readonly DirectoryInfo RootFolder;
+        public readonly DirectoryInfo VideoFolder;
+        public readonly DirectoryInfo ProgramFolder;
+        public readonly DirectoryInfo ChunkFolder;
 
         public Locations Locations { get; private set; }
         public GlobalData Global { get; set; }
@@ -31,8 +33,12 @@ namespace Tuto.Model
         }
 
 
-        public EditorModel()
+        public EditorModel(DirectoryInfo local, DirectoryInfo global, DirectoryInfo program)
         {
+            this.VideoFolder=local;
+            this.RootFolder=global;
+            this.ProgramFolder=program;
+            ChunkFolder = VideoFolder.CreateSubdirectory("chunks");
             Montage = new MontageModel(360000);
             Locations = new Locations(this);
             WindowState = new WindowState();
@@ -80,7 +86,6 @@ namespace Tuto.Model
         }
         
         #endregion
-
         #region Algorithms using WindowState properies
 
         static public bool[] ModeToBools(Mode mode)
@@ -121,8 +126,7 @@ namespace Tuto.Model
             }
         }
         #endregion
-
-
+        #region Correction by sound
         public void CorrectBorderBetweenChunksBySound(int leftChunkIndex)
         {
             if (leftChunkIndex < 0) return;
@@ -169,7 +173,8 @@ namespace Tuto.Model
 
             Tokens.MoveToken(rightChunkIndex, NewStart);
         }
-
+        #endregion
+        #region Creation of FileChunks
         public void CreateFileChunks()
         {
             // Collapse adjacent chunks of same type into one FileChunk
@@ -196,6 +201,82 @@ namespace Tuto.Model
                 oldChunk = currentChunk;
             }
         }
-}
+        #endregion
+        #region Saving and loading
+
+        public static EditorModel Load(string subdirectory)
+        {
+            var localDirectory = new DirectoryInfo(subdirectory);
+            if (!localDirectory.Exists) throw new Exception("Local directory '" + subdirectory + "' is not found");
+            var rootDirectory = localDirectory;
+            while (true)
+            {
+                try
+                {
+                    rootDirectory = rootDirectory.Parent;
+                }
+                catch
+                {
+                    throw new Exception("Root directory is not found. Root directory must be a parent of '" + localDirectory.FullName + "' and contain global data file '" + Locations.GlobalFileName + "'");
+                }
+                if (rootDirectory.GetFiles(Locations.GlobalFileName).Length != 0)
+                    break;
+            }
+
+            var programFolder = new FileInfo(Assembly.GetExecutingAssembly().FullName).Directory;
+
+            EditorModel model = new EditorModel(localDirectory, rootDirectory, programFolder);
+
+            var file = localDirectory.GetFiles(Locations.LocalFileName).FirstOrDefault();
+            if (file == null)
+            {
+                var oldModel = ObsoleteModelIO.LoadAndConvert(subdirectory); //try to recover model from obsolete file formats
+                if (oldModel != null) model = oldModel;
+                else //no files at all. Create an empty model
+                {
+                    model.Montage = new MontageModel(60 * 60 * 1000); //this is very bad. Need to analyze the video file
+                    model.WindowState = new WindowState();
+                }
+            }
+            else
+            {
+
+                FileContainer container = null;
+                using (var stream = File.Open(file.FullName, FileMode.Open, FileAccess.Read))
+                {
+                    container = (FileContainer)new DataContractJsonSerializer(typeof(FileContainer)).ReadObject(stream);
+                }
+                model.Montage = container.MontageModel;
+                model.WindowState = container.WindowState;
+            }
+
+            file = rootDirectory.GetFiles(Locations.GlobalFileName).FirstOrDefault();
+            if (file == null)
+            {
+                model.Global = new GlobalData();
+            }
+            else
+            {
+                using (var stream = File.Open(file.FullName, FileMode.Open, FileAccess.Read))
+                {
+                    model.Global = (GlobalData)new DataContractJsonSerializer(typeof(GlobalData)).ReadObject(stream);
+                }
+            }
+            return model;
+        }
+
+        public void Save()
+        {
+            var container = new FileContainer();
+            container.MontageModel = Montage;
+            container.WindowState = WindowState;
+            using(var stream=File.Open(Locations.LocalFilePath.FullName,FileMode.OpenOrCreate,FileAccess.Write))
+            {
+                new DataContractJsonSerializer(typeof(FileContainer)).WriteObject(stream, container);
+            }
+        }
+
+        #endregion
+    }
 }
 

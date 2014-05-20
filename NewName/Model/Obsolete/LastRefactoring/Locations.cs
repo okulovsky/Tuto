@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace Editor
 {
-    public class Locations
+    public class LocationsV4
     {
         readonly EditorModelV4 model;
-        internal Locations(EditorModelV4 model) { this.model = model; }
+        internal LocationsV4(EditorModelV4 model) { this.model = model; }
 
         internal FileInfo Make(DirectoryInfo info, string fname)
         {

@@ -25,6 +25,7 @@ namespace Tuto.Model
         public FileInfo FaceVideo { get { return Make(model.VideoFolder, "face.mp4"); } }
         public FileInfo DesktopVideo { get { return Make(model.VideoFolder, "desktop.avi"); } }
         public FileInfo PraatVoice { get { return Make(model.VideoFolder, "voice.mp3"); } }
+        public FileInfo LocalFilePath { get { return Make(model.VideoFolder, LocalFileName); } } 
         
         public FileInfo PraatOutput { get { return Make(model.VideoFolder, "praat.output"); } }
         public FileInfo AvsTempFile { get { return Make(model.ChunkFolder, String.Format("script_{0}.avs", Guid.NewGuid())); } }
