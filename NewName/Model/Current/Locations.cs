@@ -32,9 +32,7 @@ namespace Tuto.Model
         public FileInfo IntroImage { get { return Make(model.VideoFolder, "intro.png"); } }
         public FileInfo WatermarkImage { get { return Make(model.VideoFolder, "watermark.png"); } }
 
-        public const string LocalFileName = "montage.v3";
-        public const string LocalFileNameV2 = "montage.v2";
-        public const string LocalFileNameV1 = "montage.editor";
-        public const string GlobalFileName = "montage.global.txt";
+        public const string LocalFileName = "local.tuto";
+        public const string GlobalFileName = "global.tuto";
     }
 }

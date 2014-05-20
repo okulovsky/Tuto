@@ -18,10 +18,8 @@ namespace Tuto.Model
         public DirectoryInfo ProgramFolder { get; set; }
 
         public Locations Locations { get; private set; }
-
         public GlobalData Global { get; set; }
         public MontageModel Montage { get; set; }
-
         public WindowState WindowState { get; set; }
 
         public event EventHandler MontageModelChanged;
@@ -36,7 +34,7 @@ namespace Tuto.Model
         public EditorModel()
         {
             Montage = new MontageModel(360000);
-            //Locations = new Locations(this);
+            Locations = new Locations(this);
             WindowState = new WindowState();
             Global = new GlobalData();
         }
