@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using System.Windows;
+using Tuto.Model;
 
 
 namespace Editor
@@ -30,11 +31,11 @@ namespace Editor
             }
 
 
-            var model = ObsoleteModelIO.Load(ObsoleteModelIO.DebugSubdir(args[0]));
+            var model = EditorModel.Load(EditorModel.SubstituteDebugDirectories(args[0]));
 
-            if (model.Montage.Intervals == null || model.Montage.Intervals.Count == 0)
+            if (model.Montage.SoundIntervals == null || model.Montage.SoundIntervals.Count == 0)
             {
-                new Tuto.Services.PraatService().DoWork(model);
+                //new Tuto.Services.PraatService().DoWork(model);
             }
 
             var window = new MainWindow();

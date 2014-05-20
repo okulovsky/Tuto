@@ -48,7 +48,7 @@ namespace Tuto.Model
 
         #region Basic algorithms
 
-        private StreamTokenArray Tokens { get { return Montage.Chunks; } }
+        private StreamChunksArray Tokens { get { return Montage.Chunks; } }
 
         public int FindChunkIndex(int time)
         {
@@ -100,7 +100,7 @@ namespace Tuto.Model
         public void MarkHere(Mode mode, bool ctrl)
         {
             var time=WindowState.CurrentPosition;
-            Tokens.Mark(time, ModeToBools(mode), !ctrl);
+            Tokens.Mark(time, ModeToBools(mode), ctrl);
             var index = Tokens.FindIndex(time);
             CorrectBorderBetweenChunksBySound(index - 1);
             CorrectBorderBetweenChunksBySound(index);
@@ -243,8 +243,15 @@ namespace Tuto.Model
             var file = localDirectory.GetFiles(Locations.LocalFileName).FirstOrDefault();
             if (file == null)
             {
-                var oldModel = ObsoleteModelIO.LoadAndConvert(subdirectory); //try to recover model from obsolete file formats
-                if (oldModel != null) model = oldModel;
+                EditorModel oldModel=null;
+                try
+                {
+                    oldModel = ObsoleteModelIO.LoadAndConvert(subdirectory); //try to recover model from obsolete file formats
+                }
+                catch {}
+
+                if (oldModel != null)
+                    model = oldModel;
                 else //no files at all. Create an empty model
                 {
                     model.Montage = new MontageModel(60 * 60 * 1000); //this is very bad. Need to analyze the video file

@@ -18,7 +18,7 @@ namespace Tuto.Model
         /// Tokens of the episode
         /// </summary>
         [DataMember]
-        public StreamTokenArray Chunks { get; private set; }
+        public StreamChunksArray Chunks { get; private set; }
 
         /// <summary>
         /// Intervals of sound and silence
@@ -45,7 +45,7 @@ namespace Tuto.Model
 
         public MontageModel(int totalLength)
         {
-            Chunks = new StreamTokenArray(totalLength);
+            Chunks = new StreamChunksArray(totalLength);
             Borders = new List<Border>();
             Information = new VideoInformation();
             SoundIntervals = new List<SoundInterval>();

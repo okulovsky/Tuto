@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Tuto.Model
 {
     [DataContract]
-    public class StreamTokenArray : IEnumerable<StreamChunk>
+    public class StreamChunksArray : IEnumerable<StreamChunk>
     {
         [DataMember]
         private readonly List<StreamToken> tokens = new List<StreamToken>();
@@ -18,9 +18,10 @@ namespace Tuto.Model
 
         public int Count { get { return tokens.Count; } }
 
-        public StreamTokenArray(int StreamLength)
+        public StreamChunksArray(int StreamLength)
         {
             this.StreamLength = StreamLength;
+            tokens.Add(new StreamToken { Time = 0 });
         }
 
         /// <summary>
