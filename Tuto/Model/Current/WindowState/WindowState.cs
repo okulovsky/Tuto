@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Tuto.Model
 {
+    [DataContract]
     public class WindowState
     {
+        [DataMember]
         EditorModes currentMode;
         public EditorModes CurrentMode
         {
@@ -19,10 +22,13 @@ namespace Tuto.Model
                 {
                     currentMode = value;
                     if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("CurrentMode"));
+                    if (CurrentModeChanged != null) CurrentModeChanged(this, EventArgs.Empty);
                 }
             }
         }
+        public event EventHandler CurrentModeChanged;
 
+        [DataMember]
         int currentPosition;
         public int CurrentPosition
         {
@@ -33,11 +39,13 @@ namespace Tuto.Model
                 {
                     currentPosition = value;
                     if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("CurrentPosition"));
+                    if (CurrentPositionChanged != null) CurrentPositionChanged(this, EventArgs.Empty);
                 }
             }
         }
+        public event EventHandler CurrentPositionChanged;
 
-
+        [DataMember]
         bool paused;
         public bool Paused
         {
@@ -48,10 +56,13 @@ namespace Tuto.Model
                 {
                     paused = value;
                     if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("Paused"));
+                    if (PausedChanged != null) PausedChanged(this, EventArgs.Empty);
                 }
             }
         }
+        public event EventHandler PausedChanged;
 
+        [DataMember]
         double speedRatio;
         public double SpeedRatio
         {
@@ -62,10 +73,13 @@ namespace Tuto.Model
                 {
                     speedRatio = value;
                     if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("SpeedRatio"));
+                    if (SpeedRatioChanged != null) SpeedRatioChanged(this, EventArgs.Empty);
                 }
             }
         }
+        public event EventHandler SpeedRatioChanged;
 
+        [DataMember]
         bool faceVideoIsVisible;
         public bool FaceVideoIsVisible
         {
@@ -76,10 +90,13 @@ namespace Tuto.Model
                 {
                     faceVideoIsVisible = value;
                     if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("FaceVideoIsVisible"));
+                    if (FaceVideoIsVisibleChanged != null) FaceVideoIsVisibleChanged(this, EventArgs.Empty);
                 }
             }
         }
+        public event EventHandler FaceVideoIsVisibleChanged;
 
+        [DataMember]
         bool desktopVideoIsVisible;
         public bool DesktopVideoIsVisible
         {
@@ -90,10 +107,11 @@ namespace Tuto.Model
                 {
                     desktopVideoIsVisible = value;
                     if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("DesktopVideoIsVisible"));
+                    if (DesktopVideoIsVisibleChanged != null) DesktopVideoIsVisibleChanged(this, EventArgs.Empty);
                 }
             }
         }
-
+        public event EventHandler DesktopVideoIsVisibleChanged;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
