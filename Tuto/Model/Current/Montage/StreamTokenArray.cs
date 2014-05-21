@@ -117,7 +117,11 @@ namespace Tuto.Model
                 if (!tokens[tokenIndex + 1].Defined) tokens.RemoveAt(tokenIndex + 1);
                 else break;
             while (tokenIndex != 0)
-                if (!tokens[tokenIndex - 1].Defined) tokens.RemoveAt(tokenIndex);
+                if (!tokens[tokenIndex - 1].Defined)
+                {
+                    tokens.RemoveAt(tokenIndex);
+                    tokenIndex--;
+                }
                 else break;
         }
 
