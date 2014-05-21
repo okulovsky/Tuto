@@ -56,9 +56,7 @@ namespace Editor
                     borders[i].StartTime = time;
                 }
             }
-            montage.Borders.Clear();
-            montage.Borders.AddRange(borders);
-
+            montage.Borders = borders;
          
         }
 

@@ -41,7 +41,7 @@ namespace Tuto.Model
         /// <summary>
         /// Borders of each chunks. This information is required by one of the editor mode, but it is completely determined by tokens, so it is not stored
         /// </summary>
-        public List<Border> Borders { get; private set; }
+        public List<Border> Borders { get; set; }
 
         public MontageModel(int totalLength)
         {
