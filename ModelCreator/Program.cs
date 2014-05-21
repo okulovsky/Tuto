@@ -13,10 +13,10 @@ namespace ModelCreator
     {
         static void Main(string[] args)
         {
-            var path=EditorModel.SubstituteDebugDirectories("debug\\10");
+            var path=EditorModelIO.SubstituteDebugDirectories("debug\\10");
             Directory.CreateDirectory(path);
             File.Delete(path + "\\local.tuto");
-            var model = EditorModel.Load(path);
+            var model = EditorModelIO.Load(path);
             model.Save();
         }
     }

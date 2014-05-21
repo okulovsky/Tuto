@@ -31,7 +31,7 @@ namespace Editor
             }
 
 
-            var model = EditorModel.Load(EditorModel.SubstituteDebugDirectories(args[0]));
+            var model = EditorModelIO.Load(EditorModelIO.SubstituteDebugDirectories(args[0]));
 
             if (model.Montage.SoundIntervals == null || model.Montage.SoundIntervals.Count == 0)
             {

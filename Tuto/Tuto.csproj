@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\Current\EditorModelIO.cs" />
     <Compile Include="Model\Current\FileContainer.cs" />
     <Compile Include="Model\Current\Global\GlobalData.cs" />
     <Compile Include="Model\Current\Global\VoiceSettings.cs" />
