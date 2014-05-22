@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tuto.Model;
 
 namespace Tuto.Services
 {
@@ -40,12 +41,12 @@ namespace Tuto.Services
         {
             var folder = args[1];
 
-            var model = ObsoleteModelIO.Load(folder);
+            var model = EditorModelIO.Load(folder);
             DoWork(model);
-            ObsoleteModelIO.Save(model);
+            EditorModelIO.Save(model);
         }
 
-        public void DoWork(EditorModelV4 model)
+        public void DoWork(EditorModel model)
         {
             // model.Locations.PraatVoice.Delete();
             model.Locations.PraatOutput.Delete();
@@ -68,7 +69,7 @@ namespace Tuto.Services
                     MinSilentInterval,
                     MinSoundInterval));
 
-            model.Montage.Intervals = new List<IntervalV4>();
+            model.Montage.SoundIntervals.Clear();
             using (var reader = new StreamReader(model.Locations.PraatOutput.FullName))
             {
 
@@ -81,8 +82,8 @@ namespace Tuto.Services
                     var startTime = double.Parse(reader.ReadLine(), CultureInfo.InvariantCulture);
                     var endTime = double.Parse(reader.ReadLine(), CultureInfo.InvariantCulture);
                     var hasVoice = reader.ReadLine() == '"' + SoundLabel + '"';
-                    model.Montage.Intervals.Add(
-                        new IntervalV4(
+                    model.Montage.SoundIntervals.Add(
+                        new SoundInterval(
                             (int)Math.Round(startTime*1000), 
                             (int)Math.Round(1000*endTime), 
                             hasVoice));

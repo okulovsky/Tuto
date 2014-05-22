@@ -28,10 +28,10 @@ namespace Tuto.Model
         {
             var stream = new MemoryStream();
             new DataContractJsonSerializer(typeof(T)).WriteObject(stream, data);
-            var text = System.Text.Encoding.UTF8.GetString(stream.GetBuffer());
+            var text = System.Text.Encoding.UTF8.GetString(stream.GetBuffer().Where(z => z != '\0').ToArray()); ;
             using (var writer = new StreamWriter(file.FullName))
             {
-                writer.WriteLine(header + " Version " + header);
+                writer.WriteLine(header + " Version " + version);
                 writer.WriteLine();
                 writer.WriteLine(text);
             }

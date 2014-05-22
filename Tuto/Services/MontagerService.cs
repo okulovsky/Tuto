@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Editor;
+using Tuto.Model;
 
 namespace Tuto.Services
 {
@@ -31,7 +32,7 @@ namespace Tuto.Services
             get { return HelpString; }
         }
 
-        public void DoWork(EditorModelV4 model, bool print)
+        public void DoWork(EditorModel model, bool print)
         {
             model.ChunkFolder.Delete(true);
             model.ChunkFolder.Create();
@@ -51,9 +52,9 @@ namespace Tuto.Services
                 throw (new ArgumentException(String.Format("Unknown mode: {0}", args[2])));
             var print = mode == MontagerMode.Print;
 
-            var model = ObsoleteModelIO.Load(folder);
+            var model = EditorModelIO.Load(folder);
             DoWork(model, print);
-            ObsoleteModelIO.Save(model);
+            EditorModelIO.Save(model);
         }
         const string DescriptionString =
 @"MontagerService service. Muxes audio and video from different sources to chunks for assembling.";

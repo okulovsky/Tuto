@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Editor;
+using Tuto.Model;
 using Tuto.Services.Assembler;
 using Tuto.Services.Montager;
 
@@ -29,7 +30,7 @@ namespace Tuto.Services
             get { return HelpString; }
         }
 
-        public void DoWork(EditorModelV4 model, bool print)
+        public void DoWork(EditorModel model, bool print)
         {
             
             var epsodes = ListEpisodes(model.Montage.FileChunks).Select(e => MakeEpisode(model, e));
@@ -58,7 +59,7 @@ namespace Tuto.Services
             
         }
 
-        private AvsNode MakeEpisode(EditorModelV4 model, List<FileChunk> fileChunks)
+        private AvsNode MakeEpisode(EditorModel model, List<FileChunk> fileChunks)
         {
             var avsChunks = new AvsConcatList{Items = new List<AvsNode>()};
 
@@ -141,7 +142,7 @@ namespace Tuto.Services
                 throw (new ArgumentException(String.Format("Unknown mode: {0}", args[2])));
             var print = mode == AssemblerMode.Print;
 
-            var model = ObsoleteModelIO.Load(folder);
+            var model = EditorModelIO.Load(folder);
             DoWork(model, print);
             // ModelIO.Save(model);
         }
