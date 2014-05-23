@@ -132,6 +132,7 @@ namespace Tuto.Model
 
         public static void Save(EditorModel model)
         {
+            model.CreateFileChunks();
             var container = new FileContainer();
             container.MontageModel = model.Montage;
             container.WindowState = model.WindowState;

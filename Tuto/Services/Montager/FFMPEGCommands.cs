@@ -29,7 +29,7 @@ namespace Tuto.Services.Montager
         {
             Shell.FFMPEG(
                 print,
-                "-i {0} -q:v 0 {1}",
+                @"-i ""{0}"" -q:v 0 ""{1}""",
                 AvsInput,
                 VideoOutput);
         }
@@ -52,7 +52,7 @@ namespace Tuto.Services.Montager
         {
             Shell.FFMPEG(
                 print,
-                "-i {0} -ss {1} -t {2} -vn -q:v 0 {3}",
+                @"-i ""{0}"" -ss ""{1}"" -t ""{2}"" -vn -q:v 0 ""{3}""",
                 AudioInput,
                 MS(StartTime),
                 MS(Duration),
@@ -71,7 +71,7 @@ namespace Tuto.Services.Montager
         {
             Shell.FFMPEG(
                 print,
-                "-i {0} -ss {1} -t {2} -q:v 0 {3}",
+                @"-i ""{0}"" -ss ""{1}"" -t ""{2}"" -q:v 0 ""{3}""",
                 VideoInput,
                 MS(StartTime),
                 MS(Duration),
@@ -112,7 +112,7 @@ namespace Tuto.Services.Montager
         {
             Shell.FFMPEG(
                 print,
-                "-i {1} -i {0} -acodec copy -vcodec copy {2}",
+                @"-i ""{1}"" -i ""{0}"" -acodec copy -vcodec copy ""{2}""",
                 VideoInput,
                 AudioInput,
                 VideoOutput);

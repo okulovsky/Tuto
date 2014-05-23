@@ -7,9 +7,15 @@
         <ed:EditorModeConverter x:Key="EditorModeCnv"/>
         <ed:PausedToStringConverter x:Key="PausedCnv"/>    
         <ed:BoolToVisibilityConverter x:Key="BTVCnv"/>
+        <Style x:Key="buttonStyle">
+            <Setter Property="Control.Width" Value="50"/>
+            <Setter Property="Control.Height" Value="50"/>
+        </Style>
+        <Style TargetType="Button" BasedOn="{StaticResource buttonStyle}"/>
+        <Style TargetType="ToggleButton" BasedOn="{StaticResource buttonStyle}"/>
     </Window.Resources>
     <DockPanel>
-        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Height="40">
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
             <Button x:Name="Save">Save</Button>
             <Button x:Name="Synchronize">Synchronize</Button>
             <Button x:Name="Infos">Infos</Button>
@@ -26,7 +32,10 @@
                 IsChecked="{Binding WindowState.CurrentMode, Converter={StaticResource EditorModeCnv}, ConverterParameter='Border'}">
                 Final
             </ToggleButton>
-        </StackPanel>
+            <Rectangle Width="50"/>
+            <Button x:Name="Montage">Montage</Button>
+            <Button x:Name="Assembly">Assembly</Button>
+            </StackPanel>
         <StackPanel Orientation="Vertical">
             <Grid>
                 <ed:ModelView x:Name="ModelView" DataContext="{Binding}"/>

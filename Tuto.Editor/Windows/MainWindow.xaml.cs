@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -74,6 +75,18 @@ namespace Editor
             {
                 model.Save();
             };
+
+            Montage.Click += (s, a) =>
+                {
+                    model.Save();
+                    RunProcess("montager",model.VideoFolder.FullName,"Run");
+                };
+
+            Assembly.Click += (s, a) =>
+                {
+                    model.Save();
+                    RunProcess("assembler", model.VideoFolder.FullName, "Run");
+                };
 
             Synchronize.Click += Synchronize_Click;
 
@@ -195,6 +208,26 @@ namespace Editor
                 FaceVideo.Visibility = model.WindowState.FaceVideoIsVisible ? Visibility.Visible : Visibility.Collapsed;
                 ScreenVideo.Visibility = model.WindowState.DesktopVideoIsVisible? Visibility.Visible : Visibility.Collapsed;
             }
+        }
+
+
+        void RunProcess(params string[] arguments)
+        {
+            this.IsEnabled = false;
+            Tuto.Program.Main(arguments);
+            this.IsEnabled = true;
+            MessageBox.Show("The action is complete");
+            return;
+
+
+            var process = new Process();
+            process.StartInfo.FileName = model.Locations.TutoExecutable.FullName;
+            process.StartInfo.Arguments = arguments
+                .Select(z => z.Contains(" ") ? "\"" + z + "\"" : z)
+                .Aggregate((a, b) => a + " " + b);
+            process.StartInfo.CreateNoWindow = false;
+            process.Start();
+
         }
 
 

@@ -10,9 +10,9 @@ using System.Web.Script.Serialization;
 
 namespace Tuto
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             var services = new List<Service>
             {

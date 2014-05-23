@@ -21,6 +21,7 @@ namespace Tuto.Model
         public FileInfo PraatScriptSource { get { return Make(model.ProgramFolder, "split_pauses.praat"); } }
         public FileInfo AvsLibrary { get { return Make(model.ProgramFolder, "library.avs"); } }
         public FileInfo AutoLevelsLibrary { get { return Make(model.ProgramFolder, "autolevels_0.6_20110109.dll"); } }
+        public FileInfo TutoExecutable { get { return Make(model.ProgramFolder, "Tuto.exe"); } }
         
         public FileInfo FaceVideo { get { return Make(model.VideoFolder, "face.mp4"); } }
         public FileInfo DesktopVideo { get { return Make(model.VideoFolder, "desktop.avi"); } }
