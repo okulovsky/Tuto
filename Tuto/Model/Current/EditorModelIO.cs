@@ -45,7 +45,7 @@ namespace Tuto.Model
             }
             else if (subdirectory.StartsWith("work\\"))
             {
-                subdirectory = subdirectory.Replace("work\\", "..\\..\\..\\..\\..\\AIML-VIDEO\\");
+                subdirectory = subdirectory.Replace("work\\", "..\\..\\..\\..\\AIML-VIDEO\\");
             }
             return subdirectory;
         }
@@ -53,6 +53,7 @@ namespace Tuto.Model
         static EditorModel InitializeModelsFolder(string subdirectory)
         {
             var localDirectory = new DirectoryInfo(subdirectory);
+            var path = localDirectory.FullName;
             if (!localDirectory.Exists) throw new Exception("Local directory '" + subdirectory + "' is not found");
             var rootDirectory = localDirectory;
             while (true)
@@ -100,15 +101,14 @@ namespace Tuto.Model
             }
         }
 
-        static bool TryReadObsolete(ref EditorModel model)
+        static bool TryReadObsolete(EditorModel model)
         {
-            try
-            {
-                model = ObsoleteModelIO.LoadAndConvert(model.VideoFolder.FullName); //try to recover model from obsolete file formats
-                return true;
-            }
+            //try {
+                return ObsoleteModelIO.LoadAndConvert(model); //try to recover model from obsolete file formats
+            /*}
             catch { }
             return false;
+        */
         }
 
         static void InitializeEmptyModel(EditorModel model)
@@ -121,8 +121,11 @@ namespace Tuto.Model
         {
             var model = InitializeModelsFolder(subdirectory);
             if (!TryReadModel(model))
-                if (!TryReadObsolete(ref model))
+            {
+                InitializeEmptyModel(model);
+                if (!TryReadObsolete(model))
                     InitializeEmptyModel(model);
+            }
             ReadGlobalData(model);
             return model;
         }

@@ -16,23 +16,28 @@ namespace Editor
 
         static bool FilesWereNotFound;
 
-        public static EditorModel LoadAndConvert(string subdirectory)
+        public static bool LoadAndConvert(EditorModel model)
         {
-            var v4 = Load(subdirectory);
+            var v4 = Load(model.VideoFolder.FullName);
 
-            if (!FilesWereNotFound)
-                return null;
+            if (FilesWereNotFound)
+                return false;
 
-            var model = new EditorModel(v4.VideoFolder, v4.RootFolder, v4.ProgramFolder);
+            //var model = new EditorModel(v4.VideoFolder, v4.RootFolder, v4.ProgramFolder);
 
             int index=0;
             foreach (var e in v4.Montage.Chunks)
             {
-                model.Montage.Chunks.Mark(e.EndTime, EditorModel.ModeToBools(e.Mode), false);
+                var mode = e.Mode;
+                if (mode == Mode.Undefined) mode = Mode.Drop;
+                model.Montage.Chunks.Mark(e.EndTime, EditorModel.ModeToBools(mode), false);
                 if (e.StartsNewEpisode)
                     model.Montage.Chunks.NewEpisode(index);
                 index++;
             }
+
+
+
             foreach (var e in v4.Montage.Intervals)
             {
                 model.Montage.SoundIntervals.Add(new SoundInterval
@@ -53,7 +58,7 @@ namespace Editor
                     Duration = e.Duration
                 });
             }
-            return model;
+            return true;
 
         }
 

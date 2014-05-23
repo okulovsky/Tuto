@@ -34,6 +34,6 @@ namespace Tuto.Model
         public FileInfo WatermarkImage { get { return Make(model.VideoFolder, "watermark.png"); } }
 
         public const string LocalFileName = "local.tuto";
-        public const string GlobalFileName = "global.tuto";
+        public const string GlobalFileName = "project.tuto";
     }
 }

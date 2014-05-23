@@ -24,6 +24,11 @@ namespace Tuto.Model
         [DataMember]
         public bool Defined { get; private set; }
 
+        public override string ToString()
+        {
+            return Time.ToString();
+        }
+
         public void SetUndefined()
         {
             Defined = false;

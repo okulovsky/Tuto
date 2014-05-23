@@ -14,7 +14,7 @@ namespace Tuto.Model
         [DataMember]
         private readonly List<StreamToken> tokens = new List<StreamToken>();
         [DataMember]
-        public readonly int StreamLength;
+        public int StreamLength { get; private set; }
 
         public int Count { get { return tokens.Count; } }
 
@@ -108,6 +108,8 @@ namespace Tuto.Model
             {
                 toks.Item2.CopyStreams(streams);
             }
+            if (time > this.StreamLength)
+                StreamLength = time;
         }
 
         public void Clear(int tokenIndex)

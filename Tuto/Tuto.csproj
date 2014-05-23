@@ -60,7 +60,7 @@
     <Compile Include="Model\Current\Montage\MontageModel.cs" />
     <Compile Include="Model\Current\Montage\Further Refactoring\StreamChunk.cs" />
     <Compile Include="Model\Current\Montage\StreamToken.cs" />
-    <Compile Include="Model\Current\Montage\StreamTokenArray.cs" />
+    <Compile Include="Model\Current\Montage\StreamChunkArray.cs" />
     <Compile Include="Model\Current\Montage\VideoInfo.cs" />
     <Compile Include="Model\Obsolete\LastRefactoring\GlobalData\VoiceSettings.cs" />
     <Compile Include="Model\Obsolete\LastRefactoring\WindowState\EditorModes.cs" />
