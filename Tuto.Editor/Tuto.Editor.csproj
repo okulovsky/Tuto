@@ -73,6 +73,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Timeline.cs" />
     <Compile Include="Windows\Converters.cs" />
+    <Compile Include="Windows\HelpData.cs" />
     <Compile Include="Windows\InfoWindow.xaml.cs">
       <DependentUpon>InfoWindow.xaml</DependentUpon>
     </Compile>

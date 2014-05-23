@@ -11,51 +11,69 @@ namespace Editor
     {
         None,
 
-        [CmdHelp(KeyboardGroup.FlowControl, EditorModes.General, "Increase the playback speed")]
-        [CmdHelp(KeyboardGroup.FlowControl, EditorModes.Border, "Increase the playback speed outside of borders")]
+        [OfGroup(KeyboardGroup.FlowControl)]
+        [CmdHelp(EditorModes.General, "Increase the playback speed")]
+        [CmdHelp(EditorModes.Border, "Increase the playback speed outsKeyboardGroup.FlowControl, EditorModeside of borders")]
         SpeedUp,
 
-
-        [CmdHelp(KeyboardGroup.FlowControl, EditorModes.General, "Decrease the playback speed")]
-        [CmdHelp(KeyboardGroup.FlowControl, EditorModes.Border, "Decrease the playback speed outside of borders")]
+         [OfGroup(KeyboardGroup.FlowControl)]
+        [CmdHelp(EditorModes.General, "Decrease the playback speed")]
+        [CmdHelp(EditorModes.Border, "Decrease the playback speed outside of borders")]
         SpeedDown,
-
-        [CmdHelp(KeyboardGroup.FlowControl, EditorModes.General, "Pauses/resumes video")]
+        
+        [OfGroup(KeyboardGroup.FlowControl)]
+        [CmdHelp(EditorModes.General, "Pauses/resumes video")]
         PauseResume,
 
-        [CmdHelp(KeyboardGroup.Navigation, "Jumps backward")]  
+        [OfGroup(KeyboardGroup.Navigation)]
+        [CmdHelp("Jumps backward")]  
         Left,
 
-        [CmdHelp(KeyboardGroup.Navigation, EditorModes.General, "Jumps to the previous chunk")]
-        [CmdHelp(KeyboardGroup.Navigation, EditorModes.General, "Jumps to the previous border")]
+        [OfGroup(KeyboardGroup.Navigation)]
+        [CmdHelp(EditorModes.General, "Jumps to the previous chunk")]
+        [CmdHelp(EditorModes.General, "Jumps to the previous border")]
         LargeLeft,
 
-        [CmdHelp(KeyboardGroup.Navigation, "Jumps forward")]  
+        [OfGroup(KeyboardGroup.Navigation)]
+        [CmdHelp("Jumps forward")]  
         Right,
 
-        [CmdHelp(KeyboardGroup.Navigation, EditorModes.General, "Jumps to the next chunk")]
-        [CmdHelp(KeyboardGroup.Navigation, EditorModes.General, "Jumps to the next border")]
+        [OfGroup(KeyboardGroup.Navigation)]
+        [CmdHelp(EditorModes.General, "Jumps to the next chunk")]
+        [CmdHelp(EditorModes.General, "Jumps to the next border")]
         LargeRight,
 
-        [CmdHelp(KeyboardGroup.Marking, "Marks the fragment as belonging to the face video")]
+        [OfGroup(KeyboardGroup.Marking)]
+        [CmdHelp("Marks the fragment as belonging to the face video")]
         Face,
-        [CmdHelp(KeyboardGroup.Marking, "Marks the fragment as belonging to the desktop video")]
+
+        [OfGroup(KeyboardGroup.Marking)]
+        [CmdHelp("Marks the fragment as belonging to the desktop video")]
         Desktop,
-        [CmdHelp(KeyboardGroup.Marking, "Marks the fragment as dropped")]
+        
+        [OfGroup(KeyboardGroup.Marking)]
+        [CmdHelp("Marks the fragment as dropped")]
         Drop,
-        [CmdHelp(KeyboardGroup.Marking, "Clears mark on the current fragment")]
+        
+        [OfGroup(KeyboardGroup.Marking)]
+        [CmdHelp("Clears mark on the current fragment")]
         Clear,
 
-        [CmdHelp(KeyboardGroup.BorderEditing,"Shifts the left border to left")]
+        [OfGroup(KeyboardGroup.BorderEditing)]
+        [CmdHelp("Shifts the left border to left")]
         LeftToLeft,
-        [CmdHelp(KeyboardGroup.BorderEditing, "Shifts the left border to right")]
+        [OfGroup(KeyboardGroup.BorderEditing)]
+        [CmdHelp("Shifts the left border to right")]
         LeftToRight,
-        [CmdHelp(KeyboardGroup.BorderEditing, "Shifts the right border to left")]
+        [OfGroup(KeyboardGroup.BorderEditing)]
+        [CmdHelp("Shifts the right border to left")]
         RightToLeft,
-        [CmdHelp(KeyboardGroup.BorderEditing, "Shifts the right border to right")]
+        [OfGroup(KeyboardGroup.BorderEditing)]
+        [CmdHelp("Shifts the right border to right")]
         RightToRight,
 
-        [CmdHelp(KeyboardGroup.Other,"Specifies that the current fragment starts the new episode.")]
+        [OfGroup(KeyboardGroup.Other)]
+        [CmdHelp("Specifies that the current fragment starts the new episode.")]
         NewEpisodeHere
     }
 }

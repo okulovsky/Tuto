@@ -8,12 +8,18 @@ using Tuto.Model;
 namespace Editor
 {
 
-
+    public class OfGroupAttribute : Attribute
+    {
+        public KeyboardGroup Group { get; set; }
+        public OfGroupAttribute(KeyboardGroup group)
+        {
+            Group = group;
+        }
+    }
 
     [AttributeUsage(AttributeTargets.All,AllowMultiple = true)]
     public class CmdHelpAttribute : Attribute
     {
-        public readonly KeyboardGroup Group;
         public readonly EditorModes? ValidInMode;
         public readonly string HelpMessage;
 
@@ -23,16 +29,10 @@ namespace Editor
             this.ValidInMode = forMode;
         }
 
-        public CmdHelpAttribute(KeyboardGroup group, string helpMessage)
+        public CmdHelpAttribute(string helpMessage)
         {
-            this.Group = group;
             this.HelpMessage = helpMessage;
         }
-        public CmdHelpAttribute(KeyboardGroup group, EditorModes forMode, string helpMessage) 
-        {
-            this.Group = group;
-            this.HelpMessage = helpMessage; 
-            this.ValidInMode = forMode; 
-        }
+      
     }
 }
