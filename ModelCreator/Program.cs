@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Editor;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Editor;
+using Tuto.Model;
 
 namespace ModelCreator
 {
@@ -12,20 +13,11 @@ namespace ModelCreator
     {
         static void Main(string[] args)
         {
-            var path=ModelIO.DebugSubdir("debug\\20");
+            var path=EditorModelIO.SubstituteDebugDirectories("debug\\10");
             Directory.CreateDirectory(path);
-            File.Delete(path + "\\montage.v3");
-            var model = ModelIO.Load(path);
-            for (int i = 0; i < 1000; i++)
-            {
-                model.SetChunkMode(i*3000, (i%2==0)?Mode.Face:Mode.Screen,false);
-            }
-            for (int i = 0; i < 1000; i++)
-            {
-                model.Montage.Intervals.Add(new Interval { StartTime = i * 3000, EndTime = i * 3000 + 500, HasVoice = false });
-                model.Montage.Intervals.Add(new Interval { StartTime = i * 3000+500, EndTime = i * 3000+ 3000, HasVoice = true });
-            }
-            ModelIO.Save(model);
+            File.Delete(path + "\\local.tuto");
+            var model = EditorModelIO.Load(path);
+            model.Save();
         }
     }
 }
