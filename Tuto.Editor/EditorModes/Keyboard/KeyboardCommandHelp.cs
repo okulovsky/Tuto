@@ -33,6 +33,11 @@ namespace Editor
         {
             this.HelpMessage = helpMessage;
         }
+
+        public bool ValidFor(EditorModes mode)
+        {
+            return !ValidInMode.HasValue || ValidInMode.Value == mode;
+        }
       
     }
 }

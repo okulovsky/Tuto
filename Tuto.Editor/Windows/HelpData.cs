@@ -58,6 +58,15 @@ namespace Editor.Windows
             return selector(data);
         }
 
+        public static IEnumerable<T> ForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
+        {
+            foreach (var e in enumerable)
+            {
+                action(e);
+                yield return e;
+            }
+        }
+
         public static List<ModeHelp> CreateModeHelp()
         {
             var modes =  GetEnumAttributes<EditorModes>()
@@ -68,7 +77,9 @@ namespace Editor.Windows
                         Name = z.Item2.OfType<DisplayNameAttribute>().FirstOr(x=>x.DisplayName),
                         Text = z.Item2.OfType<DescriptionAttribute>().FirstOr(x=>x.Description)
                     })
+                .ForEach(z=>z.Groups=CreateGroupHelp(z))
                 .ToList();
+
             return modes;
         }
 
@@ -82,20 +93,25 @@ namespace Editor.Windows
                         Group = z.Item1,
                         Name = z.Item2.OfType<DisplayNameAttribute>().FirstOr(x => x.DisplayName),
                         CommonText = z.Item2.OfType<DescriptionAttribute>().FirstOr(x => x.Description),
-                        ModeText = z.Item2.OfType<CmdHelpAttribute>().Where(x => x.ValidInMode == help.Mode).FirstOr(x => x.HelpMessage),
+                        ModeText = z.Item2.OfType<CmdHelpAttribute>().Where(x => x.ValidFor(help.Mode)).FirstOr(x => x.HelpMessage),
                     })
+                .ForEach(z=>z.Commands=CreateCommandHelp(z))
                 .ToList();
             return groups;
         }
 
         public static List<CommandHelp> CreateCommandHelp(GroupHelp help)
         {
-            return null;
-
+            var commands = GetEnumAttributes<KeyboardCommands>()
+                .Where(z => z.Item2.OfType<OfGroupAttribute>().FirstOr(x => x.Group == help.Group, false))
+                .Select(z =>
+                    new CommandHelp
+                    {
+                        Command = z.Item1,
+                        Text = z.Item2.OfType<CmdHelpAttribute>().Where(x => x.ValidFor(help.ModeHelp.Mode)).FirstOr(x => x.HelpMessage)
+                    })
+                .ToList();
+            return commands;
         }
-
-
     }
-
-
 }

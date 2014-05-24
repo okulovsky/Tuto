@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using System.Windows;
+using Editor.Windows;
 using Tuto.Model;
 
 
@@ -37,6 +38,8 @@ namespace Editor
             {
                 //new Tuto.Services.PraatService().DoWork(model);
             }
+
+            var data = HelpCreator.CreateModeHelp();
 
             var window = new MainWindow();
             window.DataContext=model;
