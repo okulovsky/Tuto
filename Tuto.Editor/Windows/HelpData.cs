@@ -29,7 +29,7 @@ namespace Editor.Windows
     public class CommandHelp
     {
         public KeyboardCommands Command { get; set; }
-        public string KeySymbol { get; set; }
+        public List<string> KeySymbols { get; set; }
         public string Text { get; set; }
     }
 
@@ -74,7 +74,7 @@ namespace Editor.Windows
                     new ModeHelp
                     {
                         Mode = z.Item1,
-                        Name = z.Item2.OfType<DisplayNameAttribute>().FirstOr(x=>x.DisplayName),
+                        Name = z.Item2.OfType<EnumNameAttribute>().FirstOr(x => x.DisplayName),
                         Text = z.Item2.OfType<DescriptionAttribute>().FirstOr(x=>x.Description)
                     })
                 .ForEach(z=>z.Groups=CreateGroupHelp(z))
@@ -91,7 +91,7 @@ namespace Editor.Windows
                     {
                         ModeHelp = help,
                         Group = z.Item1,
-                        Name = z.Item2.OfType<DisplayNameAttribute>().FirstOr(x => x.DisplayName),
+                        Name = z.Item2.OfType<EnumNameAttribute>().FirstOr(x => x.DisplayName),
                         CommonText = z.Item2.OfType<DescriptionAttribute>().FirstOr(x => x.Description),
                         ModeText = z.Item2.OfType<CmdHelpAttribute>().Where(x => x.ValidFor(help.Mode)).FirstOr(x => x.HelpMessage),
                     })
@@ -107,6 +107,7 @@ namespace Editor.Windows
                 .Select(z =>
                     new CommandHelp
                     {
+                        KeySymbols = KeyMap.GetKeySymbols(z.Item1),
                         Command = z.Item1,
                         Text = z.Item2.OfType<CmdHelpAttribute>().Where(x => x.ValidFor(help.ModeHelp.Mode)).FirstOr(x => x.HelpMessage)
                     })

@@ -14,11 +14,11 @@ namespace Editor
         static KeyMap()
         {
             map = new Dictionary<Key, KeyboardCommands>();
-            map[Key.Left] = KeyboardCommands.Left;
             map[Key.D2] = KeyboardCommands.Left;
+            map[Key.Left] = KeyboardCommands.Left;
 
-            map[Key.Right] = KeyboardCommands.Right;
             map[Key.D3] = KeyboardCommands.Right;
+            map[Key.Right] = KeyboardCommands.Right;
 
             map[Key.D1] = KeyboardCommands.LargeLeft;
             map[Key.D4] = KeyboardCommands.LargeRight;
@@ -38,6 +38,7 @@ namespace Editor
             map[Key.O] = KeyboardCommands.RightToLeft;
             map[Key.P] = KeyboardCommands.RightToRight;
 
+            map[Key.D9] = KeyboardCommands.NewEpisodeHere;
         }
 
 
@@ -47,6 +48,32 @@ namespace Editor
             if (!map.ContainsKey(key)) return KeyboardCommands.None;
             return map[key];
         }
+
+        public static List<string> GetKeySymbols(KeyboardCommands command)
+        {
+            var e = map.Where(z => z.Value == command).Select(z => z.Key).Select(GetKeySymbol).ToList();
+            return e;
+        }
+
+        public static string GetKeySymbol(Key key)
+        {
+            var s=key.ToString();
+            if (s.Length == 1) return s;
+            if (s.StartsWith("D")) return s.Substring(1, 1);
+            switch (key)
+            {
+                case Key.Back: return "␈";
+                case Key.Left: return "←";
+                case Key.Right: return "→";
+                case Key.Up: return "↑";
+                case Key.Down: return "↓";
+                case Key.OemPlus: return "+";
+                case Key.OemMinus: return "-";
+                case Key.Space: return "␣";
+            }
+            return s;
+        }
+
 
         public static KeyboardCommandData KeyboardCommandData(System.Windows.Input.KeyEventArgs args)
         {

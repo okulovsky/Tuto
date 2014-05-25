@@ -39,9 +39,7 @@ namespace Editor
                 //new Tuto.Services.PraatService().DoWork(model);
             }
 
-            var data = HelpCreator.CreateModeHelp();
-
-            var window = new MainWindow();
+             var window = new MainWindow();
             window.DataContext=model;
             new Application().Run(window);
         }
