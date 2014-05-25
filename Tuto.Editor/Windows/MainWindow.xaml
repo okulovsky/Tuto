@@ -38,25 +38,26 @@
             <Rectangle Width="50"/>
             <Button x:Name="Help">Help</Button>
         </StackPanel>
-        <StackPanel Orientation="Vertical">
+        <StackPanel Orientation="Vertical" DockPanel.Dock="Right">
+            <MediaElement 
+                    Width="600"
+                    x:Name="FaceVideo" 
+                    Grid.Column="0"/>
+            <MediaElement 
+                    Width="600"
+                    x:Name="ScreenVideo"  
+                    Grid.Column="1"/>
+        </StackPanel>
             <Grid>
                 <ed:ModelView x:Name="ModelView" DataContext="{Binding}"/>
                 <ed:Slider x:Name="Slider" DataContext="{Binding}"/>
             </Grid>
-            <StackPanel Orientation="Horizontal">
-                <MediaElement 
-                    Width="600"
-                    x:Name="FaceVideo" 
-                    Grid.Column="0"/>
-                <MediaElement 
-                    Width="600"
-                    x:Name="ScreenVideo"  
-                    Grid.Column="1"/>
+            <StackPanel Orientation="Vertical">
+               
                 <TextBlock>
                     <TextBlock>X</TextBlock>
                     <TextBlock Text="{Binding WindowState.SpeedRatio}"/>                            
                 </TextBlock>
             </StackPanel>
-        </StackPanel>
     </DockPanel>
 </Window>

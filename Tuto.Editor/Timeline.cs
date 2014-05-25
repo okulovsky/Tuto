@@ -148,7 +148,7 @@ namespace Editor
                }
            }
 
-            if (editorModel.WindowState.CurrentMode == EditorModes.Border)
+            if (editorModel.WindowState.CurrentMode == EditorModes.Border && model.Borders!=null)
                 foreach (var e in model.Borders)
                 {
                     DrawLine(drawingContext, border, e.StartTime, e.EndTime, 3);
