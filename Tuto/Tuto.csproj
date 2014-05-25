@@ -50,6 +50,7 @@
     <Compile Include="Main\Shell.cs" />
     <Compile Include="Model\Current\Montage\BorderListExtensions.cs" />
     <Compile Include="Model\Current\WindowState\EditorModes.cs" />
+    <Compile Include="Model\Current\WindowState\EnumName.cs" />
     <Compile Include="Model\Current\WindowState\WindowState.cs" />
     <Compile Include="Model\Obsolete\LastRefactoring\GlobalData\GlobalData.cs" />
     <Compile Include="Model\Obsolete\LastRefactoring\MontageData\FileContainer.cs" />

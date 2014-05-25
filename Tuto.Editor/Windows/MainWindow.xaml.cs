@@ -17,6 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using Editor.Windows;
 using Tuto.Model;
 
 namespace Editor
@@ -86,6 +87,14 @@ namespace Editor
                 {
                     model.Save();
                     RunProcess("assembler", model.VideoFolder.FullName, "Run");
+                };
+
+            Help.Click += (s, a) =>
+                {
+                    var data = HelpCreator.CreateModeHelp();
+                    var wnd = new HelpWindow();
+                    wnd.DataContext = data;
+                    wnd.Show();
                 };
 
             Synchronize.Click += Synchronize_Click;

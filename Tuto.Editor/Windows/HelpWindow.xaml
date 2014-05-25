@@ -1,0 +1,87 @@
+﻿<Window x:Class="Editor.Windows.HelpWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:tuto="clr-namespace:Editor.Windows"
+        Title="HelpWindow" Width="400" SizeToContent="Height" Padding="10,10,10,10">
+    <Window.Resources>
+        <Style TargetType="ComboBox" x:Key="ModeComboBox">
+            <Setter Property="ItemTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <Label Content="{Binding Name}"/>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="ItemsControl"  x:Key="SymbolsListBox" >
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <StackPanel Orientation="Horizontal" IsItemsHost="true"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="ItemTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <Grid>
+                            <Rectangle Stroke="Black" Width="20" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <Label Content="{Binding}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="ItemsControl" x:Key="CommandsListBox">
+            <Setter Property="ItemTemplate">
+                <Setter.Value>
+                    <DataTemplate  DataType="tuto:CommandHelp">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="6*"/>
+                            </Grid.ColumnDefinitions>
+                            <ItemsControl VerticalAlignment="Top" ItemsSource="{Binding KeySymbols}" Style="{StaticResource SymbolsListBox}"/>
+                            <TextBlock VerticalAlignment="Top" TextWrapping="Wrap" Text="{Binding Text}" Grid.Column="2"/>
+                        </Grid>
+                        
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="ItemsControl" x:Key="GroupListBox">
+            <!--<Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <WrapPanel Orientation="Vertical" IsItemsHost="true" Width="600"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>-->
+            <Setter Property="ItemTemplate">
+                <Setter.Value>
+                    <DataTemplate  DataType="tuto:GroupHelp">
+                        <GroupBox Header="{Binding Name}" HorizontalAlignment="Stretch">
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock TextWrapping="Wrap" Text="{Binding CommonText}"/>
+                                <TextBlock TextWrapping="Wrap" Text="{Binding ModeText}"/>
+                                <ItemsControl ItemsSource="{Binding Commands}" Style="{StaticResource CommandsListBox}"/>
+                            </StackPanel>
+                        </GroupBox>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+       
+    </Window.Resources>
+    <StackPanel Orientation="Vertical">
+        <TextBlock TextWrapping="Wrap">Several modes are designed to facilitate the montage process. Keys behave slighly different in different modes. Please choose the mode.</TextBlock>
+        <ComboBox SelectedIndex="0" x:Name="Modes" Style="{StaticResource ModeComboBox}" ItemsSource="{Binding}" Width="100"></ComboBox>
+        <StackPanel Orientation="Vertical" DataContext="{Binding ElementName=Modes, Path=SelectedItem}">
+            <TextBlock  Text="{Binding Text}" TextWrapping="Wrap"></TextBlock>
+                <ScrollViewer Height="300">
+                    <ItemsControl Style="{StaticResource GroupListBox}" ItemsSource="{Binding Groups}"/>
+                </ScrollViewer>
+        </StackPanel>
+    </StackPanel>
+</Window>
