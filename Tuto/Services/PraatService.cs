@@ -95,7 +95,7 @@ namespace Tuto.Services
             model.Locations.PraatOutput.Delete();
         }
         const string DescriptionString =
-@"PraatService service. Analyzes input video and searches intervals of silence and speech.";
+@"Analyzes input video and searches intervals of silence and speech.";
         const string HelpString =
 @"<folder>
 

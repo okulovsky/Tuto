@@ -184,6 +184,8 @@ namespace Tuto.Model
             // Collapse adjacent chunks of same type into one FileChunk
             Montage.FileChunks = new List<FileChunk>();
             var activeChunks = Tokens.Where(c => c.IsActive).ToList();
+            if(!activeChunks.Any())
+                return;
             activeChunks.Add(new StreamChunk(activeChunks.Last().EndTime,activeChunks.Last().EndTime,Mode.Undefined,true));
             var oldChunk = activeChunks[0];
             for (var i = 1; i < activeChunks.Count; i++)

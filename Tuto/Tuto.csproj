@@ -104,6 +104,7 @@
     <Compile Include="Services\MontagerService.cs" />
     <Compile Include="Services\Montager\FFMPEGCommands.cs" />
     <Compile Include="Services\Montager\ProcessingCommands.cs" />
+    <Compile Include="Services\RepairService.cs" />
     <Compile Include="Services\Service.cs" />
     <Compile Include="Services\PraatService.cs" />
   </ItemGroup>

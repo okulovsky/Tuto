@@ -9,10 +9,6 @@ using Tuto.Services.Montager;
 
 namespace Tuto.Services
 {
-    enum AssemblerMode
-    {
-        Run, Print
-    }
     class AssemblerService : Service
     {
         public override string Name
@@ -137,19 +133,18 @@ namespace Tuto.Services
             if (args.Length < 3)
                 throw (new ArgumentException(String.Format("Insufficient args")));
             var folder = args[1];
-            AssemblerMode mode;
+            ExecMode mode;
             if (!Enum.TryParse(args[2], true, out mode))
                 throw (new ArgumentException(String.Format("Unknown mode: {0}", args[2])));
-            var print = mode == AssemblerMode.Print;
+            var print = mode == ExecMode.Print;
 
             var model = EditorModelIO.Load(folder);
             DoWork(model, print);
-            // ModelIO.Save(model);
         }
         const string DescriptionString =
-            @"AssemblerService service. Assembles chunks with effects using Avisynth.";
+            @"Assembles chunks with effects using Avisynth.";
         const string HelpString =
-            @"<folder> <mode> [fast]
+            @"<folder> <mode>
 
 folder: directory containing video
 mode: run or print. Execute commands or write them to stdout";

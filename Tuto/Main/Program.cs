@@ -18,7 +18,8 @@ namespace Tuto
             {
                 new PraatService(),
                 new MontagerService(),
-                new AssemblerService()
+                new AssemblerService(),
+                new RepairService(),
             };
 
             if (args.Length < 1)

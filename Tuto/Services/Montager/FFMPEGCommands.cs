@@ -118,4 +118,26 @@ namespace Tuto.Services.Montager
                 VideoOutput);
         }
     }
+
+    public class RepairCommand : FFMPEGCommand
+    {
+        public FileInfo VideoInput;
+        public FileInfo VideoOutput;
+
+
+        public override string ToString()
+        {
+            return string.Format("Починка видео из {0} в {1}", VideoInput, VideoOutput);
+        }
+
+
+        public override void Execute(bool print)
+        {
+            Shell.FFMPEG(
+                print,
+                @"-i ""{0}"" -q:a 0 -q:v 0 ""{1}""",
+                VideoInput,
+                VideoOutput);
+        }
+    }
 }

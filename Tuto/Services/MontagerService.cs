@@ -8,12 +8,6 @@ using Tuto.Model;
 
 namespace Tuto.Services
 {
-
-    enum MontagerMode
-    {
-        Run, Print
-    }
-
     class MontagerService : Service
     {
 
@@ -47,19 +41,19 @@ namespace Tuto.Services
             if(args.Length < 3)
                 throw (new ArgumentException(String.Format("Insufficient args")));
             var folder = args[1];
-            MontagerMode mode;
+            ExecMode mode;
             if (!Enum.TryParse(args[2], true, out mode))
                 throw (new ArgumentException(String.Format("Unknown mode: {0}", args[2])));
-            var print = mode == MontagerMode.Print;
+            var print = mode == ExecMode.Print;
 
             var model = EditorModelIO.Load(folder);
             DoWork(model, print);
             EditorModelIO.Save(model);
         }
         const string DescriptionString =
-@"MontagerService service. Muxes audio and video from different sources to chunks for assembling.";
+@"Muxes audio and video from different sources for assembling.";
         const string HelpString =
-@"<folder> <mode> [fast]
+@"<folder> <mode>
 
 folder: directory containing video
 mode: run or print. Execute commands or write them to stdout";
