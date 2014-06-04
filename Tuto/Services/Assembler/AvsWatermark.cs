@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 
 namespace Tuto.Services.Assembler
@@ -20,6 +21,11 @@ namespace Tuto.Services.Assembler
             var video = Payload.Id;
             var script = string.Format(Format, Id, video, ImageFile, X, Y);
             context.AddData(script);
+        }
+
+        public override IList<AvsNode> ChildNodes
+        {
+            get { return new[] { Payload }; }
         }
 
         protected override string Format { get { return "{0} = AddWatermarkPNG({1}, \"{2}\", {3}, {4})"; } }

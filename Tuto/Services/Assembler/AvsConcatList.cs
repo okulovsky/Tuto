@@ -16,6 +16,11 @@ namespace Tuto.Services.Assembler
             context.AddData(string.Format(Format, Id, allItems));
         }
 
+        public override IList<AvsNode> ChildNodes
+        {
+            get { return Items.AsReadOnly(); }
+        }
+
         protected override string Format { get { return "{0} = {1}"; } }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 
 namespace Tuto.Services.Assembler
 {
@@ -23,6 +24,12 @@ namespace Tuto.Services.Assembler
                         ", pathToReference, pathToImage, EffectDuration);
              */
         }
+
+        public override IList<AvsNode> ChildNodes
+        {
+            get { return new AvsNode[] {}; }
+        }
+
         protected override string Format { get { return "{0} = Intro({1}, \"{2}\", {3})"; } }
     }
 }

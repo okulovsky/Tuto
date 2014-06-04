@@ -11,6 +11,8 @@ namespace Tuto.Services.Assembler
     {
         public abstract void SerializeToContext(AvsContext context);
 
+        public abstract IList<AvsNode> ChildNodes { get; }
+
         public string Id
         {
             get
@@ -32,6 +34,7 @@ namespace Tuto.Services.Assembler
         {
             get { return "var_{0}"; }
         }
+
         protected virtual string Format{get { return ""; }}
 
         public static AvsNode NormalizedNode(FileInfo chunkFile, bool autolevel)
