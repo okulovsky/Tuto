@@ -103,12 +103,11 @@ namespace Tuto.Model
 
         static bool TryReadObsolete(EditorModel model)
         {
-            //try {
+            try {
                 return ObsoleteModelIO.LoadAndConvert(model); //try to recover model from obsolete file formats
-            /*}
+            }
             catch { }
             return false;
-        */
         }
 
         static void InitializeEmptyModel(EditorModel model)
