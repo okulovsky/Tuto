@@ -19,7 +19,7 @@ namespace Tuto.Model
 
             var text = lines.Skip(1).Aggregate((a, b) => a + "\n" + b);
             var stream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(text));
-            T data = (T)new DataContractJsonSerializer(typeof(T)).ReadObject(stream);
+            var data = (T)new DataContractJsonSerializer(typeof(T)).ReadObject(stream);
             return data;
 
         }
@@ -37,6 +37,7 @@ namespace Tuto.Model
             }
         }
 
+
         public static string SubstituteDebugDirectories(string subdirectory)
         {
             if (subdirectory.StartsWith("debug\\"))
@@ -53,7 +54,6 @@ namespace Tuto.Model
         static EditorModel InitializeModelsFolder(string subdirectory)
         {
             var localDirectory = new DirectoryInfo(subdirectory);
-            var path = localDirectory.FullName;
             if (!localDirectory.Exists) throw new Exception("Local directory '" + subdirectory + "' is not found");
             var rootDirectory = localDirectory;
             while (true)
@@ -61,19 +61,23 @@ namespace Tuto.Model
                 try
                 {
                     rootDirectory = rootDirectory.Parent;
+                    if (rootDirectory == null)
+                        throw new Exception();
                 }
                 catch
                 {
-                    throw new Exception("Root directory is not found. Root directory must be a parent of '" + localDirectory.FullName + "' and contain global data file '" + Locations.GlobalFileName + "'");
+                    throw new Exception(string.Format(
+                        "Root directory not found. Root directory must be a parent of '{0}' and contain global data file '{1}'",
+                        localDirectory.FullName,
+                        Locations.GlobalFileName));
                 }
-                if (rootDirectory.GetFiles(Locations.GlobalFileName).Length != 0)
+                if (rootDirectory.GetFiles(Locations.GlobalFileName).Any())
                     break;
             }
 
             var programFolder = new FileInfo(Assembly.GetExecutingAssembly().FullName).Directory;
 
-            EditorModel model = new EditorModel(localDirectory, rootDirectory, programFolder);
-            return model;
+            return new EditorModel(localDirectory, rootDirectory, programFolder);
         }
 
         static bool TryReadModel(EditorModel model)
@@ -81,24 +85,18 @@ namespace Tuto.Model
 
             var file = model.VideoFolder.GetFiles(Locations.LocalFileName).FirstOrDefault();
             if (file == null) return false;
-            FileContainer container = ReadJSonWithHeader<FileContainer>(file, "Tuto local file");
+            var container = ReadJSonWithHeader<FileContainer>(file, "Tuto local file");
             model.Montage = container.MontageModel;
             model.WindowState = container.WindowState;
             return true;
         }
 
-        static void ReadGlobalData(EditorModel model)
+        public static GlobalData ReadGlobalData(DirectoryInfo rootFolder)
         {
-
-            var file = model.RootFolder.GetFiles(Locations.GlobalFileName).FirstOrDefault();
+            var file = rootFolder.GetFiles(Locations.GlobalFileName).FirstOrDefault();
             if (file == null)
-            {
-                model.Global = new GlobalData();
-            }
-            else
-            {
-                model.Global = ReadJSonWithHeader<GlobalData>(file, "Tuto project file");
-            }
+                return new GlobalData();
+            return ReadJSonWithHeader<GlobalData>(file, "Tuto project file");
         }
 
         static bool TryReadObsolete(EditorModel model)
@@ -125,16 +123,18 @@ namespace Tuto.Model
                 if (!TryReadObsolete(model))
                     InitializeEmptyModel(model);
             }
-            ReadGlobalData(model);
+            model.Global = ReadGlobalData(model.RootFolder);
             return model;
         }
 
         public static void Save(EditorModel model)
         {
             model.CreateFileChunks();
-            var container = new FileContainer();
-            container.MontageModel = model.Montage;
-            container.WindowState = model.WindowState;
+            var container = new FileContainer
+            {
+                MontageModel = model.Montage,
+                WindowState = model.WindowState
+            };
             WriteJSonWithHeader<FileContainer>(model.Locations.LocalFilePath, "Tuto local file", 1, container);
         }
     }

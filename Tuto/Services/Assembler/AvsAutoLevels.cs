@@ -22,7 +22,7 @@ namespace Tuto.Services.Assembler
 
         public override IList<AvsNode> ChildNodes
         {
-            get { return new []{Payload}; }
+            get { return new [] {Payload}; }
         }
 
         protected override string Format

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Tuto.Services.Assembler
 {
     class AvsFadeIn : AvsNode
@@ -13,6 +15,11 @@ namespace Tuto.Services.Assembler
             var video = Payload.Id;
             var script = string.Format(Format, Id, video, Duration);
             context.AddData(script);
+        }
+
+        public override IList<AvsNode> ChildNodes
+        {
+            get { return new[] { Payload }; }
         }
 
         protected override string Format { get { return "{0} = FadeInTime({1}, {2})"; } }
