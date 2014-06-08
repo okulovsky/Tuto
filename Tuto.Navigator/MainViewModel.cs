@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Input;
 using Microsoft.Win32;
 
@@ -20,7 +21,10 @@ namespace Tuto.Navigator
             SaveCommand = new Command(null, false);
             CloseCommand = new Command(Close, false);
             RefreshCommand = new Command(null, false);
-            //LoadAndBindProject("c:\\tuto\\testmodels");
+            
+#if DEBUG
+            LoadAndBindProject("c:\\tuto\\testmodels");
+#endif
         }
 
         public void LoadAndBindProject(string directory)
@@ -36,15 +40,21 @@ namespace Tuto.Navigator
         {
             CloseCommand.Execute(null);
             // WPF has no folder dialog??!
-            var dialog = new OpenFileDialog
+            /*var dialog = new OpenFileDialog
             {
                 Filter = "Tuto project|project.tuto|Все файлы (*.*)|*.*", FilterIndex = 0
             };
-            var result = dialog.ShowDialog();
+            var result = dialog.ShowDialog();  // fail if there's no file
             if (!(result.HasValue && result.Value))
                 return;
             var filename = dialog.FileName;
             var dir = Path.GetDirectoryName(filename);
+            LoadAndBindProject(dir);*/
+            // TODO: use any fancy dialog instead of this
+            var dialog = new FolderBrowserDialog();
+            if (dialog.ShowDialog() != DialogResult.OK)
+                return;
+            var dir = dialog.SelectedPath;
             LoadAndBindProject(dir);
         }
 
@@ -54,6 +64,7 @@ namespace Tuto.Navigator
             LoadedGlobalModel = null;
             SaveCommand.CanExecute = false;
             CloseCommand.CanExecute = false;
+            RefreshCommand.CanExecute = false;
         }
 
         public GlobalModel LoadedGlobalModel

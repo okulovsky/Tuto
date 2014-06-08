@@ -33,9 +33,9 @@ namespace Tuto.Navigator
 
         public void ReadSubdirectories()
         {
-            Subdirectories = new ObservableCollection<string>(RootDirectory.GetDirectories()
+            Subdirectories = new ObservableCollection<SubfolderViewModel>(RootDirectory.GetDirectories()
                 .Where(dir => dir.GetFiles(Locations.LocalFileName).Any())
-                .Select(dir => dir.Name));
+                .Select(dir => new SubfolderViewModel(dir.FullName)));
         }
 
         #region properties
@@ -59,7 +59,7 @@ namespace Tuto.Navigator
             }
         }
         
-        public ObservableCollection<string> Subdirectories
+        public ObservableCollection<SubfolderViewModel> Subdirectories
         {
             get { return subdirectories; }
             private set
@@ -72,6 +72,6 @@ namespace Tuto.Navigator
 
         private DirectoryInfo directory;
         private GlobalData globalData;
-        private ObservableCollection<string> subdirectories;
+        private ObservableCollection<SubfolderViewModel> subdirectories;
     }
 }
