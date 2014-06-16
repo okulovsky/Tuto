@@ -1,3 +1,3 @@
 Tuto project file Version 1
 
-{"GlobalData":{"VoiceSettings":{"MaxDistanceToSilence":1000,"SilenceMargin":300}},"Version":1}
+{"GlobalData":{"Name":"","TitleImage":null,"VoiceSettings":{"MaxDistanceToSilence":1001,"SilenceMargin":305},"WatermarkImage":null},"Version":1}

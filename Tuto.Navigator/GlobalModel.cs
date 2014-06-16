@@ -14,11 +14,11 @@ namespace Tuto.Navigator
 {
     public class GlobalModel : NotifierModel
     {
-        public GlobalModel(string rootDirectory)
+        public GlobalModel(FileInfo file)
         {
+            LoadedFile = file;
             // load or create empty
-            RootDirectory = new DirectoryInfo(rootDirectory);
-            GlobalData = GlobalFileContainer.Load(RootDirectory).GlobalData;
+            GlobalData = GlobalFileContainer.Load(LoadedFile).GlobalData;
             ReadSubdirectories();
         }
 
@@ -28,23 +28,24 @@ namespace Tuto.Navigator
              * need save local data in each subdir?
              */
             var container = new GlobalFileContainer {GlobalData = GlobalData};
-            container.Save(RootDirectory);
+            container.Save(LoadedFile);
         }
 
         public void ReadSubdirectories()
         {
-            Subdirectories = new ObservableCollection<SubfolderViewModel>(RootDirectory.GetDirectories()
+            var rootDir = new DirectoryInfo(LoadedFile.DirectoryName);
+            Subdirectories = new ObservableCollection<SubfolderViewModel>(rootDir.GetDirectories()
                 .Where(dir => dir.GetFiles(Locations.LocalFileName).Any())
                 .Select(dir => new SubfolderViewModel(dir.FullName)));
         }
 
         #region properties
-        public DirectoryInfo RootDirectory
+        public FileInfo LoadedFile
         {
-            get { return directory; }
+            get { return loadedFile; }
             private set
             {
-                directory = value;
+                loadedFile = value;
                 NotifyPropertyChanged();
             }
         }
@@ -70,7 +71,7 @@ namespace Tuto.Navigator
         }
         #endregion
 
-        private DirectoryInfo directory;
+        private FileInfo loadedFile;
         private GlobalData globalData;
         private ObservableCollection<SubfolderViewModel> subdirectories;
     }

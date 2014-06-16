@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
 using Microsoft.Win32;
+using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 
 namespace Tuto.Navigator
 {
@@ -18,18 +19,19 @@ namespace Tuto.Navigator
         public MainViewModel()
         {
             OpenCommand = new Command(Open);
+            
             SaveCommand = new Command(null, false);
             CloseCommand = new Command(Close, false);
             RefreshCommand = new Command(null, false);
             
 #if DEBUG
-            LoadAndBindProject("c:\\tuto\\testmodels");
+            LoadAndBindProject(new FileInfo("c:\\tuto\\testmodels\\project.tuto"));
 #endif
         }
 
-        public void LoadAndBindProject(string directory)
+        public void LoadAndBindProject(FileInfo file)
         {
-            LoadedGlobalModel = new GlobalModel(directory);
+            LoadedGlobalModel = new GlobalModel(file);
             RefreshCommand = new Command(LoadedGlobalModel.ReadSubdirectories);
             SaveCommand = new Command(LoadedGlobalModel.Save);
             CloseCommand.CanExecute = true;
@@ -39,23 +41,15 @@ namespace Tuto.Navigator
         public void Open()
         {
             CloseCommand.Execute(null);
-            // WPF has no folder dialog??!
-            /*var dialog = new OpenFileDialog
+            var dialog = new OpenFileDialog
             {
-                Filter = "Tuto project|project.tuto|Все файлы (*.*)|*.*", FilterIndex = 0
+                Filter = "Tuto project|project.tuto", FilterIndex = 0
             };
             var result = dialog.ShowDialog();  // fail if there's no file
             if (!(result.HasValue && result.Value))
                 return;
-            var filename = dialog.FileName;
-            var dir = Path.GetDirectoryName(filename);
-            LoadAndBindProject(dir);*/
-            // TODO: use any fancy dialog instead of this
-            var dialog = new FolderBrowserDialog();
-            if (dialog.ShowDialog() != DialogResult.OK)
-                return;
-            var dir = dialog.SelectedPath;
-            LoadAndBindProject(dir);
+            var file = new FileInfo(dialog.FileName);
+            LoadAndBindProject(file);
         }
 
         public void Close()
