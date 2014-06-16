@@ -7,12 +7,10 @@ namespace Tuto.Navigator
 {
     public class SubfolderViewModel
     {
-        // model? viewmodel?
-
         public SubfolderViewModel(string fullPath)
         {
             FullPath = fullPath;
-            StartEditorCommand = new Command(StartEditor);
+            StartEditorCommand = new RelayCommand(StartEditor);
         }
 
         public string FullPath { get; private set; }
@@ -21,13 +19,9 @@ namespace Tuto.Navigator
 
         public void StartEditor()
         {
-            // run exe? run from code? block window? need to refresh data?
-#if DEBUG
-            var editorExe = new FileInfo("c:\\tuto\\tuto.editor\\bin\\debug\\editor.exe");
-#endif
-            Shell.Exec(false, editorExe, FullPath);
+            
         }
 
-        public Command StartEditorCommand { get; private set; }
+        public RelayCommand StartEditorCommand { get; private set; }
     }
 }

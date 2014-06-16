@@ -33,7 +33,5 @@ namespace Tuto.Navigator
             var dir = Directory.GetCurrentDirectory();
             MessageBox.Show(dir);
         }
-
-        
     }
 }

@@ -4,7 +4,6 @@
         xmlns:model="clr-namespace:Tuto.Model;assembly=Tuto"
         xmlns:navigator="clr-namespace:Tuto.Navigator"
         Title="{Binding WindowTitle}" Height="350" Width="525">
-<!--        DataContext="{Binding RelativeSource={RelativeSource Self}}">-->
     <Window.Resources>
         <Style x:Key="ButtonStyle">
             <Setter Property="Control.MinWidth" Value="70"/>
@@ -70,7 +69,8 @@
         
         <Menu HorizontalAlignment="Stretch" Height="auto" VerticalAlignment="top" Width="auto">
            <MenuItem Header="File">
-               <MenuItem Header="Open directory" Command="{Binding OpenCommand}"></MenuItem>
+                <MenuItem Header="New project" Command="{Binding NewCommand}"></MenuItem>
+                <MenuItem Header="Open" Command="{Binding OpenCommand}"></MenuItem>
                 <MenuItem Header="Save" Command="{Binding SaveCommand}"></MenuItem>
                <MenuItem Header="Close" Command="{Binding CloseCommand}"></MenuItem>
            </MenuItem> 
@@ -80,17 +80,16 @@
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal">
                         <Button Content="Refresh list" Command="{Binding RefreshCommand}"></Button>
-                        <Button Content="test" Command="{Binding TestCommand}"></Button>
                     </StackPanel>
                     <ListBox HorizontalAlignment="Stretch" Height="auto" VerticalAlignment="Stretch"
                              Width="auto" HorizontalContentAlignment="Stretch"
-                         ItemsSource="{Binding LoadedGlobalModel.Subdirectories}">
+                         ItemsSource="{Binding Subdirectories}">
                     </ListBox>
                 </StackPanel>
 
             </TabItem>
             <TabItem Header="Settings" IsEnabled="{Binding CloseCommand.CanExecute}"
-                     Content="{Binding LoadedGlobalModel.GlobalData}">
+                     Content="{Binding GlobalData}">
             </TabItem>
             <TabItem Header="Debug">
                 <StackPanel

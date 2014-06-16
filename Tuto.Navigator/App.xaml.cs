@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Forms;
+using Tuto.Model;
+using Application = System.Windows.Application;
 
 namespace Tuto.Navigator
 {
@@ -16,8 +20,13 @@ namespace Tuto.Navigator
         private void AppStartup(object sender, StartupEventArgs e)
         {
             var mainWindow = new MainWindow();
-            var mainViewModel = new MainViewModel();
-            mainWindow.DataContext = mainViewModel;
+            var globalModel = new GlobalViewModel();
+            mainWindow.DataContext = globalModel;
+#if DEBUG
+            var dir = EditorModelIO.SubstituteDebugDirectories("debug\\");
+            var file = Path.Combine(dir, "project.tuto");
+            globalModel.Load(new FileInfo(file));
+#endif
             mainWindow.Show();
         }
     }

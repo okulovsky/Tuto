@@ -25,15 +25,6 @@ namespace Tuto.Navigator
         }
 
         #region IO
-
-        public void Save(DirectoryInfo dir)
-        {
-            var file = dir.GetFiles(Locations.GlobalFileName).FirstOrDefault();
-            if (file == null)
-                file = new FileInfo(Path.Combine(dir.FullName, Locations.GlobalFileName));
-            Save(file);
-        }
-
         public void Save(FileInfo file)
         {
             EditorModelIO.WriteJSonWithHeader(file, Header, Version, this);
