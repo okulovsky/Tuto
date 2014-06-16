@@ -62,9 +62,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Views\FilePickerControl.xaml.cs">
+      <DependentUpon>FilePickerControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="RelayCommand.cs" />
-    <Compile Include="SubfolderViewModel.cs" />
-    <Page Include="MainWindow.xaml">
+    <Compile Include="ViewModels\SubfolderViewModel.cs" />
+    <Page Include="Views\DataTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FilePickerControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -73,14 +84,18 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="GlobalFileContainer.cs" />
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\Resources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NotifierModel.cs" />
-    <Compile Include="GlobalViewModel.cs" />
+    <Compile Include="ViewModels\NotifierModel.cs" />
+    <Compile Include="ViewModels\GlobalViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -108,6 +123,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Tuto.Editor\Tuto.Editor.csproj">
+      <Project>{68c87361-e095-4312-bc36-089cd63b79c3}</Project>
+      <Name>Tuto.Editor</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Tuto\Tuto.csproj">
       <Project>{E69F7E9F-ED66-4935-8976-FF548AE72AEC}</Project>
       <Name>Tuto</Name>

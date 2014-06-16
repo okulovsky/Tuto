@@ -160,6 +160,8 @@ namespace Tuto.Navigator
             {
                 loadedFile = value;
                 NotifyPropertyChanged();
+                NotifyPropertyChanged("WindowTitle");
+                NotifyPropertyChanged("IsLoaded");
             }
         }
 
@@ -169,6 +171,7 @@ namespace Tuto.Navigator
             {
                 globalData = value;
                 NotifyPropertyChanged();
+                NotifyPropertyChanged("IsLoaded");
             }
         }
 
@@ -184,6 +187,11 @@ namespace Tuto.Navigator
         public bool IsLoaded
         {
             get { return LoadedFile != null && GlobalData != null; }
+        }
+
+        public string WindowTitle
+        {
+            get { return LoadedFile != null ? LoadedFile.DirectoryName : "Tuto.Navigator"; }
         }
 
         #endregion

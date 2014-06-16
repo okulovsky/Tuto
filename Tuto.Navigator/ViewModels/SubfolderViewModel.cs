@@ -19,9 +19,12 @@ namespace Tuto.Navigator
 
         public void StartEditor()
         {
-            
+#if DEBUG
+            var editorExe = new FileInfo("c:\\tuto\\tuto.editor\\bin\\debug\\editor.exe");
+            Shell.Exec(false, editorExe, FullPath);
+#endif
         }
 
         public RelayCommand StartEditorCommand { get; private set; }
     }
-}
+} 

@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="Tuto.Navigator.FilePickerControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="40" d:DesignWidth="350">
+    <UserControl.Resources>
+        <ResourceDictionary Source="Resources.xaml"></ResourceDictionary>
+    </UserControl.Resources>
+    <Grid Margin="5" x:Name="RootGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="auto"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Label Grid.Column="0" Content="{Binding Text, Mode=TwoWay}"></Label>
+        <TextBox Grid.Column="1" Margin="10,0" VerticalContentAlignment="Center" Text="{Binding FilePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+        <Button Grid.Column="2" Content="..." Command="{Binding OpenCommand}"></Button>
+    </Grid>
+</UserControl>

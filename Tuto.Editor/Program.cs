@@ -18,10 +18,6 @@ namespace Editor
         public static string MontageFile="montage.editor";
         public static string TimesFile="times.txt";
 
-       
-       
-
-
         [STAThread]
         public static void Main(string[] args)
         {

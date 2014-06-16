@@ -18,10 +18,10 @@ namespace Tuto.Model
         public string Name { get; set; }
 
         [DataMember]
-        public FileInfo TitleImage { get; set; }
+        public string TitleImage { get; set; }
 
         [DataMember]
-        public FileInfo WatermarkImage { get; set; }
+        public string WatermarkImage { get; set; }
 
         public GlobalData()
         {

@@ -1,0 +1,11 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <Style x:Key="ButtonStyle">
+        <Setter Property="Control.MinWidth" Value="70"/>
+        <Setter Property="Control.MinHeight" Value="20"/>
+        <Setter Property="Control.Padding" Value="5"></Setter>
+    </Style>
+    <Style TargetType="Button" BasedOn="{StaticResource ButtonStyle}"/>
+    <system:String x:Key="ImageFilesFilter">Image files | *.jpg;*.jpeg;*.png;*.gif;*.bmp|All files|*.*</system:String>
+</ResourceDictionary>
