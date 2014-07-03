@@ -27,11 +27,5 @@ namespace Tuto.Navigator
         {
             InitializeComponent();
         }
-
-        private void CreateTestModel(object sender, RoutedEventArgs e)
-        {
-            var dir = Directory.GetCurrentDirectory();
-            MessageBox.Show(dir);
-        }
     }
 }

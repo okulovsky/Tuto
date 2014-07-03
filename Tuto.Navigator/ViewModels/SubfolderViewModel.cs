@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
@@ -19,10 +19,9 @@ namespace Tuto.Navigator
 
         public void StartEditor()
         {
-#if DEBUG
-            var editorExe = new FileInfo("c:\\tuto\\tuto.editor\\bin\\debug\\editor.exe");
+	        var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var editorExe = new FileInfo(Path.Combine(path, "editor.exe"));
             Shell.Exec(false, editorExe, FullPath);
-#endif
         }
 
         public RelayCommand StartEditorCommand { get; private set; }
