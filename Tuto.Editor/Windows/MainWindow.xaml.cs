@@ -223,7 +223,7 @@ namespace Editor
         void RunProcess(params string[] arguments)
         {
             this.IsEnabled = false;
-            Tuto.Program.Main(arguments);
+            Tuto.TutoProgram.Main(arguments);
             this.IsEnabled = true;
             MessageBox.Show("The action is complete");
             return;

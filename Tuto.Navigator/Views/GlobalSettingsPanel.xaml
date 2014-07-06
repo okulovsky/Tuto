@@ -9,10 +9,26 @@
              >
     <StackPanel Orientation="Vertical">
         <GroupBox Header="Main settings">
-            <StackPanel Orientation="Vertical">
-                <navigator:FilePickerControl Text="Title image" FilePath="{Binding TitleImage,Mode=TwoWay}" FileFilter="{StaticResource ImageFilesFilter}"/>
-                <navigator:FilePickerControl Text="Watermark image" FilePath="{Binding WatermarkImage,Mode=TwoWay}"/>
-            </StackPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Column="0" Grid.Row="0">The course's name</Label>
+                <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Name }"/>
+
+                <Label Grid.Column="0" Grid.Row="1">Title image</Label>
+                <navigator:FilePickerControl  Grid.Column="1" Grid.Row="1" FilePath="{Binding TitleImage,Mode=TwoWay}" FileFilter="{StaticResource ImageFilesFilter}"/>
+
+                <Label Grid.Column="0" Grid.Row="2">Watermark image</Label>
+                <navigator:FilePickerControl  Grid.Column="1" Grid.Row="2" FilePath="{Binding WatermarkImage,Mode=TwoWay}"/>
+            </Grid>
         </GroupBox>
         <GroupBox>
             <Grid>

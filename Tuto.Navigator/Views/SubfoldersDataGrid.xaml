@@ -12,10 +12,11 @@
             <DataGridTextColumn Binding="{Binding EpisodesNames}" Header="EpisodesNames"/>
             <DataGridTextColumn Binding="{Binding TotalDuration}" Header="TotalDuration"/>
             <DataGridCheckBoxColumn Binding="{Binding Marked, Mode=OneWay}"  Header="Marked"/>
-            <DataGridTemplateColumn Header="Run editor">
+            <DataGridCheckBoxColumn Binding="{Binding Montaged, Mode=OneWay}" Header="Montaged"/>
+            <DataGridTemplateColumn>
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <Button Command="{Binding StartEditorCommand}"/>
+                        <Button Width="50" Height="30" Command="{Binding StartEditorCommand}" Content="Editor"/>
                     </DataTemplate>                    
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>

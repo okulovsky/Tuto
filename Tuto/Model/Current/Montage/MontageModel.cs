@@ -43,6 +43,12 @@ namespace Tuto.Model
         /// </summary>
         public List<Border> Borders { get; set; }
 
+        /// <summary>
+        /// True, if the chunks were cut. This field is automatically set to false if the model changed
+        /// </summary>
+        [DataMember]
+        public bool Montaged { get; set; }
+
         public MontageModel(int totalLength)
         {
             Chunks = new StreamChunksArray(totalLength);

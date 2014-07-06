@@ -10,8 +10,17 @@ using System.Web.Script.Serialization;
 
 namespace Tuto
 {
-    public class Program
+    public class TutoProgram
     {
+        public static void Run(params string[] args)
+        {
+            try
+            {
+                Main(args);
+            }
+            catch { }
+        }
+
         public static void Main(string[] args)
         {
             var services = new List<Service>

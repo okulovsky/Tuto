@@ -30,6 +30,7 @@ namespace Tuto.Model
         {
             if (MontageModelChanged != null)
                 MontageModelChanged(this, EventArgs.Empty);
+            Montage.Montaged = false;
         }
 
 

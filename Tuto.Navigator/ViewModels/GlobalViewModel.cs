@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -144,7 +145,14 @@ namespace Tuto.Navigator
 
         public void RunSelected()
         {
-            MessageBox.Show("!");
+            var list = Enumerable.Range(0, 10)
+                .Select(z => new BatchWork
+                {
+                    Name = z.ToString(),
+                    Work = () => { Thread.Sleep(5000); },
+                }).ToList();
+            var wnd = new BatchWorkWindow();
+            wnd.Run(list);
         }
 
         #region commands

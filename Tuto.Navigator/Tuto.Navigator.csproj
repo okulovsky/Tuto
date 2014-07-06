@@ -62,6 +62,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ViewModels\BatchWork.cs" />
+    <Compile Include="Views\BatchWorkWindow.xaml.cs">
+      <DependentUpon>BatchWorkWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\FilePickerControl.xaml.cs">
       <DependentUpon>FilePickerControl.xaml</DependentUpon>
     </Compile>
@@ -70,6 +74,10 @@
     <Compile Include="Views\SubfoldersDataGrid.xaml.cs">
       <DependentUpon>SubfoldersDataGrid.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\BatchWorkWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\FilePickerControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -1,0 +1,14 @@
+﻿<Window x:Class="Tuto.Navigator.BatchWorkWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Batch work" Height="300" Width="300">
+    <StackPanel>
+        <DataGrid IsReadOnly="true" ItemsSource="{Binding}" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Status" Binding="{Binding Status}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button Content="Cancel" x:Name="CancelButton"/>
+    </StackPanel>
+</Window>

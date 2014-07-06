@@ -26,8 +26,6 @@ namespace Tuto.Navigator
         {
             InitializeComponent();
             OpenCommand = new RelayCommand(Open);
-            // DataContext = this; // doesn't work; see this: http://blog.jerrynixon.com/2013/07/solved-two-way-binding-inside-user.html
-            RootGrid.DataContext = this;
         }
 
         public void Open()
@@ -55,16 +53,7 @@ namespace Tuto.Navigator
         public static readonly DependencyProperty FilePathProperty =
             DependencyProperty.Register("FilePath", typeof(string), typeof(FilePickerControl), new PropertyMetadata(""));
 
-        public string Text
-        {
-            get { return (string) GetValue(TextProperty); }
-            set { SetValue(TextProperty, value); }
-        }
-
-        public static readonly DependencyProperty TextProperty =
-            DependencyProperty.Register("Text", typeof (string), typeof (FilePickerControl), new PropertyMetadata(""));
-
-
+      
 
         public string FileFilter
         {

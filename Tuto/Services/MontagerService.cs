@@ -48,6 +48,7 @@ namespace Tuto.Services
 
             var model = EditorModelIO.Load(folder);
             DoWork(model, print);
+            model.Montage.Montaged = true;
             EditorModelIO.Save(model);
         }
         const string DescriptionString =

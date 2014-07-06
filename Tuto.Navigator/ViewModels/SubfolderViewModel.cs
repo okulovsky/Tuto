@@ -23,11 +23,15 @@ namespace Tuto.Navigator
                     .Select(z=>z.Name)
                     .Aggregate((a, b) => a + "\r\n" + b);
             }
+
+            Montaged = model.Montage.Montaged;
         }
 
         public bool Selected { get; set; }
 
         public bool Marked { get; private set; }
+
+        public bool Montaged { get; private set; }
 
         public string FullPath { get; private set; }
 
