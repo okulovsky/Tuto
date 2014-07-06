@@ -37,10 +37,9 @@
                          ItemsSource="{Binding Subdirectories}">
                     </ListBox>
                 </StackPanel>
-
             </TabItem>
-            <TabItem Header="Settings" IsEnabled="{Binding IsLoaded}"
-                     Content="{Binding GlobalData}">
+            <TabItem Header="Settings" IsEnabled="{Binding IsLoaded}">
+                <navigator:GlobalSettingsPanel DataContext="{Binding GlobalData}"/>
             </TabItem>
             <TabItem Header="Debug">
                 <StackPanel
