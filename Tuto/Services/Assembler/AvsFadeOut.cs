@@ -1,4 +1,4 @@
-namespace Tuto.Services.Assembler
+namespace Tuto.TutoServices.Assembler
 {
     class AvsFadeOut : AvsFadeIn
     {

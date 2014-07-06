@@ -2,9 +2,9 @@
 using System.IO;
 using System.Linq;
 using Tuto.Model;
-using Tuto.Services.Montager;
+using Tuto.TutoServices.Montager;
 
-namespace Tuto.Services
+namespace Tuto.TutoServices
 {
     class RepairService : Service
     {

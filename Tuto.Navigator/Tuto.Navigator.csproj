@@ -62,7 +62,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ViewModels\BatchWork.cs" />
     <Compile Include="Views\BatchWorkWindow.xaml.cs">
       <DependentUpon>BatchWorkWindow.xaml</DependentUpon>
     </Compile>

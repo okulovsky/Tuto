@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 
-namespace Tuto.Services.Assembler
+namespace Tuto.TutoServices.Assembler
 {
     class AvsContext
     {

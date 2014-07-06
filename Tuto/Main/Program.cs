@@ -1,5 +1,5 @@
 ﻿using Editor;
-using Tuto.Services;
+using Tuto.TutoServices;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,21 +7,36 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
+using Tuto.Model;
 
 namespace Tuto
 {
     public class TutoProgram
     {
-        public static void Run(params string[] args)
+        public static IEnumerable<BatchWork> MakeAll(string fullPathOfModel)
         {
-            try
-            {
-                Main(args);
-            }
-            catch { }
+            var dir=new DirectoryInfo(fullPathOfModel);
+            var model = EditorModelIO.Load(fullPathOfModel);
+            if (!model.Montage.Montaged)
+                yield return new BatchWork 
+                    { 
+                        Name = "Montaging " + dir.Name,
+                        Work = () => Run(Services.Montager, dir)
+                    };
+
+            yield return new BatchWork 
+                    { 
+                        Name = "Assembling " + dir.Name,
+                        Work = ()=> Run(Services.Assembler, dir)
+                    };
         }
 
-        public static void Main(string[] args)
+        public static void Run(Services service, DirectoryInfo directory, ExecMode mode = ExecMode.Run)
+        {
+            Main(new string[] { service.ToString(), directory.FullName, mode.ToString() });
+        }
+
+        public static void Main(params string[] args)
         {
             var services = new List<Service>
             {

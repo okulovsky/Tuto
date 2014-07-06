@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Web.UI.WebControls;
 
-namespace Tuto.Services.Assembler
+namespace Tuto.TutoServices.Assembler
 {
     class AvsChunk : AvsNode
     {

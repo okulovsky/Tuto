@@ -145,14 +145,12 @@ namespace Tuto.Navigator
 
         public void RunSelected()
         {
-            var list = Enumerable.Range(0, 10)
-                .Select(z => new BatchWork
-                {
-                    Name = z.ToString(),
-                    Work = () => { Thread.Sleep(5000); },
-                }).ToList();
-            var wnd = new BatchWorkWindow();
-            wnd.Run(list);
+            var work = Subdirectories
+                .Where(z => z.Selected)
+                .SelectMany(z => TutoProgram.MakeAll(z.FullPath))
+                .ToArray();
+            var window = new BatchWorkWindow();
+            window.Run(work);
         }
 
         #region commands

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 
-namespace Tuto.Services.Assembler
+namespace Tuto.TutoServices.Assembler
 {
     class AvsIntro : AvsNode
     {

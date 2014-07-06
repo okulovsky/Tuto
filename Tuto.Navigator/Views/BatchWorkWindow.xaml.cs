@@ -42,9 +42,10 @@ namespace Tuto.Navigator
                 {
                     e.Status = BatchWorkStatus.Aborted;
                 }
-                catch
+                catch(Exception ex)
                 {
                     e.Status = BatchWorkStatus.Failure;
+                    e.ExceptionMessage = ex.Message;
                 }
             }
         }

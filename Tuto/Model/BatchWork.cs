@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tuto.Navigator
+namespace Tuto
 {
     public enum BatchWorkStatus
     {
@@ -25,6 +25,14 @@ namespace Tuto.Navigator
             get { return status; } 
             set { status = value; OnPropertyChanged("Status"); }  
         }
+
+        string exceptionMessage;
+        public string ExceptionMessage
+        {
+            get { return exceptionMessage; }
+            set { exceptionMessage = value; OnPropertyChanged("ExceptionMessage"); }
+        }
+
         public Action Work { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;

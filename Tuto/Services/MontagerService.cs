@@ -6,14 +6,16 @@ using System.Threading.Tasks;
 using Editor;
 using Tuto.Model;
 
-namespace Tuto.Services
+namespace Tuto.TutoServices
 {
-    class MontagerService : Service
+    public class MontagerService : Service
     {
+
+       
 
         public override string Name
         {
-            get { return "montager"; }
+            get { return Services.Montager.ToString(); } 
         }
 
         public override string Description
