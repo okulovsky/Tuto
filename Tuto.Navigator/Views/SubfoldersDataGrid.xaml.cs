@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Tuto.Navigator
 {
     /// <summary>
-    /// Interaction logic for SubdirectoryLine.xaml
+    /// Interaction logic for SubfoldersDataGrid.xaml
     /// </summary>
-    public partial class SubdirectoryLine : UserControl
+    public partial class SubfoldersDataGrid : UserControl
     {
-        public SubdirectoryLine()
+        public SubfoldersDataGrid()
         {
             InitializeComponent();
         }

@@ -23,6 +23,7 @@ namespace Tuto.Navigator
             SaveCommand = new RelayCommand(Save, () => IsLoaded);
             CloseCommand = new RelayCommand(Close, () => IsLoaded);
             RefreshCommand = new RelayCommand(ReadSubdirectories, () => IsLoaded);
+            RunSelectedCommand = new RelayCommand(RunSelected, () => IsLoaded && Subdirectories.Any(z => z.Selected));
 
             watcher = new FileSystemWatcher();
             watcher.IncludeSubdirectories = true;
@@ -141,6 +142,11 @@ namespace Tuto.Navigator
                 .Select(dir => new SubfolderViewModel(dir.FullName)));
         }
 
+        public void RunSelected()
+        {
+            MessageBox.Show("!");
+        }
+
         #region commands
 
         public RelayCommand NewCommand { get; private set; }
@@ -148,6 +154,7 @@ namespace Tuto.Navigator
         public RelayCommand SaveCommand { get; private set; }
         public RelayCommand CloseCommand { get; private set; }
         public RelayCommand RefreshCommand { get; private set; }
+        public RelayCommand RunSelectedCommand { get; private set; }
 
         #endregion
 

@@ -67,13 +67,9 @@
     </Compile>
     <Compile Include="RelayCommand.cs" />
     <Compile Include="ViewModels\SubfolderViewModel.cs" />
-    <Compile Include="Views\SubdirectoryLine.xaml.cs">
-      <DependentUpon>SubdirectoryLine.xaml</DependentUpon>
+    <Compile Include="Views\SubfoldersDataGrid.xaml.cs">
+      <DependentUpon>SubfoldersDataGrid.xaml</DependentUpon>
     </Compile>
-    <Page Include="Views\DataTemplates.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Views\FilePickerControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -102,7 +98,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SubdirectoryLine.xaml">
+    <Page Include="Views\SubfoldersDataGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

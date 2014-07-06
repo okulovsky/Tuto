@@ -7,8 +7,7 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Resources.xaml"></ResourceDictionary>
-                <ResourceDictionary Source="DataTemplates.xaml"></ResourceDictionary>
+               <ResourceDictionary Source="Resources.xaml"></ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -31,11 +30,9 @@
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal">
                         <Button Content="Refresh list" Command="{Binding RefreshCommand}"></Button>
+                        <Button Content="Batch assembly" Command="{Binding RunSelectedCommand}"/>
                     </StackPanel>
-                    <ListBox HorizontalAlignment="Stretch" Height="auto" VerticalAlignment="Stretch"
-                             Width="auto" HorizontalContentAlignment="Stretch"
-                         ItemsSource="{Binding Subdirectories}">
-                    </ListBox>
+                    <navigator:SubfoldersDataGrid DataContext="{Binding Subdirectories}"/>
                 </StackPanel>
             </TabItem>
             <TabItem Header="Settings" IsEnabled="{Binding IsLoaded}">
