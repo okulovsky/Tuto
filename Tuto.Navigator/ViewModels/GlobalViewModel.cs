@@ -24,7 +24,11 @@ namespace Tuto.Navigator
             SaveCommand = new RelayCommand(Save, () => IsLoaded);
             CloseCommand = new RelayCommand(Close, () => IsLoaded);
             RefreshCommand = new RelayCommand(ReadSubdirectories, () => IsLoaded);
-            RunSelectedCommand = new RelayCommand(RunSelected, () => IsLoaded && Subdirectories.Any(z => z.Selected));
+            RunSelectedCommand = new RelayCommand(RunSelected, 
+                () => 
+                    IsLoaded && Subdirectories.Any(z => z.Selected))
+
+                    ;
 
             watcher = new FileSystemWatcher();
             watcher.IncludeSubdirectories = true;
@@ -75,8 +79,8 @@ namespace Tuto.Navigator
             }
             file.Delete();
             file.Create().Close();
-            var container = new GlobalFileContainer {GlobalData = new GlobalData()};
-            container.Save(file);
+           
+            GlobalFileIO.Save(new GlobalData(),file);
 
             Load(file);
         }
@@ -105,7 +109,7 @@ namespace Tuto.Navigator
             }
 
             LoadedFile = file;
-            GlobalData = GlobalFileContainer.Load(LoadedFile).GlobalData;
+            GlobalData = GlobalFileIO.Load(LoadedFile);
             ReadSubdirectories();
 
             watcher.Path = LoadedFile.DirectoryName;
@@ -123,8 +127,7 @@ namespace Tuto.Navigator
         public void Save()
         {
             // need to save local data in each subdir?
-            var container = new GlobalFileContainer {GlobalData = GlobalData};
-            container.Save(LoadedFile);
+            GlobalFileIO.Save(GlobalData, LoadedFile);
         }
 
         public void Close()
@@ -139,7 +142,7 @@ namespace Tuto.Navigator
         {
             var rootDir = new DirectoryInfo(LoadedFile.DirectoryName);
             Subdirectories = new ObservableCollection<SubfolderViewModel>(rootDir.GetDirectories()
-                .Where(dir => dir.GetFiles(Locations.LocalFileName).Any())
+               // .Where(dir => dir.GetFiles(Locations.LocalFileName).Any())
                 .Select(dir => new SubfolderViewModel(dir.FullName)));
         }
 

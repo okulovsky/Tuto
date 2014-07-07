@@ -45,7 +45,7 @@ namespace Tuto.Navigator
         {
 	        var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var editorExe = new FileInfo(Path.Combine(path, "editor.exe"));
-            Shell.Exec(false, editorExe, FullPath);
+            Shell.ExecQuoteArgs(false, editorExe, FullPath);
         }
 
         public RelayCommand StartEditorCommand { get; private set; }

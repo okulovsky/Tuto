@@ -11,38 +11,25 @@ using Tuto.Model;
 namespace Tuto.Navigator
 {
     [DataContract]
-    class GlobalFileContainer
+    public class GlobalFileIO
     {
-        [DataMember]
-        public GlobalData GlobalData { get; set; }
-
-        [DataMember]
-        public int Version { get; set; }
-
-        public GlobalFileContainer()
+        public static void Save(GlobalData data, FileInfo file)
         {
-            Version = 1;
+            EditorModelIO.WriteJSonWithHeader(file, Header, 0, data);
         }
 
-        #region IO
-        public void Save(FileInfo file)
-        {
-            EditorModelIO.WriteJSonWithHeader(file, Header, Version, this);
-        }
-
-        public static GlobalFileContainer Load(DirectoryInfo dir)
+        public static GlobalData Load(DirectoryInfo dir)
         {
             var file = dir.GetFiles(Locations.GlobalFileName).FirstOrDefault();
             if (file == null)
-                return new GlobalFileContainer{GlobalData = new GlobalData()};
+                return new GlobalData();
             return Load(file);
         }
 
-        public static GlobalFileContainer Load(FileInfo file)
+        public static GlobalData Load(FileInfo file)
         {
-            return EditorModelIO.ReadJSonWithHeader<GlobalFileContainer>(file, Header);
+            return EditorModelIO.ReadJSonWithHeader<GlobalData>(file, Header);
         }
-        #endregion
 
         private const string Header = "Tuto project file";
     }

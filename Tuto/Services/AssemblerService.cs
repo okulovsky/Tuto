@@ -80,14 +80,14 @@ namespace Tuto.TutoServices
             }
 
             // intro with fadein and fadeout
-            var intro = new AvsIntro
-            {
-                VideoReference = model.Locations.Make(model.ChunkFolder, fileChunks[0].ChunkFilename),
-                ImageFile = model.Locations.IntroImage
-            };
-            var normalizedIntro = AvsNode.NormalizedNode(intro);
-            var fadedIntro = new AvsFadeIn {Payload = new AvsFadeOut {Payload = normalizedIntro}};
-            avsChunks.Items.Insert(0, fadedIntro);
+            //var intro = new AvsIntro
+            //{
+            //    VideoReference = model.Locations.Make(model.ChunkFolder, fileChunks[0].ChunkFilename),
+            //    ImageFile = model.Locations.IntroImage
+            //};
+            //var normalizedIntro = AvsNode.NormalizedNode(intro);
+            //var fadedIntro = new AvsFadeIn {Payload = new AvsFadeOut {Payload = normalizedIntro}};
+            //avsChunks.Items.Insert(0, fadedIntro);
 
             // fadeout last item
             avsChunks.Items[avsChunks.Items.Count - 1] = new AvsFadeOut { Payload = avsChunks.Items[avsChunks.Items.Count - 1] };
@@ -96,12 +96,14 @@ namespace Tuto.TutoServices
             // autolevel
             // ???
 
+            return avsChunks;
+
             // watermark
-            return new AvsWatermark
-            {
-                Payload = avsChunks,
-                ImageFile = model.Locations.WatermarkImage
-            };
+            //return new AvsWatermark
+            //{
+            //    Payload = avsChunks,
+            //    ImageFile = model.Locations.WatermarkImage
+            //};
 
             /*
              * add intro

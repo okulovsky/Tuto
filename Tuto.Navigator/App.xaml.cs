@@ -23,7 +23,7 @@ namespace Tuto.Navigator
             var globalModel = new GlobalViewModel();
             mainWindow.DataContext = globalModel;
 #if DEBUG
-            var dir = EditorModelIO.SubstituteDebugDirectories("debug\\");
+            var dir = EditorModelIO.SubstituteDebugDirectories("work\\");
             var file = Path.Combine(dir, "project.tuto");
             globalModel.Load(new FileInfo(file));
 #endif

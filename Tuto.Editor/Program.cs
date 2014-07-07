@@ -32,7 +32,7 @@ namespace Editor
 
             if (model.Montage.SoundIntervals == null || model.Montage.SoundIntervals.Count == 0)
             {
-                new Tuto.Services.PraatService().DoWork(model);
+                new Tuto.TutoServices.PraatService().DoWork(model);
             }
 
              var window = new MainWindow();

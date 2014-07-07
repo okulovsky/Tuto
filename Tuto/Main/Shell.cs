@@ -10,7 +10,11 @@ namespace Tuto
 {
     public static class Shell
     {
-
+        public static void ExecQuoteArgs(bool print, FileInfo executable, params string[] args)
+        {
+            var argsLine = args.Select(z => "\"" + z + "\"").Aggregate((a, b) => a + " " + b);
+            Exec(print, executable, argsLine);
+        }
 
         public static void Exec(bool print, string dir, string command, string args)
         {
