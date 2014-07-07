@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Tuto.Model;
 
-namespace Tuto.Services
+namespace Tuto.TutoServices
 {
     public class PraatService : Service
     {

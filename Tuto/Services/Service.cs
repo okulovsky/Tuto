@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Editor;
 
-namespace Tuto.Services
+namespace Tuto.TutoServices
 {
-    enum ExecMode
+    public enum ExecMode
     {
         Run, Print
     }

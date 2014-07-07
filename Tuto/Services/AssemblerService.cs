@@ -4,16 +4,18 @@ using System.IO;
 using System.Linq;
 using Editor;
 using Tuto.Model;
-using Tuto.Services.Assembler;
-using Tuto.Services.Montager;
+using Tuto.TutoServices.Assembler;
+using Tuto.TutoServices.Montager;
 
-namespace Tuto.Services
+
+namespace Tuto.TutoServices
 {
     class AssemblerService : Service
     {
+       
         public override string Name
         {
-            get { return "assembler"; }
+            get { return Services.Assembler.ToString(); }
         }
 
         public override string Description

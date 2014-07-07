@@ -18,7 +18,9 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using Editor.Windows;
+using Tuto;
 using Tuto.Model;
+using Tuto.TutoServices;
 
 namespace Editor
 {
@@ -80,13 +82,13 @@ namespace Editor
             Montage.Click += (s, a) =>
                 {
                     model.Save();
-                    RunProcess("montager",model.VideoFolder.FullName,"Run");
+                    RunProcess(Services.Montager,model.VideoFolder);
                 };
 
             Assembly.Click += (s, a) =>
                 {
                     model.Save();
-                    RunProcess("assembler", model.VideoFolder.FullName, "Run");
+                    RunProcess(Services.Assembler, model.VideoFolder);
                 };
 
             Help.Click += (s, a) =>
@@ -220,22 +222,22 @@ namespace Editor
         }
 
 
-        void RunProcess(params string[] arguments)
+        void RunProcess(Services service, DirectoryInfo directory)
         {
             this.IsEnabled = false;
-            Tuto.Program.Main(arguments);
+            Tuto.TutoProgram.Run(service, directory);
             this.IsEnabled = true;
             MessageBox.Show("The action is complete");
             return;
 
 
-            var process = new Process();
-            process.StartInfo.FileName = model.Locations.TutoExecutable.FullName;
-            process.StartInfo.Arguments = arguments
-                .Select(z => z.Contains(" ") ? "\"" + z + "\"" : z)
-                .Aggregate((a, b) => a + " " + b);
-            process.StartInfo.CreateNoWindow = false;
-            process.Start();
+            //var process = new Process();
+            //process.StartInfo.FileName = model.Locations.TutoExecutable.FullName;
+            //process.StartInfo.Arguments = arguments
+            //    .Select(z => z.Contains(" ") ? "\"" + z + "\"" : z)
+            //    .Aggregate((a, b) => a + " " + b);
+            //process.StartInfo.CreateNoWindow = false;
+            //process.Start();
 
         }
 

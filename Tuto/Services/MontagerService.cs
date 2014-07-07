@@ -6,14 +6,16 @@ using System.Threading.Tasks;
 using Editor;
 using Tuto.Model;
 
-namespace Tuto.Services
+namespace Tuto.TutoServices
 {
-    class MontagerService : Service
+    public class MontagerService : Service
     {
+
+       
 
         public override string Name
         {
-            get { return "montager"; }
+            get { return Services.Montager.ToString(); } 
         }
 
         public override string Description
@@ -48,6 +50,7 @@ namespace Tuto.Services
 
             var model = EditorModelIO.Load(folder);
             DoWork(model, print);
+            model.Montage.Montaged = true;
             EditorModelIO.Save(model);
         }
         const string DescriptionString =

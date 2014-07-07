@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Tuto.Services.Assembler
+namespace Tuto.TutoServices.Assembler
 {
     class AvsFadeIn : AvsNode
     {

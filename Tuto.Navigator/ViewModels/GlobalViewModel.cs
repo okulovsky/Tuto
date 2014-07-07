@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -23,6 +24,7 @@ namespace Tuto.Navigator
             SaveCommand = new RelayCommand(Save, () => IsLoaded);
             CloseCommand = new RelayCommand(Close, () => IsLoaded);
             RefreshCommand = new RelayCommand(ReadSubdirectories, () => IsLoaded);
+            RunSelectedCommand = new RelayCommand(RunSelected, () => IsLoaded && Subdirectories.Any(z => z.Selected));
 
             watcher = new FileSystemWatcher();
             watcher.IncludeSubdirectories = true;
@@ -141,6 +143,16 @@ namespace Tuto.Navigator
                 .Select(dir => new SubfolderViewModel(dir.FullName)));
         }
 
+        public void RunSelected()
+        {
+            var work = Subdirectories
+                .Where(z => z.Selected)
+                .SelectMany(z => TutoProgram.MakeAll(z.FullPath))
+                .ToArray();
+            var window = new BatchWorkWindow();
+            window.Run(work);
+        }
+
         #region commands
 
         public RelayCommand NewCommand { get; private set; }
@@ -148,6 +160,7 @@ namespace Tuto.Navigator
         public RelayCommand SaveCommand { get; private set; }
         public RelayCommand CloseCommand { get; private set; }
         public RelayCommand RefreshCommand { get; private set; }
+        public RelayCommand RunSelectedCommand { get; private set; }
 
         #endregion
 
