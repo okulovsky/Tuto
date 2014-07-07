@@ -40,11 +40,11 @@
         </StackPanel>
         <StackPanel Orientation="Vertical" DockPanel.Dock="Right">
             <MediaElement 
-                    Width="600"
+                    Width="400"
                     x:Name="FaceVideo" 
                     Grid.Column="0"/>
             <MediaElement 
-                    Width="600"
+                    Width="400"
                     x:Name="ScreenVideo"  
                     Grid.Column="1"/>
         </StackPanel>

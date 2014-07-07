@@ -155,19 +155,19 @@ namespace Editor
             switch (key.Command)
             {
                 case KeyboardCommands.LeftToLeft:
-                    Shift(rightBorderIndex, value);
-                    return;
-
-                case KeyboardCommands.LeftToRight:
                     Shift(rightBorderIndex, -value);
                     return;
 
+                case KeyboardCommands.LeftToRight:
+                    Shift(rightBorderIndex, value);
+                    return;
+
                 case KeyboardCommands.RightToLeft:
-                    Shift(leftBorderIndex, value);
+                    Shift(leftBorderIndex, -value);
                     return;
 
                 case KeyboardCommands.RightToRight:
-                    Shift(leftBorderIndex, -value);
+                    Shift(leftBorderIndex, value);
                     return;
 
                 case KeyboardCommands.LargeRight:

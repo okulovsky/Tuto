@@ -46,7 +46,7 @@ namespace Tuto.Model
             }
             else if (subdirectory.StartsWith("work\\"))
             {
-                subdirectory = subdirectory.Replace("work\\", "..\\..\\..\\..\\AIML-VIDEO\\");
+                subdirectory = subdirectory.Replace("work\\", "..\\..\\..\\..\\BP\\");
             }
             return subdirectory;
         }
