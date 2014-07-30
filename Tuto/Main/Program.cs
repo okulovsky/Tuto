@@ -13,11 +13,11 @@ namespace Tuto
 {
     public class TutoProgram
     {
-        public static IEnumerable<BatchWork> MakeAll(string fullPathOfModel)
+        public static IEnumerable<BatchWork> MakeAll(string fullPathOfModel, bool forceMontage=false)
         {
             var dir=new DirectoryInfo(fullPathOfModel);
             var model = EditorModelIO.Load(fullPathOfModel);
-            if (!model.Montage.Montaged)
+            if (forceMontage || !model.Montage.Montaged)
                 yield return new BatchWork 
                     { 
                         Name = "Montaging " + dir.Name,

@@ -24,11 +24,14 @@ namespace Tuto.Navigator
             SaveCommand = new RelayCommand(Save, () => IsLoaded);
             CloseCommand = new RelayCommand(Close, () => IsLoaded);
             RefreshCommand = new RelayCommand(ReadSubdirectories, () => IsLoaded);
-            RunSelectedCommand = new RelayCommand(RunSelected, 
-                () => 
-                    IsLoaded && Subdirectories.Any(z => z.Selected))
 
-                    ;
+
+            Func<bool> somethingSelected=() => 
+                    IsLoaded && Subdirectories.Any(z => z.Selected);
+
+
+            AssembleSelectedCommand = new RelayCommand(AssembleSelected, somethingSelected);
+            RemontageSelectedCommand = new RelayCommand(MontageSelected, somethingSelected);
 
             watcher = new FileSystemWatcher();
             watcher.IncludeSubdirectories = true;
@@ -146,7 +149,7 @@ namespace Tuto.Navigator
                 .Select(dir => new SubfolderViewModel(dir.FullName)));
         }
 
-        public void RunSelected()
+        void Run(bool forceMontage)
         {
             var work = Subdirectories
                 .Where(z => z.Selected)
@@ -154,6 +157,17 @@ namespace Tuto.Navigator
                 .ToArray();
             var window = new BatchWorkWindow();
             window.Run(work);
+
+        }
+
+        public void AssembleSelected()
+        {
+            Run(false);
+        }
+
+        public void MontageSelected()
+        {
+            Run(true);
         }
 
         #region commands
@@ -163,8 +177,8 @@ namespace Tuto.Navigator
         public RelayCommand SaveCommand { get; private set; }
         public RelayCommand CloseCommand { get; private set; }
         public RelayCommand RefreshCommand { get; private set; }
-        public RelayCommand RunSelectedCommand { get; private set; }
-
+        public RelayCommand AssembleSelectedCommand { get; private set; }
+        public RelayCommand RemontageSelectedCommand { get; private set; }
         #endregion
 
         #region properties

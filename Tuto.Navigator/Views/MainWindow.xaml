@@ -30,7 +30,8 @@
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal">
                         <Button Content="Refresh list" Command="{Binding RefreshCommand}"></Button>
-                        <Button Content="Batch assembly" Command="{Binding RunSelectedCommand}"/>
+                        <Button Content="Batch assembly" Command="{Binding AssembleSelectedCommand}"/>
+                        <Button Content="Batch remontage" Command="{Binding RemontageSelectedCommand}"/>
                     </StackPanel>
                     <navigator:SubfoldersDataGrid DataContext="{Binding Subdirectories}"/>
                 </StackPanel>
