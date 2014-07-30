@@ -41,7 +41,7 @@ namespace Tuto.TutoServices.Montager
                     yield return new ExtractScreenVideoCommand
                     {
                         VideoInput = /*chunk.SourceFilename,*/ model.Locations.DesktopVideo,
-                        StartTime = chunk.StartTime,
+                        StartTime = chunk.StartTime - model.Montage.SynchronizationShift,
                         Duration = chunk.Length,
                         VideoOutput = model.Locations.Make(model.ChunkFolder, chunk.VideoFilename)
                     };

@@ -153,7 +153,7 @@ namespace Tuto.Navigator
         {
             var work = Subdirectories
                 .Where(z => z.Selected)
-                .SelectMany(z => TutoProgram.MakeAll(z.FullPath))
+                .SelectMany(z => TutoProgram.MakeAll(z.FullPath, forceMontage))
                 .ToArray();
             var window = new BatchWorkWindow();
             window.Run(work);
