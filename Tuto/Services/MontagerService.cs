@@ -49,6 +49,7 @@ namespace Tuto.TutoServices
             var print = mode == ExecMode.Print;
 
             var model = EditorModelIO.Load(folder);
+            model.CreateFileChunks();            
             DoWork(model, print);
             model.Montage.Montaged = true;
             EditorModelIO.Save(model);

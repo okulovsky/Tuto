@@ -48,6 +48,9 @@ namespace Tuto.TutoServices.Assembler
             var yuy2 = new AvsConvertToYUY2 { Payload = node };
             var resized = new AvsResize { Payload = yuy2 };
             var changedFps = new AvsChangeFramerate { Payload = resized };
+            return changedFps;
+            
+            
             if(!autolevel)
                 return changedFps;
             var leveled = new AvsAutoLevels {Payload = changedFps};
