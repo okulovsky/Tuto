@@ -19,6 +19,7 @@ namespace Editor
         public string AudioFilename { get { return String.Format("audio_{0}_{1}.avi", StartTime, Length); } }
         public string VideoFilename { get { return String.Format("video_{0}_{1}.avi", StartTime, Length); } }
         public string ChunkFilename { get { return String.Format("chunk_{0}_{1}.avi", StartTime, Length); } }
+        public string EndChunkFileName { get { return String.Format("end_chunk_{0}_{1}.avi", StartTime, Length); } }
         
     }
 }

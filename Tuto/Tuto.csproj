@@ -102,6 +102,7 @@
     <Compile Include="Services\Assembler\AvsNode.cs" />
     <Compile Include="Services\Assembler\AvsResize.cs" />
     <Compile Include="Services\Assembler\AvsWatermark.cs" />
+    <Compile Include="Services\KostylAssemblerService.cs" />
     <Compile Include="Services\MontagerService.cs" />
     <Compile Include="Services\Montager\FFMPEGCommands.cs" />
     <Compile Include="Services\Montager\ProcessingCommands.cs" />
