@@ -6,11 +6,11 @@ using Tuto.TutoServices.Montager;
 
 namespace Tuto.TutoServices
 {
-    class RepairService : Service
+    public class RepairService : Service
     {
         public override string Name
         {
-            get { return "repair"; }
+            get { return Services.Repair.ToString(); }
         }
 
         public override string Description
@@ -20,47 +20,56 @@ namespace Tuto.TutoServices
 
         public override string Help
         {
-            get { return string.Format(HelpString, FilenameSuffix); }
+            get { return HelpString; }
         }
 
-        public void DoWork(EditorModel model, bool print)
+        public void DoWork(FileInfo file, bool print=false)
         {
-            var videos = new[] {model.Locations.FaceVideo, model.Locations.DesktopVideo};
-            foreach (var videoFile in videos)
+            FileInfo brokenFile=null;
+            for (int i=0;;i++)
             {
-                var repairedFilename = Path.GetFileNameWithoutExtension(videoFile.Name) + FilenameSuffix;
-                var repairedVideo = model.Locations.Make(model.VideoFolder, repairedFilename);
-                if (repairedVideo.Exists)
-                    repairedVideo.Delete();
-                var command = new RepairCommand {VideoInput = videoFile, VideoOutput = repairedVideo};
-                command.Execute(print);
+                var name=Path.GetFileNameWithoutExtension(file.Name)+"_"+i.ToString()+file.Extension;
+                name = Path.Combine(file.Directory.FullName, name);
+                brokenFile=new FileInfo(name);
+                if (brokenFile.Exists) continue;
+                File.Move(file.FullName,brokenFile.FullName);
+                break;
             }
+            FileInfo outputFile=file;
+            new RepairCommand { VideoInput = brokenFile, VideoOutput = outputFile}.Execute(print);
         }
 
         public override void DoWork(string[] args)
         {
-            if (args.Length < 3)
+            if (args.Length < 4)
                 throw (new ArgumentException(String.Format("Insufficient args")));
             var folder = args[1];
+
+            bool face = args[2] == "face";
+            if (args[2] != "face" && args[2] != "desktop") throw new Exception("The second argument must be 'face' or 'desktop'");
+
             ExecMode mode;
             if (!Enum.TryParse(args[2], true, out mode))
                 throw (new ArgumentException(String.Format("Unknown mode: {0}", args[2])));
             var print = mode == ExecMode.Print;
 
             var model = EditorModelIO.Load(folder);
-            DoWork(model, print);
+            if (face)
+                DoWork(model.Locations.FaceVideo, print);
+            else
+                DoWork(model.Locations.DesktopVideo, print);
         }
 
-        static string FilenameSuffix {get { return "_repaired.avi"; }}
-
+      
         const string DescriptionString =
             @"Recodes video to fix broken files.";
         const string HelpString =
             @"<folder> <mode>
 
-folder: directory containing desktop and face videos
-mode: run or print. Execute commands or write them to stdout
+folder:         directory containing desktop and face videos
+face|desktop:   which file should be repaired 
+mode:           run or print. Execute commands or write them to stdout
 
-Repaired video is stored as ""<filename>{0}"".";
+The original file is stored with suffix, the repaired - under the name of original.";
     }
 }

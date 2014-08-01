@@ -9,6 +9,7 @@ namespace Tuto
     public enum Services
     {
         Montager,
-        Assembler
+        Assembler,
+        Repair
     }
 }

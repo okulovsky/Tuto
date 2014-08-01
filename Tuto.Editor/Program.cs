@@ -32,7 +32,17 @@ namespace Editor
 
             if (model.Montage.SoundIntervals == null || model.Montage.SoundIntervals.Count == 0)
             {
-                new Tuto.TutoServices.PraatService().DoWork(model);
+                try
+                {
+                    new Tuto.TutoServices.PraatService().DoWork(model);
+                }
+                catch(Exception e)
+                {
+                    MessageBox.Show("Praat failed. Separation by sound will not be available\n\n" + e.Message,
+                        "Tuto.Editor",
+                         MessageBoxButton.OK,
+                          MessageBoxImage.Exclamation);
+                }
             }
 
              var window = new MainWindow();

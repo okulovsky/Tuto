@@ -36,6 +36,11 @@ namespace Tuto
             Main(new string[] { service.ToString(), directory.FullName, mode.ToString() });
         }
 
+        public static void Repair(DirectoryInfo directory, bool face, ExecMode mode = ExecMode.Run)
+        {
+            Main(Services.Repair.ToString(), directory.FullName, face ? "face" : "desktop", mode.ToString());
+        }
+
         public static void Main(params string[] args)
         {
             var services = new List<Service>

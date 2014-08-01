@@ -91,6 +91,22 @@ namespace Editor
                     RunProcess(Services.Assembler, model.VideoFolder);
                 };
 
+            RepairFace.Click += (s, a) =>
+                {
+                    model.Save();
+                    IsEnabled = false;
+                    new Tuto.TutoServices.RepairService().DoWork(model.Locations.FaceVideo);
+                    IsEnabled = true;
+                };
+
+            RepairDesktop.Click += (s, a) =>
+            {
+                model.Save();
+                IsEnabled = false;
+                new Tuto.TutoServices.RepairService().DoWork(model.Locations.DesktopVideo);
+                IsEnabled = true;
+            };
+
             Help.Click += (s, a) =>
                 {
                     var data = HelpCreator.CreateModeHelp();

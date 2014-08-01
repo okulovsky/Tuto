@@ -33,28 +33,28 @@ namespace Tuto.Navigator
             AssembleSelectedCommand = new RelayCommand(AssembleSelected, somethingSelected);
             RemontageSelectedCommand = new RelayCommand(MontageSelected, somethingSelected);
 
-            watcher = new FileSystemWatcher();
-            watcher.IncludeSubdirectories = true;
-            /* watcher.Filter = "local.tuto"; 
-             * 
-             * fails to detect deletion of directory with files
-             * because files reported in DOS format in that case
-             * and multiple filemask isn't possible
-             * 
-             * catching all events for now
-             */
-            watcher.NotifyFilter = NotifyFilters.Attributes
-                                   | NotifyFilters.CreationTime
-                                   | NotifyFilters.DirectoryName
-                                   | NotifyFilters.FileName
-                                   | NotifyFilters.LastAccess
-                                   | NotifyFilters.LastWrite
-                                   | NotifyFilters.Security
-                                   | NotifyFilters.Size;
-            watcher.Created += DirectoryChanged;
-            watcher.Deleted += DirectoryChanged;
-            watcher.Changed += DirectoryChanged;
-            watcher.Renamed += DirectoryChanged;
+            //watcher = new FileSystemWatcher();
+            //watcher.IncludeSubdirectories = true;
+            ///* watcher.Filter = "local.tuto"; 
+            // * 
+            // * fails to detect deletion of directory with files
+            // * because files reported in DOS format in that case
+            // * and multiple filemask isn't possible
+            // * 
+            // * catching all events for now
+            // */
+            //watcher.NotifyFilter = NotifyFilters.Attributes
+            //                       | NotifyFilters.CreationTime
+            //                       | NotifyFilters.DirectoryName
+            //                       | NotifyFilters.FileName
+            //                       | NotifyFilters.LastAccess
+            //                       | NotifyFilters.LastWrite
+            //                       | NotifyFilters.Security
+            //                       | NotifyFilters.Size;
+            //watcher.Created += DirectoryChanged;
+            //watcher.Deleted += DirectoryChanged;
+            //watcher.Changed += DirectoryChanged;
+            //watcher.Renamed += DirectoryChanged;
 
         }
 
@@ -115,8 +115,8 @@ namespace Tuto.Navigator
             GlobalData = GlobalFileIO.Load(LoadedFile);
             ReadSubdirectories();
 
-            watcher.Path = LoadedFile.DirectoryName;
-            watcher.EnableRaisingEvents = true;
+            //watcher.Path = LoadedFile.DirectoryName;
+            //watcher.EnableRaisingEvents = true;
 
             //force refresh every command's canexecute
             //CommandManager.InvalidateRequerySuggested();
@@ -138,7 +138,7 @@ namespace Tuto.Navigator
             LoadedFile = null;
             GlobalData = null;
             Subdirectories.Clear();
-            watcher.EnableRaisingEvents = false;
+            //watcher.EnableRaisingEvents = false;
         }
 
         public void ReadSubdirectories()
@@ -146,6 +146,7 @@ namespace Tuto.Navigator
             var rootDir = new DirectoryInfo(LoadedFile.DirectoryName);
             Subdirectories = new ObservableCollection<SubfolderViewModel>(rootDir.GetDirectories()
                // .Where(dir => dir.GetFiles(Locations.LocalFileName).Any())
+               .OrderByDescending(z=>z.CreationTime)
                 .Select(dir => new SubfolderViewModel(dir.FullName)));
         }
 
@@ -229,7 +230,7 @@ namespace Tuto.Navigator
         private FileInfo loadedFile;
         private GlobalData globalData;
         private ObservableCollection<SubfolderViewModel> subdirectories;
-        private FileSystemWatcher watcher;
+        //private FileSystemWatcher watcher;
 
     }
 }

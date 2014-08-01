@@ -36,6 +36,8 @@
             <Button x:Name="Montage">Montage</Button>
             <Button x:Name="Assembly">Assembly</Button>
             <Rectangle Width="50"/>
+            <Button x:Name="RepairFace">Repair Face</Button>
+            <Button x:Name="RepairDesktop">Repair Desktop</Button>
             <Button x:Name="Help">Help</Button>
         </StackPanel>
         <StackPanel Orientation="Vertical" DockPanel.Dock="Right">
