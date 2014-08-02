@@ -41,6 +41,11 @@ namespace Tuto
             Main(Services.Repair.ToString(), directory.FullName, face ? "face" : "desktop", mode.ToString());
         }
 
+        public static void SetSilentMode()
+        {
+            Shell.SilentMode = true;
+        }
+
         public static void Main(params string[] args)
         {
             var services = new List<Service>

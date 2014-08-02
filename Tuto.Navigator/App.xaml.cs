@@ -19,6 +19,7 @@ namespace Tuto.Navigator
     {
         private void AppStartup(object sender, StartupEventArgs e)
         {
+            TutoProgram.SetSilentMode();
             var mainWindow = new MainWindow();
             var globalModel = new GlobalViewModel();
             mainWindow.DataContext = globalModel;

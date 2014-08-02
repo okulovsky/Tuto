@@ -31,13 +31,23 @@ namespace Tuto.TutoServices
         public void DoWork(EditorModel model, bool print)
         {
             // Перекодируем файлы в единый формат
-            foreach(var file in model.ChunkFolder.GetFiles("end_chunk*.*"))
+            
+            foreach (var file in model.ChunkFolder.GetFiles("end_chunk*.*"))
                 file.Delete();
             foreach (var e in model.Montage.FileChunks)
                 Shell.FFMPEG(false,
                     @"-i ""{0}"" -vf scale=1280:720 -r 30 -q:v 0 -acodec libmp3lame -ar 44100 -ab 32k -copyts ""{1}""",
                     Path.Combine(model.ChunkFolder.FullName, e.ChunkFilename),
                     Path.Combine(model.ChunkFolder.FullName, e.EndChunkFileName));
+
+            //foreach (var file in model.ChunkFolder.GetFiles("end_chunk*.*"))
+            //    file.Delete();
+            //foreach (var e in model.Montage.FileChunks)
+            //    File.Copy(
+            //        Path.Combine(model.ChunkFolder.FullName, e.ChunkFilename),
+            //        Path.Combine(model.ChunkFolder.FullName, e.EndChunkFileName));
+
+
 
             List<List<FileChunk>> list = new List<List<FileChunk>>();
             var temp = new List<FileChunk>();
@@ -48,26 +58,31 @@ namespace Tuto.TutoServices
             }
             list.Add(temp);
 
-            var tempFileName = Path.Combine(model.ChunkFolder.FullName, "temp.txt");
+            //var tempFileName = Path.Combine(model.ChunkFolder.FullName, "temp.txt");
+            //for (int i = 0; i < list.Count; i++)
+            //{
+            //    var e = list[i];
+            //    var endFileName = Path.Combine(model.VideoFolder.FullName, i.ToString() + ".avi");
+            //    if (File.Exists(endFileName)) File.Delete(endFileName);
+            //    var str = e.Select(z => "file '" + Path.Combine(model.ChunkFolder.FullName, z.EndChunkFileName) + "'\r\n").Aggregate((a, b) => a + b);
+            //    File.WriteAllText(tempFileName, str);
+            //    Shell.FFMPEG(false, @"-f concat -i ""{0}"" -q:v 0 -q:a 0 ""{1}""",
+            //        tempFileName,endFileName);
+            //}
+
             for (int i = 0; i < list.Count; i++)
             {
-                var e = list[i];
-                var endFileName = Path.Combine(model.VideoFolder.FullName, i.ToString() + ".avi");
+                var endFileName = Path.Combine(
+                    model.VideoFolder.FullName,
+                    string.Format("{0}-{1} {2}.avi",
+                        model.VideoFolder.Name,
+                        i,
+                        model.Montage.Information.Episodes[i].Name));
                 if (File.Exists(endFileName)) File.Delete(endFileName);
-                var str = e.Select(z => "file '" + Path.Combine(model.ChunkFolder.FullName, z.EndChunkFileName) + "'\r\n").Aggregate((a, b) => a + b);
-                File.WriteAllText(tempFileName, str);
-                Shell.FFMPEG(false, @"-f concat -i ""{0}"" -q:v 0 -q:a 0 ""{1}""",
-                    tempFileName,endFileName);
+                var e = list[i];
+                var str = e.Select(z => Path.Combine(model.ChunkFolder.FullName, z.EndChunkFileName)).Aggregate((a, b) => a + "|" + b);
+                Shell.FFMPEG(false, @"-i ""concat:" + str + @""" -c copy ""{0}""", endFileName);
             }
-            
-            //for(int i=0;i<list.Count;i++)
-            //{
-            //    var endFileName=Path.Combine(model.VideoFolder.FullName, i.ToString() + ".avi");
-            //    if (File.Exists(endFileName)) File.Delete(endFileName);
-            //    var e=list[i];
-            //    var str = e.Select(z => Path.Combine(model.ChunkFolder.FullName, z.EndChunkFileName)).Aggregate((a, b) => a + "|" + b);
-            //    Shell.FFMPEG(false, @"-i ""concat:" + str + @""" -q:v 0 -q:a 0  ""{0}""", endFileName);
-            //}
         }
 
 

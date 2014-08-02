@@ -10,6 +10,8 @@ namespace Tuto
 {
     public static class Shell
     {
+        public static bool SilentMode = false;
+
         public static void ExecQuoteArgs(bool print, FileInfo executable, params string[] args)
         {
             var argsLine = args.Select(z => "\"" + z + "\"").Aggregate((a, b) => a + " " + b);
@@ -28,7 +30,10 @@ namespace Tuto
                 var process = new Process();
                 process.StartInfo.FileName = fullPath;
                 process.StartInfo.Arguments = args;
-                process.StartInfo.UseShellExecute = true;
+
+                process.StartInfo.UseShellExecute = !SilentMode;
+                process.StartInfo.CreateNoWindow = SilentMode;
+
                 process.Start();
                 process.WaitForExit();
                 if (process.ExitCode != 0)

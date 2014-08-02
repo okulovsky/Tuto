@@ -27,14 +27,14 @@
         </Menu>
         <TabControl Grid.Row="1" HorizontalAlignment="Stretch" Height="auto" VerticalAlignment="Stretch" Width="auto">
             <TabItem Header="Overview">
-                <StackPanel Orientation="Vertical">
-                    <StackPanel Orientation="Horizontal">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
                         <Button Content="Refresh list" Command="{Binding RefreshCommand}"></Button>
                         <Button Content="Batch assembly" Command="{Binding AssembleSelectedCommand}"/>
-                        <Button Content="Batch remontage" Command="{Binding RemontageSelectedCommand}"/>
+                        <!--<Button Content="Batch remontage" Command="{Binding RemontageSelectedCommand}"/>-->
                     </StackPanel>
                     <navigator:SubfoldersDataGrid DataContext="{Binding Subdirectories}"/>
-                </StackPanel>
+                </DockPanel>
             </TabItem>
             <TabItem Header="Settings" IsEnabled="{Binding IsLoaded}">
                 <navigator:GlobalSettingsPanel DataContext="{Binding GlobalData}"/>
