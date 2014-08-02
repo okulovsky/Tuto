@@ -24,7 +24,7 @@ namespace Tuto.TutoServices.Montager
                 case Mode.Face:
                     yield return new ExtractFaceVideoCommand
                     {
-                        VideoInput = /*chunk.SourceFilename,*/ model.Locations.FaceVideo,
+                        VideoInput = /*chunk.SourceFilename,*/ model.Locations.ConvertedFaceVideo,
                         StartTime = chunk.StartTime,
                         Duration = chunk.Length,
                         VideoOutput = model.Locations.Make(model.ChunkFolder, chunk.ChunkFilename)
@@ -33,14 +33,14 @@ namespace Tuto.TutoServices.Montager
                 case Mode.Screen:
                     yield return new ExtractAudioCommand
                     {
-                        AudioInput = /*chunk.SourceFilename,*/ model.Locations.FaceVideo,
+                        AudioInput = /*chunk.SourceFilename,*/ model.Locations.ConvertedFaceVideo,
                         StartTime = chunk.StartTime,
                         Duration = chunk.Length,
                         AudioOutput = model.Locations.Make(model.ChunkFolder, chunk.AudioFilename)
                     };
                     yield return new ExtractScreenVideoCommand
                     {
-                        VideoInput = /*chunk.SourceFilename,*/ model.Locations.DesktopVideo,
+                        VideoInput = /*chunk.SourceFilename,*/ model.Locations.ConvertedDesktopVideo,
                         StartTime = chunk.StartTime - model.Montage.SynchronizationShift,
                         Duration = chunk.Length,
                         VideoOutput = model.Locations.Make(model.ChunkFolder, chunk.VideoFilename)
