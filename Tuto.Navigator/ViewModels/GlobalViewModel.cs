@@ -146,6 +146,7 @@ namespace Tuto.Navigator
             var rootDir = new DirectoryInfo(LoadedFile.DirectoryName);
             Subdirectories = new ObservableCollection<SubfolderViewModel>(rootDir.GetDirectories()
                // .Where(dir => dir.GetFiles(Locations.LocalFileName).Any())
+               .Where(dir=>dir.Name!="Output") //очень грубый костыль
                .OrderByDescending(z=>z.CreationTime)
                 .Select(dir => new SubfolderViewModel(dir.FullName)));
         }
