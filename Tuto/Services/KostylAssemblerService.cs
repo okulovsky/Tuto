@@ -12,6 +12,7 @@ namespace Tuto.TutoServices
 {
     class AssemblerService : Service
     {
+        bool recodeBeforeAssembling = false;
 
         public override string Name
         {
@@ -77,6 +78,11 @@ namespace Tuto.TutoServices
             return list;
         }
 
+        string GetChunkFileName(FileChunk chunk)
+        {
+            return recodeBeforeAssembling ? chunk.EndChunkFileName : chunk.ChunkFilename;
+        }
+
         void AssemblyWithExternalFile(EditorModel model)
         {
             var list = SeparateByEpisode(model);
@@ -85,7 +91,7 @@ namespace Tuto.TutoServices
             {
                 var e = list[i];
                 var endFile = TouchFile(model, i);
-                var str = e.Select(z => "file '" + Path.Combine(model.ChunkFolder.FullName, z.EndChunkFileName) + "'\r\n").Aggregate((a, b) => a + b);
+                var str = e.Select(z => "file '" + Path.Combine(model.ChunkFolder.FullName, GetChunkFileName(z)) + "'\r\n").Aggregate((a, b) => a + b);
                 File.WriteAllText(tempFileName, str);
                 Shell.FFMPEG(false, @"-f concat -i ""{0}"" -q:v 0 -q:a 0 ""{1}""",
                     tempFileName, endFile.FullName);
@@ -100,7 +106,7 @@ namespace Tuto.TutoServices
             {
                 var endFile = TouchFile(model, i);
                 var e = list[i];
-                var str = e.Select(z => Path.Combine(model.ChunkFolder.FullName, z.EndChunkFileName)).Aggregate((a, b) => a + "|" + b);
+                var str = e.Select(z => Path.Combine(model.ChunkFolder.FullName, GetChunkFileName(z))).Aggregate((a, b) => a + "|" + b);
                 Shell.FFMPEG(false, @"-i ""concat:" + str + @""" -c copy ""{0}""", endFile.FullName);
             }
         }
@@ -108,8 +114,10 @@ namespace Tuto.TutoServices
 
         public void DoWork(EditorModel model, bool print)
         {
-            RecodeFles(model);
-            AssemblyFromCommandLine(model);
+            if (recodeBeforeAssembling)
+                RecodeFles(model);
+            //AssemblyFromCommandLine(model);
+            AssemblyWithExternalFile(model);
         }
 
 
