@@ -10,13 +10,13 @@ using Tuto.TutoServices.Montager;
 
 namespace Tuto.TutoServices
 {
-    class AssemblerService : Service
+    class ConcatenatorService : Service
     {
         bool recodeBeforeAssembling = false;
 
         public override string Name
         {
-            get { return Services.Assembler.ToString(); }
+            get { return Services.Concatenator.ToString(); }
         }
 
         public override string Description
@@ -27,21 +27,6 @@ namespace Tuto.TutoServices
         public override string Help
         {
             get { return HelpString; }
-        }
-
-        FileInfo TouchFile(EditorModel model, int episode)
-        {
-            if (!model.Locations.OutputDirectory.Exists)
-                model.Locations.OutputDirectory.Create();
-            var file = new FileInfo(
-            Path.Combine(
-                    model.Locations.OutputDirectory.FullName,
-                    string.Format("{0}-{1} {2}.avi",
-                        model.VideoFolder.Name,
-                        episode,
-                        model.Montage.Information.Episodes[episode].Name)));
-            if (file.Exists) file.Delete();
-            return file;
         }
 
         void RecodeFles(EditorModel model)
@@ -90,7 +75,8 @@ namespace Tuto.TutoServices
             for (int i = 0; i < list.Count; i++)
             {
                 var e = list[i];
-                var endFile = TouchFile(model, i);
+                var endFile = model.Locations.GetOutputFile(i);
+                if (endFile.Exists) endFile.Delete();
                 var str = e.Select(z => "file '" + Path.Combine(model.ChunkFolder.FullName, GetChunkFileName(z)) + "'\r\n").Aggregate((a, b) => a + b);
                 File.WriteAllText(tempFileName, str);
                 Shell.FFMPEG(false, @"-f concat -i ""{0}"" -q:v 0 -q:a 0 ""{1}""",
@@ -104,7 +90,8 @@ namespace Tuto.TutoServices
 
             for (int i = 0; i < list.Count; i++)
             {
-                var endFile = TouchFile(model, i);
+                var endFile = model.Locations.GetOutputFile(i);
+                if (endFile.Exists) endFile.Delete(); 
                 var e = list[i];
                 var str = e.Select(z => Path.Combine(model.ChunkFolder.FullName, GetChunkFileName(z))).Aggregate((a, b) => a + "|" + b);
                 Shell.FFMPEG(false, @"-i ""concat:" + str + @""" -c copy ""{0}""", endFile.FullName);

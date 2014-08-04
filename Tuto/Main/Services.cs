@@ -10,6 +10,7 @@ namespace Tuto
     {
         Montager,
         Assembler,
-        Repair
+        Repair,
+        Concatenator
     }
 }

@@ -42,5 +42,20 @@ namespace Tuto.Model
 
         public const string LocalFileName = "local.tuto";
         public const string GlobalFileName = "project.tuto";
+
+        public FileInfo GetOutputFile(int episodeNumber)
+        {
+            if (!model.Locations.OutputDirectory.Exists)
+                model.Locations.OutputDirectory.Create();
+            var file = new FileInfo(
+            Path.Combine(
+                    model.Locations.OutputDirectory.FullName,
+                    string.Format("{0}-{1} {2}.avi",
+                        model.VideoFolder.Name,
+                        episodeNumber,
+                        model.Montage.Information.Episodes[episodeNumber].Name)));
+            return file;
+        }
+
     }
 }
