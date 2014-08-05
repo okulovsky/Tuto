@@ -34,9 +34,9 @@ namespace Tuto.TutoServices
             model.ChunkFolder.Delete(true);
             model.ChunkFolder.Create();
             Thread.Sleep(100); //без этого почему-то вылетают ошибки
-            Shell.FFMPEG(print, @"-i ""{0}"" -vf scale=1280:720 -r 30 -q:v 0 -acodec libmp3lame -ar 44100 -ab 32k ""{1}""",
+            Shell.FFMPEG(print, @"-i ""{0}"" -vf scale=1280:720 -r 25 -q:v 0 -acodec libmp3lame -ar 44100 -ab 32k ""{1}""",
                 model.Locations.FaceVideo.FullName, model.Locations.ConvertedFaceVideo.FullName);
-            Shell.FFMPEG(print, @"-i ""{0}"" -vf scale=1280:720 -r 30 -q:v 0 -an ""{1}""",
+            Shell.FFMPEG(print, @"-i ""{0}"" -vf scale=1280:720 -r 25 -q:v 0 -an ""{1}""",
                             model.Locations.DesktopVideo.FullName, model.Locations.ConvertedDesktopVideo.FullName);
 
 
