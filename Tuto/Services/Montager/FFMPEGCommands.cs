@@ -112,7 +112,7 @@ namespace Tuto.TutoServices.Montager
         {
             Shell.FFMPEG(
                 print,
-                @"-i ""{1}"" -i ""{0}"" -acodec copy -vcodec copy ""{2}""",
+                @"-i ""{1}"" -i ""{0}"" -q:v 0 -q:a 0 ""{2}""",
                 VideoInput,
                 AudioInput,
                 VideoOutput);

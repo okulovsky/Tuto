@@ -101,6 +101,7 @@
     <Compile Include="Services\Assembler\AvsIntro.cs" />
     <Compile Include="Services\Assembler\AvsNode.cs" />
     <Compile Include="Services\Assembler\AvsResize.cs" />
+    <Compile Include="Services\Assembler\AvsTrimToVideoLength.cs" />
     <Compile Include="Services\Assembler\AvsWatermark.cs" />
     <Compile Include="Services\ConcatenatorService.cs" />
     <Compile Include="Services\MontagerService.cs" />

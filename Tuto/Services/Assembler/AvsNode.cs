@@ -40,21 +40,26 @@ namespace Tuto.TutoServices.Assembler
         public static AvsNode NormalizedNode(FileInfo chunkFile, bool autolevel)
         {
             var chunk = new AvsChunk {ChunkFile = chunkFile};
+			
             return NormalizedNode(chunk, autolevel);
         }
 
         public static AvsNode NormalizedNode(AvsNode node, bool autolevel=false)
         {
-            var yuy2 = new AvsConvertToYUY2 { Payload = node };
-            var resized = new AvsResize { Payload = yuy2 };
-            var changedFps = new AvsChangeFramerate { Payload = resized };
-            return changedFps;
-            
-            
+			var trimmed = new AvsTrimToVideoLength { Payload = node };
+	        return trimmed;
+
+
+	        //var resized = new AvsResize { Payload = yuy2 };
+	        //var changedFps = new AvsChangeFramerate { Payload = resized };
+	        //return changedFps;
+
+	        /*
             if(!autolevel)
                 return changedFps;
             var leveled = new AvsAutoLevels {Payload = changedFps};
             return leveled;
+			*/
         }
     }
 }
