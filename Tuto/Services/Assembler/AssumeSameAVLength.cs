@@ -2,7 +2,7 @@
 
 namespace Tuto.TutoServices.Assembler
 {
-	class AvsTrimToVideoLength : AvsNode
+	class AssumeSameAVLength : AvsNode
 	{
 		public AvsNode Payload { get; set; }
 
@@ -22,7 +22,7 @@ namespace Tuto.TutoServices.Assembler
 
 		protected override string Format
 		{
-			get { return "{0} = Trim({1}, 0, {1}.FrameCount)"; }
+			get { return "{0} = AssumeSameAVLength({1})"; }
 		}
 	}
 }

@@ -63,3 +63,37 @@ function Time2Frame(clip c, float ms) {
 	fps = c.frameRate  # float
 	return round(f_ms/1000*fps)
 }
+
+function AssumeSameAVLength(clip c) {
+	# can not just trim() clip to make its audio and video have same duration.
+	# it works if audio is longer than video
+	# in other case, should mix audio with silent stream to fill clip duration
+	audio = c.killVideo()
+	video = c.killAudio()
+	aRate = audio.audioRate
+	aChannels = audio.audioChannels
+	vFrames = c.frameCount
+	vFps = c.FrameRate
+	
+	#this creates black video with silent audio, both with correct duration.
+	silence = blankClip(audio_rate=aRate, channels=aChannels, fps=vFps, length=vFrames)
+	AssertLength(silence)
+	
+	silence = silence.killVideo()
+	mixed = MixAudio(silence, audio)  # silence should be first arg!
+	assert(mixed.audioLength == silence.audioLength)
+	
+	v = audioDub(video, mixed)
+	
+	AssertLength(v)
+	
+	return v
+}
+
+function AssertLength(clip v) {
+	assert(v.audioLengthF/v.audioRate == v.framecount/v.framerate, \
+	"audio length/rate: "+string(v.audioLengthF) + " / " + string(v.audioRate) \
+	+ " = " + string(v.audioLengthF/v.audioRate) \
+	+ " <> video framecount/framerate "+string(v.framecount) + " / " + string(v.framerate) \
+	+ " = " + string(v.framecount/v.framerate))
+}

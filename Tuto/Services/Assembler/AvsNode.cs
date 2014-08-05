@@ -46,8 +46,8 @@ namespace Tuto.TutoServices.Assembler
 
         public static AvsNode NormalizedNode(AvsNode node, bool autolevel=false)
         {
-			var trimmed = new AvsTrimToVideoLength { Payload = node };
-	        return trimmed;
+			var sameLen = new AssumeSameAVLength { Payload = node };
+	        return sameLen;
 
 
 	        //var resized = new AvsResize { Payload = yuy2 };
