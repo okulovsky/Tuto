@@ -28,7 +28,7 @@ namespace Tuto.Navigator
 
         public static GlobalData Load(FileInfo file)
         {
-            return EditorModelIO.ReadJSonWithHeader<GlobalData>(file, Header);
+            return EditorModelIO.ReadGlobalData(file.Directory);
         }
 
         private const string Header = "Tuto project file";

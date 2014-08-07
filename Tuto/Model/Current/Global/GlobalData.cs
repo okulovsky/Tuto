@@ -23,9 +23,13 @@ namespace Tuto.Model
         [DataMember]
         public string WatermarkImage { get; set; }
 
+        [DataMember]
+        public Topic TopicsRoot { get; internal set; }
+
         public GlobalData()
         {
             VoiceSettings = new VoiceSettings();
+            TopicsRoot = new Topic();
             Name = "";
         }
     }

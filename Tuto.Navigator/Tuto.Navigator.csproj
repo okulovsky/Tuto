@@ -58,10 +58,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
+    <Compile Include="GlobalFileContainer.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="ViewModels\TopicsViewModel.cs" />
     <Compile Include="Views\BatchWorkWindow.xaml.cs">
       <DependentUpon>BatchWorkWindow.xaml</DependentUpon>
     </Compile>
@@ -70,6 +69,9 @@
     </Compile>
     <Compile Include="RelayCommand.cs" />
     <Compile Include="ViewModels\SubfolderViewModel.cs" />
+    <Compile Include="Views\TopicsControl.xaml.cs">
+      <DependentUpon>TopicsControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SubfoldersDataGrid.xaml.cs">
       <DependentUpon>SubfoldersDataGrid.xaml</DependentUpon>
     </Compile>
@@ -89,11 +91,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="GlobalFileContainer.cs" />
     <Compile Include="Views\GlobalSettingsPanel.xaml.cs">
       <DependentUpon>GlobalSettingsPanel.xaml</DependentUpon>
     </Compile>
@@ -102,6 +99,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\Resources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TopicsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -115,6 +115,13 @@ namespace Tuto.Navigator
             GlobalData = GlobalFileIO.Load(LoadedFile);
             ReadSubdirectories();
 
+
+            GlobalData.TopicsRoot.Caption = "Course";
+            GlobalData.TopicsRoot.Items.Add(new Topic { Caption = "Module 1" });
+            GlobalData.TopicsRoot.Items.Add(new Topic { Caption = "Module 2" });
+            GlobalData.TopicsRoot.Items.Add(new Topic { Caption = "Module 3" });
+
+            Topics = new TopicsViewModel(GlobalData.TopicsRoot);
             //watcher.Path = LoadedFile.DirectoryName;
             //watcher.EnableRaisingEvents = true;
 
@@ -216,6 +223,12 @@ namespace Tuto.Navigator
             }
         }
 
+        public TopicsViewModel Topics
+        {
+            get { return topics; }
+            private set { topics = value; NotifyPropertyChanged(); }
+        }
+
         public bool IsLoaded
         {
             get { return LoadedFile != null && GlobalData != null; }
@@ -226,11 +239,13 @@ namespace Tuto.Navigator
             get { return LoadedFile != null ? LoadedFile.DirectoryName : "Tuto.Navigator"; }
         }
 
+  
         #endregion
 
         private FileInfo loadedFile;
         private GlobalData globalData;
         private ObservableCollection<SubfolderViewModel> subdirectories;
+        private TopicsViewModel topics;
         //private FileSystemWatcher watcher;
 
     }

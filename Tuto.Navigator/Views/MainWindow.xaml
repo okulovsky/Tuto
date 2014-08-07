@@ -39,6 +39,9 @@
             <TabItem Header="Settings" IsEnabled="{Binding IsLoaded}">
                 <navigator:GlobalSettingsPanel DataContext="{Binding GlobalData}"/>
             </TabItem>
+            <TabItem Header="Topics" IsEnabled="{Binding IsLoaded}">
+                <navigator:TopicsControl DataContext="{Binding Topics}"/>
+            </TabItem>
             <TabItem Header="Debug">
                 <StackPanel
                     Background="BurlyWood">

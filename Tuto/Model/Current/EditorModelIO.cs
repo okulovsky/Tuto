@@ -96,7 +96,10 @@ namespace Tuto.Model
             var file = rootFolder.GetFiles(Locations.GlobalFileName).FirstOrDefault();
             if (file == null)
                 return new GlobalData();
-            return ReadJSonWithHeader<GlobalData>(file, "Tuto project file");
+            var data=ReadJSonWithHeader<GlobalData>(file, "Tuto project file");
+            if (data.TopicsRoot == null) data.TopicsRoot= new Topic();
+            data.TopicsRoot.Load();
+            return data;
         }
 
         static bool TryReadObsolete(EditorModel model)
