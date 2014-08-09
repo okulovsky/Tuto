@@ -60,7 +60,8 @@
   <ItemGroup>
     <Compile Include="GlobalFileContainer.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="ViewModels\TopicsViewModel.cs" />
+    <Compile Include="ViewModels\PublishViewModel.cs" />
+    <Compile Include="ViewModels\TopicViewModel.cs" />
     <Compile Include="Views\BatchWorkWindow.xaml.cs">
       <DependentUpon>BatchWorkWindow.xaml</DependentUpon>
     </Compile>
@@ -69,8 +70,8 @@
     </Compile>
     <Compile Include="RelayCommand.cs" />
     <Compile Include="ViewModels\SubfolderViewModel.cs" />
-    <Compile Include="Views\TopicsControl.xaml.cs">
-      <DependentUpon>TopicsControl.xaml</DependentUpon>
+    <Compile Include="Views\PublishViewModel.xaml.cs">
+      <DependentUpon>PublishViewModel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SubfoldersDataGrid.xaml.cs">
       <DependentUpon>SubfoldersDataGrid.xaml</DependentUpon>
@@ -102,7 +103,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\TopicsControl.xaml">
+    <Page Include="Views\PublishViewModel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

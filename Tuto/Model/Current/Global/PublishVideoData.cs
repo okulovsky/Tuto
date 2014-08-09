@@ -8,18 +8,28 @@ using System.Threading.Tasks;
 namespace Tuto.Model
 {
     [DataContract]
-    public class EpisodInfo
+    public class PublishVideoData
     {
         [DataMember]
         public Guid Guid { get; private set; }
+
+        [DataMember]
+        public Guid TopicGuid { get; set; }
+
+        [DataMember]
+        public int NumberInTopic { get; set; }
+
         [DataMember]
         public string Name { get; set; }
+
         [DataMember]
         public TimeSpan Duration { get; set; }
 
-        public EpisodInfo(Guid guid)
+        public PublishVideoData(EpisodInfo info)
         {
-            this.Guid = guid;
+            Guid = info.Guid;
+            Name = info.Name;
+            Duration = info.Duration;
         }
     }
 }

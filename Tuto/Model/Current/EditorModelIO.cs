@@ -86,6 +86,8 @@ namespace Tuto.Model
             var file = model.VideoFolder.GetFiles(Locations.LocalFileName).FirstOrDefault();
             if (file == null) return false;
             var container = ReadJSonWithHeader<FileContainer>(file, "Tuto local file");
+
+
             model.Montage = container.MontageModel;
             model.WindowState = container.WindowState;
             return true;
@@ -97,8 +99,9 @@ namespace Tuto.Model
             if (file == null)
                 return new GlobalData();
             var data=ReadJSonWithHeader<GlobalData>(file, "Tuto project file");
+            if (data.VideoData == null) data.VideoData = new List<PublishVideoData>();
             if (data.TopicsRoot == null) data.TopicsRoot= new Topic();
-            data.TopicsRoot.Load();
+          
             return data;
         }
 

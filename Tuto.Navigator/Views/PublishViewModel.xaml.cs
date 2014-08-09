@@ -20,13 +20,17 @@ namespace Tuto.Navigator
     /// <summary>
     /// Interaction logic for RubrikatorControl.xaml
     /// </summary>
-    public partial class TopicsControl : UserControl
+    public partial class PublishPanel : UserControl
     {
-        public TopicsControl()
+        public PublishPanel()
         {
             InitializeComponent();
-            Tree.SelectedItemChanged += (s, a) => { ((TopicsViewModel)DataContext).SelectedItem = (Topic)a.NewValue; };
-        }
+            //Tree.SelectedItemChanged += (s, a) => { if (DataContext != null) ((PublishViewModel)DataContext).SelectedItem = (Topic)a.NewValue; };
+            //DataContextChanged += (s1, a1) =>
+            //{
+            //    ((TopicsViewModel)DataContext).Updated += (s, a) => { Tree.Items.Refresh(); };
+            //};
 
+        }
     }
 }

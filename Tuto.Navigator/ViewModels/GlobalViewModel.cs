@@ -114,25 +114,13 @@ namespace Tuto.Navigator
             LoadedFile = file;
             GlobalData = GlobalFileIO.Load(LoadedFile);
             ReadSubdirectories();
+            publish = new PublishViewModel(GlobalData);
 
 
-            GlobalData.TopicsRoot.Caption = "Course";
-            GlobalData.TopicsRoot.Items.Add(new Topic { Caption = "Module 1" });
-            GlobalData.TopicsRoot.Items.Add(new Topic { Caption = "Module 2" });
-            GlobalData.TopicsRoot.Items.Add(new Topic { Caption = "Module 3" });
 
-            Topics = new TopicsViewModel(GlobalData.TopicsRoot);
-            //watcher.Path = LoadedFile.DirectoryName;
-            //watcher.EnableRaisingEvents = true;
-
-            //force refresh every command's canexecute
-            //CommandManager.InvalidateRequerySuggested();
         }
 
-        private void DirectoryChanged(object sender, FileSystemEventArgs fileSystemEventArgs)
-        {
-            ReadSubdirectories();
-        }
+
 
         public void Save()
         {
@@ -151,11 +139,28 @@ namespace Tuto.Navigator
         public void ReadSubdirectories()
         {
             var rootDir = new DirectoryInfo(LoadedFile.DirectoryName);
-            Subdirectories = new ObservableCollection<SubfolderViewModel>(rootDir.GetDirectories()
-               // .Where(dir => dir.GetFiles(Locations.LocalFileName).Any())
-               .Where(dir=>dir.Name!="Output") //очень грубый костыль
-               .OrderByDescending(z=>z.CreationTime)
-                .Select(dir => new SubfolderViewModel(dir.FullName)));
+            Subdirectories = new ObservableCollection<SubfolderViewModel>();
+            
+            var dirs= rootDir
+                        .GetDirectories()
+                        .Where(dir => dir.Name != "Output") //очень грубый костыль
+                        .OrderByDescending(z => z.CreationTime);
+            foreach(var e in dirs)
+            {
+                var model=EditorModelIO.Load(e.FullName);
+                Subdirectories.Add(new SubfolderViewModel(model));
+                foreach(var v in model.Montage.Information.Episodes)
+                {
+                    var ex=GlobalData.VideoData.Where(z=>z.Guid==v.Guid).FirstOrDefault();
+                    if (ex == null)
+                        GlobalData.VideoData.Add(new PublishVideoData(v));
+                    else
+                    {
+                        ex.Name = v.Name;
+                        ex.Duration = v.Duration;
+                    }
+                }
+            }
         }
 
         void Run(bool forceMontage)
@@ -223,10 +228,10 @@ namespace Tuto.Navigator
             }
         }
 
-        public TopicsViewModel Topics
+        public PublishViewModel Publish
         {
-            get { return topics; }
-            private set { topics = value; NotifyPropertyChanged(); }
+            get { return publish; }
+            private set { publish = value; NotifyPropertyChanged(); }
         }
 
         public bool IsLoaded
@@ -245,7 +250,7 @@ namespace Tuto.Navigator
         private FileInfo loadedFile;
         private GlobalData globalData;
         private ObservableCollection<SubfolderViewModel> subdirectories;
-        private TopicsViewModel topics;
+        private PublishViewModel publish;
         //private FileSystemWatcher watcher;
 
     }

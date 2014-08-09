@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -17,16 +18,6 @@ namespace Tuto.Model
         [DataMember]
         public List<Topic> Items { get; private set; }
 
-        public Topic Parent { get; private set; }
-
-        public void Load()
-        {
-            foreach (var e in Items)
-            {
-                e.Parent = this;
-                e.Load();
-            }
-        }
 
         public Topic()
         {

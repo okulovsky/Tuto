@@ -9,11 +9,11 @@ namespace Tuto.Navigator
 {
     public class SubfolderViewModel
     {
-        public SubfolderViewModel(string fullPath)
+        public SubfolderViewModel(EditorModel model)
         {
-            FullPath = fullPath;
+            
             StartEditorCommand = new RelayCommand(StartEditor);
-            var model = EditorModelIO.Load(fullPath);
+            FullPath = model.Locations.LocalFilePath.FullName;
             Marked = model.Montage.Chunks != null && model.Montage.Chunks.Count > 3;
 
             if (model.Montage.Information != null && model.Montage.Information.Episodes.Count>0)

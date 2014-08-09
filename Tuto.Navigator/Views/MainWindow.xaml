@@ -40,7 +40,7 @@
                 <navigator:GlobalSettingsPanel DataContext="{Binding GlobalData}"/>
             </TabItem>
             <TabItem Header="Topics" IsEnabled="{Binding IsLoaded}">
-                <navigator:TopicsControl DataContext="{Binding Topics}"/>
+                <navigator:PublishPanel DataContext="{Binding Publish}"/>
             </TabItem>
             <TabItem Header="Debug">
                 <StackPanel

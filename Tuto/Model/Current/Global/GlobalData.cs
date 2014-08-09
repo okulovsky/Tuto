@@ -24,12 +24,16 @@ namespace Tuto.Model
         public string WatermarkImage { get; set; }
 
         [DataMember]
+        public List<PublishVideoData> VideoData { get; internal set; }
+
+        [DataMember]
         public Topic TopicsRoot { get; internal set; }
 
         public GlobalData()
         {
             VoiceSettings = new VoiceSettings();
             TopicsRoot = new Topic();
+            VideoData = new List<PublishVideoData>();
             Name = "";
         }
     }
