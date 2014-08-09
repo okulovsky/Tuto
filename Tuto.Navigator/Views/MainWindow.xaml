@@ -12,20 +12,11 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition></RowDefinition>
-        </Grid.RowDefinitions>
-        
-        <Menu HorizontalAlignment="Stretch" Height="auto" VerticalAlignment="top" Width="auto">
-           <MenuItem Header="File">
-                <MenuItem Header="New project" Command="{Binding NewCommand}"></MenuItem>
-                <MenuItem Header="Open" Command="{Binding OpenCommand}"></MenuItem>
-                <MenuItem Header="Save" Command="{Binding SaveCommand}"></MenuItem>
-               <MenuItem Header="Close" Command="{Binding CloseCommand}"></MenuItem>
-           </MenuItem> 
-        </Menu>
+    <DockPanel>
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+            <Button Command="{Binding Save}" Height="40" Width="40">Save</Button>
+        </StackPanel>
+
         <TabControl Grid.Row="1" HorizontalAlignment="Stretch" Height="auto" VerticalAlignment="Stretch" Width="auto">
             <TabItem Header="Topics" IsEnabled="{Binding IsLoaded}">
                 <navigator:PublishPanel DataContext="{Binding Publish}"/>
@@ -56,5 +47,7 @@
             </TabItem>
         </TabControl>
 
-    </Grid>
+
+    </DockPanel>
+
 </Window>

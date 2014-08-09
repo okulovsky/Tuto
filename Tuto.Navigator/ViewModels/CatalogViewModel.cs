@@ -145,5 +145,31 @@ namespace Tuto.Navigator
 
             Insert(what, where, beforeOf);
         }
+
+        public void Commit(TopicWrap wrap)
+        {
+            wrap.Topic.Items.Clear();
+            foreach (var e in wrap.Items)
+            {
+                if (e is TopicWrap)
+                {
+                    var tw = e as TopicWrap;
+                    Commit(tw);
+                    wrap.Topic.Items.Add(tw.Topic);
+                    continue;
+                }
+                if (e is VideoWrap)
+                {
+                    var vw = e as VideoWrap;
+                    vw.Video.TopicGuid = wrap.Topic.Guid;
+                    vw.Video.NumberInTopic = wrap.Items.IndexOf(vw);
+                }
+            }
+        }
+
+        public void Commit()
+        {
+            Commit(Root[0]);
+        }
     }
 }
