@@ -17,8 +17,8 @@
         </Grid.RowDefinitions>
     <DockPanel Grid.Column="0">
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-            <Button Command="{Binding Add}">Add</Button>
-            <Button Command="{Binding Remove}">Remove</Button>
+            <Button Command="{Binding AddCommand}">Add</Button>
+            <Button Command="{Binding RemoveCommand}">Remove</Button>
         </StackPanel>
         <TreeView x:Name="Tree" ItemsSource="{Binding Root}" >
             <TreeView.Resources>

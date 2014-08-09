@@ -38,6 +38,12 @@ namespace Tuto.Navigator
             PreviewMouseLeftButtonUp += CmPreviewMouseLeftButtonUp;
             MouseMove += CmMouseMove;
             Tree.Drop += Tree_Drop;
+            Tree.SelectedItemChanged += (s, a) =>
+                {
+                    if (DataContext != null)
+                        ((PublishViewModel)DataContext).SelectedItem = Tree.SelectedValue as Wrap;
+
+                };
         }
 
 

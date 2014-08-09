@@ -20,6 +20,7 @@ namespace Tuto.Navigator
         public TopicWrap[] Root { get; private set; }
         public ObservableCollection<VideoWrap> UnassignedVideos { get; private set; }
         public GlobalData GlobalData { get; private set; }
+        public Wrap SelectedItem { get; set; }
 
         public PublishViewModel(GlobalData globalData)
         {
@@ -28,7 +29,21 @@ namespace Tuto.Navigator
             UnassignedVideos = new ObservableCollection<VideoWrap>();
             foreach (var e in GlobalData.VideoData.Where(z => z.TopicGuid == Guid.Empty))
                 UnassignedVideos.Add(new VideoWrap(e));
+            foreach(var e in Root[0].Subtree.OfType<TopicWrap>())
+                foreach (var v in GlobalData.VideoData.Where(z => z.TopicGuid == e.Topic.Guid).OrderBy(z => z.NumberInTopic))
+                {
+                    var vw = new VideoWrap(v);
+                    e.Items.Add(vw);
+                    vw.Parent = e;
+                }
+
+
+            AddCommand = new RelayCommand(Add, () => SelectedItem != null && SelectedItem is TopicWrap);
+            RemoveCommand = new RelayCommand(Remove, () => SelectedItem != null && SelectedItem != Root[0]);
         }
+
+        public RelayCommand AddCommand { get; private set; }
+        public RelayCommand RemoveCommand { get; private set; }
 
         //void MoveTopic(TopicViewModel what, TopicViewModel where, int index)
         //{
@@ -169,7 +184,30 @@ namespace Tuto.Navigator
 
         public void Commit()
         {
+            foreach (var e in GlobalData.VideoData)
+            {
+                e.TopicGuid = Guid.Empty;
+                e.NumberInTopic = 0;
+            }
             Commit(Root[0]);
+        }
+
+        void Add()
+        {
+            SelectedItem.Items.Add(new TopicWrap(new Topic()));
+        }
+
+        void Remove()
+        {
+            if (SelectedItem is VideoWrap)
+            {
+                SelectedItem.Parent.Items.Remove(SelectedItem);
+                UnassignedVideos.Add(SelectedItem as VideoWrap);
+            }
+            else
+            {
+                Remove(SelectedItem);
+            }
         }
     }
 }

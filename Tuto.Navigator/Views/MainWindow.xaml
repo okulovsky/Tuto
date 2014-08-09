@@ -14,7 +14,7 @@
     </Window.Resources>
     <DockPanel>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
-            <Button Command="{Binding Save}" Height="40" Width="40">Save</Button>
+            <Button Command="{Binding SaveCommand}" Height="40" Width="40">Save</Button>
         </StackPanel>
 
         <TabControl Grid.Row="1" HorizontalAlignment="Stretch" Height="auto" VerticalAlignment="Stretch" Width="auto">
