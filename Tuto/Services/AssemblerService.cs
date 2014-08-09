@@ -28,7 +28,7 @@ namespace Tuto.TutoServices
             get { return HelpString; }
         }
 
-        public void DoWork(EditorModel model, bool print)
+        public void DoWork(EditorModel model, bool print, int chunksPerScript)
         {
 
             var epsodes = ListEpisodes(model.Montage.FileChunks).Select(e => MakeEpisode(model, e));
@@ -36,36 +36,53 @@ namespace Tuto.TutoServices
             var episodeNumber = 0;
             foreach (var episode in epsodes)
             {
-                var avsContext = new AvsContext();
-                episode.SerializeToContext(avsContext);
-                var avsScript = avsContext.Serialize(model.Locations.AvsLibrary, model.Locations.AutoLevelsLibrary);
-                var avsFile = model.Locations.AvsTempFile;
-                using (var file = new StreamWriter(avsFile.OpenWrite()))
-                {
-                    file.WriteLine(avsScript);
-                }
+	            var avsContexts = episode.SerializeToMultipleContexts(chunksPerScript);
+	            var avsFiles = avsContexts.Select(c => c.SerializeToFile(
+					model.Locations.TempAvsFile, model.Locations.AvsLibrary, model.Locations.AutoLevelsLibrary));
+				// now render each avs separately and then concatenate them
+
+	            var resultNode = new AvsConcatList{Items = new List<AvsNode>()};
+	            foreach (var avsFile in avsFiles)
+	            {
+		            var tempVideoFile = model.Locations.TempVideoFile;
+					if (tempVideoFile.Exists) tempVideoFile.Delete();
+					var ffmpegCommand = new RenderAvsScript
+					{
+						AvsInput = avsFile,
+						VideoOutput = tempVideoFile
+					};
+
+					ffmpegCommand.Execute(print);
+					resultNode.Items.Add(AvsNode.NormalizedNode(new AvsChunk{ChunkFile = tempVideoFile}));
+	            }
+
+	            var avsContext = new AvsContext();
+				resultNode.SerializeToContext(avsContext);
+	            var avsResultFile = avsContext.SerializeToFile(model.Locations.TempAvsFile,
+					model.Locations.AvsLibrary, model.Locations.AutoLevelsLibrary);
+
                 var videoFile =  model.Locations.GetOutputFile(episodeNumber);
                 if (videoFile.Exists) videoFile.Delete();
                 
-                var ffmpegCommand = new RenderAvsScript
+                var ffmpegResultCommand = new RenderAvsScript
                 {
-                    AvsInput = avsFile,
+                    AvsInput = avsResultFile,
                     VideoOutput = videoFile
                 };
 
-                ffmpegCommand.Execute(print);
+                ffmpegResultCommand.Execute(print);
                 episodeNumber++;
             }
 
         }
 
-        private AvsNode MakeEpisode(EditorModel model, List<FileChunk> fileChunks)
+        private AvsConcatList MakeEpisode(EditorModel model, List<FileChunk> fileChunks)
         {
             var avsChunks = new AvsConcatList { Items = new List<AvsNode>() };
 
             avsChunks.Items.Add(AvsNode.NormalizedNode(model.Locations.Make(model.ChunkFolder, fileChunks[0].ChunkFilename), fileChunks[0].Mode == Mode.Face));
             //making cross-fades
-            for (int i = 1; i < fileChunks.Count; i++)
+            for (var i = 1; i < fileChunks.Count; i++)
             {
                 var currentChunk = fileChunks[i];
                 var prevChunk = fileChunks[i - 1];
@@ -144,15 +161,20 @@ namespace Tuto.TutoServices
                 throw (new ArgumentException(String.Format("Unknown mode: {0}", args[2])));
             var print = mode == ExecMode.Print;
 
+	        int chunksPerScript;
+	        if (!(args.Length == 4 && int.TryParse(args[3], out chunksPerScript)))
+		        chunksPerScript = 30;
+			
             var model = EditorModelIO.Load(folder);
-            DoWork(model, print);
+            DoWork(model, print, chunksPerScript);
         }
         const string DescriptionString =
             @"Assembles chunks with effects using Avisynth.";
         const string HelpString =
-            @"<folder> <mode>
+            @"<folder> <mode> [chunksPerScript]
 
 folder: directory containing video
-mode: run or print. Execute commands or write them to stdout";
+mode: run or print. Execute commands or write them to stdout
+chunksPerScript (optional): chunks limit in single AVS script. Defaults to 30";
     }
 }

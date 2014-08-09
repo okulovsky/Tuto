@@ -35,7 +35,8 @@ namespace Tuto.Model
         public DirectoryInfo OutputDirectory { get { return new DirectoryInfo(Path.Combine(model.RootFolder.FullName, "Output")); } }
         
         public FileInfo PraatOutput { get { return Make(model.VideoFolder, "praat.output"); } }
-        public FileInfo AvsTempFile { get { return Make(model.ChunkFolder, String.Format("script_{0}.avs", Guid.NewGuid())); } }
+        public FileInfo TempAvsFile { get { return Make(model.ChunkFolder, String.Format("script_{0}.avs", Guid.NewGuid())); } }
+        public FileInfo TempVideoFile { get { return Make(model.ChunkFolder, String.Format("temp_{0}.avi", Guid.NewGuid())); } }
 
         public FileInfo IntroImage { get { return Make(model.VideoFolder, "intro.png"); } }
         public FileInfo WatermarkImage { get { return Make(model.VideoFolder, "watermark.png"); } }

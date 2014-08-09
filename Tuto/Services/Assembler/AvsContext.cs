@@ -21,6 +21,14 @@ namespace Tuto.TutoServices.Assembler
                 String.Format(AvsNode.Template, 0));  // root of the tree has id 0
         }
 
+	    public FileInfo SerializeToFile(FileInfo fileName, FileInfo avsLibrary, FileInfo autolevelsLibrary)
+	    {
+			var avsScript = Serialize(avsLibrary, autolevelsLibrary);
+			using (var file = new StreamWriter(fileName.OpenWrite()))
+				file.WriteLine(avsScript);
+		    return fileName;
+	    }
+
         public int Id { get { id++;
             return id;
         } }
