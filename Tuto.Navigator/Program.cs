@@ -19,6 +19,7 @@ namespace Tuto.Navigator
             var mainWindow = new MainWindow();
             var globalModel = new GlobalViewModel();
             mainWindow.DataContext = globalModel;
+            mainWindow.WindowState = System.Windows.WindowState.Maximized;
 
             var path = EditorModelIO.SubstituteDebugDirectories(args[0]);
             var file = System.IO.Path.Combine(path,"Project.tuto");

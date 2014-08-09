@@ -13,7 +13,7 @@ namespace Tuto.Navigator
         {
             
             StartEditorCommand = new RelayCommand(StartEditor);
-            FullPath = model.Locations.LocalFilePath.FullName;
+            FullPath = model.Locations.LocalFilePath.Directory.FullName;
             Marked = model.Montage.Chunks != null && model.Montage.Chunks.Count > 3;
 
             if (model.Montage.Information != null && model.Montage.Information.Episodes.Count>0)

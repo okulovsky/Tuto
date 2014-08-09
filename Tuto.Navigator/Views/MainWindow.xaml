@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:model="clr-namespace:Tuto.Model;assembly=Tuto"
         xmlns:navigator="clr-namespace:Tuto.Navigator"
-        Title="{Binding WindowTitle}" Height="350" Width="800">
+        Title="{Binding WindowTitle}" Height="350" Width="800"
+        >
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -26,6 +27,10 @@
            </MenuItem> 
         </Menu>
         <TabControl Grid.Row="1" HorizontalAlignment="Stretch" Height="auto" VerticalAlignment="Stretch" Width="auto">
+            <TabItem Header="Topics" IsEnabled="{Binding IsLoaded}">
+                <navigator:PublishPanel DataContext="{Binding Publish}"/>
+            </TabItem>
+            
             <TabItem Header="Overview">
                 <DockPanel>
                     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
@@ -39,9 +44,7 @@
             <TabItem Header="Settings" IsEnabled="{Binding IsLoaded}">
                 <navigator:GlobalSettingsPanel DataContext="{Binding GlobalData}"/>
             </TabItem>
-            <TabItem Header="Topics" IsEnabled="{Binding IsLoaded}">
-                <navigator:PublishPanel DataContext="{Binding Publish}"/>
-            </TabItem>
+
             <TabItem Header="Debug">
                 <StackPanel
                     Background="BurlyWood">

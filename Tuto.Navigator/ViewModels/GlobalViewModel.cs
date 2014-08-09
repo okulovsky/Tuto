@@ -114,10 +114,6 @@ namespace Tuto.Navigator
             LoadedFile = file;
             GlobalData = GlobalFileIO.Load(LoadedFile);
             ReadSubdirectories();
-            publish = new PublishViewModel(GlobalData);
-
-
-
         }
 
 
@@ -161,6 +157,8 @@ namespace Tuto.Navigator
                     }
                 }
             }
+
+            Publish = new PublishViewModel(GlobalData);
         }
 
         void Run(bool forceMontage)
