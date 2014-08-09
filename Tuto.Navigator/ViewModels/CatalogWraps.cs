@@ -21,7 +21,9 @@ namespace Tuto.Navigator
             get
             {
                 yield return this;
-                foreach (var e in Items) yield return e;
+                foreach (var e in Items)
+                    foreach (var x in e.Subtree)
+                        yield return x;
             }
         }
     }
