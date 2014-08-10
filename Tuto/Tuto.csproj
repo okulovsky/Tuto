@@ -122,7 +122,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="autolevels.dll" />
+    <Content Include="autolevels.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="praatcon.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
