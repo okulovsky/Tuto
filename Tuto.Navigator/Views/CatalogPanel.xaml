@@ -40,7 +40,7 @@
                             <Rectangle Height="5" Fill="LightGray" Stroke="LightGray" Name="Before"/>
                             <StackPanel Orientation="Horizontal">
                                 <Rectangle Width="20" Fill="LightGray" Stroke="LightGray" Name="Into"/>
-                                <TextBox Text="{Binding Video.Name}"/>
+                                <TextBox Text="{Binding Video.Name, Mode=OneWay}"/>
                             </StackPanel>
                             <Rectangle Height="5" Fill="LightGray" Stroke="LightGray" Name="After"/>
                         </StackPanel>

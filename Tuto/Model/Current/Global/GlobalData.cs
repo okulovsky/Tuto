@@ -24,17 +24,28 @@ namespace Tuto.Model
         public string WatermarkImage { get; set; }
 
         [DataMember]
-        public List<PublishVideoData> VideoData { get; internal set; }
+        public List<FinishedVideoData> VideoData { get; internal set; }
 
         [DataMember]
         public Topic TopicsRoot { get; internal set; }
+
+        public DirectoryInfo GlobalDataFolder { get; internal set; }
+
+        public GlobalLocations Locations { get; private set; }
+
+        internal void AfterLoad(DirectoryInfo location)
+        {
+            GlobalDataFolder = location;
+            Locations = new GlobalLocations(this);
+        }
 
         public GlobalData()
         {
             VoiceSettings = new VoiceSettings();
             TopicsRoot = new Topic();
-            VideoData = new List<PublishVideoData>();
+            VideoData = new List<FinishedVideoData>();
             Name = "";
+            Locations = new GlobalLocations(this);
         }
     }
 }

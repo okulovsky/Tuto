@@ -12,6 +12,7 @@ namespace Tuto.Model
 {
     public static class EditorModelIO
     {
+        #region File formats 
         public static T ReadJSonWithHeader<T>(FileInfo file, string header)
         {
             var lines = File.ReadAllLines(file.FullName);
@@ -36,7 +37,7 @@ namespace Tuto.Model
                 writer.WriteLine(text);
             }
         }
-
+        #endregion
 
         public static string SubstituteDebugDirectories(string subdirectory)
         {
@@ -50,6 +51,8 @@ namespace Tuto.Model
             }
             return subdirectory;
         }
+
+        #region Reading local models
 
         static EditorModel InitializeModelsFolder(string subdirectory)
         {
@@ -93,17 +96,8 @@ namespace Tuto.Model
             return true;
         }
 
-        public static GlobalData ReadGlobalData(DirectoryInfo rootFolder)
-        {
-            var file = rootFolder.GetFiles(Locations.GlobalFileName).FirstOrDefault();
-            if (file == null)
-                return new GlobalData();
-            var data=ReadJSonWithHeader<GlobalData>(file, "Tuto project file");
-            if (data.VideoData == null) data.VideoData = new List<PublishVideoData>();
-            if (data.TopicsRoot == null) data.TopicsRoot= new Topic();
-          
-            return data;
-        }
+
+
 
         static bool TryReadObsolete(EditorModel model)
         {
@@ -141,6 +135,54 @@ namespace Tuto.Model
                 WindowState = model.WindowState
             };
             WriteJSonWithHeader<FileContainer>(model.Locations.LocalFilePath, "Tuto local file", 1, container);
+        }
+        #endregion
+
+
+        public static GlobalData ReadGlobalData(DirectoryInfo rootFolder)
+        {
+            var file = rootFolder.GetFiles(Locations.GlobalFileName).FirstOrDefault();
+            if (file == null)
+                return new GlobalData { GlobalDataFolder = rootFolder };
+            var data = ReadJSonWithHeader<GlobalData>(file, "Tuto project file");
+            if (data.VideoData == null) data.VideoData = new List<FinishedVideoData>();
+            if (data.TopicsRoot == null) data.TopicsRoot = new Topic();
+            data.AfterLoad(rootFolder);
+            return data;
+        }
+
+        public static AllProjectData ReadAllProjectData(DirectoryInfo rootFolder)
+        {
+            var globalData = ReadGlobalData(rootFolder);
+            
+            var result=new AllProjectData(globalData);
+            
+            var dirs = rootFolder
+                       .GetDirectories()
+                       .Where(dir => dir.Name != "Output") //очень грубый костыль
+                       .OrderByDescending(z => z.CreationTime);
+
+            foreach (var e in dirs)
+            {
+                var model = EditorModelIO.Load(e.FullName);
+                result.Models.Add(model);
+                for (int i=0;i<model.Montage.Information.Episodes.Count;i++)
+                {
+                    var v = model.Montage.Information.Episodes[i];
+                    var ex = globalData.VideoData.Where(z => z.Guid == v.Guid).FirstOrDefault();
+                    if (ex == null)
+                        globalData.VideoData.Add(new FinishedVideoData(model, i));
+                    else
+                        ex.Load(model, i);
+                }
+            }
+            return result;
+
+        }
+
+        public static void Save(GlobalData data)
+        {
+            WriteJSonWithHeader(data.Locations.ProjectFile, "Tuto project file", 0, data);
         }
     }
 }

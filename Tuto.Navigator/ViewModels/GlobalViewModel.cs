@@ -19,10 +19,13 @@ namespace Tuto.Navigator
     {
         public GlobalViewModel()
         {
-            NewCommand = new RelayCommand(New);
-            OpenCommand = new RelayCommand(Open);
+
+            //NewCommand = new RelayCommand(New);
+            //OpenCommand = new RelayCommand(Open);
+            //CloseCommand = new RelayCommand(Close, () => IsLoaded);
+         
+
             SaveCommand = new RelayCommand(Save, () => IsLoaded);
-            CloseCommand = new RelayCommand(Close, () => IsLoaded);
             RefreshCommand = new RelayCommand(ReadSubdirectories, () => IsLoaded);
 
 
@@ -39,48 +42,28 @@ namespace Tuto.Navigator
             if (IsLoaded)
             {
                 // save and close current
-                SaveCommand.Execute(null);
-                CloseCommand.Execute(null);
+                //SaveCommand.Execute(null);
+                //CloseCommand.Execute(null);
             }
 
             LoadedFile = file;
-            GlobalData = GlobalFileIO.Load(LoadedFile);
             ReadSubdirectories();
         }
 
         public void ReadSubdirectories()
         {
-            var rootDir = new DirectoryInfo(LoadedFile.DirectoryName);
+            var data=EditorModelIO.ReadAllProjectData(LoadedFile.Directory);
+            this.globalData=data.Global;
             Subdirectories = new ObservableCollection<SubfolderViewModel>();
-
-            var dirs = rootDir
-                        .GetDirectories()
-                        .Where(dir => dir.Name != "Output") //очень грубый костыль
-                        .OrderByDescending(z => z.CreationTime);
-            foreach (var e in dirs)
-            {
-                var model = EditorModelIO.Load(e.FullName);
-                Subdirectories.Add(new SubfolderViewModel(model));
-                foreach (var v in model.Montage.Information.Episodes)
-                {
-                    var ex = GlobalData.VideoData.Where(z => z.Guid == v.Guid).FirstOrDefault();
-                    if (ex == null)
-                        GlobalData.VideoData.Add(new PublishVideoData(v));
-                    else
-                    {
-                        ex.Name = v.Name;
-                        ex.Duration = v.Duration;
-                    }
-                }
-            }
-
-            Publish = new PublishViewModel(GlobalData);
+            foreach(var e in data.Models)
+                Subdirectories.Add(new SubfolderViewModel(e));
+            Publish = new PublishViewModel(globalData);
         }
      
         public void Save()
         {
             Publish.Commit();
-            GlobalFileIO.Save(GlobalData, LoadedFile);
+            EditorModelIO.Save(GlobalData);
         }
         void Run(bool forceMontage)
         {
@@ -171,67 +154,67 @@ namespace Tuto.Navigator
 
 
         #region Unused file commands
-        public void New()
-        {
-            var dialog = new SaveFileDialog
-            {
-                Filter = "Tuto project|project.tuto",
-                FilterIndex = 0,
-                OverwritePrompt = true,
-                AddExtension = false,
-                FileName = "Filename will be ignored",
-                CheckFileExists = false
-            };
-            var result = dialog.ShowDialog();
-            if (!(result.HasValue && result.Value))
-                return;
-            var path = Path.GetDirectoryName(dialog.FileName);
-            var file = new FileInfo(Path.Combine(path, "project.tuto"));
-            if (file.Exists)
-            {
-                var overwriteResult = MessageBox.Show("Project file exists, overwrite?", "Warning", MessageBoxButton.OKCancel);
-                if (overwriteResult != MessageBoxResult.OK)
-                    return;
-            }
-            file.Delete();
-            file.Create().Close();
+        //public void New()
+        //{
+        //    var dialog = new SaveFileDialog
+        //    {
+        //        Filter = "Tuto project|project.tuto",
+        //        FilterIndex = 0,
+        //        OverwritePrompt = true,
+        //        AddExtension = false,
+        //        FileName = "Filename will be ignored",
+        //        CheckFileExists = false
+        //    };
+        //    var result = dialog.ShowDialog();
+        //    if (!(result.HasValue && result.Value))
+        //        return;
+        //    var path = Path.GetDirectoryName(dialog.FileName);
+        //    var file = new FileInfo(Path.Combine(path, "project.tuto"));
+        //    if (file.Exists)
+        //    {
+        //        var overwriteResult = MessageBox.Show("Project file exists, overwrite?", "Warning", MessageBoxButton.OKCancel);
+        //        if (overwriteResult != MessageBoxResult.OK)
+        //            return;
+        //    }
+        //    file.Delete();
+        //    file.Create().Close();
 
-            GlobalFileIO.Save(new GlobalData(), file);
+        //    GlobalFileIO.Save(new GlobalData(), file);
 
-            Load(file);
-        }
+        //    Load(file);
+        //}
 
-        public void Open()
-        {
-            var dialog = new OpenFileDialog
-            {
-                Filter = "Tuto project|project.tuto",
-                FilterIndex = 0,
-            };
-            var result = dialog.ShowDialog();
-            if (!(result.HasValue && result.Value))
-                return;
-            var file = new FileInfo(dialog.FileName);
-            Load(file);
-        }
-
-
+        //public void Open()
+        //{
+        //    var dialog = new OpenFileDialog
+        //    {
+        //        Filter = "Tuto project|project.tuto",
+        //        FilterIndex = 0,
+        //    };
+        //    var result = dialog.ShowDialog();
+        //    if (!(result.HasValue && result.Value))
+        //        return;
+        //    var file = new FileInfo(dialog.FileName);
+        //    Load(file);
+        //}
 
 
 
-        public void Close()
-        {
-            LoadedFile = null;
-            GlobalData = null;
-            Subdirectories.Clear();
-            //watcher.EnableRaisingEvents = false;
-        }
+
+
+        //public void Close()
+        //{
+        //    LoadedFile = null;
+        //    GlobalData = null;
+        //    Subdirectories.Clear();
+        //    //watcher.EnableRaisingEvents = false;
+        //}
 
 
 
-        public RelayCommand NewCommand { get; private set; }
-        public RelayCommand OpenCommand { get; private set; }
-        public RelayCommand CloseCommand { get; private set; }
+        //public RelayCommand NewCommand { get; private set; }
+        //public RelayCommand OpenCommand { get; private set; }
+        //public RelayCommand CloseCommand { get; private set; }
      
 
         #endregion
