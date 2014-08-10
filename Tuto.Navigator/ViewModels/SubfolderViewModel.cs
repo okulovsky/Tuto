@@ -7,6 +7,13 @@ using System.Linq;
 
 namespace Tuto.Navigator
 {
+    public enum VideoStatus
+    {
+        Raw,
+        Marked,
+        Montaged
+    }
+
     public class SubfolderViewModel
     {
         public SubfolderViewModel(EditorModel model)
@@ -14,7 +21,8 @@ namespace Tuto.Navigator
             
             StartEditorCommand = new RelayCommand(StartEditor);
             FullPath = model.Locations.LocalFilePath.Directory.FullName;
-            Marked = model.Montage.Chunks != null && model.Montage.Chunks.Count > 3;
+            if (model.Montage.Chunks != null && model.Montage.Chunks.Count > 3)
+                Status = VideoStatus.Marked;
 
             if (model.Montage.Information != null && model.Montage.Information.Episodes.Count>0)
             {
@@ -23,15 +31,13 @@ namespace Tuto.Navigator
                     .Select(z=>z.Name)
                     .Aggregate((a, b) => a + "\r\n" + b);
             }
-
-            Montaged = model.Montage.Montaged;
+            if (model.Montage.Montaged)
+                Status = VideoStatus.Montaged;
         }
 
         public bool Selected { get; set; }
 
-        public bool Marked { get; private set; }
-
-        public bool Montaged { get; private set; }
+        public VideoStatus Status { get; private set; }
 
         public string FullPath { get; private set; }
 
