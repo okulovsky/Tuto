@@ -20,7 +20,7 @@ namespace Tuto.Model
         public FileInfo PraatExecutable { get { return Make(model.ProgramFolder, "praatcon.exe"); } }
         public FileInfo PraatScriptSource { get { return Make(model.ProgramFolder, "split_pauses.praat"); } }
         public FileInfo AvsLibrary { get { return Make(model.ProgramFolder, "library.avs"); } }
-        public FileInfo AutoLevelsLibrary { get { return Make(model.ProgramFolder, "autolevels_0.6_20110109.dll"); } }
+        public FileInfo AutoLevelsLibrary { get { return Make(model.ProgramFolder, "autolevels.dll"); } }
         public FileInfo TutoExecutable { get { return Make(model.ProgramFolder, "Tuto.exe"); } }
 
         public FileInfo FaceVideo { get { return Make(model.VideoFolder, "face.mp4"); } }
