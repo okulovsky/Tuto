@@ -24,3 +24,4 @@ bin
 *.toc
 *.snm
 /Montage/ImageGenerator/*.user
+YoutubeApi/DeveloperKey.txt

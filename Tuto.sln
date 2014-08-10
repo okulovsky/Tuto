@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tuto.Navigator", "Tuto.Navi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Updater", "Updater\Updater.csproj", "{058A8A84-2A6E-48B2-97F7-2637B9D6B7B5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YoutubeApi", "YoutubeApi\YoutubeApi.csproj", "{F3BED434-00DD-4EB9-A2B6-E1AA3C5FDEEF}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Video.vsmdi
@@ -83,6 +85,16 @@ Global
 		{058A8A84-2A6E-48B2-97F7-2637B9D6B7B5}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{058A8A84-2A6E-48B2-97F7-2637B9D6B7B5}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{058A8A84-2A6E-48B2-97F7-2637B9D6B7B5}.Release|x86.ActiveCfg = Release|Any CPU
+		{F3BED434-00DD-4EB9-A2B6-E1AA3C5FDEEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3BED434-00DD-4EB9-A2B6-E1AA3C5FDEEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3BED434-00DD-4EB9-A2B6-E1AA3C5FDEEF}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{F3BED434-00DD-4EB9-A2B6-E1AA3C5FDEEF}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{F3BED434-00DD-4EB9-A2B6-E1AA3C5FDEEF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F3BED434-00DD-4EB9-A2B6-E1AA3C5FDEEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3BED434-00DD-4EB9-A2B6-E1AA3C5FDEEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3BED434-00DD-4EB9-A2B6-E1AA3C5FDEEF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{F3BED434-00DD-4EB9-A2B6-E1AA3C5FDEEF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{F3BED434-00DD-4EB9-A2B6-E1AA3C5FDEEF}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
