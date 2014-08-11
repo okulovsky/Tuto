@@ -130,6 +130,28 @@ namespace Editor
             if (CommonKeyboardProcessing.ProcessCommonKeys(model, key)) return;
 
 
+            switch (key.Command)
+            {
+                case KeyboardCommands.LargeRight:
+                    var border = montage.Borders.Where(z => z.StartTime > model.WindowState.CurrentPosition).FirstOrDefault();
+                    if (border != null)
+                        model.WindowState.CurrentPosition = border.StartTime;
+                    return;
+                case KeyboardCommands.LargeLeft:
+                    var border1 = montage.Borders.Where(z => z.EndTime < model.WindowState.CurrentPosition).LastOrDefault();
+                    if (border1 != null)
+                        model.WindowState.CurrentPosition = border1.StartTime;
+                    return;
+                case KeyboardCommands.SpeedDown:
+                    FastSpeed -= 0.5;
+                    return;
+                case KeyboardCommands.SpeedUp:
+                    FastSpeed += 0.5;
+                    return;
+            }
+
+
+
             var borderIndex = montage.Borders.FindBorder(model.WindowState.CurrentPosition);
             if (borderIndex == -1) return;
             int leftBorderIndex = -1;
@@ -169,22 +191,7 @@ namespace Editor
                 case KeyboardCommands.RightToRight:
                     Shift(leftBorderIndex, value);
                     return;
-
-                case KeyboardCommands.LargeRight:
-                    if (borderIndex + 1 < montage.Borders.Count)
-                        model.WindowState.CurrentPosition = montage.Borders[borderIndex + 1].StartTime;
-                    return;
-                case KeyboardCommands.LargeLeft:
-                    if (borderIndex - 1 >= 0)
-                        model.WindowState.CurrentPosition = montage.Borders[borderIndex-1].StartTime;
-                    return;
-                case KeyboardCommands.SpeedDown:
-                    FastSpeed -= 0.5;
-                    return;
-                case KeyboardCommands.SpeedUp:
-                    FastSpeed += 0.5;
-                    return;
-            }
+           }
         }
 
         void Shift(int borderIndex, int shiftSize)
