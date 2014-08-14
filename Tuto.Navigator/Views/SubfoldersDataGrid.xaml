@@ -20,6 +20,13 @@
                     </DataTemplate>                    
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
+            <DataGridTemplateColumn>
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <Button Width="50" Height="30" Command="{Binding ResetMontageCommand}" Content="Reset montage"/>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
         </DataGrid.Columns>
         
     </DataGrid>

@@ -13,6 +13,7 @@ namespace Tuto.Navigator
         {
             FullPath = fullPath;
             StartEditorCommand = new RelayCommand(StartEditor);
+            ResetMontageCommand = new RelayCommand(ResetMontage);
             var model = EditorModelIO.Load(fullPath);
             Marked = model.Montage.Chunks != null && model.Montage.Chunks.Count > 3;
 
@@ -48,6 +49,17 @@ namespace Tuto.Navigator
             Shell.ExecQuoteArgs(false, editorExe, FullPath);
         }
 
+        public void ResetMontage()
+        {
+            var ok = MessageBox.Show("This action only makes sense if you corrected an internal error in Tuto. Have you done it?", "Tuto.Navigator", MessageBoxButtons.YesNoCancel);
+            if (ok != DialogResult.Yes) return;
+            var model=EditorModelIO.Load(FullPath);
+            model.Montage.Montaged = false;
+            EditorModelIO.Save(model);
+            Montaged = false;
+        }
+
         public RelayCommand StartEditorCommand { get; private set; }
+        public RelayCommand ResetMontageCommand { get; private set; }
     }
 } 
