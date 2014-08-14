@@ -41,6 +41,7 @@
             <Button x:Name="Help">Help</Button>
         </StackPanel>
         <StackPanel Orientation="Vertical" DockPanel.Dock="Right">
+            <Label Content="{Binding WindowState.CurrentPosition}"/>
             <MediaElement 
                     Width="400"
                     x:Name="FaceVideo" 

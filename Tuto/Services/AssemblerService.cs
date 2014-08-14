@@ -39,7 +39,7 @@ namespace Tuto.TutoServices
                 var avsContext = new AvsContext();
                 episode.SerializeToContext(avsContext);
                 var avsScript = avsContext.Serialize(model.Locations.AvsLibrary, model.Locations.AutoLevelsLibrary);
-                var avsFile = model.Locations.AvsTempFile;
+                var avsFile = model.Locations.GetAvsStriptFile(episodeNumber);
                 using (var file = new StreamWriter(avsFile.OpenWrite()))
                 {
                     file.WriteLine(avsScript);

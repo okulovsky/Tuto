@@ -199,7 +199,7 @@ namespace Tuto.Model
                 if (!currentChunk.StartsNewEpisode && currentChunk.Mode == oldChunk.Mode)
                     continue;
                 // or flush adjacent chunks into one and start new sequence
-                if (oldChunk.IsActive)
+                if (oldChunk.IsActive && oldChunk.Length!=0)
                     Montage.FileChunks.Add(new FileChunk
                     {
                         Mode = oldChunk.Mode,

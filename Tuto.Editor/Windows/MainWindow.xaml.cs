@@ -40,7 +40,7 @@ namespace Editor
             InitializeComponent();
             FaceVideo.LoadedBehavior = MediaState.Manual;
             ScreenVideo.LoadedBehavior = MediaState.Manual;
-
+            
             
             
 
