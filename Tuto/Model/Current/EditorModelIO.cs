@@ -93,10 +93,12 @@ namespace Tuto.Model
 
             model.Montage = container.MontageModel;
             model.WindowState = container.WindowState;
+            
+
             return true;
         }
 
-            if (data.VideoData == null) data.VideoData = new List<FinishedVideo>();
+           
 
 
 
@@ -146,7 +148,7 @@ namespace Tuto.Model
             if (file == null)
                 return new GlobalData { GlobalDataFolder = rootFolder };
             var data = ReadJSonWithHeader<GlobalData>(file, "Tuto project file");
-            if (data.VideoData == null) data.VideoData = new List<FinishedVideoData>();
+            if (data.VideoData == null) data.VideoData = new List<FinishedVideo>();
             if (data.TopicsRoot == null) data.TopicsRoot = new Topic();
             data.AfterLoad(rootFolder);
             return data;
@@ -172,7 +174,7 @@ namespace Tuto.Model
                     var v = model.Montage.Information.Episodes[i];
                     var ex = globalData.VideoData.Where(z => z.Guid == v.Guid).FirstOrDefault();
                     if (ex == null)
-                        globalData.VideoData.Add(new FinishedVideoData(model, i));
+                        globalData.VideoData.Add(new FinishedVideo(model, i));
                     else
                         ex.Load(model, i);
                 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Tuto.Model
 {
     [DataContract]
-    public class FinishedVideoData
+    public class FinishedVideo
     {
         [DataMember]
         public Guid Guid { get; private set; }
@@ -45,7 +45,7 @@ namespace Tuto.Model
         }
 
 
-        public FinishedVideoData(EditorModel model, int episodeNumber)
+        public FinishedVideo(EditorModel model, int episodeNumber)
         {
             Guid = model.Montage.Information.Episodes[episodeNumber].Guid;
             Load(model, episodeNumber);

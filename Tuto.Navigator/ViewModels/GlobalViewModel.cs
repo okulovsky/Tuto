@@ -59,7 +59,7 @@ namespace Tuto.Navigator
                 Subdirectories.Add(new SubfolderViewModel(e));
             Publish = new PublishViewModel(globalData);
 
-                        GlobalData.VideoData.Add(new FinishedVideo(v));
+                     
         }
      
         public void Save()
