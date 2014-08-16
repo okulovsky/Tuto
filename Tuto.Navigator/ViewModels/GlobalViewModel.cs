@@ -65,7 +65,7 @@ namespace Tuto.Navigator
                 {
                     var ex = GlobalData.VideoData.Where(z => z.Guid == v.Guid).FirstOrDefault();
                     if (ex == null)
-                        GlobalData.VideoData.Add(new PublishVideoData(v));
+                        GlobalData.VideoData.Add(new FinishedVideo(v));
                     else
                     {
                         ex.Name = v.Name;

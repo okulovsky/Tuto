@@ -24,7 +24,7 @@ namespace Tuto.Model
         public string WatermarkImage { get; set; }
 
         [DataMember]
-        public List<PublishVideoData> VideoData { get; internal set; }
+        public List<FinishedVideo> VideoData { get; internal set; }
 
         [DataMember]
         public Topic TopicsRoot { get; internal set; }
@@ -33,7 +33,7 @@ namespace Tuto.Model
         {
             VoiceSettings = new VoiceSettings();
             TopicsRoot = new Topic();
-            VideoData = new List<PublishVideoData>();
+            VideoData = new List<FinishedVideo>();
             Name = "";
         }
     }

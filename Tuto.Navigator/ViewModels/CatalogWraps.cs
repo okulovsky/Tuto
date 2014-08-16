@@ -46,8 +46,8 @@ namespace Tuto.Navigator
 
     public class VideoWrap : Wrap
     {
-        public PublishVideoData Video { get; private set; }
-        public VideoWrap(PublishVideoData data)
+        public FinishedVideo Video { get; private set; }
+        public VideoWrap(FinishedVideo data)
         {
             Video = data;
         }

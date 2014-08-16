@@ -1,5 +1,6 @@
 /experiments/*.mp4
 /experiments/*.mp3
+/TestResults
 /Montage/TestResults
 obj
 bin

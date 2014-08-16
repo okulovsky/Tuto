@@ -99,7 +99,7 @@ namespace Tuto.Model
             if (file == null)
                 return new GlobalData();
             var data=ReadJSonWithHeader<GlobalData>(file, "Tuto project file");
-            if (data.VideoData == null) data.VideoData = new List<PublishVideoData>();
+            if (data.VideoData == null) data.VideoData = new List<FinishedVideo>();
             if (data.TopicsRoot == null) data.TopicsRoot= new Topic();
           
             return data;

@@ -11,14 +11,19 @@ namespace YoutubeApi
 {
     class Program
     {
-
-        static void Main(string[] args)
+        static void LoadVideos()
         {
             var key = File.ReadAllText("DeveloperKey.txt");
             YouTubeRequestSettings settings = new YouTubeRequestSettings("Tuto Editor", key);
             YouTubeRequest request = new YouTubeRequest(settings);
             var videos = request.GetVideoFeed("UCDpdqJALXjOkCmCD4Il7U7A");
             foreach (var v in videos.Entries) Console.WriteLine(v);
+        }
+
+
+        static void Main(string[] args)
+        {
+            
 
         }
     }
