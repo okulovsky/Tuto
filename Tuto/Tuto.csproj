@@ -46,8 +46,10 @@
     <Compile Include="Model\BatchWork.cs" />
     <Compile Include="Model\Current\EditorModelIO.cs" />
     <Compile Include="Model\Current\FileContainer.cs" />
+    <Compile Include="Model\Current\AllProjectData.cs" />
     <Compile Include="Model\Current\Global\GlobalData.cs" />
-    <Compile Include="Model\Current\Global\PublishVideoData.cs" />
+    <Compile Include="Model\Current\Global\FinishedVideoData.cs" />
+    <Compile Include="Model\Current\Global\Locations.cs" />
     <Compile Include="Model\Current\Global\Topic.cs" />
     <Compile Include="Model\Current\Global\VoiceSettings.cs" />
     <Compile Include="Main\Shell.cs" />

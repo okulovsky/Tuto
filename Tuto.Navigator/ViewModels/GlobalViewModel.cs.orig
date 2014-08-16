@@ -55,11 +55,35 @@ namespace Tuto.Navigator
             var data=EditorModelIO.ReadAllProjectData(LoadedFile.Directory);
             this.globalData=data.Global;
             Subdirectories = new ObservableCollection<SubfolderViewModel>();
+<<<<<<< HEAD
+
+            var dirs = rootDir
+                        .GetDirectories()
+                        .Where(dir => dir.Name != "Output") //очень грубый костыль
+                        .OrderByDescending(z => z.CreationTime);
+            foreach (var e in dirs)
+            {
+                var model = EditorModelIO.Load(e.FullName);
+                Subdirectories.Add(new SubfolderViewModel(model));
+                foreach (var v in model.Montage.Information.Episodes)
+                {
+                    var ex = GlobalData.VideoData.Where(z => z.Guid == v.Guid).FirstOrDefault();
+                    if (ex == null)
+                        GlobalData.VideoData.Add(new FinishedVideo(v));
+                    else
+                    {
+                        ex.Name = v.Name;
+                        ex.Duration = v.Duration;
+                    }
+                }
+            }
+
+            Publish = new PublishViewModel(GlobalData);
+=======
             foreach(var e in data.Models)
                 Subdirectories.Add(new SubfolderViewModel(e));
             Publish = new PublishViewModel(globalData);
-
-                        GlobalData.VideoData.Add(new FinishedVideo(v));
+>>>>>>> Rubrikator
         }
      
         public void Save()

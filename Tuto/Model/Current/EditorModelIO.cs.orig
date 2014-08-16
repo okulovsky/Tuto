@@ -96,9 +96,22 @@ namespace Tuto.Model
             return true;
         }
 
+<<<<<<< HEAD
+        public static GlobalData ReadGlobalData(DirectoryInfo rootFolder)
+        {
+            var file = rootFolder.GetFiles(Locations.GlobalFileName).FirstOrDefault();
+            if (file == null)
+                return new GlobalData();
+            var data=ReadJSonWithHeader<GlobalData>(file, "Tuto project file");
             if (data.VideoData == null) data.VideoData = new List<FinishedVideo>();
+            if (data.TopicsRoot == null) data.TopicsRoot= new Topic();
+          
+            return data;
+        }
+=======
 
 
+>>>>>>> Rubrikator
 
         static bool TryReadObsolete(EditorModel model)
         {
