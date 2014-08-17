@@ -10,8 +10,8 @@ namespace YoutubeApi.Tests
 
         void Test(string s1, string s2, int match)
         {
-            Assert.AreEqual(match, Algorithms.Match(s1, s2));
-            Assert.AreEqual(match, Algorithms.Match(s2, s1));
+            Assert.AreEqual(match, Algorithms.MatchNames(s1, s2));
+            Assert.AreEqual(match, Algorithms.MatchNames(s2, s1));
         }
 
         [TestMethod]
