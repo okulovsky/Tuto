@@ -1,8 +1,8 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using YoutubeApi.Model;
+using Tuto.Publishing.Youtube.Model;
 
-namespace YoutubeApi.Tests
+namespace Tuto.Publishing.Youtube.Tests
 {
     [TestClass]
     public class MatchTest

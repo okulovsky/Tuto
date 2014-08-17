@@ -6,7 +6,7 @@
     <ProjectGuid>{A10AA517-A786-405E-9064-7C88B418E005}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>YoutubeApi.Tests</RootNamespace>
+    <RootNamespace>Tuto.Publishing.Youtube.Tests</RootNamespace>
     <AssemblyName>YoutubeApi.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -54,9 +54,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\YoutubeApi\YoutubeApi.csproj">
-      <Project>{f3bed434-00dd-4eb9-a2b6-e1aa3c5fdeef}</Project>
-      <Name>YoutubeApi</Name>
+    <ProjectReference Include="..\Tuto.Publishing.Youtube\Tuto.Publishing.Youtube.csproj">
+      <Project>{7983cf24-aef3-4301-b7fb-c378a03f7654}</Project>
+      <Name>Tuto.Publishing.Youtube</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

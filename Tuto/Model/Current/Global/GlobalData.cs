@@ -32,6 +32,9 @@ namespace Tuto.Model
         [DataMember]
         public List<TopicLevel> TopicLevels { get; internal set; }
 
+        [DataMember]
+        public string CourseAbbreviation { get; set; }
+
         public DirectoryInfo GlobalDataFolder { get; internal set; }
 
         public GlobalLocations Locations { get; private set; }
