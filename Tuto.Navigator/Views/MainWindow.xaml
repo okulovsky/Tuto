@@ -18,9 +18,7 @@
         </StackPanel>
 
         <TabControl Grid.Row="1" HorizontalAlignment="Stretch" Height="auto" VerticalAlignment="Stretch" Width="auto">
-            <TabItem Header="Topics" IsEnabled="{Binding IsLoaded}">
-                <navigator:PublishPanel DataContext="{Binding Publish}"/>
-            </TabItem>
+
             
             <TabItem Header="Overview">
                 <DockPanel>
@@ -32,11 +30,17 @@
                     <navigator:SubfoldersDataGrid DataContext="{Binding Subdirectories}"/>
                 </DockPanel>
             </TabItem>
+
+            <TabItem Header="Topics" IsEnabled="{Binding IsLoaded}">
+                <navigator:PublishPanel DataContext="{Binding Publish}"/>
+            </TabItem>
+            
+            
             <TabItem Header="Settings" IsEnabled="{Binding IsLoaded}">
                 <navigator:GlobalSettingsPanel DataContext="{Binding GlobalData}"/>
             </TabItem>
 
-            <TabItem Header="Debug">
+            <!--<TabItem Header="Debug">
                 <StackPanel
                     Background="BurlyWood">
                     <Button Content="Create test model in .\10 directory" 
@@ -44,7 +48,7 @@
                     <Button Content="Open command window in .\" 
                             HorizontalAlignment="Center" Padding="5" Margin="10"/>
                 </StackPanel>
-            </TabItem>
+            </TabItem>-->
         </TabControl>
 
 
