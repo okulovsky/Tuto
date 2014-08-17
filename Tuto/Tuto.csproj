@@ -44,7 +44,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\BatchWork.cs" />
-    <Compile Include="Model\Current\EditorModelIO.cs" />
+    <Compile Include="Model\Current\IO\GlobalUpdaters.cs" />
+    <Compile Include="Model\Current\IO\LocalUpdaters.cs" />
+    <Compile Include="Model\Current\IO\Miscellanous.cs" />
     <Compile Include="Model\Current\FileContainer.cs" />
     <Compile Include="Model\Current\AllProjectData.cs" />
     <Compile Include="Model\Current\Global\GlobalData.cs" />
@@ -54,10 +56,13 @@
     <Compile Include="Model\Current\Global\TopicLevel.cs" />
     <Compile Include="Model\Current\Global\VoiceSettings.cs" />
     <Compile Include="Main\Shell.cs" />
+    <Compile Include="Model\Current\IO\GlobalIO.cs" />
+    <Compile Include="Model\Current\IO\LocalIO.cs" />
     <Compile Include="Model\Current\Montage\BorderListExtensions.cs" />
     <Compile Include="Model\Current\WindowState\EditorModes.cs" />
     <Compile Include="Model\Current\WindowState\EnumName.cs" />
     <Compile Include="Model\Current\WindowState\WindowState.cs" />
+    <Compile Include="Model\HeadedJsonFormat.cs" />
     <Compile Include="Model\Obsolete\LastRefactoring\GlobalData\GlobalData.cs" />
     <Compile Include="Model\Obsolete\LastRefactoring\MontageData\FileContainer.cs" />
     <Compile Include="Model\Current\Locations.cs" />
