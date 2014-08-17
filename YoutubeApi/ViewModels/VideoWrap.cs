@@ -24,16 +24,15 @@ namespace YoutubeApi.ViewModel
         public FinishedVideo Finished { get; set; }
         public PublishedVideo Published { get; set; }
         public ClipData ClipData { get; set; }
-        public List<Topic> TopicsStack { get; private set; }
         public Status Status { get; private set; }
 
         public VideoWrap(FinishedVideo fin, PublishedVideo pub, ClipData cl, Status status)
         {
-            TopicsStack = new List<Topic>();
             Finished = fin;
             Published = pub;
             ClipData = cl;
             Status = status;
         }
+
     }
 }

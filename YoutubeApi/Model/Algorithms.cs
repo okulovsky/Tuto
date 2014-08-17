@@ -135,6 +135,35 @@ namespace YoutubeApi.Model
         }
         #endregion
 
+        #region Work with topics
+
+        static TopicWrap Create(Topic topic, List<VideoWrap> videos, int level, List<TopicLevel> levels)
+        {
+            var result = new TopicWrap();
+            result.Topic = topic;
+            foreach (var e in videos
+                .Where(z => z.Finished != null && z.Finished.TopicGuid == topic.Guid)
+                .OrderBy(z => z.Finished.NumberInTopic))
+                result.Children.Add(e);
+
+            if (level>=0 && level<levels.Count)
+                result.CorrespondedLevel=levels[level];
+
+            foreach (var e in topic.Items)
+            {
+                var t = Create(e, videos, level + 1, levels);
+                t.Parent = result;
+                result.Children.Add(t);
+            }
+            return result;
+        }
+
+        static TopicWrap CreateTree(Topic root, List<VideoWrap> videos, List<TopicLevel> levels)
+        {
+            return Create(root, videos, -1, levels);
+        }
+
+        #endregion
     }
 }
  

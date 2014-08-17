@@ -29,6 +29,9 @@ namespace Tuto.Model
         [DataMember]
         public Topic TopicsRoot { get; internal set; }
 
+        [DataMember]
+        public List<TopicLevel> TopicLevels { get; internal set; }
+
         public DirectoryInfo GlobalDataFolder { get; internal set; }
 
         public GlobalLocations Locations { get; private set; }
@@ -46,6 +49,7 @@ namespace Tuto.Model
             VideoData = new List<FinishedVideo>();
             Name = "";
             Locations = new GlobalLocations(this);
+            TopicLevels = new List<TopicLevel>();
         }
     }
 }
