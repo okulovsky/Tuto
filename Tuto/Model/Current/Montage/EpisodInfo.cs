@@ -11,7 +11,7 @@ namespace Tuto.Model
     public class EpisodInfo
     {
         [DataMember]
-        public Guid Guid { get; private set; }
+        public Guid Guid { get; internal set; }
         [DataMember]
         public string Name { get; set; }
         [DataMember]
