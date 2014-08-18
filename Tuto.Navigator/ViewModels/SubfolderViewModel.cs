@@ -20,9 +20,10 @@ namespace Tuto.Navigator
         {
             
             StartEditorCommand = new RelayCommand(StartEditor);
+            ResetMontageCommand = new RelayCommand(ResetMontage);
             FullPath = model.Locations.LocalFilePath.Directory.FullName;
             if (model.Montage.Chunks != null && model.Montage.Chunks.Count > 3)
-                Status = VideoStatus.Marked;
+                Marked = true;
 
             if (model.Montage.Information != null && model.Montage.Information.Episodes.Count>0)
             {
@@ -32,12 +33,14 @@ namespace Tuto.Navigator
                     .Aggregate((a, b) => a + "\r\n" + b);
             }
             if (model.Montage.Montaged)
-                Status = VideoStatus.Montaged;
+                Montaged = true;
         }
 
         public bool Selected { get; set; }
 
-        public VideoStatus Status { get; private set; }
+        public bool Marked { get; private set; }
+
+        public bool Montaged { get; private set; }
 
         public string FullPath { get; private set; }
 
@@ -55,5 +58,17 @@ namespace Tuto.Navigator
         }
 
         public RelayCommand StartEditorCommand { get; private set; }
+
+        public void ResetMontage()
+        {
+            var ok = MessageBox.Show("This action only makes sense if you corrected an internal error in Tuto. Have you done it?", "Tuto.Navigator", MessageBoxButtons.YesNoCancel);
+            if (ok != DialogResult.Yes) return;
+            var model = EditorModelIO.Load(FullPath);
+            model.Montage.Montaged = false;
+            EditorModelIO.Save(model);
+            Montaged = false;
+        }
+
+        public RelayCommand ResetMontageCommand { get; private set; }
     }
 } 
