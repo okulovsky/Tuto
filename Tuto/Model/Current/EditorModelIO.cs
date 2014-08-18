@@ -46,7 +46,7 @@ namespace Tuto.Model
             }
             else if (subdirectory.StartsWith("work\\"))
             {
-                subdirectory = subdirectory.Replace("work\\", "..\\..\\..\\..\\BP\\");
+                subdirectory = subdirectory.Replace("work\\", "D:\\BP\\");
             }
             return subdirectory;
         }
