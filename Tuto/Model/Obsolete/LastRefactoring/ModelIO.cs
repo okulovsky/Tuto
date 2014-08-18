@@ -49,11 +49,8 @@ namespace Editor
             }
             foreach (var e in v4.Montage.Information.Episodes)
             {
-                model.Montage.Information.Episodes.Add(new Tuto.Model.EpisodInfo
+                model.Montage.Information.Episodes.Add(new Tuto.Model.EpisodInfo(Guid.NewGuid())
                 {
-                    AuthorId = e.AuthorId,
-                    TopicId = e.LectureId,
-                    NumberInTopic = e.NumberInTopic,
                     Name = e.Name,
                     Duration = e.Duration
                 });

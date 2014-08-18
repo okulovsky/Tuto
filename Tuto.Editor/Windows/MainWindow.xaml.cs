@@ -151,13 +151,13 @@ namespace Editor
 
             if (model.Montage.Information.Episodes.Count == 0)
             {
-                model.Montage.Information.Episodes.AddRange(Enumerable.Range(0, times.Count).Select(z => new EpisodInfo()));
+                model.Montage.Information.Episodes.AddRange(Enumerable.Range(0, times.Count).Select(z => new EpisodInfo(Guid.NewGuid())));
             }
             else if (model.Montage.Information.Episodes.Count != times.Count)
             {
                 MessageBox.Show("The stored information contains wrong count of records, i.e. describes wrong number of episodes. Please check it", "", MessageBoxButton.OK, MessageBoxImage.Information);
                 while (model.Montage.Information.Episodes.Count < times.Count)
-                    model.Montage.Information.Episodes.Add(new EpisodInfo());
+                    model.Montage.Information.Episodes.Add(new EpisodInfo(Guid.NewGuid()));
             }
 
             for (int i = 0; i < times.Count; i++)

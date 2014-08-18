@@ -11,14 +11,15 @@ namespace Tuto.Model
     public class EpisodInfo
     {
         [DataMember]
+        public Guid Guid { get; internal set; }
+        [DataMember]
         public string Name { get; set; }
         [DataMember]
-        public Guid TopicId { get; set; }
-        [DataMember]
-        public Guid AuthorId { get; set; }
-        [DataMember]
         public TimeSpan Duration { get; set; }
-        [DataMember]
-        public int NumberInTopic { get; set; }
+
+        public EpisodInfo(Guid guid)
+        {
+            this.Guid = guid;
+        }
     }
 }

@@ -7,15 +7,22 @@ using System.Linq;
 
 namespace Tuto.Navigator
 {
+    public enum VideoStatus
+    {
+        Raw,
+        Marked,
+        Montaged
+    }
+
     public class SubfolderViewModel
     {
-        public SubfolderViewModel(string fullPath)
+        public SubfolderViewModel(EditorModel model)
         {
-            FullPath = fullPath;
+            
             StartEditorCommand = new RelayCommand(StartEditor);
-            ResetMontageCommand = new RelayCommand(ResetMontage);
-            var model = EditorModelIO.Load(fullPath);
-            Marked = model.Montage.Chunks != null && model.Montage.Chunks.Count > 3;
+            FullPath = model.Locations.LocalFilePath.Directory.FullName;
+            if (model.Montage.Chunks != null && model.Montage.Chunks.Count > 3)
+                Status = VideoStatus.Marked;
 
             if (model.Montage.Information != null && model.Montage.Information.Episodes.Count>0)
             {
@@ -24,15 +31,13 @@ namespace Tuto.Navigator
                     .Select(z=>z.Name)
                     .Aggregate((a, b) => a + "\r\n" + b);
             }
-
-            Montaged = model.Montage.Montaged;
+            if (model.Montage.Montaged)
+                Status = VideoStatus.Montaged;
         }
 
         public bool Selected { get; set; }
 
-        public bool Marked { get; private set; }
-
-        public bool Montaged { get; private set; }
+        public VideoStatus Status { get; private set; }
 
         public string FullPath { get; private set; }
 
@@ -49,17 +54,6 @@ namespace Tuto.Navigator
             Shell.ExecQuoteArgs(false, editorExe, FullPath);
         }
 
-        public void ResetMontage()
-        {
-            var ok = MessageBox.Show("This action only makes sense if you corrected an internal error in Tuto. Have you done it?", "Tuto.Navigator", MessageBoxButtons.YesNoCancel);
-            if (ok != DialogResult.Yes) return;
-            var model=EditorModelIO.Load(FullPath);
-            model.Montage.Montaged = false;
-            EditorModelIO.Save(model);
-            Montaged = false;
-        }
-
         public RelayCommand StartEditorCommand { get; private set; }
-        public RelayCommand ResetMontageCommand { get; private set; }
     }
 } 

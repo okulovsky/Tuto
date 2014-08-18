@@ -1,5 +1,6 @@
 /experiments/*.mp4
 /experiments/*.mp3
+/TestResults
 /Montage/TestResults
 obj
 bin
@@ -24,3 +25,4 @@ bin
 *.toc
 *.snm
 /Montage/ImageGenerator/*.user
+YoutubeApi/DeveloperKey.txt

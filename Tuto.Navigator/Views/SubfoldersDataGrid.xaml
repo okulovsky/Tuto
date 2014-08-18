@@ -5,14 +5,41 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    <!--<ListBox ItemsSource="{Binding}" HorizontalContentAlignment="Stretch">
+        <ListBox.Resources>
+            <Style TargetType="ListBox">
+                <Setter Property="ItemTemplate">
+                    <Setter.Value>
+                        <DataTemplate>
+                            <Grid HorizontalAlignment="Stretch">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="5*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="70"/>
+                                </Grid.ColumnDefinitions>
+                                <CheckBox Grid.Column="0" Checked="{Binding Selected}"/>
+                                <TextBlock Grid.Column="1" Text="{Binding Name, Mode=OneWay}"/>
+                                <TextBlock Grid.Column="2" Text="{Binding EpisodesNames}"/>
+                                <TextBlock Grid.Column="3" Text="{Binding TotalDuration}"/>
+                                <TextBlock Grid.Column="4" Text="{Binding Status, Mode=OneWay}"/>
+                                <Button Grid.Column="5" Command="{Binding StartEditorCommand}" Content="Editor"/>
+                            </Grid>
+                        </DataTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ListBox.Resources>
+    </ListBox>-->
     <DataGrid VerticalScrollBarVisibility="Visible" AutoGenerateColumns="False" ItemsSource="{Binding}"> 
         <DataGrid.Columns>
             <DataGridCheckBoxColumn Header="Selected" Binding="{Binding Selected}"/>
             <DataGridTextColumn Binding="{Binding Name}" Header="Name"/>
             <DataGridTextColumn Binding="{Binding EpisodesNames}" Header="EpisodesNames"/>
             <DataGridTextColumn Binding="{Binding TotalDuration}" Header="TotalDuration"/>
-            <DataGridCheckBoxColumn Binding="{Binding Marked, Mode=OneWay}"  Header="Marked"/>
-            <DataGridCheckBoxColumn Binding="{Binding Montaged, Mode=OneWay}" Header="Montaged"/>
+            <DataGridTextColumn Binding="{Binding Status, Mode=OneWay}" Header="Status"/>
             <DataGridTemplateColumn>
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>

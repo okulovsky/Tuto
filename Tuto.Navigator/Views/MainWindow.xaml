@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:model="clr-namespace:Tuto.Model;assembly=Tuto"
         xmlns:navigator="clr-namespace:Tuto.Navigator"
-        Title="{Binding WindowTitle}" Height="350" Width="800">
+        Title="{Binding WindowTitle}" Height="350" Width="800"
+        >
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -11,21 +12,14 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition></RowDefinition>
-        </Grid.RowDefinitions>
-        
-        <Menu HorizontalAlignment="Stretch" Height="auto" VerticalAlignment="top" Width="auto">
-           <MenuItem Header="File">
-                <MenuItem Header="New project" Command="{Binding NewCommand}"></MenuItem>
-                <MenuItem Header="Open" Command="{Binding OpenCommand}"></MenuItem>
-                <MenuItem Header="Save" Command="{Binding SaveCommand}"></MenuItem>
-               <MenuItem Header="Close" Command="{Binding CloseCommand}"></MenuItem>
-           </MenuItem> 
-        </Menu>
+    <DockPanel>
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+            <Button Command="{Binding SaveCommand}" Height="40" Width="40">Save</Button>
+        </StackPanel>
+
         <TabControl Grid.Row="1" HorizontalAlignment="Stretch" Height="auto" VerticalAlignment="Stretch" Width="auto">
+
+            
             <TabItem Header="Overview">
                 <DockPanel>
                     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
@@ -36,10 +30,17 @@
                     <navigator:SubfoldersDataGrid DataContext="{Binding Subdirectories}"/>
                 </DockPanel>
             </TabItem>
+
+            <TabItem Header="Topics" IsEnabled="{Binding IsLoaded}">
+                <navigator:PublishPanel DataContext="{Binding Publish}"/>
+            </TabItem>
+            
+            
             <TabItem Header="Settings" IsEnabled="{Binding IsLoaded}">
                 <navigator:GlobalSettingsPanel DataContext="{Binding GlobalData}"/>
             </TabItem>
-            <TabItem Header="Debug">
+
+            <!--<TabItem Header="Debug">
                 <StackPanel
                     Background="BurlyWood">
                     <Button Content="Create test model in .\10 directory" 
@@ -47,8 +48,10 @@
                     <Button Content="Open command window in .\" 
                             HorizontalAlignment="Center" Padding="5" Margin="10"/>
                 </StackPanel>
-            </TabItem>
+            </TabItem>-->
         </TabControl>
 
-    </Grid>
+
+    </DockPanel>
+
 </Window>
