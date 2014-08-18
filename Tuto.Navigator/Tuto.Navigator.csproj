@@ -73,6 +73,9 @@
     <Compile Include="Views\CatalogPanel.xaml.cs">
       <DependentUpon>CatalogPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\FinishedVideoPanel.xaml.cs">
+      <DependentUpon>FinishedVideoPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SubfoldersDataGrid.xaml.cs">
       <DependentUpon>SubfoldersDataGrid.xaml</DependentUpon>
     </Compile>
@@ -81,6 +84,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\FilePickerControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FinishedVideoPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
