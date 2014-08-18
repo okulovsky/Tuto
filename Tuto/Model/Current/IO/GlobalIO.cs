@@ -30,6 +30,29 @@ namespace Tuto.Model
             HeadedJsonFormat.Write<GlobalData>(data.Locations.ProjectFile, "Tuto project file", GlobalVersion, data);
         }
 
+        public static IEnumerable<DirectoryInfo> GetAllSubdirectoriesIncludingRoot(DirectoryInfo root)
+        {
+            yield return root;
+            foreach(var directory in root.GetDirectories())
+                foreach(var e in GetAllSubdirectoriesIncludingRoot(directory))
+                    yield return e;
+        }
+
+        public static IEnumerable<DirectoryInfo> GetAllSubdirectories(DirectoryInfo root)
+        {
+            return GetAllSubdirectoriesIncludingRoot(root).Skip(1);
+        }
+
+        static bool IsValidLocalFolder(DirectoryInfo directory)
+        {
+            if (directory.Name == Locations.OutputFolderName || directory.Name == Locations.TemporalFolderName)
+                return false;
+            return directory
+                .GetFiles()
+                .Select(z => z.Name)
+                .Any(z => z == Locations.LocalFileName || z == Locations.DesktopVideoFileName || z == Locations.FaceVideoFileName);
+        }
+
         
         public static AllProjectData ReadAllProjectData(DirectoryInfo rootFolder)
         {
@@ -37,10 +60,9 @@ namespace Tuto.Model
 
             var result = new AllProjectData(globalData);
 
-            var dirs = rootFolder
-                       .GetDirectories()
-                       .Where(dir => dir.Name != "Output") //очень грубый костыль
-                       .OrderByDescending(z => z.CreationTime);
+            var dirs = GetAllSubdirectories(rootFolder)
+                        .Where(IsValidLocalFolder)
+                        .OrderByDescending(z => z.CreationTime);
 
             foreach (var e in dirs)
             {

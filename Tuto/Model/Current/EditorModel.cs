@@ -39,7 +39,7 @@ namespace Tuto.Model
             this.VideoFolder=local;
             this.RootFolder=global;
             this.ProgramFolder=program;
-            ChunkFolder = VideoFolder.CreateSubdirectory("chunks");
+            ChunkFolder = VideoFolder.CreateSubdirectory(Locations.TemporalFolderName);
             Montage = new MontageModel(360000);
             Locations = new Locations(this);
             WindowState = new WindowState();

@@ -23,8 +23,8 @@ namespace Tuto.Model
         public FileInfo AutoLevelsLibrary { get { return Make(model.ProgramFolder, "autolevels.dll"); } }
         public FileInfo TutoExecutable { get { return Make(model.ProgramFolder, "Tuto.exe"); } }
 
-        public FileInfo FaceVideo { get { return Make(model.VideoFolder, "face.mp4"); } }
-        public FileInfo DesktopVideo { get { return Make(model.VideoFolder, "desktop.avi"); } }
+        public FileInfo FaceVideo { get { return Make(model.VideoFolder, FaceVideoFileName); } }
+        public FileInfo DesktopVideo { get { return Make(model.VideoFolder, DesktopVideoFileName ); } }
         
         public FileInfo ConvertedFaceVideo { get { return Make(model.ChunkFolder, "face-converted.avi"); } }
         public FileInfo ConvertedDesktopVideo { get { return Make(model.ChunkFolder, "desktop-converted.avi"); } }
@@ -32,7 +32,7 @@ namespace Tuto.Model
         public FileInfo PraatVoice { get { return Make(model.VideoFolder, "voice.mp3"); } }
         public FileInfo LocalFilePath { get { return Make(model.VideoFolder, LocalFileName); } }
 
-        public DirectoryInfo OutputDirectory { get { return new DirectoryInfo(Path.Combine(model.RootFolder.FullName, "Output")); } }
+        public DirectoryInfo OutputDirectory { get { return new DirectoryInfo(Path.Combine(model.RootFolder.FullName, Locations.OutputFolderName)); } }
         
         public FileInfo PraatOutput { get { return Make(model.VideoFolder, "praat.output"); } }
 
@@ -42,6 +42,10 @@ namespace Tuto.Model
 
         public const string LocalFileName = "local.tuto";
         public const string GlobalFileName = "project.tuto";
+        public const string FaceVideoFileName = "face.mp4";
+        public const string DesktopVideoFileName = "desktop.avi";
+        public const string TemporalFolderName = "chunks";
+        public const string OutputFolderName = "Output";
 
         public FileInfo GetOutputFile(int episodeNumber)
         {
