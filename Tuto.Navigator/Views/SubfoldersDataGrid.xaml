@@ -39,18 +39,26 @@
             <DataGridTextColumn Binding="{Binding Name}" Header="Name"/>
             <DataGridTextColumn Binding="{Binding EpisodesNames}" Header="EpisodesNames"/>
             <DataGridTextColumn Binding="{Binding TotalDuration}" Header="TotalDuration"/>
-            <DataGridTextColumn Binding="{Binding Status, Mode=OneWay}" Header="Status"/>
+            <DataGridCheckBoxColumn Binding="{Binding Marked, Mode=OneWay}" Header="Marked"/>
+            <DataGridCheckBoxColumn Binding="{Binding Montaged, Mode=OneWay}" Header="Montaged"/>
             <DataGridTemplateColumn>
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
                         <Button Width="50" Height="30" Command="{Binding StartEditorCommand}" Content="Editor"/>
-                    </DataTemplate>                    
+                        </DataTemplate>                    
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
             <DataGridTemplateColumn>
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
                         <Button Width="50" Height="30" Command="{Binding ResetMontageCommand}" Content="Reset montage"/>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+            <DataGridTemplateColumn>
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <Button Width="50" Height="30" Command="{Binding OpenFolderCommand}" Content="OpenFolder"/>
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>

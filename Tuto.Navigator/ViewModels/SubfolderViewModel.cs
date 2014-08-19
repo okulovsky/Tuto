@@ -4,15 +4,10 @@ using System.Reflection;
 using System.Windows.Forms;
 using Tuto.Model;
 using System.Linq;
+using System.Diagnostics;
 
 namespace Tuto.Navigator
 {
-    public enum VideoStatus
-    {
-        Raw,
-        Marked,
-        Montaged
-    }
 
     public class SubfolderViewModel
     {
@@ -21,6 +16,7 @@ namespace Tuto.Navigator
             
             StartEditorCommand = new RelayCommand(StartEditor);
             ResetMontageCommand = new RelayCommand(ResetMontage);
+            OpenFolderCommand = new RelayCommand(OpenFolder);
             FullPath = model.Locations.LocalFilePath.Directory.FullName;
             if (model.Montage.Chunks != null && model.Montage.Chunks.Count > 3)
                 Marked = true;
@@ -35,7 +31,6 @@ namespace Tuto.Navigator
             if (model.Montage.Montaged)
                 Montaged = true;
         }
-
         public bool Selected { get; set; }
 
         public bool Marked { get; private set; }
@@ -70,5 +65,12 @@ namespace Tuto.Navigator
         }
 
         public RelayCommand ResetMontageCommand { get; private set; }
+
+        public void OpenFolder()
+        {
+            Process.Start(FullPath);
+        }
+
+        public RelayCommand OpenFolderCommand { get; private set; }
     }
 } 
