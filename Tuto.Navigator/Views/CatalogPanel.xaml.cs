@@ -120,6 +120,8 @@ namespace Tuto.Navigator
 
         void Tree_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            var testBox = GetParentOfType<TextBox>(e.GetPosition(this));
+            if (testBox != null) return;
             var treeNode = GetParentOfType<TreeViewItem>(e.GetPosition(this));
             DoDragAndDrop(treeNode);
         }

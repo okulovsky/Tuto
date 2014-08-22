@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tuto.Model;
-using Tuto.Publishing.Youtube.ViewModel;
 
-namespace Tuto.Publishing.Youtube.Model
+namespace Tuto.Publishing.Youtube
 {
     class Lists
     {
@@ -24,10 +23,25 @@ namespace Tuto.Publishing.Youtube.Model
         }
         public void Account(VideoWrap wrap)
         {
-            
+            Result.Add(wrap);
             Finished.Remove(wrap.Finished);
             Published.Remove(wrap.Published);
             Clips.Remove(wrap.ClipData);
+        }
+    }
+
+    public static class IEnumerableStringExtensions
+    {
+        public static string JoinStrings(this IEnumerable<string> en, Func<string, string, string> op)
+        {
+            string result = "";
+            foreach (var e in en)
+            {
+                if (result == "") result += e;
+                else result = op(result, e);
+            }
+            return result;
+
         }
     }
 
@@ -70,7 +84,7 @@ namespace Tuto.Publishing.Youtube.Model
         #region Making match between videos
         const double MatchLowerLimit = 0.5;
 
-        VideoWrap FindMatchThroughPub(Lists lists, FinishedVideo fin)
+        static VideoWrap FindMatchThroughPub(Lists lists, FinishedVideo fin)
         {
             var pub = lists.Published.FirstOrDefault(z => z.Guid == fin.Guid);
             if (pub != null)
@@ -86,7 +100,7 @@ namespace Tuto.Publishing.Youtube.Model
             return null;
         }
 
-        VideoWrap FindNewMatch(Lists lists, FinishedVideo fin)
+        static VideoWrap FindNewMatch(Lists lists, FinishedVideo fin)
         {
             var bestMatch = lists.Clips
                         .Select(z => Tuple.Create(z, RelativeMatchNames(fin.Name, z.Name)))
@@ -103,7 +117,7 @@ namespace Tuto.Publishing.Youtube.Model
             return null;
         }
 
-        public List<VideoWrap> MatchVideos(List<FinishedVideo> _finished, List<PublishedVideo> _published, List<ClipData> _clips)
+        public static List<VideoWrap> MatchVideos(List<FinishedVideo> _finished, List<PublishedVideo> _published, List<ClipData> _clips)
         {
             var list = new Lists(_finished, _published, _clips);
 
@@ -148,6 +162,7 @@ namespace Tuto.Publishing.Youtube.Model
                 .OrderBy(z => z.Finished.NumberInTopic))
             {
                 e.NumberInTopic = number++;
+                e.Parent = result;
                 result.Children.Add(e);
             }
 
@@ -169,7 +184,7 @@ namespace Tuto.Publishing.Youtube.Model
             return result;
         }
 
-        static TopicWrap CreateTree(Topic root, List<VideoWrap> videos, List<TopicLevel> levels)
+        public static TopicWrap CreateTree(Topic root, List<VideoWrap> videos, List<TopicLevel> levels)
         {
             var result=Create(root, videos, -1, levels);
             result.Root = true;
@@ -180,30 +195,32 @@ namespace Tuto.Publishing.Youtube.Model
 
         #region Updating VideoWrap
 
-        static string GetAbbreviation(GlobalData globalData, VideoWrap wrap)
+        public static string GetAbbreviation(GlobalData globalData, VideoWrap wrap)
         {
+            var numvers = wrap.PathFromRoot
+                    .Where(z => !z.Root)
+                    .Select(z => z.FormattedNumberInTopic)
+                    .ToArray();
+
             return
                 globalData.CourseAbbreviation
                 + "-"
-                + wrap.PathFromRoot
-                    .Where(z => !z.Root)
-                    .Select(z => z.FormattedNumberInTopic)
-                    .Aggregate((a, b) => a + "-" + b)
+                + numvers.JoinStrings((a, b) => a + "-" + b)
                 + " "
                 + wrap.Finished.Name;
         }
 
-        static string GetDescription(GlobalData globalData, VideoWrap wrap)
+        public static string GetDescription(GlobalData globalData, VideoWrap wrap)
         {
-            return globalData.Name
-                + "\r\n"
-                + wrap.TopicsFromRoot.Select(z =>
+            var topics= wrap.TopicsFromRoot.Select(z =>
                     z.CorrespondedLevel.Caption
                     + " "
                     + (z.NumberInTopic + 1)
                     + "."
-                    + z.Topic.Caption)
-                    .Aggregate((a, b) => a + "\r\n" + b)
+                    + z.Topic.Caption).ToArray();
+            return globalData.Name
+                + "\r\n"
+                + topics.JoinStrings((a, b) => a + "\r\n" + b)
                 + "\r\n";
         }
 

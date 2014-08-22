@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tuto.Model;
-using Tuto.Publishing.Youtube.Model;
 
-namespace Tuto.Publishing.Youtube.ViewModel
+namespace Tuto.Publishing.Youtube
 {
     public enum Status
     {
@@ -25,6 +24,10 @@ namespace Tuto.Publishing.Youtube.ViewModel
         public PublishedVideo Published { get; set; }
         public ClipData ClipData { get; set; }
         public Status Status { get; private set; }
+
+        public string VideoURLFull { get { if (ClipData == null) return ""; return ClipData.VideoURLFull; } }
+        public string VideoURLShort { get { if (ClipData == null) return ""; return ClipData.Id; } }
+        public string YoutubeName { get { if (ClipData == null) return ""; return ClipData.Name; } }
 
         public VideoWrap(FinishedVideo fin, PublishedVideo pub, ClipData cl, Status status)
         {

@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Tuto.Publishing.Youtube.Model;
 
 namespace Tuto.Publishing.Youtube.Tests
 {

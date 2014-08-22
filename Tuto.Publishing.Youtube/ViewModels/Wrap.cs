@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tuto.Publishing.Youtube.ViewModel
+namespace Tuto.Publishing.Youtube
 {
     public class Wrap
     {
@@ -19,7 +19,7 @@ namespace Tuto.Publishing.Youtube.ViewModel
             get
             {
                 if (Parent != null)
-                    foreach (var e in PathFromRoot)
+                    foreach (var e in Parent.PathFromRoot)
                         yield return e;
                 yield return this;
 
@@ -32,6 +32,14 @@ namespace Tuto.Publishing.Youtube.ViewModel
                 var format = "{0:D" + Digits + "}";
                 return string.Format(format, NumberInTopic + 1);
             }
+        }
+
+        public IEnumerable<Wrap> Subtree()
+        {
+            yield return this;
+            foreach(var e in Children)
+                foreach(var z in e.Subtree())
+                    yield return z;
         }
     }
 }

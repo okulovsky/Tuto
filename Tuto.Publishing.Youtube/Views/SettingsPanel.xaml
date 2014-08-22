@@ -1,0 +1,44 @@
+﻿<UserControl x:Class="Tuto.Publishing.Youtube.Views.SettingsPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:v="clr-namespace:Tuto.Publishing.Youtube.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="600">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+        <Label Grid.Column="0" Grid.Row="0">Developer's key.</Label>
+        <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="0">
+            <TextBox Text="{Binding DeveloperKey}"/>
+            <TextBlock TextWrapping="Wrap">Sinse Tuto is open source software, we cannot store it in the source code. Please obtain your own <v:MyHyperlink NavigateUri="https://code.google.com/apis/youtube/dashboard/gwt/index.html">here</v:MyHyperlink></TextBlock>
+        </StackPanel>
+        <Label Grid.Column="0" Grid.Row="1">Your username for Youtube service</Label>
+        <StackPanel Grid.Column="1" Grid.Row="1" >
+        <TextBox  Text="{Binding Username}"/>
+            <TextBlock TextWrapping="Wrap">Please not that your Youtube account is not always the same as your gmail: it does not contain dots</TextBlock>
+        </StackPanel>
+        <Label Grid.Column="0" Grid.Row="2">The channel where the course is published</Label>
+        <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Vertical" >
+            <TextBox Text="{Binding ChannelId}"/>
+            <TextBlock TextWrapping="Wrap">This and the following ID may be seen <v:MyHyperlink NavigateUri="https://www.youtube.com/account_advanced">here</v:MyHyperlink></TextBlock>
+        </StackPanel>
+        <Label Grid.Column="0" Grid.Row="3">Channel User Id</Label>
+        <StackPanel Grid.Column="1" Grid.Row="3" Orientation="Vertical" >
+            <TextBox Text="{Binding ChannelUserId}"/>
+            <TextBlock TextWrapping="Wrap">It is not your username! Please check <v:MyHyperlink NavigateUri="https://www.youtube.com/account_advanced">this link</v:MyHyperlink></TextBlock>
+        </StackPanel>
+
+
+
+    </Grid>
+</UserControl>
