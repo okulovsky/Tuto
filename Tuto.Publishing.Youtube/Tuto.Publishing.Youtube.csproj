@@ -66,6 +66,7 @@
   <ItemGroup>
     <Compile Include="Model\Algorithms.cs" />
     <Compile Include="Model\ClipData.cs" />
+    <Compile Include="Model\Join3.cs" />
     <Compile Include="Model\PublishedVideo.cs" />
     <Compile Include="Model\PublishingFileContainer.cs" />
     <Compile Include="Model\YoutubeProcessor.cs" />

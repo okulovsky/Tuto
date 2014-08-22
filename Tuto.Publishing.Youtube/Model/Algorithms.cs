@@ -82,71 +82,21 @@ namespace Tuto.Publishing.Youtube
         }
         
         #region Making match between videos
-        const double MatchLowerLimit = 0.5;
-
-        static VideoWrap FindMatchThroughPub(Lists lists, FinishedVideo fin)
-        {
-            var pub = lists.Published.FirstOrDefault(z => z.Guid == fin.Guid);
-            if (pub != null)
-            {
-                var clip = lists.Clips.FirstOrDefault(z => z.Id == pub.ClipId);
-                return new VideoWrap(
-                        fin,
-                        pub,
-                        clip,
-                        clip == null ? Status.DeletedFromYoutube : Status.MatchedOld
-                    );
-            }
-            return null;
-        }
-
-        static VideoWrap FindNewMatch(Lists lists, FinishedVideo fin)
-        {
-            var bestMatch = lists.Clips
-                        .Select(z => Tuple.Create(z, RelativeMatchNames(fin.Name, z.Name)))
-                        .OrderByDescending(z => z.Item2)
-                        .FirstOrDefault();
-            //the match is being installed right now
-            if (bestMatch != null && bestMatch.Item2 > MatchLowerLimit)
-            {
-                var pub1 = new PublishedVideo();
-                pub1.Guid = fin.Guid;
-                pub1.ClipId = bestMatch.Item1.Id;
-                return new VideoWrap(fin, pub1, bestMatch.Item1, Status.MatchedNew);
-            }
-            return null;
-        }
+     
 
         public static List<VideoWrap> MatchVideos(List<FinishedVideo> _finished, List<PublishedVideo> _published, List<ClipData> _clips)
         {
-            var list = new Lists(_finished, _published, _clips);
+            var join = new Join3<FinishedVideo, PublishedVideo, ClipData, VideoWrap>();
+            join.Inner = _finished.ToList();
+            join.Middle = _published.ToList();
+            join.Outer = _clips.ToList();
+            join.InnerComparator = (a, b) => a.Guid == b.Guid;
+            join.OuterComparator = (a, b) => a.Id == b.ClipId;
+            join.CreateLink = (a, b) => new PublishedVideo { ClipId = b.Id, Guid = a.Guid };
+            join.CreateResult = (a, b, c, d) => new VideoWrap(a, b, c, d);
+            join.GetMatch = (a, b) => RelativeMatchNames(a.Name, b.Name);
+            return join.Run();
 
-            while (list.Finished.Count != 0)
-            {
-                var fin = list.Finished[0];
-                var match = FindMatchThroughPub(list, fin);
-                if (match == null) match = FindNewMatch(list, fin);
-                if (match == null) match = new VideoWrap(fin, null, null, Status.NotFoundAtYoutube);
-                list.Account(match);
-            }
-
-            while (list.Clips.Count != 0)
-            {
-                var clip=list.Clips[0];
-                var pub = list.Published.FirstOrDefault(z => z.ClipId == clip.Id);
-                list.Account(new VideoWrap(
-                    null, 
-                    pub, 
-                    clip, 
-                    pub==null?Status.NotExpectedAtYoutube:Status.DeletedFromTuto));
-            }
-
-            while (list.Published.Count != 0)
-            {
-                list.Account(new VideoWrap(null, list.Published[0], null, Status.DeletedFromBoth));
-            }
-
-            return list.Result;
         }
         #endregion
 
