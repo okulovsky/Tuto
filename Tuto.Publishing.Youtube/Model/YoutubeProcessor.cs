@@ -27,17 +27,36 @@ namespace Tuto.Publishing.Youtube
             var settings = new YouTubeRequestSettings(ApplicationName, data.DeveloperKey, data.Username, password);
             var request = new YouTubeRequest(settings);
 
-            var url = string.Format("http://gdata.youtube.com/feeds/api/users/{0}/uploads",
-                data.ChannelUserId);
+
+            int maxResults=50;
+            int clashCounter=0;
+
+            for (int startIndex = 0; ; startIndex += maxResults)
+            {
+                var url = string.Format("http://gdata.youtube.com/feeds/api/users/{0}/uploads?max-results={1}",
+                data.ChannelUserId,
+                maxResults);
+                if (startIndex != 0)
+                    url += "&start-index=" + startIndex;
 
 
-            var videos = request.Get<Video>(new Uri(url));
-            foreach (var v in videos.Entries)
-                list.Add(new ClipData
+                var videos = request.Get<Video>(new Uri(url));
+                var hasEntries = false;
+
+                foreach (var v in videos.Entries)
                 {
-                    Id = v.VideoId,
-                    Name = v.Title
-                });
+                    hasEntries = true;
+                    if (!list.Any(z => z.Id == v.VideoId))
+                        list.Add(new ClipData
+                        {
+                            Id = v.VideoId,
+                            Name = v.Title
+                        });
+                    else clashCounter++;
+                }
+
+                if (!hasEntries) break;
+            }
             return list;
         }
 
