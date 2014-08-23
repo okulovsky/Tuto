@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Tuto.Model;
 
-namespace Tuto.Publishing.Youtube.Model
+namespace Tuto.Publishing.Youtube
 {
     [DataContract]
     public class PublishedVideo

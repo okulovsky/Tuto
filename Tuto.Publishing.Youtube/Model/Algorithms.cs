@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tuto.Model;
-using Tuto.Publishing.Youtube.ViewModel;
 
-namespace Tuto.Publishing.Youtube.Model
+namespace Tuto.Publishing.Youtube
 {
     class Lists
     {
@@ -24,10 +23,25 @@ namespace Tuto.Publishing.Youtube.Model
         }
         public void Account(VideoWrap wrap)
         {
-            
+            Result.Add(wrap);
             Finished.Remove(wrap.Finished);
             Published.Remove(wrap.Published);
             Clips.Remove(wrap.ClipData);
+        }
+    }
+
+    public static class IEnumerableStringExtensions
+    {
+        public static string JoinStrings(this IEnumerable<string> en, Func<string, string, string> op)
+        {
+            string result = "";
+            foreach (var e in en)
+            {
+                if (result == "") result += e;
+                else result = op(result, e);
+            }
+            return result;
+
         }
     }
 
@@ -68,71 +82,21 @@ namespace Tuto.Publishing.Youtube.Model
         }
         
         #region Making match between videos
-        const double MatchLowerLimit = 0.5;
+     
 
-        VideoWrap FindMatchThroughPub(Lists lists, FinishedVideo fin)
+        public static List<VideoWrap> MatchVideos(List<FinishedVideo> _finished, List<PublishedVideo> _published, List<ClipData> _clips)
         {
-            var pub = lists.Published.FirstOrDefault(z => z.Guid == fin.Guid);
-            if (pub != null)
-            {
-                var clip = lists.Clips.FirstOrDefault(z => z.Id == pub.ClipId);
-                return new VideoWrap(
-                        fin,
-                        pub,
-                        clip,
-                        clip == null ? Status.DeletedFromYoutube : Status.MatchedOld
-                    );
-            }
-            return null;
-        }
+            var join = new Join3<FinishedVideo, PublishedVideo, ClipData, VideoWrap>();
+            join.Inner = _finished.ToList();
+            join.Middle = _published.ToList();
+            join.Outer = _clips.ToList();
+            join.InnerComparator = (a, b) => a.Guid == b.Guid;
+            join.OuterComparator = (a, b) => a.Id == b.ClipId;
+            join.CreateLink = (a, b) => new PublishedVideo { ClipId = b.Id, Guid = a.Guid };
+            join.CreateResult = (a, b, c, d) => new VideoWrap(a, b, c, d);
+            join.GetMatch = (a, b) => RelativeMatchNames(a.Name, b.Name);
+            return join.Run();
 
-        VideoWrap FindNewMatch(Lists lists, FinishedVideo fin)
-        {
-            var bestMatch = lists.Clips
-                        .Select(z => Tuple.Create(z, RelativeMatchNames(fin.Name, z.Name)))
-                        .OrderByDescending(z => z.Item2)
-                        .FirstOrDefault();
-            //the match is being installed right now
-            if (bestMatch != null && bestMatch.Item2 > MatchLowerLimit)
-            {
-                var pub1 = new PublishedVideo();
-                pub1.Guid = fin.Guid;
-                pub1.ClipId = bestMatch.Item1.Id;
-                return new VideoWrap(fin, pub1, bestMatch.Item1, Status.MatchedNew);
-            }
-            return null;
-        }
-
-        public List<VideoWrap> MatchVideos(List<FinishedVideo> _finished, List<PublishedVideo> _published, List<ClipData> _clips)
-        {
-            var list = new Lists(_finished, _published, _clips);
-
-            while (list.Finished.Count != 0)
-            {
-                var fin = list.Finished[0];
-                var match = FindMatchThroughPub(list, fin);
-                if (match == null) match = FindNewMatch(list, fin);
-                if (match == null) match = new VideoWrap(fin, null, null, Status.NotFoundAtYoutube);
-                list.Account(match);
-            }
-
-            while (list.Clips.Count != 0)
-            {
-                var clip=list.Clips[0];
-                var pub = list.Published.FirstOrDefault(z => z.ClipId == clip.Id);
-                list.Account(new VideoWrap(
-                    null, 
-                    pub, 
-                    clip, 
-                    pub==null?Status.NotExpectedAtYoutube:Status.DeletedFromTuto));
-            }
-
-            while (list.Published.Count != 0)
-            {
-                list.Account(new VideoWrap(null, list.Published[0], null, Status.DeletedFromBoth));
-            }
-
-            return list.Result;
         }
         #endregion
 
@@ -148,6 +112,7 @@ namespace Tuto.Publishing.Youtube.Model
                 .OrderBy(z => z.Finished.NumberInTopic))
             {
                 e.NumberInTopic = number++;
+                e.Parent = result;
                 result.Children.Add(e);
             }
 
@@ -169,7 +134,7 @@ namespace Tuto.Publishing.Youtube.Model
             return result;
         }
 
-        static TopicWrap CreateTree(Topic root, List<VideoWrap> videos, List<TopicLevel> levels)
+        public static TopicWrap CreateTree(Topic root, List<VideoWrap> videos, List<TopicLevel> levels)
         {
             var result=Create(root, videos, -1, levels);
             result.Root = true;
@@ -180,30 +145,32 @@ namespace Tuto.Publishing.Youtube.Model
 
         #region Updating VideoWrap
 
-        static string GetAbbreviation(GlobalData globalData, VideoWrap wrap)
+        public static string GetAbbreviation(GlobalData globalData, VideoWrap wrap)
         {
+            var numvers = wrap.PathFromRoot
+                    .Where(z => !z.Root)
+                    .Select(z => z.FormattedNumberInTopic)
+                    .ToArray();
+
             return
                 globalData.CourseAbbreviation
                 + "-"
-                + wrap.PathFromRoot
-                    .Where(z => !z.Root)
-                    .Select(z => z.FormattedNumberInTopic)
-                    .Aggregate((a, b) => a + "-" + b)
+                + numvers.JoinStrings((a, b) => a + "-" + b)
                 + " "
                 + wrap.Finished.Name;
         }
 
-        static string GetDescription(GlobalData globalData, VideoWrap wrap)
+        public static string GetDescription(GlobalData globalData, VideoWrap wrap)
         {
-            return globalData.Name
-                + "\r\n"
-                + wrap.TopicsFromRoot.Select(z =>
+            var topics= wrap.TopicsFromRoot.Select(z =>
                     z.CorrespondedLevel.Caption
                     + " "
                     + (z.NumberInTopic + 1)
                     + "."
-                    + z.Topic.Caption)
-                    .Aggregate((a, b) => a + "\r\n" + b)
+                    + z.Topic.Caption).ToArray();
+            return globalData.Name
+                + "\r\n"
+                + topics.JoinStrings((a, b) => a + "\r\n" + b)
                 + "\r\n";
         }
 

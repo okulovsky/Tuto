@@ -35,6 +35,9 @@ namespace Tuto.Model
         [DataMember]
         public string CourseAbbreviation { get; set; }
 
+        [DataMember]
+        public string Keywords { get; set; }
+
         public DirectoryInfo GlobalDataFolder { get; internal set; }
 
         public GlobalLocations Locations { get; private set; }

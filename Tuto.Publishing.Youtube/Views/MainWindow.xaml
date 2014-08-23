@@ -1,0 +1,20 @@
+﻿<Window x:Class="Tuto.Publishing.Youtube.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:v="clr-namespace:Tuto.Publishing.Youtube.Views"
+        Title="Tuto.Publisher" Height="600" Width="800">
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+            <Button Command="{Binding MakeDescriptionsCommand}">Make all</Button>
+            <Button Command="{Binding SaveCommand}">Save</Button>
+        </StackPanel>
+    <TabControl HorizontalAlignment="Stretch" Height="auto" VerticalAlignment="Stretch" Width="auto">
+        <TabItem Header="Videos">
+            <v:Tree DataContext="{Binding Root}"/>
+        </TabItem>
+        <TabItem Header="Setings">
+            <v:SettingsPanel DataContext="{Binding Settings}"/>
+        </TabItem>
+    </TabControl>
+    </DockPanel>
+</Window>

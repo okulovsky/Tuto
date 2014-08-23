@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Tuto.Model;
 
-namespace Tuto.Publishing.Youtube.ViewModel
+namespace Tuto.Publishing.Youtube
 {
     public class TopicWrap : Wrap
     {
