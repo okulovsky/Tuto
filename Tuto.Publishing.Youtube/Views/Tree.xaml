@@ -10,7 +10,10 @@
     <TreeView ItemsSource="{Binding}">
         <TreeView.Resources>
             <HierarchicalDataTemplate DataType="{x:Type m:TopicWrap}" ItemsSource="{Binding Children}">
-                <Label Content="{Binding Topic.Caption}"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Width="300" Text="{Binding Topic.Caption}"/>
+                    <TextBlock Text="{Binding PlaylistLinkShort}"/>
+                </StackPanel>
             </HierarchicalDataTemplate>
             <HierarchicalDataTemplate DataType="{x:Type m:VideoWrap}" ItemsSource="{Binding Children}">
                 <StackPanel Orientation="Horizontal">

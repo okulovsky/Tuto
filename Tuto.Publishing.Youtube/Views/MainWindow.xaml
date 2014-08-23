@@ -5,13 +5,20 @@
         Title="Tuto.Publisher" Height="600" Width="800">
     <DockPanel>
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-            <Button Command="{Binding MakeDescriptionsCommand}">Make all</Button>
+            <Button Command="{Binding MakeDescriptionsCommand}">Make vids</Button>
+            <Button Command="{Binding MakePlaylistsCommand}">Make playlists</Button>
             <Button Command="{Binding SaveCommand}">Save</Button>
         </StackPanel>
     <TabControl HorizontalAlignment="Stretch" Height="auto" VerticalAlignment="Stretch" Width="auto">
         <TabItem Header="Videos">
-            <v:Tree DataContext="{Binding Root}"/>
-        </TabItem>
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Right" Width="300" Orientation="Vertical">
+                        <ListBox ItemsSource="{Binding FinishedNotMatched}"/>
+                        <ListBox ItemsSource="{Binding YoutubeNotMatched}"/>
+                    </StackPanel>
+                    <v:Tree DataContext="{Binding Root}"/>
+                </DockPanel>
+            </TabItem>
         <TabItem Header="Setings">
             <v:SettingsPanel DataContext="{Binding Settings}"/>
         </TabItem>

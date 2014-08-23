@@ -15,7 +15,7 @@ namespace Tuto.Publishing.Youtube
         NotExpectedAtYoutube,
         DeletedFromYoutube,
         DeletedFromTuto,
-        DeletedFromBoth
+        DeletedFromBoth,
     }
 
     public class VideoWrap : Wrap

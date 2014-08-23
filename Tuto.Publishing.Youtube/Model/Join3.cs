@@ -34,12 +34,22 @@ namespace Tuto.Publishing.Youtube
 
         const double MatchLowerLimit = 0.5;
 
+       
+
         TResult FindMatchThroughPub(TInner fin)
         {
             var pub = Middle.FirstOrDefault(z => InnerComparator(fin,z));
             if (pub != null)
             {
                 var clip = Outer.FirstOrDefault(z => OuterComparator(z,pub));
+                if (clip == null)
+                {
+                    var newMatch = FindNewMatch(fin);
+                    if (newMatch == null)
+                        return Account(fin, pub, null, Status.DeletedFromYoutube);
+                    else
+                        return newMatch;
+                }
                 return Account(
                         fin,
                         pub,
@@ -71,6 +81,7 @@ namespace Tuto.Publishing.Youtube
             while (Inner.Count != 0)
             {
                 var fin = Inner[0];
+
                 var match = FindMatchThroughPub( fin);
                 if (match == null) match = FindNewMatch( fin);
                 if (match == null) match = Account(fin, null, null, Status.NotFoundAtYoutube);

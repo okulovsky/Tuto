@@ -50,5 +50,10 @@ namespace Tuto.Model
             Guid = model.Montage.Information.Episodes[episodeNumber].Guid;
             Load(model, episodeNumber);
         }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

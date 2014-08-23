@@ -7,28 +7,7 @@ using Tuto.Model;
 
 namespace Tuto.Publishing.Youtube
 {
-    class Lists
-    {
-        public readonly List<FinishedVideo> Finished;
-        public readonly List<PublishedVideo> Published;
-        public readonly List<ClipData> Clips;
-        public readonly List<VideoWrap> Result;
-        public Lists(List<FinishedVideo> _finished, List<PublishedVideo> _published, List<ClipData> _clips)
-        {
-            Result = new List<VideoWrap>();
-            Finished = _finished.ToList();
-            Published = _published.ToList();
-            Clips = _clips.ToList();
-            Result=new List<VideoWrap>();
-        }
-        public void Account(VideoWrap wrap)
-        {
-            Result.Add(wrap);
-            Finished.Remove(wrap.Finished);
-            Published.Remove(wrap.Published);
-            Clips.Remove(wrap.ClipData);
-        }
-    }
+
 
     public static class IEnumerableStringExtensions
     {
@@ -87,16 +66,15 @@ namespace Tuto.Publishing.Youtube
         public static List<VideoWrap> MatchVideos(List<FinishedVideo> _finished, List<PublishedVideo> _published, List<ClipData> _clips)
         {
             var join = new Join3<FinishedVideo, PublishedVideo, ClipData, VideoWrap>();
-            join.Inner = _finished.ToList();
+            join.Inner = _finished.OrderBy(z=>z.Name).ToList();
             join.Middle = _published.ToList();
-            join.Outer = _clips.ToList();
+            join.Outer = _clips.OrderBy(z=>z.Name).ToList();
             join.InnerComparator = (a, b) => a.Guid == b.Guid;
             join.OuterComparator = (a, b) => a.Id == b.ClipId;
             join.CreateLink = (a, b) => new PublishedVideo { ClipId = b.Id, Guid = a.Guid };
             join.CreateResult = (a, b, c, d) => new VideoWrap(a, b, c, d);
             join.GetMatch = (a, b) => RelativeMatchNames(a.Name, b.Name);
             return join.Run();
-
         }
         #endregion
 
@@ -132,6 +110,19 @@ namespace Tuto.Publishing.Youtube
                 result.Children.Add(t);
             }
             return result;
+        }
+
+        public static void AddPlaylists(TopicWrap root, List<PublishedTopic> published, List<PlaylistData> playlists)
+        {
+            root.PlaylistRequired = root.Children.OfType<VideoWrap>().Any();
+            var pub = published.Where(z => z.TopicGuid == root.Topic.Guid).FirstOrDefault();
+            if (pub != null)
+            {
+                root.Published = pub;
+                root.Playlist = playlists.Where(z => z.Id == pub.PlaylistId).FirstOrDefault();
+            }
+            foreach (var e in root.Children.OfType<TopicWrap>())
+                AddPlaylists(e, published, playlists);
         }
 
         public static TopicWrap CreateTree(Topic root, List<VideoWrap> videos, List<TopicLevel> levels)

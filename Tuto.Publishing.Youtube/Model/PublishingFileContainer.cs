@@ -16,11 +16,14 @@ namespace Tuto.Publishing.Youtube
         public YoutubeSettings Settings { get;  set; }
         [DataMember]
         public List<PublishedVideo> Videos { get;  private set; }
+        [DataMember]
+        public List<PublishedTopic> Topics { get; private set; }
 
         public PublishingFileContainer()
         {
             Settings = new YoutubeSettings();
             Videos = new List<PublishedVideo>();
+            Topics = new List<PublishedTopic>();
         }
 
         const string fileName = "publishing.tuto";
@@ -35,7 +38,9 @@ namespace Tuto.Publishing.Youtube
                 result.Save(folder);
                 return result;
             }
-            return HeadedJsonFormat.Read<PublishingFileContainer>(file, header, 0);
+            var e=HeadedJsonFormat.Read<PublishingFileContainer>(file, header, 0);
+            if (e.Topics == null) e.Topics = new List<PublishedTopic>();
+            return e;
         }
 
         public void Save(DirectoryInfo folder)

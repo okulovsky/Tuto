@@ -31,7 +31,7 @@ namespace Tuto.Publishing.Youtube
             var clips = new List<ClipData>();
             try
             {
-                clips = youtubeProcessor.Load();
+                clips = youtubeProcessor.LoadVideos();
             }
             catch
             {
@@ -41,10 +41,10 @@ namespace Tuto.Publishing.Youtube
             var match = Algorithms.MatchVideos(globalData.VideoData, youtubeData.Videos, clips);
             var root = Algorithms.CreateTree(globalData.TopicsRoot, match, globalData.TopicLevels);
 
-           
+            var playlists = youtubeProcessor.FindPlaylists();
+            Algorithms.AddPlaylists(root, youtubeData.Topics, playlists);
 
-
-            var model = new MainViewModel(folder, globalData, youtubeData.Settings, root, youtubeProcessor);
+            var model = new MainViewModel(folder, globalData, youtubeData.Settings, root, youtubeProcessor, match);
             var window = new MainWindow();
             window.DataContext = model;
             new Application().Run(window);
