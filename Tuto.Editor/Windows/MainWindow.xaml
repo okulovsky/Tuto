@@ -32,6 +32,10 @@
                 IsChecked="{Binding WindowState.CurrentMode, Converter={StaticResource EditorModeCnv}, ConverterParameter='Border'}">
                 Final
             </ToggleButton>
+            <ToggleButton 
+                IsChecked="{Binding WindowState.CurrentMode, Converter={StaticResource EditorModeCnv}, ConverterParameter='Fixes'}">
+                Fixes
+            </ToggleButton>
             <Rectangle Width="50"/>
             <Button x:Name="Montage">Montage</Button>
             <Button x:Name="Assembly">Assembly</Button>

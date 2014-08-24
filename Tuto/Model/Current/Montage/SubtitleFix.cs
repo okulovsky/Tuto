@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Tuto.Model
 {
     [DataContract]
-    public class SubtitleFix
+    public class SubtitleFix : IComparable
     {
         [DataMember]
         public int StartTime { get; set; }
@@ -16,5 +16,10 @@ namespace Tuto.Model
         public int Length { get; set; }
         [DataMember]
         public string Text { get; set; }
+
+        public int CompareTo(object obj)
+        {
+            return StartTime.CompareTo((obj as SubtitleFix).StartTime);
+        }
     }
 }

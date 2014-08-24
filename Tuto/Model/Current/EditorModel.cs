@@ -26,10 +26,15 @@ namespace Tuto.Model
 
         public event EventHandler MontageModelChanged;
 
-        public void OnMontageModelChanged()
+        public void OnNonSignificantChanged()
         {
             if (MontageModelChanged != null)
                 MontageModelChanged(this, EventArgs.Empty);
+        }
+
+        public void OnMontageModelChanged()
+        {
+            OnNonSignificantChanged();
             Montage.Montaged = false;
         }
 
