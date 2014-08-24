@@ -14,6 +14,9 @@ namespace Tuto.Model
     [DataContract]
     public class VideoInformation
     {
+
+        
+
         /// <summary>
         /// Textual description of the episodes inside the video
         /// </summary>

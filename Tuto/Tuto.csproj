@@ -59,6 +59,7 @@
     <Compile Include="Model\Current\IO\GlobalIO.cs" />
     <Compile Include="Model\Current\IO\LocalIO.cs" />
     <Compile Include="Model\Current\Montage\BorderListExtensions.cs" />
+    <Compile Include="Model\Current\Montage\SubtitleFix.cs" />
     <Compile Include="Model\Current\WindowState\EditorModes.cs" />
     <Compile Include="Model\Current\WindowState\EnumName.cs" />
     <Compile Include="Model\Current\WindowState\WindowState.cs" />
