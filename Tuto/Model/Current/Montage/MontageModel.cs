@@ -43,7 +43,7 @@ namespace Tuto.Model
         /// String fixes for video, which are to encoded as subtitiles
         /// </summary>
         [DataMember]
-        public ObservableCollection<SubtitleFix> SubtitleFixes { get; internal set; }
+        public List<SubtitleFix> SubtitleFixes { get; internal set; }
 
         /// <summary>
         /// Borders of each chunks. This information is required by one of the editor mode, but it is completely determined by tokens, so it is not stored
@@ -62,6 +62,7 @@ namespace Tuto.Model
             Borders = new List<Border>();
             Information = new VideoInformation();
             SoundIntervals = new List<SoundInterval>();
+            SubtitleFixes = new List<SubtitleFix>();
         }
     }
 }

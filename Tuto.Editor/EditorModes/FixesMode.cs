@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Editor.Windows;
 using Tuto.Model;
 
 namespace Editor
@@ -30,22 +31,26 @@ namespace Editor
         {
             if (CommonKeyboardProcessing.NavigationKeysProcessing(model, key)) return;
 
-            if (key.Command == KeyboardCommands.Face)
+           
+
+            var fix = model.Montage.SubtitleFixes
+                .Where(z => z.StartTime <= model.WindowState.CurrentPosition && z.StartTime + z.Length >= model.WindowState.CurrentPosition)
+                .FirstOrDefault();
+
+            if (fix==null && key.Command == KeyboardCommands.Face)
             {
                 int position = 0;
                 for (; position < model.Montage.SubtitleFixes.Count; position++)
                     if (model.Montage.SubtitleFixes[position].StartTime > model.WindowState.CurrentPosition)
                         break;
 
-                model.Montage.SubtitleFixes.Insert(position,new SubtitleFix { StartTime = model.WindowState.CurrentPosition, Length = 2000 });
-                
+                model.Montage.SubtitleFixes.Insert(position, new SubtitleFix { StartTime = model.WindowState.CurrentPosition, Length = 2000 });
+
                 model.OnNonSignificantChanged();
                 return;
             }
 
-            var fix = model.Montage.SubtitleFixes
-                .Where(z => z.StartTime <= model.WindowState.CurrentPosition && z.StartTime + z.Length >= model.WindowState.CurrentPosition)
-                .FirstOrDefault();
+
             if (fix == null) return;
 
             int delta=200;
@@ -78,6 +83,9 @@ namespace Editor
                 case KeyboardCommands.Drop:
                     model.Montage.SubtitleFixes.Remove(fix);
                     model.OnNonSignificantChanged();
+                    return;
+                case KeyboardCommands.Desktop:
+                    fix.Text = FixWindow.EnterText(fix.Text);
                     return;
             }
         }

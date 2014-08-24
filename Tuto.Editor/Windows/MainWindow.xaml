@@ -60,13 +60,7 @@
                 <ed:ModelView x:Name="ModelView" DataContext="{Binding}"/>
                 <ed:Slider x:Name="Slider" DataContext="{Binding}"/>
             </Grid>
-            <DataGrid x:Name="Fixes" ItemsSource="{Binding Montage.SubtitleFixes}" AutoGenerateColumns="False">
-                <DataGrid.Columns>
-                    <DataGridTextColumn IsReadOnly="true" Binding="{Binding StartTime}"/>
-                    <DataGridTextColumn IsReadOnly="true" Binding="{Binding Length}"/>
-                    <DataGridTextColumn Binding="{Binding Text}"/>
-                </DataGrid.Columns>
-            </DataGrid>
+          
         </StackPanel>
     </DockPanel>
 </Window>

@@ -52,6 +52,10 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Windows\FixWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\HelpWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -78,6 +82,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Timeline.cs" />
     <Compile Include="Windows\Converters.cs" />
+    <Compile Include="Windows\FixWindow.xaml.cs">
+      <DependentUpon>FixWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\HelpData.cs" />
     <Compile Include="Windows\HelpWindow.xaml.cs">
       <DependentUpon>HelpWindow.xaml</DependentUpon>
