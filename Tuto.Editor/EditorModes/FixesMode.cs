@@ -32,8 +32,13 @@ namespace Editor
 
             if (key.Command == KeyboardCommands.Face)
             {
-                model.Montage.SubtitleFixes.Add(new SubtitleFix { StartTime = model.WindowState.CurrentPosition, Length = 2000 });
-                model.Montage.SubtitleFixes.Sort();
+                int position = 0;
+                for (; position < model.Montage.SubtitleFixes.Count; position++)
+                    if (model.Montage.SubtitleFixes[position].StartTime > model.WindowState.CurrentPosition)
+                        break;
+
+                model.Montage.SubtitleFixes.Insert(position,new SubtitleFix { StartTime = model.WindowState.CurrentPosition, Length = 2000 });
+                
                 model.OnNonSignificantChanged();
                 return;
             }

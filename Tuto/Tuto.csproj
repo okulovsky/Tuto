@@ -64,6 +64,7 @@
     <Compile Include="Model\Current\WindowState\EnumName.cs" />
     <Compile Include="Model\Current\WindowState\WindowState.cs" />
     <Compile Include="Model\HeadedJsonFormat.cs" />
+    <Compile Include="Model\NotifierModel.cs" />
     <Compile Include="Model\Obsolete\LastRefactoring\GlobalData\GlobalData.cs" />
     <Compile Include="Model\Obsolete\LastRefactoring\MontageData\FileContainer.cs" />
     <Compile Include="Model\Current\Locations.cs" />

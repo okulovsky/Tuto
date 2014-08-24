@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 namespace Tuto.Model
 {
@@ -42,7 +43,7 @@ namespace Tuto.Model
         /// String fixes for video, which are to encoded as subtitiles
         /// </summary>
         [DataMember]
-        public List<SubtitleFix> SubtitleFixes { get; internal set; }
+        public ObservableCollection<SubtitleFix> SubtitleFixes { get; internal set; }
 
         /// <summary>
         /// Borders of each chunks. This information is required by one of the editor mode, but it is completely determined by tokens, so it is not stored

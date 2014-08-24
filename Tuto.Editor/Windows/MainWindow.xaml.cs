@@ -197,6 +197,8 @@ namespace Editor
                 currentMode = new GeneralMode(model);
             if (model.WindowState.CurrentMode == Tuto.Model.EditorModes.Fixes)
                 currentMode = new FixesMode(model);
+
+            Fixes.Visibility = (model.WindowState.CurrentMode == EditorModes.Fixes ? Visibility.Visible : Visibility.Collapsed); 
         }
 
         void RatioChanged()
@@ -304,8 +306,6 @@ namespace Editor
             }
             
            currentMode.ProcessKey(KeyMap.KeyboardCommandData(e));
-            e.Handled=true;
-
         }
 
         void Timeline_MouseDown(object sender, MouseButtonEventArgs e)

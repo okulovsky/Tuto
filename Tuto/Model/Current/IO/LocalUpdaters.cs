@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -21,7 +22,7 @@ namespace Tuto.Model
             var container = ReadFileContainer(text);
             foreach (var e in container.MontageModel.Information.Episodes)
                 e.Guid = Guid.NewGuid();
-            container.MontageModel.SubtitleFixes = new List<SubtitleFix>();
+            container.MontageModel.SubtitleFixes = new ObservableCollection<SubtitleFix>();
             return container;
         }
 
@@ -30,7 +31,7 @@ namespace Tuto.Model
         static FileContainer UpdateLocalV2(FileInfo file, string text)
         {
             var container = ReadFileContainer(text);
-            container.MontageModel.SubtitleFixes = new List<SubtitleFix>();
+            container.MontageModel.SubtitleFixes = new ObservableCollection<SubtitleFix>();
             return container;
         }
     }

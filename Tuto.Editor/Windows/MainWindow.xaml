@@ -55,16 +55,18 @@
                     x:Name="ScreenVideo"  
                     Grid.Column="1"/>
         </StackPanel>
+        <StackPanel Orientation="Vertical">
             <Grid>
                 <ed:ModelView x:Name="ModelView" DataContext="{Binding}"/>
                 <ed:Slider x:Name="Slider" DataContext="{Binding}"/>
             </Grid>
-            <StackPanel Orientation="Vertical">
-               
-                <TextBlock>
-                    <TextBlock>X</TextBlock>
-                    <TextBlock Text="{Binding WindowState.SpeedRatio}"/>                            
-                </TextBlock>
-            </StackPanel>
+            <DataGrid x:Name="Fixes" ItemsSource="{Binding Montage.SubtitleFixes}" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn IsReadOnly="true" Binding="{Binding StartTime}"/>
+                    <DataGridTextColumn IsReadOnly="true" Binding="{Binding Length}"/>
+                    <DataGridTextColumn Binding="{Binding Text}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
     </DockPanel>
 </Window>
