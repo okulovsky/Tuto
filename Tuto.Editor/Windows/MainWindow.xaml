@@ -32,6 +32,10 @@
                 IsChecked="{Binding WindowState.CurrentMode, Converter={StaticResource EditorModeCnv}, ConverterParameter='Border'}">
                 Final
             </ToggleButton>
+            <ToggleButton 
+                IsChecked="{Binding WindowState.CurrentMode, Converter={StaticResource EditorModeCnv}, ConverterParameter='Fixes'}">
+                Fixes
+            </ToggleButton>
             <Rectangle Width="50"/>
             <Button x:Name="Montage">Montage</Button>
             <Button x:Name="Assembly">Assembly</Button>
@@ -51,16 +55,12 @@
                     x:Name="ScreenVideo"  
                     Grid.Column="1"/>
         </StackPanel>
+        <StackPanel Orientation="Vertical">
             <Grid>
                 <ed:ModelView x:Name="ModelView" DataContext="{Binding}"/>
                 <ed:Slider x:Name="Slider" DataContext="{Binding}"/>
             </Grid>
-            <StackPanel Orientation="Vertical">
-               
-                <TextBlock>
-                    <TextBlock>X</TextBlock>
-                    <TextBlock Text="{Binding WindowState.SpeedRatio}"/>                            
-                </TextBlock>
-            </StackPanel>
+          
+        </StackPanel>
     </DockPanel>
 </Window>

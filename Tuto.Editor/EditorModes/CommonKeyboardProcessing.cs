@@ -9,13 +9,13 @@ namespace Editor
 {
     public class CommonKeyboardProcessing
     {
-
-
-        public static bool ProcessCommonKeys(EditorModel model, KeyboardCommandData key)
+        public static bool NavigationKeysProcessing(EditorModel model, KeyboardCommandData key)
+            
         {
             var delta = 1000;
             if (key.Shift) delta = 200;
             if (key.Ctrl) delta = 50;
+
 
             switch (key.Command)
             {
@@ -27,6 +27,24 @@ namespace Editor
                     model.WindowState.CurrentPosition = ((int)(model.WindowState.CurrentPosition + delta));
                     return true;
 
+                case KeyboardCommands.PauseResume:
+                    model.WindowState.Paused = !model.WindowState.Paused;
+                    return true;
+            }
+            return false;
+        }
+
+        public static bool ProcessCommonKeys(EditorModel model, KeyboardCommandData key)
+        {
+            if (NavigationKeysProcessing(model, key)) return true;
+
+            var delta = 1000;
+            if (key.Shift) delta = 200;
+            if (key.Ctrl) delta = 50;
+
+            switch (key.Command)
+            {
+               
                 case KeyboardCommands.Face:
                     model.MarkHere(Mode.Face, key.Ctrl);
                     return true;
@@ -43,10 +61,7 @@ namespace Editor
                     model.RemoveChunkHere();
                     return true;
 
-                case KeyboardCommands.PauseResume:
-                    model.WindowState.Paused = !model.WindowState.Paused;
-                    return true;
-
+              
 
                 case KeyboardCommands.NewEpisodeHere:
                     model.NewEpisodeHere();

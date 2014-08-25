@@ -195,6 +195,9 @@ namespace Editor
                 currentMode = new BorderMode(model);
             if (model.WindowState.CurrentMode == EditorModes.General)
                 currentMode = new GeneralMode(model);
+            if (model.WindowState.CurrentMode == Tuto.Model.EditorModes.Fixes)
+                currentMode = new FixesMode(model);
+
         }
 
         void RatioChanged()
@@ -302,8 +305,6 @@ namespace Editor
             }
             
            currentMode.ProcessKey(KeyMap.KeyboardCommandData(e));
-            e.Handled=true;
-
         }
 
         void Timeline_MouseDown(object sender, MouseButtonEventArgs e)

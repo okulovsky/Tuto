@@ -12,7 +12,7 @@ namespace Tuto.Model
     public static partial class EditorModelIO
     {
         const string localFileHeader = "Tuto local file";
-        const int CurrentLocalVersion = 2;
+        const int CurrentLocalVersion = 3;
 
         public static void Save(EditorModel model)
         {
@@ -29,7 +29,7 @@ namespace Tuto.Model
 
             var file = model.VideoFolder.GetFiles(Locations.LocalFileName).FirstOrDefault();
             if (file == null) return false;
-            var container = HeadedJsonFormat.Read<FileContainer>(file, localFileHeader, CurrentLocalVersion, null, UpdateLocalV1);
+            var container = HeadedJsonFormat.Read<FileContainer>(file, localFileHeader, CurrentLocalVersion, null, UpdateLocalV1, UpdateLocalV2);
 
             model.Montage = container.MontageModel;
             model.WindowState = container.WindowState;

@@ -23,6 +23,7 @@ namespace Editor
         protected readonly Pen currentPen = new Pen(Brushes.Red, 3);
         protected readonly Pen episode = new Pen(Brushes.Yellow, 3);
         protected readonly Pen border = new Pen(Brushes.Gray, 3) { EndLineCap = PenLineCap.Triangle };
+        protected readonly Pen fixes = new Pen(Brushes.Gold, 3);
 
         protected override Size MeasureOverride(Size availableSize)
         {
@@ -153,6 +154,10 @@ namespace Editor
                 {
                     DrawLine(drawingContext, border, e.StartTime, e.EndTime, 3);
                 }
+
+            if (editorModel.WindowState.CurrentMode == EditorModes.Fixes)
+                foreach (var e in model.SubtitleFixes)
+                    DrawLine(drawingContext, fixes, e.StartTime, e.StartTime + e.Length, RowHeight / 2);
 
           
         }

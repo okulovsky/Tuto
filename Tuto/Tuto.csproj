@@ -13,7 +13,7 @@
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -59,10 +59,12 @@
     <Compile Include="Model\Current\IO\GlobalIO.cs" />
     <Compile Include="Model\Current\IO\LocalIO.cs" />
     <Compile Include="Model\Current\Montage\BorderListExtensions.cs" />
+    <Compile Include="Model\Current\Montage\SubtitleFix.cs" />
     <Compile Include="Model\Current\WindowState\EditorModes.cs" />
     <Compile Include="Model\Current\WindowState\EnumName.cs" />
     <Compile Include="Model\Current\WindowState\WindowState.cs" />
     <Compile Include="Model\HeadedJsonFormat.cs" />
+    <Compile Include="Model\NotifierModel.cs" />
     <Compile Include="Model\Obsolete\LastRefactoring\GlobalData\GlobalData.cs" />
     <Compile Include="Model\Obsolete\LastRefactoring\MontageData\FileContainer.cs" />
     <Compile Include="Model\Current\Locations.cs" />
@@ -121,6 +123,7 @@
     <Compile Include="Services\Service.cs" />
     <Compile Include="Services\PraatService.cs" />
     <Compile Include="Main\Services.cs" />
+    <Compile Include="Services\SrtMaker.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
