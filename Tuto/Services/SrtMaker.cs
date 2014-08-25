@@ -33,6 +33,8 @@ namespace Tuto
         public static List<int> CumulativeEpisodesLengthes(EditorModel model)
         {
             var list = new List<int>();
+            list.Add(0);
+            list.Add(0);
             foreach (var e in model.Montage.Chunks)
             {
                 if (e.StartsNewEpisode) list.Add(list[list.Count-1]);
@@ -57,7 +59,6 @@ namespace Tuto
         public static IEnumerable<string> CreateSrtFile(EditorModel model)
         {
             var episodesLength=CumulativeEpisodesLengthes(model);
-            episodesLength.Insert(0,0);
             var subtitles = ShiftFixes(model);
             for (int i=0;i<episodesLength.Count-1;i++)
             {

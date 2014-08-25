@@ -111,6 +111,22 @@ namespace Tuto.Model
                 }
             }
         }
+        [DataMember]
+        string currentSubtitle;
+        public string CurrentSubtitle
+        {
+            get { return currentSubtitle; }
+            set
+            {
+                if (currentSubtitle != value)
+                {
+                    currentSubtitle = value;
+                    PropertyChanged(this, new PropertyChangedEventArgs("CurrentSubtitle"));
+                }
+            }
+        }
+
+
         public event EventHandler DesktopVideoIsVisibleChanged;
 
         public event PropertyChangedEventHandler PropertyChanged;

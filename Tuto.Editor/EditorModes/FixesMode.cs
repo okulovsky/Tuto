@@ -20,6 +20,9 @@ namespace Editor
 
         public void CheckTime()
         {
+            var fix = GetCurrentFix();
+            if (fix == null) model.WindowState.CurrentSubtitle = "";
+            else model.WindowState.CurrentSubtitle = fix.Text;
         }
 
         public void MouseClick(int SelectedLocation, System.Windows.Input.MouseButtonEventArgs button)
@@ -31,11 +34,9 @@ namespace Editor
         {
             if (CommonKeyboardProcessing.NavigationKeysProcessing(model, key)) return;
 
-           
 
-            var fix = model.Montage.SubtitleFixes
-                .Where(z => z.StartTime <= model.WindowState.CurrentPosition && z.StartTime + z.Length >= model.WindowState.CurrentPosition)
-                .FirstOrDefault();
+
+            var fix = GetCurrentFix();
 
             if (fix==null && key.Command == KeyboardCommands.Face)
             {
@@ -88,6 +89,14 @@ namespace Editor
                     fix.Text = FixWindow.EnterText(fix.Text);
                     return;
             }
+        }
+
+        private SubtitleFix GetCurrentFix()
+        {
+            var fix = model.Montage.SubtitleFixes
+                .Where(z => z.StartTime <= model.WindowState.CurrentPosition && z.StartTime + z.Length >= model.WindowState.CurrentPosition)
+                .FirstOrDefault();
+            return fix;
         }
     }
 }

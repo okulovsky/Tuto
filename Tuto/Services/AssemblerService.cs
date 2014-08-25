@@ -30,6 +30,7 @@ namespace Tuto.TutoServices
 
         public void DoWork(EditorModel model, bool print)
         {
+            SrtMaker.WriteSrtFiles(model);
 
             var epsodes = ListEpisodes(model.Montage.FileChunks).Select(e => MakeEpisode(model, e));
 

@@ -238,6 +238,12 @@ namespace Editor
                 FaceVideo.Visibility = model.WindowState.FaceVideoIsVisible ? Visibility.Visible : Visibility.Collapsed;
                 ScreenVideo.Visibility = model.WindowState.DesktopVideoIsVisible? Visibility.Visible : Visibility.Collapsed;
             }
+
+            if (e.PropertyName == "CurrentSubtitle")
+            {
+
+                Subtitles.Text = model.WindowState.CurrentSubtitle;
+            }
         }
 
 

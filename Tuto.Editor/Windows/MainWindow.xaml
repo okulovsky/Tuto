@@ -54,6 +54,7 @@
                     Width="400"
                     x:Name="ScreenVideo"  
                     Grid.Column="1"/>
+            <TextBlock x:Name="Subtitles" Width="400" TextWrapping="Wrap" FontSize="18"/>
         </StackPanel>
         <StackPanel Orientation="Vertical">
             <Grid>
