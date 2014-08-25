@@ -95,7 +95,7 @@ namespace Editor
                 {
                     model.Save();
                     IsEnabled = false;
-                    new Tuto.TutoServices.RepairService().DoWork(model.Locations.FaceVideo);
+                    new Tuto.TutoServices.RepairService().DoWork(model.Locations.FaceVideo,true);
                     IsEnabled = true;
                 };
 
@@ -103,7 +103,7 @@ namespace Editor
             {
                 model.Save();
                 IsEnabled = false;
-                new Tuto.TutoServices.RepairService().DoWork(model.Locations.DesktopVideo);
+                new Tuto.TutoServices.RepairService().DoWork(model.Locations.DesktopVideo,false);
                 IsEnabled = true;
             };
 

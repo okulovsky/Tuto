@@ -23,7 +23,20 @@ namespace Tuto.TutoServices
             get { return HelpString; }
         }
 
-        public void DoWork(FileInfo file, bool print=false)
+        void ProcessDesktop(FileInfo brokenFile, FileInfo outputFile, bool print = false)
+        {
+            new RepairCommand { VideoInput = brokenFile, VideoOutput = outputFile }.Execute(print);
+        }
+
+        void ProcessFace(FileInfo brokenFile, FileInfo outputFile, bool print = false)
+        {
+            var temp = new FileInfo(Path.Combine(outputFile.Directory.FullName, "temp.avi"));
+            new RepairCommand { VideoInput = brokenFile, VideoOutput = temp }.Execute(print);
+            File.Move(temp.FullName, outputFile.FullName);
+        }
+
+
+        public void DoWork(FileInfo file, bool face, bool print=false)
         {
             FileInfo brokenFile=null;
             for (int i=0;;i++)
@@ -36,7 +49,8 @@ namespace Tuto.TutoServices
                 break;
             }
             FileInfo outputFile=file;
-            new RepairCommand { VideoInput = brokenFile, VideoOutput = outputFile}.Execute(print);
+            if (!face) ProcessDesktop(brokenFile, outputFile, print);
+            else ProcessFace(brokenFile, outputFile, print);
         }
 
         public override void DoWork(string[] args)
@@ -55,9 +69,9 @@ namespace Tuto.TutoServices
 
             var model = EditorModelIO.Load(folder);
             if (face)
-                DoWork(model.Locations.FaceVideo, print);
+                DoWork(model.Locations.FaceVideo, face, print);
             else
-                DoWork(model.Locations.DesktopVideo, print);
+                DoWork(model.Locations.DesktopVideo, face, print);
         }
 
       

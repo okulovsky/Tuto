@@ -135,7 +135,7 @@ namespace Tuto.TutoServices.Montager
         {
             Shell.FFMPEG(
                 print,
-                @"-i ""{0}"" -q:a 0 -q:v 0 ""{1}""",
+                @"-i ""{0}"" -vf scale=1280:720 -r 25 -q:v 0 -acodec libmp3lame -ar 44100 -ab 32k ""{1}""",
                 VideoInput,
                 VideoOutput);
         }
