@@ -217,7 +217,6 @@ namespace Tuto.Model
             }
         }
         #endregion
-   
 
     }
 }

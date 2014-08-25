@@ -69,5 +69,14 @@ namespace Tuto.Model
                     string.Format("script_{0}.avs", episodeNumber)));
         }
 
+        public FileInfo GetSrtFile(int episodeNumber)
+        {
+            return new FileInfo(
+                Path.Combine(
+                    model.ChunkFolder.FullName,
+                    string.Format("subtitles_{0}.srt", episodeNumber)));
+        }
+
+
     }
 }
