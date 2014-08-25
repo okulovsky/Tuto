@@ -94,7 +94,7 @@ namespace Tuto.TutoServices
 
             // fadeout last item
             avsChunks.Items[avsChunks.Items.Count - 1] = new AvsFadeOut { Payload = avsChunks.Items[avsChunks.Items.Count - 1] };
-
+            //return new AvsSubtitle { SrtPath = model.Locations.GetSrtFile(episodeNumber).FullName, Payload = avsChunks };
 
             // autolevel
             // ???
