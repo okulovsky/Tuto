@@ -15,7 +15,7 @@ namespace Tuto.TutoServices.Assembler
         {
             base.id = context.Id;
             Payload.SerializeToContext(context);
-            var script = string.Format(@"{0} = {1}.textSub(""{2}"")");
+            var script = string.Format(@"{0} = {1}.textSub(""{2}"")",Id,Payload.Id,SrtPath);
             context.AddData(script);
         }
 

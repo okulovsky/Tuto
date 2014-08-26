@@ -39,12 +39,11 @@ namespace Tuto.TutoServices
             {
                 var avsContext = new AvsContext();
                 episode.SerializeToContext(avsContext);
-                var avsScript = avsContext.Serialize(model.Locations.AvsLibrary, model.Locations.AutoLevelsLibrary);
+                var avsScript = avsContext.Serialize(model);
                 var avsFile = model.Locations.GetAvsStriptFile(episodeNumber);
-                using (var file = new StreamWriter(avsFile.OpenWrite()))
-                {
-                    file.WriteLine(avsScript);
-                }
+                
+                File.WriteAllText(avsFile.FullName, avsScript);
+                
                 var videoFile =  model.Locations.GetOutputFile(episodeNumber);
                 if (videoFile.Exists) videoFile.Delete();
                 
@@ -60,8 +59,9 @@ namespace Tuto.TutoServices
 
         }
 
-        private AvsNode MakeEpisode(EditorModel model, List<FileChunk> fileChunks)
+        private AvsNode MakeEpisode(EditorModel model, EpisodesChunks episode)
         {
+            var fileChunks = episode.chunks;
             var avsChunks = new AvsConcatList { Items = new List<AvsNode>() };
 
             avsChunks.Items.Add(AvsNode.NormalizedNode(model.Locations.Make(model.ChunkFolder, fileChunks[0].ChunkFilename), fileChunks[0].Mode == Mode.Face));
@@ -94,12 +94,18 @@ namespace Tuto.TutoServices
 
             // fadeout last item
             avsChunks.Items[avsChunks.Items.Count - 1] = new AvsFadeOut { Payload = avsChunks.Items[avsChunks.Items.Count - 1] };
-            //return new AvsSubtitle { SrtPath = model.Locations.GetSrtFile(episodeNumber).FullName, Payload = avsChunks };
+
+            AvsNode resultedAvs = avsChunks;
+            if (!string.IsNullOrEmpty(File.ReadAllText(model.Locations.GetSrtFile(episode.episodeNumber).FullName)))
+            {
+                resultedAvs = new AvsSubtitle { SrtPath = model.Locations.GetSrtFile(episode.episodeNumber).FullName, Payload = avsChunks };
+            }
+
 
             // autolevel
             // ???
 
-            return avsChunks;
+            return resultedAvs;;
 
             // watermark
             //return new AvsWatermark
@@ -118,17 +124,25 @@ namespace Tuto.TutoServices
         }
 
 
-        private static List<List<FileChunk>> ListEpisodes(List<FileChunk> fileChunks)
+        class EpisodesChunks
         {
-            var result = new List<List<FileChunk>>();
+            public List<FileChunk> chunks = new List<FileChunk>();
+            public int episodeNumber = 0;
+        }
+
+        private static List<EpisodesChunks> ListEpisodes(List<FileChunk> fileChunks)
+        {
+            var result = new List<EpisodesChunks>();
             var i = 0;
             while (i < fileChunks.Count)
             {
-                result.Add(new List<FileChunk>());
-                while (i < fileChunks.Count && (!fileChunks[i].StartsNewEpisode || result.Last().Count == 0))
-                {
+                var last = new EpisodesChunks();
+                last.episodeNumber = result.Count;
+                result.Add(last);
 
-                    result.Last().Add(fileChunks[i]);
+                while (i < fileChunks.Count && (!fileChunks[i].StartsNewEpisode || last.chunks.Count == 0))
+                {
+                    last.chunks.Add(fileChunks[i]);
                     i++;
                 }
             }

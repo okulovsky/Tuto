@@ -21,6 +21,9 @@ namespace Tuto.Model
         public FileInfo PraatScriptSource { get { return Make(model.ProgramFolder, "split_pauses.praat"); } }
         public FileInfo AvsLibrary { get { return Make(model.ProgramFolder, "library.avs"); } }
         public FileInfo AutoLevelsLibrary { get { return Make(model.ProgramFolder, "autolevels.dll"); } }
+        public FileInfo VSFilterLibrary { get { return new FileInfo(@"C:\Program Files\VSFilter\VSFilter.dll"); } }
+        
+        
         public FileInfo TutoExecutable { get { return Make(model.ProgramFolder, "Tuto.exe"); } }
 
         public FileInfo FaceVideo { get { return Make(model.VideoFolder, FaceVideoFileName); } }
@@ -36,6 +39,7 @@ namespace Tuto.Model
         
         public FileInfo PraatOutput { get { return Make(model.VideoFolder, "praat.output"); } }
 
+       
 
         public FileInfo IntroImage { get { return Make(model.VideoFolder, "intro.png"); } }
         public FileInfo WatermarkImage { get { return Make(model.VideoFolder, "watermark.png"); } }

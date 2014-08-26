@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using Tuto.Model;
 
 namespace Tuto.TutoServices.Assembler
 {
@@ -12,11 +13,12 @@ namespace Tuto.TutoServices.Assembler
             internalData.AppendLine();
         }
 
-        public string Serialize(FileInfo avsLibrary, FileInfo autolevelsLibrary)
+        public string Serialize(EditorModel model)
         {
             return string.Format(Format,
-                avsLibrary.FullName,
-                autolevelsLibrary.FullName,
+                model.Locations.AvsLibrary.FullName,
+                model.Locations.AutoLevelsLibrary.FullName,
+                model.Locations.VSFilterLibrary.FullName,
                 internalData,
                 String.Format(AvsNode.Template, 0));  // root of the tree has id 0
         }
@@ -29,8 +31,9 @@ namespace Tuto.TutoServices.Assembler
         private const string Format = 
 @"import(""{0}"")
 loadplugin(""{1}"")
-{2}
-return {3}";
+loadplugin(""{2}"")
+{3}
+return {4}";
 
         private readonly StringBuilder internalData = new StringBuilder();
         
