@@ -8,13 +8,15 @@ namespace Tuto.TutoServices.Assembler
         public FileInfo ImageFile { get; set; }
 
         public FileInfo VideoReference { get; set; }
+
+        public int Fps { get; set; }
         
         public int Duration = 5000;
 
         public override void SerializeToContext(AvsContext context)
         {
             id = context.Id;
-            var reference = new AvsChunk {ChunkFile = VideoReference};
+            var reference = new AvsChunk {ChunkFile = VideoReference, ConvertToFps = Fps};
             reference.SerializeToContext(context);
             context.AddData(string.Format(Format, Id, reference.Id, ImageFile, Duration));
             /*

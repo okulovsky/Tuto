@@ -62,14 +62,15 @@ namespace Tuto.TutoServices
         private AvsNode MakeEpisode(EditorModel model, List<FileChunk> fileChunks)
         {
             var avsChunks = new AvsConcatList { Items = new List<AvsNode>() };
+            var fps = 25;
 
-            avsChunks.Items.Add(AvsNode.NormalizedNode(model.Locations.Make(model.ChunkFolder, fileChunks[0].ChunkFilename), fileChunks[0].Mode == Mode.Face));
+            avsChunks.Items.Add(AvsNode.NormalizedNode(model.Locations.Make(model.ChunkFolder, fileChunks[0].ChunkFilename), fps, fileChunks[0].Mode == Mode.Face));
             //making cross-fades
             for (int i = 1; i < fileChunks.Count; i++)
             {
                 var currentChunk = fileChunks[i];
                 var prevChunk = fileChunks[i - 1];
-                AvsNode currentAvsChunk = AvsNode.NormalizedNode(model.Locations.Make(model.ChunkFolder, currentChunk.ChunkFilename), currentChunk.Mode == Mode.Face);
+                AvsNode currentAvsChunk = AvsNode.NormalizedNode(model.Locations.Make(model.ChunkFolder, currentChunk.ChunkFilename), fps, currentChunk.Mode == Mode.Face);
                 AvsNode prevAvsChunk = avsChunks.Items[avsChunks.Items.Count - 1];
                 if (prevChunk.Mode == Mode.Face && currentChunk.Mode == Mode.Face)
                     avsChunks.Items[avsChunks.Items.Count - 1] = new AvsCrossFade

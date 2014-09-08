@@ -37,9 +37,9 @@ namespace Tuto.TutoServices.Assembler
 
         protected virtual string Format{get { return ""; }}
 
-        public static AvsNode NormalizedNode(FileInfo chunkFile, bool autolevel)
+        public static AvsNode NormalizedNode(FileInfo chunkFile, int fps, bool autolevel)
         {
-            var chunk = new AvsChunk {ChunkFile = chunkFile};
+            var chunk = new AvsChunk {ChunkFile = chunkFile, ConvertToFps = fps};
 			
             return NormalizedNode(chunk, autolevel);
         }
