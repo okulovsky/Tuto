@@ -7,12 +7,13 @@ namespace Tuto.TutoServices.Assembler
 {
     class AvsChunk : AvsNode
     {
-        public FileInfo ChunkFile { get; set; } 
+        public FileInfo ChunkFile { get; set; }
+        public int ConvertToFps { get; set; }
 
         public override void SerializeToContext(AvsContext context)
         {
             id = context.Id;
-            context.AddData(String.Format(Format, Id, ChunkFile));
+            context.AddData(String.Format(Format, Id, ChunkFile, ConvertToFps));
         }
 
         public override IList<AvsNode> ChildNodes
@@ -22,7 +23,7 @@ namespace Tuto.TutoServices.Assembler
 
         protected override string Format 
         {
-            get { return "{0} = DirectShowSource(\"{1}\")"; }
+            get { return "{0} = DirectShowSource(\"{1}\", convertFps=True, fps={2})"; }
         }
     }
 }
