@@ -80,6 +80,8 @@ namespace Tuto.Publishing.Youtube
             Result = new List<TResult>();
             while (Inner.Count != 0)
             {
+                if (Inner[0].ToString() == "Строки")
+                    Console.Write("!");
                 var fin = Inner[0];
 
                 var match = FindMatchThroughPub( fin);

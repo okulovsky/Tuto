@@ -18,9 +18,12 @@ namespace Tuto.Publishing.Youtube.Tests
 
         [TestMethod]
         public void Insert() { Test("abc", "abxyc", 3); }
-
+        
         [TestMethod]
         public void Various() { Test("xyazubxcz", "fafgbfdch", 3); }
+
+        [TestMethod]
+        public void Strings() { Test("abc", "fffabc", 3); }
 
 
     }

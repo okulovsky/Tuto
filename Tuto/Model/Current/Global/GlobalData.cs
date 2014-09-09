@@ -14,6 +14,7 @@ namespace Tuto.Model
         [DataMember]
         public VoiceSettings VoiceSettings { get; set; }
 
+        #region Decorations of the video
         [DataMember]
         public string Name { get; set; }
 
@@ -23,6 +24,9 @@ namespace Tuto.Model
         [DataMember]
         public string WatermarkImage { get; set; }
 
+        #endregion
+
+        #region Catalog 
         [DataMember]
         public List<FinishedVideo> VideoData { get; internal set; }
 
@@ -32,11 +36,20 @@ namespace Tuto.Model
         [DataMember]
         public List<TopicLevel> TopicLevels { get; internal set; }
 
+        #endregion
+
+        #region Publishing options
+
         [DataMember]
         public string CourseAbbreviation { get; set; }
 
         [DataMember]
         public string Keywords { get; set; }
+
+        [DataMember]
+        public string DescriptionPS { get; set; }
+
+        #endregion
 
         public DirectoryInfo GlobalDataFolder { get; internal set; }
 

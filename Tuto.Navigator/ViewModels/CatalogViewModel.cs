@@ -19,11 +19,13 @@ namespace Tuto.Navigator
     {
         public TopicWrap[] Root { get; private set; }
         public ObservableCollection<VideoWrap> UnassignedVideos { get; private set; }
+        public ObservableCollection<TopicLevel> Levels { get; private set; }
         public GlobalData GlobalData { get; private set; }
         public Wrap SelectedItem { get; set; }
 
         public PublishViewModel(GlobalData globalData)
         {
+            Levels = new ObservableCollection<TopicLevel>();
             this.GlobalData = globalData;
             Root = new TopicWrap[] { new TopicWrap(globalData.TopicsRoot) };
             UnassignedVideos = new ObservableCollection<VideoWrap>();
@@ -36,7 +38,8 @@ namespace Tuto.Navigator
                     e.Items.Add(vw);
                     vw.Parent = e;
                 }
-
+            foreach (var level in globalData.TopicLevels)
+                Levels.Add(level);
 
             AddCommand = new RelayCommand(Add, () => SelectedItem != null && SelectedItem is TopicWrap);
             RemoveCommand = new RelayCommand(Remove, () => SelectedItem != null && SelectedItem != Root[0]);
@@ -190,6 +193,9 @@ namespace Tuto.Navigator
                 e.NumberInTopic = 0;
             }
             Commit(Root[0]);
+            GlobalData.TopicLevels.Clear();
+            foreach (var e in Levels)
+                GlobalData.TopicLevels.Add(e);
         }
 
         void Add()

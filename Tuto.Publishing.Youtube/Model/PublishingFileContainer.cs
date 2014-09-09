@@ -26,12 +26,11 @@ namespace Tuto.Publishing.Youtube
             Topics = new List<PublishedTopic>();
         }
 
-        const string fileName = "publishing.tuto";
         const string header = "Tuto publishing data";
 
         public static PublishingFileContainer Load(DirectoryInfo folder)
         {
-            var file = new FileInfo(Path.Combine(folder.FullName, fileName));
+            var file = new FileInfo(Path.Combine(folder.FullName, Locations.PublishingFileName));
             if (!file.Exists)
             {
                 var result = new PublishingFileContainer();
@@ -45,7 +44,7 @@ namespace Tuto.Publishing.Youtube
 
         public void Save(DirectoryInfo folder)
         {
-            var file = new FileInfo(Path.Combine(folder.FullName, fileName));
+            var file = new FileInfo(Path.Combine(folder.FullName, Locations.PublishingFileName));
             HeadedJsonFormat.Write(file, header, 0, this);
         }
     }

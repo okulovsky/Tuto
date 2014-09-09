@@ -142,8 +142,6 @@ namespace Tuto.Publishing.Youtube
                 var pm = new PlayListMember { Id = id };
                 request.AddToPlaylist(playlist, pm);
             }
-
-          
         }
 
         #endregion

@@ -8,6 +8,7 @@
             <Button Command="{Binding MakeDescriptionsCommand}">Make vids</Button>
             <Button Command="{Binding MakePlaylistsCommand}">Make playlists</Button>
             <Button Command="{Binding SaveCommand}">Save</Button>
+            
         </StackPanel>
     <TabControl HorizontalAlignment="Stretch" Height="auto" VerticalAlignment="Stretch" Width="auto">
         <TabItem Header="Videos">

@@ -31,8 +31,8 @@ namespace Tuto.Publishing.Youtube
         {
             var matrix = new int[s1.Length, s2.Length];
             var max = Math.Max(s1.Length, s2.Length);
-            matrix[0, 0] = s1[0] == s2[0] ? 1 : 0;
-            for (int i = 1; i <= s1.Length + s2.Length; i++)
+
+            for (int i = 0; i <= s1.Length + s2.Length; i++)
                 for (int j = 0; j <= i; j++)
                 {
                     var p1 = j;
@@ -47,17 +47,21 @@ namespace Tuto.Publishing.Youtube
                         top = matrix[p1 - 1, p2];
                     if (p2 > 0)
                         left = matrix[p1, p2 - 1];
-                    if (p1 > 0 && p2 > 0)
-                        mid = matrix[p1 - 1, p2 - 1] + (s1[p1] == s2[p2] ? 1 : 0);
 
-                    matrix[p1, p2] = Math.Max(mid, Math.Max(top, left));
+                    mid=(s1[p1] == s2[p2] ? 1 : 0);
+                    if (p1 > 0 && p2 > 0)
+                        mid +=matrix[p1 - 1, p2 - 1];
+
+                    var mmm=Math.Max(mid, Math.Max(top, left));
+                    matrix[p1, p2] = mmm;
                 }
             return matrix[s1.Length - 1, s2.Length - 1];
         }
 
         public static double RelativeMatchNames(string s1, string s2)
         {
-            return (2.0 * MatchNames(s1, s2)) / (s1.Length + s2.Length);
+            var match=MatchNames(s1, s2);
+            return (2.0 * match) / (s1.Length + s2.Length);
         }
         
         #region Making match between videos
@@ -159,10 +163,11 @@ namespace Tuto.Publishing.Youtube
                     + (z.NumberInTopic + 1)
                     + "."
                     + z.Topic.Caption).ToArray();
-            return globalData.Name
-                + "\r\n"
-                + topics.JoinStrings((a, b) => a + "\r\n" + b)
-                + "\r\n";
+
+            var str = "" + globalData.DescriptionPS;
+            if (!string.IsNullOrEmpty(str)) str += "\r\n";
+            return str
+                + topics.JoinStrings((a, b) => a + "\r\n" + b);
         }
 
 

@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="GlobalFileContainer.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="ViewModels\Backup.cs" />
     <Compile Include="ViewModels\CatalogViewModel.cs" />
     <Compile Include="ViewModels\CatalogWraps.cs" />
     <Compile Include="Views\BatchWorkWindow.xaml.cs">

@@ -46,6 +46,7 @@ namespace Tuto.Model
 
         public const string LocalFileName = "local.tuto";
         public const string GlobalFileName = "project.tuto";
+        public const string PublishingFileName = "publishing.tuto";
         public const string FaceVideoFileName = "face.mp4";
         public const string DesktopVideoFileName = "desktop.avi";
         public const string TemporalFolderName = "chunks";

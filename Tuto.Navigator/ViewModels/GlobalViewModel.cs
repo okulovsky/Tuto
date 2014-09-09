@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media.Media3D;
 using Microsoft.Win32;
 using Tuto.Model;
+using Tuto.Navigator.ViewModels;
 
 namespace Tuto.Navigator
 {
@@ -35,6 +36,7 @@ namespace Tuto.Navigator
 
             AssembleSelectedCommand = new RelayCommand(AssembleSelected, somethingSelected);
             RemontageSelectedCommand = new RelayCommand(MontageSelected, somethingSelected);
+            CreateBackupCommand = new RelayCommand(CreateBackup);
         }
 
         public void Load(FileInfo file)
@@ -50,10 +52,15 @@ namespace Tuto.Navigator
             ReadSubdirectories();
         }
 
+        List<EditorModel> models;
+
         public void ReadSubdirectories()
         {
             var data=EditorModelIO.ReadAllProjectData(LoadedFile.Directory);
             this.globalData=data.Global;
+            models = new List<EditorModel>();
+            models.AddRange(data.Models);
+
             Subdirectories = new ObservableCollection<SubfolderViewModel>();
             foreach(var e in data.Models)
                 Subdirectories.Add(new SubfolderViewModel(e));
@@ -61,7 +68,14 @@ namespace Tuto.Navigator
 
                      
         }
-     
+
+        void CreateBackup()
+        {
+            File.WriteAllText(
+                Path.Combine(globalData.GlobalDataFolder.FullName, "backup.bat"),
+                Backup.CreateBackup(globalData, models));
+        }
+
         public void Save()
         {
             Publish.Commit();
@@ -94,6 +108,7 @@ namespace Tuto.Navigator
         public RelayCommand RefreshCommand { get; private set; }
         public RelayCommand AssembleSelectedCommand { get; private set; }
         public RelayCommand RemontageSelectedCommand { get; private set; }
+        public RelayCommand CreateBackupCommand { get; private set; }
         #endregion
 
         #region properties
