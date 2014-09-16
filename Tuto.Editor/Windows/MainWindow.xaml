@@ -16,33 +16,37 @@
     </Window.Resources>
     <DockPanel>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
-            <Button x:Name="Save">Save</Button>
-            <Button x:Name="Synchronize">Synchronize</Button>
-            <Button x:Name="Infos">Infos</Button>
+            <Button Focusable="False" x:Name="Save">Save</Button>
+            <Button Focusable="False" x:Name="Synchronize">Synchronize</Button>
+            <Button Focusable="False" x:Name="Infos">Infos</Button>
             <Rectangle Width="50"/>
             <ToggleButton 
+                Focusable="False"
                 IsChecked="{Binding WindowState.Paused}"
                 Content="{Binding WindowState.Paused, Converter={StaticResource PausedCnv}}"
                 />
             <ToggleButton 
+                Focusable="False"
                 IsChecked="{Binding WindowState.CurrentMode, Converter={StaticResource EditorModeCnv}, ConverterParameter='General'}">
                 Preview
                 </ToggleButton>
             <ToggleButton 
+                Focusable="False"
                 IsChecked="{Binding WindowState.CurrentMode, Converter={StaticResource EditorModeCnv}, ConverterParameter='Border'}">
                 Final
             </ToggleButton>
             <ToggleButton 
+                Focusable="False"
                 IsChecked="{Binding WindowState.CurrentMode, Converter={StaticResource EditorModeCnv}, ConverterParameter='Fixes'}">
                 Fixes
             </ToggleButton>
             <Rectangle Width="50"/>
-            <Button x:Name="Montage">Montage</Button>
-            <Button x:Name="Assembly">Assembly</Button>
+            <Button Focusable="False" x:Name="Montage">Montage</Button>
+            <Button Focusable="False" x:Name="Assembly">Assembly</Button>
             <Rectangle Width="50"/>
-            <Button x:Name="RepairFace">Repair Face</Button>
-            <Button x:Name="RepairDesktop">Repair Desktop</Button>
-            <Button x:Name="Help">Help</Button>
+            <Button Focusable="False" x:Name="RepairFace">Repair Face</Button>
+            <Button Focusable="False" x:Name="RepairDesktop">Repair Desktop</Button>
+            <Button Focusable="False" x:Name="Help">Help</Button>
         </StackPanel>
         <StackPanel Orientation="Vertical" DockPanel.Dock="Right">
             <Label Content="{Binding WindowState.CurrentPosition}"/>

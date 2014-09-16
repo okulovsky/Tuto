@@ -33,6 +33,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{EE9437
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tuto.Tests", "Tuto.Tests\Tuto.Tests.csproj", "{BF28DB1B-7008-4D7B-A7EF-757267946201}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tester", "Tester\Tester.csproj", "{46F2C8FB-248A-4111-8970-F904C765BF12}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Video.vsmdi
@@ -126,6 +128,16 @@ Global
 		{BF28DB1B-7008-4D7B-A7EF-757267946201}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{BF28DB1B-7008-4D7B-A7EF-757267946201}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{BF28DB1B-7008-4D7B-A7EF-757267946201}.Release|x86.ActiveCfg = Release|Any CPU
+		{46F2C8FB-248A-4111-8970-F904C765BF12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46F2C8FB-248A-4111-8970-F904C765BF12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46F2C8FB-248A-4111-8970-F904C765BF12}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{46F2C8FB-248A-4111-8970-F904C765BF12}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{46F2C8FB-248A-4111-8970-F904C765BF12}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{46F2C8FB-248A-4111-8970-F904C765BF12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46F2C8FB-248A-4111-8970-F904C765BF12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46F2C8FB-248A-4111-8970-F904C765BF12}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{46F2C8FB-248A-4111-8970-F904C765BF12}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{46F2C8FB-248A-4111-8970-F904C765BF12}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
