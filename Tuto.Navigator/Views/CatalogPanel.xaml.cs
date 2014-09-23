@@ -44,6 +44,12 @@ namespace Tuto.Navigator
                         ((PublishViewModel)DataContext).SelectedItem = Tree.SelectedValue as Wrap;
 
                 };
+            Unassigned.SelectionChanged += (s, a) =>
+                {
+                    if (DataContext != null)
+                        ((PublishViewModel)DataContext).SelectedItemInUnassignedList =
+                            Unassigned.SelectedItem as VideoWrap;
+                };
         }
 
 

@@ -53,6 +53,12 @@ namespace Tuto.Model
                 .Any(z => z == Locations.LocalFileName || z == Locations.DesktopVideoFileName || z == Locations.FaceVideoFileName);
         }
 
+        static DateTime DirectoryTime(DirectoryInfo info)
+        {
+            var file = info.GetFiles(Locations.LocalFileName);
+            if (file.Length != 1) return info.CreationTime;
+            return file[0].LastWriteTime;
+        }
         
         public static AllProjectData ReadAllProjectData(DirectoryInfo rootFolder)
         {
@@ -62,7 +68,7 @@ namespace Tuto.Model
 
             var dirs = GetAllSubdirectories(rootFolder)
                         .Where(IsValidLocalFolder)
-                        .OrderByDescending(z => z.CreationTime);
+                        .OrderByDescending(DirectoryTime);
 
             foreach (var e in dirs)
             {

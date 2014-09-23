@@ -115,6 +115,34 @@ namespace Editor
                     wnd.Show();
                 };
 
+            GoTo.Click += (s, a) =>
+                {
+                    var wnd = new FixWindow();
+                    wnd.Title = "Enter time";
+                    var result = wnd.ShowDialog();
+                    if (!result.HasValue || !result.Value) return;
+                    var parts = wnd.Text.Text.Split(',', '.', '-', ' ');
+                    int time = 0;
+                    try
+                    {
+                        time = int.Parse(parts[0]) * 60 + int.Parse(parts[1]);
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Incorrect string. Expected format is '5-14'");
+                        return;
+                    }
+                    time *= 1000;
+                    int current = 0;
+                    foreach (var z in model.Montage.Chunks)
+                    {
+                        if (z.IsNotActive) time += z.Length;
+                        current += z.Length;
+                        if (current > time) break;
+                    }
+                    model.WindowState.CurrentPosition = time;
+                };
+
             Synchronize.Click += Synchronize_Click;
 
             Infos.Click += Infos_Click;

@@ -19,6 +19,7 @@
             <Button Focusable="False" x:Name="Save">Save</Button>
             <Button Focusable="False" x:Name="Synchronize">Synchronize</Button>
             <Button Focusable="False" x:Name="Infos">Infos</Button>
+            <Button Focusable="False" x:Name="GoTo">GoTo</Button>
             <Rectangle Width="50"/>
             <ToggleButton 
                 Focusable="False"

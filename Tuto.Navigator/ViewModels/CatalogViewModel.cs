@@ -22,6 +22,7 @@ namespace Tuto.Navigator
         public ObservableCollection<TopicLevel> Levels { get; private set; }
         public GlobalData GlobalData { get; private set; }
         public Wrap SelectedItem { get; set; }
+        public VideoWrap SelectedItemInUnassignedList { get; set; }
 
         public PublishViewModel(GlobalData globalData)
         {
@@ -43,10 +44,12 @@ namespace Tuto.Navigator
 
             AddCommand = new RelayCommand(Add, () => SelectedItem != null && SelectedItem is TopicWrap);
             RemoveCommand = new RelayCommand(Remove, () => SelectedItem != null && SelectedItem != Root[0]);
+            DeleteCommand = new RelayCommand(DeleteFromList, () => SelectedItemInUnassignedList != null);
         }
 
         public RelayCommand AddCommand { get; private set; }
         public RelayCommand RemoveCommand { get; private set; }
+        public RelayCommand DeleteCommand { get; private set; }
 
         //void MoveTopic(TopicViewModel what, TopicViewModel where, int index)
         //{
@@ -196,6 +199,15 @@ namespace Tuto.Navigator
             GlobalData.TopicLevels.Clear();
             foreach (var e in Levels)
                 GlobalData.TopicLevels.Add(e);
+        }
+
+        void DeleteFromList()
+        {
+            if (SelectedItemInUnassignedList != null)
+            {
+                GlobalData.VideoData.Remove(SelectedItemInUnassignedList.Video);
+                UnassignedVideos.Remove(SelectedItemInUnassignedList);
+            }
         }
 
         void Add()
