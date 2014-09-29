@@ -17,6 +17,8 @@ namespace Tuto.Model
 
         public FileInfo ProjectFile { get { return new FileInfo(Path.Combine(data.GlobalDataFolder.FullName, Locations.GlobalFileName)); } }
 
+        public DirectoryInfo InputFolder { get { return new DirectoryInfo(Path.Combine(data.GlobalDataFolder.FullName, Locations.InputFolderName)); }} 
+
         public string RelativeToGlobal(string path)
         {
             if (!path.StartsWith(data.GlobalDataFolder.FullName))

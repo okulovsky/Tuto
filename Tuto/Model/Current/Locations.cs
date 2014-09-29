@@ -51,6 +51,8 @@ namespace Tuto.Model
         public const string DesktopVideoFileName = "desktop.avi";
         public const string TemporalFolderName = "chunks";
         public const string OutputFolderName = "Output";
+        public const string InputFolderName = "Input";
+        public const string AllTemporaryFilesFolder = "Temp";
 
         public FileInfo GetOutputFile(int episodeNumber)
         {

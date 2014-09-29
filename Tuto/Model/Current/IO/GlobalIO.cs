@@ -66,7 +66,8 @@ namespace Tuto.Model
 
             var result = new AllProjectData(globalData);
 
-            var dirs = GetAllSubdirectories(rootFolder)
+
+            var dirs = GetAllSubdirectories(globalData.Locations.InputFolder)
                         .Where(IsValidLocalFolder)
                         .OrderByDescending(DirectoryTime);
 
