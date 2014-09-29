@@ -36,7 +36,17 @@ namespace Tuto.Model
         public FileInfo LocalFilePath { get { return Make(model.VideoFolder, LocalFileName); } }
 
         public DirectoryInfo OutputDirectory { get { return new DirectoryInfo(Path.Combine(model.RootFolder.FullName, Locations.OutputFolderName)); } }
-        
+
+        public DirectoryInfo TemporalDirectory
+        {
+            get
+            {
+                var relative=model.Global.Locations.RelativeTo(model.VideoFolder.FullName, model.Global.Locations.InputFolder.FullName);
+                var name = Path.Combine(model.Global.Locations.TemporalFolder.FullName,relative);
+                return new DirectoryInfo(name);
+            }
+        }
+
         public FileInfo PraatOutput { get { return Make(model.VideoFolder, "praat.output"); } }
 
        

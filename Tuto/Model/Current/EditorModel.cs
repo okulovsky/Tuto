@@ -17,7 +17,7 @@ namespace Tuto.Model
         public readonly DirectoryInfo RootFolder;
         public readonly DirectoryInfo VideoFolder;
         public readonly DirectoryInfo ProgramFolder;
-        public readonly DirectoryInfo ChunkFolder;
+        public DirectoryInfo ChunkFolder { get { return Locations.TemporalDirectory; } }
 
         public Locations Locations { get; private set; }
         public GlobalData Global { get; set; }
@@ -44,7 +44,6 @@ namespace Tuto.Model
             this.VideoFolder=local;
             this.RootFolder=global;
             this.ProgramFolder=program;
-            ChunkFolder = VideoFolder.CreateSubdirectory(Locations.TemporalFolderName);
             Montage = new MontageModel(360000);
             Locations = new Locations(this);
             WindowState = new WindowState();

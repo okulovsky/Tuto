@@ -100,6 +100,8 @@ namespace Tuto.Model
                     InitializeEmptyModel(model);
             }
             model.Global = ReadGlobalData(model.RootFolder);
+            if (!model.Locations.TemporalDirectory.Exists)
+                model.Locations.TemporalDirectory.Create();
             return model;
         }
 

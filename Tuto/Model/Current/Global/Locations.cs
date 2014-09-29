@@ -17,13 +17,22 @@ namespace Tuto.Model
 
         public FileInfo ProjectFile { get { return new FileInfo(Path.Combine(data.GlobalDataFolder.FullName, Locations.GlobalFileName)); } }
 
-        public DirectoryInfo InputFolder { get { return new DirectoryInfo(Path.Combine(data.GlobalDataFolder.FullName, Locations.InputFolderName)); }} 
+        public DirectoryInfo InputFolder { get { return new DirectoryInfo(Path.Combine(data.GlobalDataFolder.FullName, Locations.InputFolderName)); } }
+        public DirectoryInfo TemporalFolder { get { return new DirectoryInfo(Path.Combine(data.GlobalDataFolder.FullName, Locations.AllTemporaryFilesFolder)); } }
 
+
+        public string RelativeTo(string path, string root)
+        {
+            if (!path.StartsWith(root))
+                throw new ArgumentException();
+            var result=path.Substring(root.Length, path.Length - root.Length);
+            if (result.StartsWith("\\"))
+                result=result.Substring(1, result.Length - 1);
+            return result;
+        }
         public string RelativeToGlobal(string path)
         {
-            if (!path.StartsWith(data.GlobalDataFolder.FullName))
-                throw new ArgumentException();
-            return path.Substring(data.GlobalDataFolder.FullName.Length, path.Length - data.GlobalDataFolder.FullName.Length);
+            return RelativeTo(path, data.GlobalDataFolder.FullName);
         }
 
         public FileInfo AbsoluteFileLocation(string relativePath)
