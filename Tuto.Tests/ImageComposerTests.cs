@@ -13,7 +13,7 @@ namespace Tuto.Tests
         [TestMethod]
         public void Show()
         {
-            var composer = new ParisComposer();
+            //var composer = new ParisComposer();
            
         }
     }

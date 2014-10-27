@@ -11,6 +11,7 @@ namespace Utilities
         static void Main(string[] args)
         {
             new Statistics().Run();
+           // new MoveChunksToTempFiles().Run();
         }
     }
 }

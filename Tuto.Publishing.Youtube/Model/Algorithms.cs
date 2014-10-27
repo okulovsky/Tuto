@@ -29,6 +29,7 @@ namespace Tuto.Publishing.Youtube
     {
         public static int MatchNames(string s1, string s2)
         {
+            if (s1 == null || s2 == null) return 0;
             var matrix = new int[s1.Length, s2.Length];
             var max = Math.Max(s1.Length, s2.Length);
 
@@ -60,7 +61,8 @@ namespace Tuto.Publishing.Youtube
 
         public static double RelativeMatchNames(string s1, string s2)
         {
-            var match=MatchNames(s1, s2);
+            if (s1 == null || s2 == null) return 0; 
+            var match = MatchNames(s1, s2);
             return (2.0 * match) / (s1.Length + s2.Length);
         }
         
