@@ -17,7 +17,7 @@
                         <ListBox ItemsSource="{Binding FinishedNotMatched}"/>
                         <ListBox ItemsSource="{Binding YoutubeNotMatched}"/>
                     </StackPanel>
-                    <v:Tree DataContext="{Binding Root}"/>
+                    <v:Tree DataContext="{Binding Root}" x:Name="Tree"/>
                 </DockPanel>
             </TabItem>
         <TabItem Header="Setings">

@@ -22,6 +22,15 @@ namespace Tuto.Publishing.Youtube.Views
         public MainWindow()
         {
             InitializeComponent();
+            Tree.SelectedItemChanged += Tree_SelectedItemChanged;
+
+        }
+
+        void Tree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            var context = DataContext as MainViewModel;
+            if (context==null ) return;
+            context.SelectedWrap = (Wrap)Tree.SelectedItem;
         }
     }
 }

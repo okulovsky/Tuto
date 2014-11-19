@@ -24,5 +24,17 @@ namespace Tuto.Publishing.Youtube.Views
         {
             InitializeComponent();
         }
+
+        public object SelectedItem
+        {
+            get { return InnerTree.SelectedItem; }
+        }
+
+        public event RoutedPropertyChangedEventHandler<object> SelectedItemChanged
+        {
+            add { InnerTree.SelectedItemChanged += value; }
+            remove { InnerTree.SelectedItemChanged -= value; }
+        }
+
     }
 }

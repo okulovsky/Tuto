@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Forms;
 using Tuto.Model;
 using Tuto.Navigator;
 
@@ -18,6 +19,7 @@ namespace Tuto.Publishing.Youtube
         public GlobalData GlobalData { get; private set; }
         public List<FinishedVideo> FinishedNotMatched { get; private set; }
         public List<ClipData> YoutubeNotMatched { get; private set; }
+        public Wrap SelectedWrap { get; set; }
 
         YoutubeProcessor Processor;
         public MainViewModel(DirectoryInfo directory,
@@ -44,12 +46,14 @@ namespace Tuto.Publishing.Youtube
             MakeDescriptionsCommand = new RelayCommand(MakeDescriptions);
             SaveCommand = new RelayCommand(Save);
             MakePlaylistsCommand = new RelayCommand(MakePlaylists);
+            UlearnExportCommand = new RelayCommand(UlearnExport);
         }
 
 
         public RelayCommand MakeDescriptionsCommand { get; private set; }
         public RelayCommand SaveCommand { get; private set; }
         public RelayCommand MakePlaylistsCommand { get; private set; }
+        public RelayCommand UlearnExportCommand { get; private set; }
 
         void MakePlaylists()
         {
@@ -64,6 +68,39 @@ namespace Tuto.Publishing.Youtube
                 break;
             }
         }
+
+        void UlearnExport()
+        {
+            var topic = SelectedWrap as TopicWrap;
+            if (topic == null) return;
+            if (!topic.Children.OfType<VideoWrap>().Any()) return;
+            var dirDialog = new FolderBrowserDialog();
+            if (dirDialog.ShowDialog() != DialogResult.OK) return;
+            int number = 1;
+            foreach (var e in topic.Children.OfType<VideoWrap>())
+            {
+                var fileTemplate =
+@"using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace {0}
+{
+	[Slide(""{1}"", ""{2}"")]
+	class S{3}_{4}
+	{
+		//#video {5}
+		/*
+		## Заметки по лекции
+		*/
+    }
+}
+";
+            }
+        }
+   
 
         void MakeDescriptions()
         {
@@ -85,7 +122,7 @@ namespace Tuto.Publishing.Youtube
                 }
             }
             if (errors != "")
-                MessageBox.Show(errors);
+                System.Windows.MessageBox.Show(errors);
 
         }
 
