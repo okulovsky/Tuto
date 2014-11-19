@@ -10,7 +10,7 @@ using Tuto.Publishing.Youtube.Views;
 
 namespace Tuto.Publishing.Youtube
 {
-    public static class Tuto
+    public static class TutoPublishingYoutubeProgram
     {
         [STAThread]
         public static void Main(string[] args)
