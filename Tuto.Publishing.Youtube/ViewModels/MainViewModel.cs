@@ -46,14 +46,14 @@ namespace Tuto.Publishing.Youtube
             MakeDescriptionsCommand = new RelayCommand(MakeDescriptions);
             SaveCommand = new RelayCommand(Save);
             MakePlaylistsCommand = new RelayCommand(MakePlaylists);
-            UlearnExportCommand = new RelayCommand(UlearnExport);
+            ULearnExportCommand = new RelayCommand(UlearnExport);
         }
 
 
         public RelayCommand MakeDescriptionsCommand { get; private set; }
         public RelayCommand SaveCommand { get; private set; }
         public RelayCommand MakePlaylistsCommand { get; private set; }
-        public RelayCommand UlearnExportCommand { get; private set; }
+        public RelayCommand ULearnExportCommand { get; private set; }
 
         void MakePlaylists()
         {
@@ -75,8 +75,9 @@ namespace Tuto.Publishing.Youtube
             if (topic == null) return;
             if (!topic.Children.OfType<VideoWrap>().Any()) return;
             var dirDialog = new FolderBrowserDialog();
+            dirDialog.SelectedPath=@"C:\Ulearn\src\Courses\BasicProgramming\Slides";
             if (dirDialog.ShowDialog() != DialogResult.OK) return;
-            int number = 1;
+            var directory=new DirectoryInfo(dirDialog.SelectedPath);
             foreach (var e in topic.Children.OfType<VideoWrap>())
             {
                 var fileTemplate =
@@ -85,19 +86,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using uLearn; 
 
 namespace {0}
-{
+{{
 	[Slide(""{1}"", ""{2}"")]
 	class S{3}_{4}
-	{
+	{{
 		//#video {5}
 		/*
 		## Заметки по лекции
 		*/
-    }
-}
+    }}
+}}
 ";
+                var nspace = directory.Name;
+                var title = e.Finished.Name;
+                var guid = Guid.NewGuid();
+                var numberStr = string.Format("{0:D3}", (e.Finished.NumberInTopic+1) * 10);
+                var className = title.Replace(' ', '_');
+                var video = e.ClipData.Id;
+                var content = string.Format(fileTemplate, nspace, title, guid, numberStr, className, video);
+                var fname = string.Format("S{0}_{1}.cs", numberStr, title);
+                File.WriteAllText(Path.Combine(directory.FullName, fname), content);
             }
         }
    

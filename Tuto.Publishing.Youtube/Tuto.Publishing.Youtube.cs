@@ -29,6 +29,8 @@ namespace Tuto.Publishing.Youtube
             var youtubeData = PublishingFileContainer.Load(folder);
             var youtubeProcessor = new YoutubeProcessor(youtubeData.Settings, password);
             var clips = new List<ClipData>();
+
+
             try
             {
                 clips = youtubeProcessor.LoadVideos();
