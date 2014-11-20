@@ -110,6 +110,7 @@ namespace {0}
                 var fname = string.Format("S{0}_{1}.cs", numberStr, title);
                 File.WriteAllText(Path.Combine(directory.FullName, fname), content);
             }
+            File.WriteAllText(Path.Combine(directory.FullName, "Title.txt"), topic.Topic.Caption);
         }
    
 
