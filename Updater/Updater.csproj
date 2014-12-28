@@ -34,6 +34,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -41,11 +42,37 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Obsolete\LastRefactoring\EditorModel.cs" />
+    <Compile Include="Obsolete\LastRefactoring\GlobalData\GlobalData.cs" />
+    <Compile Include="Obsolete\LastRefactoring\GlobalData\VoiceSettings.cs" />
+    <Compile Include="Obsolete\LastRefactoring\Locations.cs" />
+    <Compile Include="Obsolete\LastRefactoring\ModelIO.cs" />
+    <Compile Include="Obsolete\LastRefactoring\MontageData\Border.cs" />
+    <Compile Include="Obsolete\LastRefactoring\MontageData\BorderList.cs" />
+    <Compile Include="Obsolete\LastRefactoring\MontageData\ChunkData.cs" />
+    <Compile Include="Obsolete\LastRefactoring\MontageData\ChunkList.cs" />
+    <Compile Include="Obsolete\LastRefactoring\MontageData\EpisodInfo.cs" />
+    <Compile Include="Obsolete\LastRefactoring\MontageData\FileContainer.cs" />
+    <Compile Include="Obsolete\LastRefactoring\MontageData\Interval.cs" />
+    <Compile Include="Obsolete\LastRefactoring\MontageData\MontageModel.cs" />
+    <Compile Include="Obsolete\LastRefactoring\MontageData\VideoInformation.cs" />
+    <Compile Include="Obsolete\LastRefactoring\VideoLib\MontageCommand.cs" />
+    <Compile Include="Obsolete\LastRefactoring\VideoLib\MontageCommandIO.cs" />
+    <Compile Include="Obsolete\LastRefactoring\WindowState\EditorModes.cs" />
+    <Compile Include="Obsolete\LastRefactoring\WindowState\WindowState.cs" />
+    <Compile Include="Obsolete\OldRefactoring\InvervalsV2.cs" />
+    <Compile Include="Obsolete\OldRefactoring\MontageModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Tuto\Tuto.csproj">
+      <Project>{e69f7e9f-ed66-4935-8976-ff548ae72aec}</Project>
+      <Name>Tuto</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

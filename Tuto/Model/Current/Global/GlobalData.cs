@@ -55,7 +55,7 @@ namespace Tuto.Model
 
         public GlobalLocations Locations { get; private set; }
 
-        internal void AfterLoad(DirectoryInfo location)
+        public void AfterLoad(DirectoryInfo location)
         {
             GlobalDataFolder = location;
             Locations = new GlobalLocations(this);

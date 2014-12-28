@@ -14,9 +14,16 @@ namespace Tuto.Model
 {
     public class EditorModel
     {
-        public readonly DirectoryInfo RootFolder;
-        public readonly DirectoryInfo VideoFolder;
-        public readonly DirectoryInfo ProgramFolder;
+        public DirectoryInfo RootFolder;
+        public DirectoryInfo VideoFolder;
+        public DirectoryInfo ProgramFolder;
+
+        public void HackLocations(DirectoryInfo rootFolder, DirectoryInfo videoFolder)
+        {
+            this.RootFolder = rootFolder;
+            this.VideoFolder = videoFolder;
+        }
+
         public DirectoryInfo ChunkFolder { get { return Locations.TemporalDirectory; } }
 
         public Locations Locations { get; private set; }
