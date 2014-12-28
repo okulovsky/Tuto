@@ -100,6 +100,13 @@
     <Compile Include="Model\Obsolete\OldRefactoring\MontageModel.cs" />
     <Compile Include="Main\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Publishing\DataBinding.cs" />
+    <Compile Include="Publishing\DataLayer.cs" />
+    <Compile Include="Publishing\Item.cs" />
+    <Compile Include="Publishing\ItemTreeBuilder.cs" />
+    <Compile Include="Publishing\YoutubeData\DataBinding.cs" />
+    <Compile Include="Publishing\YoutubeData\YoutubeClip.cs" />
+    <Compile Include="Publishing\YoutubeData\YoutubePlaylist.cs" />
     <Compile Include="Services\AssemblerService.cs" />
     <Compile Include="Services\Assembler\AvsAutoLevels.cs" />
     <Compile Include="Services\Assembler\AvsChangeFramerate.cs" />
@@ -146,7 +153,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Publishing\NameMatchAlgorithm\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

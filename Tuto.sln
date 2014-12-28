@@ -37,6 +37,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tester", "Tester\Tester.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "Utilities\Utilities.csproj", "{36A98D4B-E7A7-4526-96CF-824BEEF9FD4C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject", "TestProject\TestProject.csproj", "{D63804F0-A392-4CE0-8AC7-7841997E1438}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Video.vsmdi
@@ -150,6 +152,16 @@ Global
 		{36A98D4B-E7A7-4526-96CF-824BEEF9FD4C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{36A98D4B-E7A7-4526-96CF-824BEEF9FD4C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{36A98D4B-E7A7-4526-96CF-824BEEF9FD4C}.Release|x86.ActiveCfg = Release|Any CPU
+		{D63804F0-A392-4CE0-8AC7-7841997E1438}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D63804F0-A392-4CE0-8AC7-7841997E1438}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D63804F0-A392-4CE0-8AC7-7841997E1438}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D63804F0-A392-4CE0-8AC7-7841997E1438}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D63804F0-A392-4CE0-8AC7-7841997E1438}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D63804F0-A392-4CE0-8AC7-7841997E1438}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D63804F0-A392-4CE0-8AC7-7841997E1438}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D63804F0-A392-4CE0-8AC7-7841997E1438}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D63804F0-A392-4CE0-8AC7-7841997E1438}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D63804F0-A392-4CE0-8AC7-7841997E1438}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
