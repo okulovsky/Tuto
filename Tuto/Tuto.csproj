@@ -104,6 +104,8 @@
     <Compile Include="Publishing\DataLayer.cs" />
     <Compile Include="Publishing\Item.cs" />
     <Compile Include="Publishing\ItemTreeBuilder.cs" />
+    <Compile Include="Publishing\MatchData.cs" />
+    <Compile Include="Publishing\NameMatchAlgorithm\NameMatchAlgorithm.cs" />
     <Compile Include="Publishing\YoutubeData\DataBinding.cs" />
     <Compile Include="Publishing\YoutubeData\YoutubeClip.cs" />
     <Compile Include="Publishing\YoutubeData\YoutubePlaylist.cs" />
@@ -153,9 +155,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Publishing\NameMatchAlgorithm\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

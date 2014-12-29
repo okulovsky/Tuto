@@ -23,4 +23,22 @@ namespace Tuto.Publishing
     {
         YoutubeClip YoutubeClip { get; set; }
     }
+
+    public class YoutubeClipMatcher<TItem> : Matcher<TItem, YoutubeClip>
+        where TItem : IYoutubeClipItem
+    {
+
+        static YoutubeClip BestMatch(TItem item, List<YoutubeClip> clips)
+        {
+            return NameMatchAlgorithm.FindBest(item.Caption, clips, z => z.Name);
+        }
+
+        public YoutubeClipMatcher(IEnumerable<YoutubeClip> clips)
+            : base(
+                clips,
+                BestMatch,
+                z => z.YoutubeClip,
+                (a, b) => a.Id == b.Id)
+        { }
+    }
 }

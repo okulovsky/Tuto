@@ -18,15 +18,18 @@ namespace Tuto.Publishing
     public interface IItem
     {
         Guid Guid { get; }
+        string Caption { get; }
     }
 
     public abstract class Item : IItem
     {
         public Item Root { get; internal set; }
+        public bool IsRoot { get { return Root == this; } }
         public Item Parent { get; internal set; }
         public List<Item> Children { get; internal set; }
         public int NumberInTopic { get; internal set; }
         public abstract Guid Guid { get; }
+        public abstract string Caption { get; }
 
         public IEnumerable<Item> PathFromRoot
         {
@@ -56,6 +59,10 @@ namespace Tuto.Publishing
         {
             get { return Topic.Guid; }
         }
+        public override string Caption
+        {
+            get { return Topic.Caption; }
+        }
     }
 
     public class FolderItem : FolderOrLectureItem
@@ -72,6 +79,10 @@ namespace Tuto.Publishing
         public override Guid Guid
         {
             get { return Video.Guid; }
+        }
+        public override string Caption
+        {
+            get { return Caption; }
         }
     }
 }
