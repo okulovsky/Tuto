@@ -46,10 +46,12 @@ namespace Tuto.Model
         }
 
         public static T Read<T>(DirectoryInfo directory)
+            where T : new()
         {
             var fileName = typeof(T).Name + ".txt";
             var header = typeof(T).Name + " Tuto file";
             var filePath = Path.Combine(directory.FullName, fileName);
+            if (!File.Exists(filePath)) return new T();
             return Read<T>(new FileInfo(filePath), header, 1);
         }
 

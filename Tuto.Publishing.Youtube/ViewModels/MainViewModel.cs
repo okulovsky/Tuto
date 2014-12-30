@@ -5,39 +5,97 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Forms;
 using Tuto.Model;
 using Tuto.Navigator;
+using Tuto.Publishing.Youtube.Views;
 
 namespace Tuto.Publishing
 {
-    public class MainViewModel
+    public class MainViewModel : NotifierModel
     {
-        public DirectoryInfo Directory { get; set; }
-        public YoutubeSettings YoutubeSettings { get; set; }
-        public Item[] Root { get; set; }
-        public GlobalData GlobalData { get; set; }
-        public List<FinishedVideo> FinishedNotMatched { get; set; }
-        public List<YoutubeClip> YoutubeNotMatched { get; set; }
-        public YoutubeProcessor YoutubeProcessor { get; set; }
-        public MainViewModel()
+        #region Properties
+        DirectoryInfo directory;
+        public DirectoryInfo Directory
         {
-            //FinishedNotMatched = allVideos
-            //    .Where(z => z.Status == Status.DeletedFromYoutube || z.Status == Status.NotFoundAtYoutube)
-            //    .Select(z=>z.Finished)
-            //    .ToList();
-            //YoutubeNotMatched = allVideos
-            //    .Where(z => z.Status == Status.NotExpectedAtYoutube || z.Status == Status.DeletedFromTuto)
-            //    .Select(z=>z.ClipData)
-            //    .ToList();
-
-            
-            //MakeDescriptionsCommand = new RelayCommand(MakeDescriptions);
-            //SaveCommand = new RelayCommand(Save);
-            //MakePlaylistsCommand = new RelayCommand(MakePlaylists);
-            //ULearnExportCommand = new RelayCommand(UlearnExport);
+            get { return directory; }
+            set { directory = value; NotifyPropertyChanged(); }
         }
 
+        public YoutubeSettings youtubeSettings;
+
+        public YoutubeSettings YoutubeSettings
+        {
+            get { return youtubeSettings; }
+            set { youtubeSettings = value; NotifyPropertyChanged(); }
+        }
+
+        public Item[] root;
+        public Item[] Root
+        {
+            get { return root; }
+            set { root = value; NotifyPropertyChanged(); }
+        }
+        public GlobalData globalData;
+        public GlobalData GlobalData
+        {
+            get { return globalData; }
+            set { globalData = value; }
+        }
+        public List<FinishedVideo> finishedNotMatched;
+
+        public List<FinishedVideo> FinishedNotMatched
+        {
+            get { return finishedNotMatched; }
+            set { finishedNotMatched = value; NotifyPropertyChanged(); }
+        }
+
+        public List<YoutubeClip> youtubeNotMatched;
+
+        public List<YoutubeClip> YoutubeNotMatched
+        {
+            get { return youtubeNotMatched; }
+            set { youtubeNotMatched = value; NotifyPropertyChanged(); }
+        }
+        
+        public readonly YoutubeProcessor YoutubeProcessor;
+        #endregion
+
+
+        public MainViewModel(DirectoryInfo folder)
+        {
+            Directory=folder;
+            GlobalData = EditorModelIO.ReadGlobalData(folder);
+            YoutubeSettings = HeadedJsonFormat.Read<YoutubeSettings>(folder);
+            var passwordFile = new FileInfo(Path.Combine(folder.FullName, "password"));
+            string password = "";
+            if (passwordFile.Exists)
+                password = File.ReadAllText(passwordFile.FullName);
+            else
+                password = PasswordWindow.GetPassword();
+            YoutubeProcessor = new YoutubeProcessor(YoutubeSettings, password);
+            var treeRoot = ItemTreeBuilder.Build<FolderWrap, LectureWrap, VideoWrap>(GlobalData);
+            YoutubeDataBinding.LoadYoutubeData(treeRoot, Directory);
+            Root = new[] { treeRoot };
+        }
+
+
+        public void UpdateFromYoutube()
+        {
+            List<YoutubeClip> clips = new List<YoutubeClip>();
+            try
+            {
+                clips = YoutubeProcessor.LoadVideos();
+            }
+            catch
+            {
+               MessageBox.Show("Loading video from Youtube failed.");
+            }
+            var matcher = new YoutubeClipMatcher<VideoWrap>(clips);
+            matcher.Push(Root[0]);
+            Root = new[] { Root[0] };
+            FinishedNotMatched = matcher.UnmatchedTreeItems.Select(z => z.Video).ToList();
+            YoutubeNotMatched = matcher.UnmatchedExternalDataItems.ToList();
+        }
 
         //public RelayCommand MakeDescriptionsCommand { get; private set; }
         //public RelayCommand SaveCommand { get; private set; }

@@ -43,7 +43,7 @@ namespace Tuto.Publishing
 
         public static string GetName<TData>(Expression<Func<TItem, TData>> field)
         {
-            return (field as MemberExpression).Member.Name;
+            return (field.Body as MemberExpression).Member.Name;
         }
 
         public static string GetFileName<TData>(Expression<Func<TItem, TData>> field)

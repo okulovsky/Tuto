@@ -26,10 +26,16 @@ namespace Tuto.Publishing
         public Item Root { get; internal set; }
         public bool IsRoot { get { return Root == this; } }
         public Item Parent { get; internal set; }
-        public List<Item> Children { get; internal set; }
+        public List<Item> Children { get; private set; }
         public int NumberInTopic { get; internal set; }
         public abstract Guid Guid { get; }
         public abstract string Caption { get; }
+
+        public Item()
+        {
+            Children = new List<Item>();
+        }
+        
 
         public IEnumerable<Item> PathFromRoot
         {
