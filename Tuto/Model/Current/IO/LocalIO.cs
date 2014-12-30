@@ -76,11 +76,7 @@ namespace Tuto.Model
 
         static bool TryReadObsolete(EditorModel model)
         {
-            try
-            {
-                return ObsoleteModelIO.LoadAndConvert(model); //try to recover model from obsolete file formats
-            }
-            catch { }
+            
             return false;
         }
 
