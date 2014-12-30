@@ -7,7 +7,7 @@ using Google.GData.YouTube;
 using Google.YouTube;
 using Tuto.Model;
 
-namespace Tuto.Publishing.Youtube
+namespace Tuto.Publishing
 {
     public class YoutubeProcessor
     {
@@ -31,9 +31,9 @@ namespace Tuto.Publishing.Youtube
             return request;
         }
 
-        public List<ClipData> LoadVideos()
+        public List<YoutubeClip> LoadVideos()
         {
-            var list=new List<ClipData>();
+            var list = new List<YoutubeClip>();
 
             var request = GetRequest();
 
@@ -57,7 +57,7 @@ namespace Tuto.Publishing.Youtube
                 {
                     hasEntries = true;
                     if (!list.Any(z => z.Id == v.VideoId))
-                        list.Add(new ClipData
+                        list.Add(new YoutubeClip
                         {
                             Id = v.VideoId,
                             Name = v.Title
@@ -81,7 +81,7 @@ namespace Tuto.Publishing.Youtube
             return video;
         }
 
-        public void UpdateClipData(GlobalData global, ClipData clipData)
+        public void UpdateClipData(GlobalData global, YoutubeClip clipData)
         {
             var request = GetRequest();
 
@@ -100,49 +100,49 @@ namespace Tuto.Publishing.Youtube
 
         #region Playlists
 
-        public List<PlaylistData> FindPlaylists()
-        {
-            var request = GetRequest();
-            var entries = request.GetPlaylistsFeed(data.ChannelUserId);
-            var list = new List<PlaylistData>();
-            foreach (var e in entries.Entries)
-                list.Add(new PlaylistData { Id = e.Id, Name = e.Title });
-            return list;
-        }
+        //public List<PlaylistData> FindPlaylists()
+        //{
+        //    var request = GetRequest();
+        //    var entries = request.GetPlaylistsFeed(data.ChannelUserId);
+        //    var list = new List<PlaylistData>();
+        //    foreach (var e in entries.Entries)
+        //        list.Add(new PlaylistData { Id = e.Id, Name = e.Title });
+        //    return list;
+        //}
 
-        public PlaylistData CreatePlaylist(TopicWrap wrap)
-        {
-            var request = GetRequest();
-            var playlist = new Playlist();
-            playlist.Title = playlist.Summary = wrap.Topic.Caption;
-            var url = string.Format("http://gdata.youtube.com/feeds/api/users/{0}/playlists", data.ChannelUserId);
-            playlist= request.Insert(new Uri(url), playlist);
-            return new PlaylistData { Id = playlist.Id };
-        }
+        //public PlaylistData CreatePlaylist(TopicWrap wrap)
+        //{
+        //    var request = GetRequest();
+        //    var playlist = new Playlist();
+        //    playlist.Title = playlist.Summary = wrap.Topic.Caption;
+        //    var url = string.Format("http://gdata.youtube.com/feeds/api/users/{0}/playlists", data.ChannelUserId);
+        //    playlist= request.Insert(new Uri(url), playlist);
+        //    return new PlaylistData { Id = playlist.Id };
+        //}
 
-        public void UpdatePlaylist(TopicWrap wrap)
-        {
-            var request = GetRequest();
-            var playlists = request.GetPlaylistsFeed(data.ChannelUserId);
-            var playlist = playlists.Entries.Where(z => z.Id == wrap.Playlist.Id).FirstOrDefault();
-            if (playlist == null) return;
+        //public void UpdatePlaylist(TopicWrap wrap)
+        //{
+        //    var request = GetRequest();
+        //    var playlists = request.GetPlaylistsFeed(data.ChannelUserId);
+        //    var playlist = playlists.Entries.Where(z => z.Id == wrap.Playlist.Id).FirstOrDefault();
+        //    if (playlist == null) return;
 
-            playlist.Summary = playlist.Title = wrap.Topic.Caption;
-            request.Update(playlist);
+        //    playlist.Summary = playlist.Title = wrap.Topic.Caption;
+        //    request.Update(playlist);
 
-            var entry=request.GetPlaylist(playlist);
-            foreach (var e in entry.Entries)
-                request.Delete(e);
-            foreach (var e in wrap.Children
-                .OfType<VideoWrap>()
-                .Where(z=>z.ClipData!=null)
-                .OrderBy(z => z.NumberInTopic))
-            {
-                var id = GetVideo(e.ClipData.Id, request).Id;
-                var pm = new PlayListMember { Id = id };
-                request.AddToPlaylist(playlist, pm);
-            }
-        }
+        //    var entry=request.GetPlaylist(playlist);
+        //    foreach (var e in entry.Entries)
+        //        request.Delete(e);
+        //    foreach (var e in wrap.Children
+        //        .OfType<VideoWrap>()
+        //        .Where(z=>z.ClipData!=null)
+        //        .OrderBy(z => z.NumberInTopic))
+        //    {
+        //        var id = GetVideo(e.ClipData.Id, request).Id;
+        //        var pm = new PlayListMember { Id = id };
+        //        request.AddToPlaylist(playlist, pm);
+        //    }
+        //}
 
         #endregion
     }

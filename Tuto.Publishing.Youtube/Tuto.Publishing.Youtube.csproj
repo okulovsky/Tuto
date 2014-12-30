@@ -65,13 +65,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\Algorithms.cs" />
-    <Compile Include="Model\ClipData.cs" />
-    <Compile Include="Model\Join3.cs" />
-    <Compile Include="Model\PlaylistData.cs" />
-    <Compile Include="Model\PublishedTopic.cs" />
-    <Compile Include="Model\PublishedVideo.cs" />
-    <Compile Include="Model\PublishingFileContainer.cs" />
+    <Compile Include="Model\WrapLoader.cs" />
     <Compile Include="Model\YoutubeProcessor.cs" />
     <Compile Include="Model\YoutubeSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -89,10 +83,10 @@
     </Compile>
     <Compile Include="RelayCommand.cs" />
     <Compile Include="Tuto.Publishing.Youtube.cs" />
+    <Compile Include="ViewModels\FolderWrap.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\TopicWrap.cs" />
+    <Compile Include="ViewModels\LectureWrap.cs" />
     <Compile Include="ViewModels\VideoWrap.cs" />
-    <Compile Include="ViewModels\Wrap.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>

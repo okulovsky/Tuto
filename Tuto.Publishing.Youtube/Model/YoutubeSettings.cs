@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tuto.Publishing.Youtube
+namespace Tuto.Publishing
 {
     [DataContract]
     public class YoutubeSettings

@@ -25,31 +25,34 @@ namespace Tuto.Publishing.Youtube
             
             
             var folder=new DirectoryInfo(directory);
-            var globalData = EditorModelIO.ReadGlobalData(folder);
-            var youtubeData = PublishingFileContainer.Load(folder);
-            var youtubeProcessor = new YoutubeProcessor(youtubeData.Settings, password);
-            var clips = new List<ClipData>();
+            var model = new MainViewModel();
+            model.GlobalData=EditorModelIO.ReadGlobalData(folder);
+            model.YoutubeSettings = HeadedJsonFormat.Read<YoutubeSettings>(folder);
+            model.YoutubeProcessor = new YoutubeProcessor(model.YoutubeSettings, password);
+            var treeRoot = ItemTreeBuilder.Build<FolderWrap, LectureWrap, VideoWrap>(model.GlobalData);
+            model.Root = new[] { treeRoot };
+            //var clips = new List<ClipData>();
 
 
-            try
-            {
-                clips = youtubeProcessor.LoadVideos();
-            }
-            catch
-            {
-                MessageBox.Show("Loading video from Youtube failed.");
-            }
+            //try
+            //{
+            //    clips = youtubeProcessor.LoadVideos();
+            //}
+            //catch
+            //{
+            //    MessageBox.Show("Loading video from Youtube failed.");
+            //}
             
-            var match = Algorithms.MatchVideos(globalData.VideoData, youtubeData.Videos, clips);
-            var root = Algorithms.CreateTree(globalData.TopicsRoot, match, globalData.TopicLevels);
+            //var match = Algorithms.MatchVideos(globalData.VideoData, youtubeData.Videos, clips);
+            //var root = Algorithms.CreateTree(globalData.TopicsRoot, match, globalData.TopicLevels);
 
-            var playlists = youtubeProcessor.FindPlaylists();
-            Algorithms.AddPlaylists(root, youtubeData.Topics, playlists);
+            //var playlists = youtubeProcessor.FindPlaylists();
+            //Algorithms.AddPlaylists(root, youtubeData.Topics, playlists);
 
-            var model = new MainViewModel(folder, globalData, youtubeData.Settings, root, youtubeProcessor, match);
-            var window = new MainWindow();
-            window.DataContext = model;
-            new Application().Run(window);
+            //var model = new MainViewModel(folder, globalData, youtubeData.Settings, root, youtubeProcessor, match);
+            //var window = new MainWindow();
+            //window.DataContext = model;
+            //new Application().Run(window);
         }
     }
 }

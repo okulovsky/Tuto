@@ -42,9 +42,18 @@ namespace Tuto.Model
                 Write<T>(file, header, expectedVersion, rightobject);
                 return Read<T>(file, header, expectedVersion, updaters);
             }
-
             return ReadWithoutHeader<T>(text);
         }
+
+        public static T Read<T>(DirectoryInfo directory)
+        {
+            var fileName = typeof(T).Name + ".txt";
+            var header = typeof(T).Name + " Tuto file";
+            var filePath = Path.Combine(directory.FullName, fileName);
+            return Read<T>(new FileInfo(filePath), header, 1);
+        }
+
+
 
         public static void Write<T>(FileInfo file, string header, int version, T data)
         {
@@ -57,6 +66,14 @@ namespace Tuto.Model
                 writer.WriteLine();
                 writer.WriteLine(text);
             }
+        }
+
+        public static void Write<T>(DirectoryInfo directory, T Data)
+        {
+            var fileName = typeof(T).Name + ".txt";
+            var header = typeof(T).Name + " Tuto file";
+            var filePath = Path.Combine(directory.FullName, fileName);
+            Write(new FileInfo(filePath), header, 1, Data);
         }
     }
 }

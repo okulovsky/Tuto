@@ -3,21 +3,24 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:m="clr-namespace:Tuto.Publishing.Youtube"
+             xmlns:m="clr-namespace:Tuto.Publishing"
              xmlns:v="clr-namespace:Tuto.Publishing.Youtube.Views"
              mc:Ignorable="d"              
              d:DesignHeight="300" d:DesignWidth="300">
     <TreeView ItemsSource="{Binding}" x:Name="InnerTree">
         <TreeView.Resources>
-            <HierarchicalDataTemplate DataType="{x:Type m:TopicWrap}" ItemsSource="{Binding Children}">
+            <HierarchicalDataTemplate DataType="{x:Type m:FolderWrap}">
+                <TextBlock Width="300" Text="{Binding Caption}"/>
+            </HierarchicalDataTemplate>
+            <HierarchicalDataTemplate DataType="{x:Type m:LectureWrap}" ItemsSource="{Binding Children}">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Width="300" Text="{Binding Topic.Caption}"/>
+                    <TextBlock Width="300" Text="{Binding Caption}"/>
                     <TextBlock Text="{Binding PlaylistLinkShort}"/>
                 </StackPanel>
             </HierarchicalDataTemplate>
             <HierarchicalDataTemplate DataType="{x:Type m:VideoWrap}" ItemsSource="{Binding Children}">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Width="300" Text="{Binding Finished.Name}"/>
+                    <TextBlock Width="300" Text="{Binding Caption}"/>
                     <StackPanel Orientation="Vertical">
                         <TextBlock>
                             <v:MyHyperlink NavigateUri="{Binding VideoURLFull}">

@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Tuto.Publishing.Youtube.Tests
+namespace Tuto.Publishing.Tests
 {
     [TestClass]
     public class MatchTest
@@ -9,8 +9,9 @@ namespace Tuto.Publishing.Youtube.Tests
 
         void Test(string s1, string s2, int match)
         {
-            Assert.AreEqual(match, Algorithms.MatchNames(s1, s2));
-            Assert.AreEqual(match, Algorithms.MatchNames(s2, s1));
+
+            Assert.AreEqual(match, Tuto.Publishing.NameMatchAlgorithm.MatchNames(s1, s2));
+            Assert.AreEqual(match, Tuto.Publishing.NameMatchAlgorithm.MatchNames(s2, s1));
         }
 
         [TestMethod]

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Tuto.Model;
 
-namespace Tuto.Publishing.Youtube
+namespace Tuto.Publishing
 {
     public enum Status
     {
@@ -18,34 +18,22 @@ namespace Tuto.Publishing.Youtube
         DeletedFromBoth,
     }
 
-    public class VideoWrap : Wrap
+    public class VideoWrap : VideoItem, IYoutubeClipItem
     {
-        public FinishedVideo Finished { get; set; }
-        public PublishedVideo Published { get; set; }
-        public ClipData ClipData { get; set; }
-        public Status Status { get; private set; }
 
-        public string VideoURLFull { get { if (ClipData == null) return ""; return ClipData.VideoURLFull; } }
-        public string VideoURLShort { get { if (ClipData == null) return ""; return ClipData.Id; } }
-        public string YoutubeName { get { if (ClipData == null) return ""; return ClipData.Name; } }
+        public string VideoURLFull { get { if (YoutubeClip == null) return ""; return YoutubeClip.VideoURLFull; } }
+        public string VideoURLShort { get { if (YoutubeClip == null) return ""; return YoutubeClip.Id; } }
+        public string YoutubeName { get { if (YoutubeClip == null) return ""; return YoutubeClip.Name; } }
 
-        public VideoWrap(FinishedVideo fin, PublishedVideo pub, ClipData cl, Status status)
+        public VideoWrap()
         {
-            Finished = fin;
-            Published = pub;
-            ClipData = cl;
-            Status = status;
         }
 
-        public IEnumerable<TopicWrap> TopicsFromRoot
+       
+
+        public YoutubeClip YoutubeClip
         {
-            get
-            {
-                return PathFromRoot.Where(z => !z.Root).OfType<TopicWrap>();
-            }
+            get; set; 
         }
-
-
-
     }
 }
