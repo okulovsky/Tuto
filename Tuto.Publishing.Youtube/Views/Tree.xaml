@@ -9,7 +9,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <TreeView ItemsSource="{Binding}" x:Name="InnerTree">
         <TreeView.Resources>
-            <HierarchicalDataTemplate DataType="{x:Type m:FolderWrap}">
+            <HierarchicalDataTemplate DataType="{x:Type m:FolderWrap}" ItemsSource="{Binding Children}">
                 <TextBlock Width="300" Text="{Binding Caption}"/>
             </HierarchicalDataTemplate>
             <HierarchicalDataTemplate DataType="{x:Type m:LectureWrap}" ItemsSource="{Binding Children}">

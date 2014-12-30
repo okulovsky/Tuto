@@ -76,6 +76,9 @@ namespace Tuto.Publishing
             var treeRoot = ItemTreeBuilder.Build<FolderWrap, LectureWrap, VideoWrap>(GlobalData);
             YoutubeDataBinding.LoadYoutubeData(treeRoot, Directory);
             Root = new[] { treeRoot };
+
+            UpdateCommand = new RelayCommand(UpdateFromYoutube);
+            SaveCommand = new RelayCommand(Save);
         }
 
 
@@ -96,6 +99,16 @@ namespace Tuto.Publishing
             FinishedNotMatched = matcher.UnmatchedTreeItems.Select(z => z.Video).ToList();
             YoutubeNotMatched = matcher.UnmatchedExternalDataItems.ToList();
         }
+
+        public void Save()
+        {
+            YoutubeDataBinding.SaveYoutubeData(Root[0], Directory);
+            HeadedJsonFormat.Write(Directory, YoutubeSettings);
+        }
+
+        public RelayCommand SaveCommand { get; private set; }
+        public RelayCommand UpdateCommand { get; private set; }
+
 
         //public RelayCommand MakeDescriptionsCommand { get; private set; }
         //public RelayCommand SaveCommand { get; private set; }

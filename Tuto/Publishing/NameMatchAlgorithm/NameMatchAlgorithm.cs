@@ -53,8 +53,9 @@ namespace Tuto.Publishing
                 .Select(z => new { Data = z, Caption = selector(z) })
                 .Select(z => new { Data = z.Data, Metric = RelativeMatchNames(etalon, z.Caption) })
                 .OrderByDescending(z => z.Metric)
-                .First()
-                .Data;
+                .Select(z=>z.Data)
+                .FirstOrDefault();
+
         }
     }
 }

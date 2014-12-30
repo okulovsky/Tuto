@@ -5,10 +5,8 @@
         Title="Tuto.Publisher" Height="600" Width="800">
     <DockPanel>
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-            <Button Command="{Binding MakeDescriptionsCommand}">Make vids</Button>
-            <Button Command="{Binding MakePlaylistsCommand}">Make playlists</Button>
             <Button Command="{Binding SaveCommand}">Save</Button>
-            <Button Command="{Binding ULearnExportCommand}">Export to Ulearn</Button>
+            <Button Command="{Binding UpdateCommand}">Update</Button>
         </StackPanel>
     <TabControl HorizontalAlignment="Stretch" Height="auto" VerticalAlignment="Stretch" Width="auto">
         <TabItem Header="Videos">
@@ -21,7 +19,7 @@
                 </DockPanel>
             </TabItem>
         <TabItem Header="Setings">
-            <v:SettingsPanel DataContext="{Binding Settings}"/>
+            <v:SettingsPanel DataContext="{Binding YoutubeSettings}"/>
         </TabItem>
     </TabControl>
     </DockPanel>

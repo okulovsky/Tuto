@@ -15,14 +15,17 @@ namespace Tuto.Publishing
     {
         public static void Pull<TData>(Item root, Expression<Func<TItem, TData>> field, Func<TItem, TData> dataSource)
         {
+            var itemParam = Expression.Parameter(typeof(TItem), "item");
+            var dataParam = Expression.Parameter(typeof(TData), "data");
+
             var lambda = Expression.Lambda<Action<TItem, TData>>(
                 Expression.Assign(
                     Expression.MakeMemberAccess(
-                        Expression.Parameter(typeof(TItem)),
+                        itemParam,
                         (field.Body as MemberExpression).Member),
-                    Expression.Parameter(typeof(TData))),
-                Expression.Parameter(typeof(TItem)),
-                Expression.Parameter(typeof(TData))).Compile();
+                    dataParam),
+                itemParam,
+                dataParam).Compile();
             foreach (var e in root.Subtree().OfType<TItem>())
             {
                 var data = dataSource(e);
@@ -58,6 +61,7 @@ namespace Tuto.Publishing
             if (file==null)
                 return;
             var layer = HeadedJsonFormat.Read<DataLayer<TData>>(file, GetHeader(field) , 1);
+            Pull(root, field, item => layer.Records.Where(z => z.Guid == item.Guid).Select(z => z.Data).FirstOrDefault());
         }
 
         public static DataLayer<TData> GetLayer<TData>(Item root, Func<TItem, TData> field)

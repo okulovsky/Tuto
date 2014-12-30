@@ -88,7 +88,7 @@ namespace Tuto.Publishing
         }
         public override string Caption
         {
-            get { return Caption; }
+            get { return Video.Name; }
         }
     }
 }

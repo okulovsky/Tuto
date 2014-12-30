@@ -25,7 +25,7 @@ namespace Tuto.Publishing
             where TVideoItem : VideoItem, new()
         {
             Item item = null;
-            var videos = globalData.VideoData.Where(z => z.TopicGuid == topic.Guid).ToList();
+            var videos = globalData.VideoData.Where(z => z.TopicGuid == topic.Guid).OrderBy(z=>z.NumberInTopic).ToList();
             if (videos.Count != 0 && topic.Items.Count != 0)
                 throw new Exception("Topic " + topic.Caption + " contains both videos and subtopics");
 
@@ -42,7 +42,7 @@ namespace Tuto.Publishing
             item = new TLectureItem() { Topic=topic };
             foreach (var e in videos)
             {
-                item.Children.Add(new VideoItem { Video = e });
+                item.Children.Add(new TVideoItem { Video = e });
             }
             return item;
         }
