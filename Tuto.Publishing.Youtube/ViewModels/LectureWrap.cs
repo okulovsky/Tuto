@@ -10,8 +10,7 @@ namespace Tuto.Publishing
 
     public class LectureWrap : LectureItem, IYoutubePlaylistItem
     {
-        public Topic Topic { get; set; }
-     
+
         public string PlaylistLinkShort
         {
             get

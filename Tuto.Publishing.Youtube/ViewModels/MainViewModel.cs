@@ -79,6 +79,7 @@ namespace Tuto.Publishing
 
             UpdateCommand = new RelayCommand(UpdateFromYoutube);
             SaveCommand = new RelayCommand(Save);
+            TestCommand = new RelayCommand(TestPlaylist);
         }
 
 
@@ -106,8 +107,18 @@ namespace Tuto.Publishing
             HeadedJsonFormat.Write(Directory, YoutubeSettings);
         }
 
+
+        void TestPlaylist()
+        {
+            var items = Root[0].Subtree().ToList();
+            var lecture = items.OfType<LectureWrap>().First();
+            YoutubeProcessor.CreatePlaylist(lecture);
+        }
+
         public RelayCommand SaveCommand { get; private set; }
         public RelayCommand UpdateCommand { get; private set; }
+        public RelayCommand TestCommand { get; private set; }
+
 
 
         //public RelayCommand MakeDescriptionsCommand { get; private set; }
