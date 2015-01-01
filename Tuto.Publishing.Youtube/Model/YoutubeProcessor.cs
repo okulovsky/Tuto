@@ -86,7 +86,7 @@ namespace Tuto.Publishing
             var request = GetRequest();
 
             var video = GetVideo(clipData.Id, request);
-            video.Description = clipData.Description;
+            video.Description = "XXX";// clipData.Description;
             video.Title = clipData.Name;
             video.Keywords = global.Keywords;
             request.Update(video);

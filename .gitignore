@@ -27,3 +27,4 @@ bin
 *.snm
 /Montage/ImageGenerator/*.user
 YoutubeApi/DeveloperKey.txt
+YoutubeApiTest/YoutubeClientSecrets.cs

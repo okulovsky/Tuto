@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("YoutubeApi.Tests")]
+[assembly: AssemblyTitle("YoutubeApiTest")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("YoutubeApi.Tests")]
+[assembly: AssemblyProduct("YoutubeApiTest")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("d551e479-76c3-44eb-a47a-344299b20ff8")]
+[assembly: Guid("2c6e455c-75d1-4496-ae9b-ebf781307855")]
 
 // Version information for an assembly consists of the following four values:
 //

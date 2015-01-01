@@ -110,9 +110,12 @@ namespace Tuto.Publishing
 
         void TestPlaylist()
         {
-            var items = Root[0].Subtree().ToList();
-            var lecture = items.OfType<LectureWrap>().First();
-            YoutubeProcessor.CreatePlaylist(lecture);
+            //var items = Root[0].Subtree().ToList();
+            //var lecture = items.OfType<LectureWrap>().First();
+            //YoutubeProcessor.CreatePlaylist(lecture);
+
+            var item = Root[0].Subtree().OfType<VideoWrap>().First();
+            YoutubeProcessor.UpdateClipData(GlobalData, item.YoutubeClip);
         }
 
         public RelayCommand SaveCommand { get; private set; }
