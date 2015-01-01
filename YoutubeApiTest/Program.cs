@@ -35,7 +35,16 @@ namespace Google.Apis.YouTube.Samples
                 Console.WriteLine("{0,-15}{1,10}", video.Id, video.Name);
 
             var v = videos.First();
-            processor.UpdateVideo(v, new Tuto.Publishing.YoutubeData.YoutubeVideoUpdateInfo { Name = "XXX" });
+            processor.UpdateVideo(v, new Tuto.Publishing.YoutubeData.YoutubeVideoUpdateInfo { Name = "XXX", Description="YYYY", Keywords="Zimbabwe,Huganda" });
+
+            var lists = processor.GetAllPlaylists();
+            foreach (var list in lists)
+            {
+                Console.WriteLine("{0}", list.PlaylistTitle);
+                processor.DeletePlaylist(list);
+            }
+            var newList = processor.CreatePlaylist("Test");
+            processor.FillPlaylist(newList, videos);
         }
 
         private async Task Run()

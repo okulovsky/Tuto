@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,7 @@ using Google.Apis.Auth.OAuth2;
 using Google.Apis.Services;
 using Google.Apis.Util.Store;
 using Google.Apis.YouTube.v3;
+using Google.Apis.YouTube.v3.Data;
 using Tuto.Publishing;
 using Tuto.Publishing.YoutubeData;
 
@@ -79,9 +81,61 @@ namespace YoutubeApiTest
             var video = listRq.Execute().Items[0];
             video.Snippet.Title = updateInfo.Name ?? video.Snippet.Title;
             video.Snippet.Description = updateInfo.Description ?? video.Snippet.Description;
+            if (updateInfo.Keywords != null)
+                video.Snippet.Tags = updateInfo.Keywords.Split(',').ToList();
             service.Videos.Update(video, "snippet").Execute();
         }
 
+        public YoutubePlaylist CreatePlaylist(string name)
+        {
+            var list = new Playlist();
+            list.Snippet=new PlaylistSnippet();
+            list.Snippet.Title = name;
+            list=service.Playlists.Insert(list,"snippet").Execute();
+            var playlist = new YoutubePlaylist();
+            playlist.PlaylistId = list.Id;
+            playlist.PlaylistTitle = list.Snippet.Title;
+            return playlist;
+        }
+
+        public List<YoutubePlaylist> GetAllPlaylists()
+        {
+            var listRequest = service.Playlists.List("snippet");
+            listRequest.Mine=true;
+            var lists = listRequest.Execute();
+            return lists.Items.Select(z => new YoutubePlaylist { PlaylistId = z.Id, PlaylistTitle = z.Snippet.Title }).ToList();
+        }
+
+        public void DeletePlaylist(YoutubePlaylist playlist)
+        {
+            service.Playlists.Delete(playlist.PlaylistId).Execute();
+        }
+
+        public void FillPlaylist(YoutubePlaylist list, IEnumerable<YoutubeClip> clips)
+        {
+            var itemsRq = service.PlaylistItems.List("snippet");
+            itemsRq.PlaylistId = list.PlaylistId;
+            var items = itemsRq.Execute().Items;
+            foreach (var e in items)
+                service.PlaylistItems.Delete(e.Id);
+
+            foreach (var e in clips)
+            {
+                var item = new PlaylistItem
+                {
+                    Snippet = new PlaylistItemSnippet
+                    {
+                        PlaylistId = list.PlaylistId,
+                        ResourceId = new ResourceId
+                        {
+                            Kind = "youtube#video",
+                            VideoId = e.Id
+                        }
+                    }
+                };
+                service.PlaylistItems.Insert(item,"snippet").Execute();
+            }
+        }
 
         public void Authorize(DirectoryInfo directory)
         {
