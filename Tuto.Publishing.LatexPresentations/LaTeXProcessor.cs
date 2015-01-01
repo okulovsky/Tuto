@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,36 @@ namespace Tuto.Publishing.LatexPresentations
 {
     class LatexProcessor
     {
+
+        static void StartLatex(FileInfo latexFile)
+        {
+            var process = new Process();
+            process.StartInfo.FileName = "pdflatex";
+            process.StartInfo.WorkingDirectory = latexFile.Directory.FullName;
+            process.StartInfo.Arguments = latexFile.Name;
+            process.Start();
+            process.WaitForExit();
+        }
+
+        public FileInfo Compile(LatexDocument document, DirectoryInfo environmentDirectory)
+        {
+            var tempLatexFile = new FileInfo(Path.Combine(environmentDirectory.FullName, "temp.tex"));
+            var builder = new StringBuilder();
+            builder.Append(document.Preamble);
+            builder.Append("\\begin{document}\r\n");
+            foreach (var e in document.Sections)
+            {
+                builder.Append(e.Name);
+                foreach (var s in e.Slides)
+                    builder.Append(s.Content);
+            }
+            builder.Append("\\end{document}");
+            File.WriteAllText(tempLatexFile.FullName, builder.ToString());
+            StartLatex(tempLatexFile);
+            StartLatex(tempLatexFile);
+            return new FileInfo(Path.Combine(environmentDirectory.FullName, "temp.pdf"));
+        }
+
         public LatexDocument Parse(FileInfo file)
         {
             var lines = File.ReadAllLines(file.FullName);

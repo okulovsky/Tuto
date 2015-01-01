@@ -11,7 +11,9 @@ namespace Tuto.Publishing.LatexPresentations
         static void Main(string[] args)
         {
             var latexFile = new FileInfo(@"..\..\..\..\AIML\Latex\ulearn-lecture-01.tex");
-            var document = new LatexProcessor().Parse(latexFile);
+            var processor = new LatexProcessor();
+            var document = processor.Parse(latexFile);
+            processor.Compile(document, latexFile.Directory);
         }
     }
 }
