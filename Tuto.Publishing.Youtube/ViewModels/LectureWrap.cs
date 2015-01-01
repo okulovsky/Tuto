@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 using Tuto.Model;
 using Tuto;
 using Tuto.Navigator;
+using Tuto.Publishing.YoutubeData;
 
 namespace Tuto.Publishing
 {
 
-    public class LectureWrap : LectureItem, IYoutubePlaylistItem, IYoutubeProcessorHolder
+    public class LectureWrap : LectureItem
     {
         
 
@@ -36,9 +37,9 @@ namespace Tuto.Publishing
 
         public YoutubePlaylist YoutubePlaylist
         {
-            get { return youtubePlaylist; }
-            set { 
-                youtubePlaylist = value; 
+            get { return Get<YoutubePlaylist>(); }
+            set {
+                Store<YoutubePlaylist>(value); 
                 NotifyPropertyChanged();
                 this.NotifyByExpression(z => z.PlaylistUrlShort);
                 this.NotifyByExpression(z => z.PlaylistUrlFull);
@@ -64,8 +65,8 @@ namespace Tuto.Publishing
 
         public YoutubeData.IYoutubeProcessor Processor
         {
-            get;
-            set; 
+            get { return Get<IYoutubeProcessor>(); }
+            set { Store<IYoutubeProcessor>(value); }
         }
 
         public LectureWrap()

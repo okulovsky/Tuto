@@ -63,7 +63,7 @@ namespace Tuto.Publishing
             YoutubeProcessor = processor;
             var treeRoot = ItemTreeBuilder.Build<FolderWrap, LectureWrap, VideoWrap>(GlobalData);
             YoutubeDataBinding.LoadYoutubeData(treeRoot, Directory);
-            DataBinding<IYoutubeProcessorHolder>.Pull(treeRoot, z => z.Processor, z => YoutubeProcessor);
+            DataBinding<IItem>.Pull<IYoutubeProcessor>(treeRoot, z => YoutubeProcessor);
             Root = new[] { treeRoot };
 
             UpdateCommand = new RelayCommand(UpdateFromYoutube);

@@ -134,7 +134,6 @@
     <Compile Include="RelayCommand.cs" />
     <Compile Include="Tuto.Publishing.Youtube.cs" />
     <Compile Include="ViewModels\FolderWrap.cs" />
-    <Compile Include="ViewModels\IYoutubeProcessorHolder.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\LectureWrap.cs" />
     <Compile Include="ViewModels\VideoWrap.cs" />

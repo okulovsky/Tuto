@@ -11,14 +11,14 @@ namespace Tuto.Publishing
     {
         public static void LoadYoutubeData(Item root, DirectoryInfo directory)
         {
-            DataBinding<IYoutubeClipItem>.PullFromFile(root, z => z.YoutubeClip, directory);
-            DataBinding<IYoutubePlaylistItem>.PullFromFile(root, z => z.YoutubePlaylist, directory);
+            DataBinding<VideoItem>.PullFromFile<YoutubeClip>(root, directory);
+            DataBinding<LectureItem>.PullFromFile<YoutubePlaylist>(root, directory);
         }
 
         public static void SaveYoutubeData(Item root, DirectoryInfo directory)
         {
-            DataBinding<IYoutubeClipItem>.SaveLayer(root, z => z.YoutubeClip, directory);
-            DataBinding<IYoutubePlaylistItem>.SaveLayer(root, z => z.YoutubePlaylist, directory);
+            DataBinding<VideoItem>.SaveLayer<YoutubeClip>(root, directory);
+            DataBinding<LectureItem>.SaveLayer<YoutubePlaylist>(root, directory);
         }
     }
 }

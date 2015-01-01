@@ -16,13 +16,9 @@ namespace Tuto.Publishing
         public string PlaylistTitle { get; set; }
     }
 
-    public interface IYoutubePlaylistItem : IItem
-    {
-        YoutubePlaylist YoutubePlaylist { get; set; }
-    }
 
     public class YoutubePlaylistMatcher<TItem> : Matcher<TItem, YoutubePlaylist>
-        where TItem : IYoutubePlaylistItem
+        where TItem : IItem
     {
 
         static YoutubePlaylist BestMatch(TItem item, List<YoutubePlaylist> clips)
@@ -34,7 +30,6 @@ namespace Tuto.Publishing
             : base(
                 clips,
                 BestMatch,
-                z => z.YoutubePlaylist,
                 (a, b) => a.PlaylistId == b.PlaylistId)
         { }
     }

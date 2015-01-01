@@ -21,13 +21,13 @@ namespace Tuto.Publishing
         DeletedFromBoth,
     }
 
-    public class VideoWrap : VideoItem, IYoutubeClipItem, IYoutubeProcessorHolder
+    public class VideoWrap : VideoItem
     {
 
         public string VideoURLFull { get { if (YoutubeClip == null) return ""; return YoutubeClip.VideoURLFull; } }
         public string VideoURLShort { get { if (YoutubeClip == null) return ""; return YoutubeClip.Id; } }
         public string YoutubeName { get { if (YoutubeClip == null) return ""; return YoutubeClip.Name; } }
-        public IYoutubeProcessor Processor { get; set; }
+        public IYoutubeProcessor Processor { get { return Get<IYoutubeProcessor>(); } set { Store<IYoutubeProcessor>(value); } } 
         public VideoWrap()
         {
             UpdateVideoCommand = new RelayCommand(UpdateVideo, ()=>YoutubeClip!=null);
@@ -67,14 +67,13 @@ namespace Tuto.Publishing
             YoutubeClip = clip;
         }
 
-        YoutubeClip youtubeClip;
-
+       
         public YoutubeClip YoutubeClip
         {
-            get { return youtubeClip; }
+            get { return Get<YoutubeClip>(); }
             set
             {
-                youtubeClip = value;
+                Store<YoutubeClip>(value);
                 NotifyPropertyChanged();
                 this.NotifyByExpression(z => z.YoutubeName);
             }

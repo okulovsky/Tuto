@@ -19,13 +19,8 @@ namespace Tuto.Publishing
         }
     }
 
-    public interface IYoutubeClipItem : IItem
-    {
-        YoutubeClip YoutubeClip { get; set; }
-    }
-
     public class YoutubeClipMatcher<TItem> : Matcher<TItem, YoutubeClip>
-        where TItem : IYoutubeClipItem
+        where TItem : IItem
     {
 
         static YoutubeClip BestMatch(TItem item, List<YoutubeClip> clips)
@@ -37,7 +32,6 @@ namespace Tuto.Publishing
             : base(
                 clips,
                 BestMatch,
-                z => z.YoutubeClip,
                 (a, b) => a.Id == b.Id)
         { }
     }

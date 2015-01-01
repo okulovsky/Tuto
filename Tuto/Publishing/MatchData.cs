@@ -18,11 +18,9 @@ namespace Tuto.Publishing
         public List<TItem> UnmatchedTreeItems { get; private set; }
         List<TData> initialDataItems;
         Func<TItem, List<TData>, TData> BestMatch;
-        Expression<Func<TItem, TData>> TargetField;
-        Func<TItem, TData> TargetFieldLambda;
         Func<TData, TData, bool> Equals;
 
-        public Matcher(IEnumerable<TData> allExternal, Func<TItem,List<TData>, TData> bestMatch, Expression<Func<TItem,TData>> targetField, Func<TData,TData,bool> equals)
+        public Matcher(IEnumerable<TData> allExternal, Func<TItem,List<TData>, TData> bestMatch, Func<TData,TData,bool> equals)
         {
             AllExternalDataItems = new List<TData>();
             MatchedTreeItems = new List<TItem>();
@@ -32,22 +30,20 @@ namespace Tuto.Publishing
             UnmatchedExternalDataItems = new List<TData>();
             initialDataItems = allExternal.ToList();
             BestMatch = bestMatch;
-            TargetField = targetField;
-            TargetFieldLambda = TargetField.Compile();
             Equals = equals;
         }
 
         TData AccountTreeItems(TItem item)
         {
             AllTreeItems.Add(item);
-            if (TargetFieldLambda(item) != null) MatchedTreeItems.Add(item);
+            if (item.Get<TData>() != null) MatchedTreeItems.Add(item);
             else UnmatchedTreeItems.Add(item);
-            return TargetFieldLambda(item);
+            return item.Get<TData>();
         }
 
         TData CheckExistingData(TItem item)
         {
-            var storedData = TargetFieldLambda(item);
+            var storedData = item.Get<TData>();
             if (storedData == null) return storedData;
             var foundData = UnmatchedExternalDataItems.Where(z => Equals(z, storedData)).FirstOrDefault();
             if (foundData == null) return foundData;
@@ -58,7 +54,7 @@ namespace Tuto.Publishing
 
         TData FoundNewData(TItem item)
         {
-            var storedData = TargetFieldLambda(item);
+            var storedData = item.Get<TData>();
             if (storedData != null) return storedData;
             var newFoundData = BestMatch(item, UnmatchedExternalDataItems);
             if (newFoundData != null)
@@ -78,9 +74,9 @@ namespace Tuto.Publishing
             AllTreeItems.Clear();
             MatchedTreeItems.Clear();
             UnmatchedTreeItems.Clear();
-            DataBinding<TItem>.Pull(root, TargetField, CheckExistingData);
-            DataBinding<TItem>.Pull(root, TargetField, FoundNewData);
-            DataBinding<TItem>.Pull(root, TargetField, AccountTreeItems);
+            DataBinding<TItem>.Pull(root, CheckExistingData);
+            DataBinding<TItem>.Pull(root, FoundNewData);
+            DataBinding<TItem>.Pull(root, AccountTreeItems);
         }
     }
 }

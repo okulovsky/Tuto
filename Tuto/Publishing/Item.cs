@@ -19,6 +19,8 @@ namespace Tuto.Publishing
     {
         Guid Guid { get; }
         string Caption { get; }
+        void Store<T>(T data);
+        T Get<T>();
     }
 
     public abstract class Item : NotifierModel, IItem
@@ -31,6 +33,7 @@ namespace Tuto.Publishing
         public int NumberInTopic { get; internal set; }
         public abstract Guid Guid { get; }
         public abstract string Caption { get; }
+        Dictionary<Type, object> bindedObjects = new Dictionary<Type, object>();
 
         public Item()
         {
@@ -56,6 +59,17 @@ namespace Tuto.Publishing
             foreach (var e in Children)
                 foreach (var z in e.Subtree())
                     yield return z;
+        }
+
+        public void Store<T>(T value)
+        {
+            bindedObjects[typeof(T)] = value;
+        }
+
+        public T Get<T>()
+        {
+            if (!bindedObjects.ContainsKey(typeof(T))) return default(T);
+            return (T)bindedObjects[typeof(T)];
         }
     }
 
