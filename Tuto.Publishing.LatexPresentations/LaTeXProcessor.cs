@@ -10,6 +10,21 @@ namespace Tuto.Publishing.LatexPresentations
     class LatexProcessor
     {
 
+        public DirectoryInfo ConvertToPng(FileInfo pdfFile)
+        {
+            var directory = pdfFile.Directory.CreateSubdirectory("pdf2png converted");
+            pdfFile = pdfFile.CopyTo(Path.Combine(directory.FullName,pdfFile.Name));
+            var process=new Process();
+            process.StartInfo.FileName=Program.Ghostscript;
+            process.StartInfo.Arguments = 
+                @"-dBATCH -dNOPAUSE -sDEVICE=pnggray -r300 -dUseCropBox -sOutputFile=""%03d.png"" "+pdfFile.Name;
+            process.StartInfo.WorkingDirectory = directory.FullName;
+            process.Start();
+            process.WaitForExit();
+            pdfFile.Delete();
+            return directory;
+        }
+
         static void StartLatex(FileInfo latexFile)
         {
             var process = new Process();
@@ -35,7 +50,7 @@ namespace Tuto.Publishing.LatexPresentations
             builder.Append("\\end{document}");
             File.WriteAllText(tempLatexFile.FullName, builder.ToString());
             StartLatex(tempLatexFile);
-            StartLatex(tempLatexFile);
+            //StartLatex(tempLatexFile);
             return new FileInfo(Path.Combine(environmentDirectory.FullName, "temp.pdf"));
         }
 
