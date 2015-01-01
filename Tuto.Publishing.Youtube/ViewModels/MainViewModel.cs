@@ -60,12 +60,6 @@ namespace Tuto.Publishing
         {
             Directory=folder;
             GlobalData = EditorModelIO.ReadGlobalData(folder);
-            var passwordFile = new FileInfo(Path.Combine(folder.FullName, "password"));
-            string password = "";
-            if (passwordFile.Exists)
-                password = File.ReadAllText(passwordFile.FullName);
-            else
-                password = PasswordWindow.GetPassword();
             YoutubeProcessor = processor;
             var treeRoot = ItemTreeBuilder.Build<FolderWrap, LectureWrap, VideoWrap>(GlobalData);
             YoutubeDataBinding.LoadYoutubeData(treeRoot, Directory);
