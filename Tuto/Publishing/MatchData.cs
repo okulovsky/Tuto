@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace Tuto.Publishing
 {
+
+
+
+
     public class Matcher<TItem,TData>
         where TItem : IItem
     {
@@ -31,6 +35,15 @@ namespace Tuto.Publishing
             initialDataItems = allExternal.ToList();
             BestMatch = bestMatch;
             Equals = equals;
+        }
+
+
+        public static Matcher<TItem, TData> ByName(IEnumerable<TData> allExternal, Func<TData, string> externalName, Func<TData, TData, bool> equals)
+        {
+            return new Matcher<TItem, TData>(
+                allExternal,
+                (item, datas) => NameMatchAlgorithm.FindBest(item.Caption, datas, externalName),
+                equals);
         }
 
         TData AccountTreeItems(TItem item)

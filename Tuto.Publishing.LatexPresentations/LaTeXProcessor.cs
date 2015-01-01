@@ -10,9 +10,8 @@ namespace Tuto.Publishing.LatexPresentations
     class LatexProcessor
     {
 
-        public DirectoryInfo ConvertToPng(FileInfo pdfFile)
+        public void ConvertToPng(FileInfo pdfFile, DirectoryInfo directory)
         {
-            var directory = pdfFile.Directory.CreateSubdirectory("pdf2png converted");
             pdfFile = pdfFile.CopyTo(Path.Combine(directory.FullName,pdfFile.Name));
             var process=new Process();
             process.StartInfo.FileName=Program.Ghostscript;
@@ -22,7 +21,6 @@ namespace Tuto.Publishing.LatexPresentations
             process.Start();
             process.WaitForExit();
             pdfFile.Delete();
-            return directory;
         }
 
         static void StartLatex(FileInfo latexFile)
