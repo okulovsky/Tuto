@@ -15,6 +15,7 @@ namespace Tuto.Publishing
             where TVideoItem : VideoItem, new()
         {
             var result = BuildTopic<TFolderItem, TLectureItem, TVideoItem>(globalData, globalData.TopicsRoot);
+            result.GlobalData = globalData;
             InitializeItem(result);
             return result;
         }
@@ -55,6 +56,7 @@ namespace Tuto.Publishing
                 e.Parent = item;
                 e.NumberInTopic = i;
                 e.Root = item.Root;
+                e.GlobalData = item.GlobalData;
                 InitializeItem(e);
             }
         }

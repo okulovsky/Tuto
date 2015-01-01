@@ -14,20 +14,29 @@
             </HierarchicalDataTemplate>
             <HierarchicalDataTemplate DataType="{x:Type m:LectureWrap}" ItemsSource="{Binding Children}">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Width="300" Text="{Binding Caption}"/>
-                    <TextBlock Text="{Binding PlaylistLinkShort}"/>
+                    <TextBlock Width="200" Text="{Binding Caption}"/>
+                    <TextBlock>
+                        <v:MyHyperlink NavigateUri="{Binding PlaylistUrlFull}">
+                            <TextBlock Text="{Binding PlaylistUrlShort}"/>
+                        </v:MyHyperlink>
+                    </TextBlock>
+                    <Button Command="{Binding UpdatePlaylistCommand}">Upd. playlist</Button>
+                    <Button Command="{Binding UpdateAllCommand}">Upd. all</Button>
                 </StackPanel>
             </HierarchicalDataTemplate>
             <HierarchicalDataTemplate DataType="{x:Type m:VideoWrap}" ItemsSource="{Binding Children}">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Width="300" Text="{Binding Caption}"/>
-                    <StackPanel Orientation="Vertical">
+                    <TextBlock Width="200" Text="{Binding Caption}"/>
+                    <StackPanel Width ="200" Orientation="Vertical">
                         <TextBlock>
                             <v:MyHyperlink NavigateUri="{Binding VideoURLFull}">
                                 <TextBlock Text="{Binding VideoURLShort}"/>
                             </v:MyHyperlink>
                             </TextBlock>
                         <TextBlock FontSize="8" Text="{Binding YoutubeName}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical">
+                        <Button Command="{Binding UpdateVideoCommand}">Update</Button>
                     </StackPanel>
                 </StackPanel>
             </HierarchicalDataTemplate>

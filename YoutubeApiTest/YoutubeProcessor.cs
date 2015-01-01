@@ -72,17 +72,15 @@ namespace YoutubeApiTest
             }
             return videos;
         }
-      
 
-        public void UpdateVideo(Tuto.Publishing.YoutubeClip clip, YoutubeVideoUpdateInfo updateInfo)
+
+        public void UpdateVideo(YoutubeClip clip)
         {
             var listRq = service.Videos.List("snippet");
             listRq.Id = clip.Id;
             var video = listRq.Execute().Items[0];
-            video.Snippet.Title = updateInfo.Name ?? video.Snippet.Title;
-            video.Snippet.Description = updateInfo.Description ?? video.Snippet.Description;
-            if (updateInfo.Keywords != null)
-                video.Snippet.Tags = updateInfo.Keywords.Split(',').ToList();
+            video.Snippet.Title = clip.Name;
+            video.Snippet.Description = clip.Description;
             service.Videos.Update(video, "snippet").Execute();
         }
 

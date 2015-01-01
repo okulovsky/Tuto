@@ -21,8 +21,9 @@ namespace Tuto.Publishing
         string Caption { get; }
     }
 
-    public abstract class Item : IItem
+    public abstract class Item : NotifierModel, IItem
     {
+        public GlobalData GlobalData { get; internal set; }
         public Item Root { get; internal set; }
         public bool IsRoot { get { return Root == this; } }
         public Item Parent { get; internal set; }

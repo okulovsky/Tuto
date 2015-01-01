@@ -35,7 +35,9 @@ namespace Google.Apis.YouTube.Samples
                 Console.WriteLine("{0,-15}{1,10}", video.Id, video.Name);
 
             var v = videos.First();
-            processor.UpdateVideo(v, new Tuto.Publishing.YoutubeData.YoutubeVideoUpdateInfo { Name = "XXX", Description="YYYY", Keywords="Zimbabwe,Huganda" });
+            v.Name = "XXX";
+            v.Description = "YYY";
+            processor.UpdateVideo(v);
 
             var lists = processor.GetAllPlaylists();
             foreach (var list in lists)

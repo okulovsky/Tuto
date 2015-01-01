@@ -69,6 +69,7 @@ namespace Tuto.Publishing
             YoutubeProcessor = processor;
             var treeRoot = ItemTreeBuilder.Build<FolderWrap, LectureWrap, VideoWrap>(GlobalData);
             YoutubeDataBinding.LoadYoutubeData(treeRoot, Directory);
+            DataBinding<IYoutubeProcessorHolder>.Pull(treeRoot, z => z.Processor, z => YoutubeProcessor);
             Root = new[] { treeRoot };
 
             UpdateCommand = new RelayCommand(UpdateFromYoutube);
@@ -90,6 +91,11 @@ namespace Tuto.Publishing
             }
             var matcher = new YoutubeClipMatcher<VideoWrap>(clips);
             matcher.Push(Root[0]);
+
+            var playlists = YoutubeProcessor.GetAllPlaylists();
+            var listMatcher = new YoutubePlaylistMatcher<LectureWrap>(playlists);
+            listMatcher.Push(Root[0]);
+
             Root = new[] { Root[0] };
             FinishedNotMatched = matcher.UnmatchedTreeItems.Select(z => z.Video).ToList();
             YoutubeNotMatched = matcher.UnmatchedExternalDataItems.ToList();

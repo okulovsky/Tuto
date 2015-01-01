@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tuto.Model;
+using Tuto.Navigator;
+using Tuto.Publishing.YoutubeData;
 
 namespace Tuto.Publishing
 {
@@ -18,22 +21,63 @@ namespace Tuto.Publishing
         DeletedFromBoth,
     }
 
-    public class VideoWrap : VideoItem, IYoutubeClipItem
+    public class VideoWrap : VideoItem, IYoutubeClipItem, IYoutubeProcessorHolder
     {
 
         public string VideoURLFull { get { if (YoutubeClip == null) return ""; return YoutubeClip.VideoURLFull; } }
         public string VideoURLShort { get { if (YoutubeClip == null) return ""; return YoutubeClip.Id; } }
         public string YoutubeName { get { if (YoutubeClip == null) return ""; return YoutubeClip.Name; } }
-
+        public IYoutubeProcessor Processor { get; set; }
         public VideoWrap()
         {
+            UpdateVideoCommand = new RelayCommand(UpdateVideo, ()=>YoutubeClip!=null);
         }
 
-       
+        public RelayCommand UpdateVideoCommand { get; private set; }
+
+        public void UpdateVideo()
+        {
+            if (YoutubeClip == null) return;
+            var prefix = "";
+            var description = "";
+            prefix += GlobalData.CourseAbbreviation;
+            var path = PathFromRoot.Skip(1).ToArray();
+            for (int levelNumber = 0; levelNumber < path.Length; levelNumber++)
+            {
+
+                TopicLevel level = new TopicLevel();
+                if (levelNumber < GlobalData.TopicLevels.Count)
+                    level = GlobalData.TopicLevels[levelNumber];
+                prefix += "-";
+                prefix += string.Format("{0:D" + level.Digits + "}", path[levelNumber].NumberInTopic+1);
+
+                var topic = path[levelNumber] as FolderOrLectureItem;
+                if (topic != null)
+                {
+                    description += level.Caption + " " + (path[levelNumber].NumberInTopic+1) + ". " + topic.Topic.Caption + "\r\n";
+                }
+            }
+
+            var title = prefix + " " + this.Video.Name;
+            description += GlobalData.DescriptionPS;
+            var clip = new YoutubeClip { Id = YoutubeClip.Id };
+            clip.Name = title;
+            clip.Description = description;
+            Processor.UpdateVideo(clip);
+            YoutubeClip = clip;
+        }
+
+        YoutubeClip youtubeClip;
 
         public YoutubeClip YoutubeClip
         {
-            get; set; 
+            get { return youtubeClip; }
+            set
+            {
+                youtubeClip = value;
+                NotifyPropertyChanged();
+                this.NotifyByExpression(z => z.YoutubeName);
+            }
         }
     }
 }

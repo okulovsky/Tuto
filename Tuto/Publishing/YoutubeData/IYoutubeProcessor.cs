@@ -11,6 +11,11 @@ namespace Tuto.Publishing.YoutubeData
     {
         void Authorize(DirectoryInfo directory);
         List<YoutubeClip> GetAllClips();
-        void UpdateVideo(YoutubeClip clip, YoutubeVideoUpdateInfo updateInfo);
+        void UpdateVideo(YoutubeClip clip);
+        YoutubePlaylist CreatePlaylist(string name);
+        List<YoutubePlaylist> GetAllPlaylists();
+        void DeletePlaylist(YoutubePlaylist playlist);
+        void FillPlaylist(YoutubePlaylist list, IEnumerable<YoutubeClip> clips);
+        
     }
 }

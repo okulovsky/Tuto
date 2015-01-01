@@ -20,7 +20,9 @@ namespace Tuto.Publishing.Youtube
             
             
             var folder=new DirectoryInfo(directory);
-            var model = new MainViewModel(folder, new YoutubeApisProcessor());
+            var processor = new YoutubeApisProcessor();
+            processor.Authorize(folder);
+            var model = new MainViewModel(folder, processor);
 
             //var clips = new List<ClipData>();
 
