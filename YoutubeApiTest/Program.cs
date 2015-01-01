@@ -1,5 +1,6 @@
 ﻿﻿/*
 */
+using System.Linq;
 using System;
 using System.IO;
 using System.Reflection;
@@ -31,7 +32,10 @@ namespace Google.Apis.YouTube.Samples
             processor.Authorize(directory);
             var videos = processor.GetAllClips();
             foreach (var video in videos)
-                Console.WriteLine("{0,10}{1,10}", video.Id, video.Name);
+                Console.WriteLine("{0,-15}{1,10}", video.Id, video.Name);
+
+            var v = videos.First();
+            processor.UpdateVideo(v, new Tuto.Publishing.YoutubeData.YoutubeVideoUpdateInfo { Name = "XXX" });
         }
 
         private async Task Run()

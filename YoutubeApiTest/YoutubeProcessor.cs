@@ -32,6 +32,9 @@ namespace YoutubeApiTest
 
         public List<Tuto.Publishing.YoutubeClip> GetAllClips()
         {
+            
+
+
             var videos = new List<YoutubeClip>();
             var channelsListRequest = service.Channels.List("contentDetails");
             channelsListRequest.Mine = true;
@@ -71,7 +74,12 @@ namespace YoutubeApiTest
 
         public void UpdateVideo(Tuto.Publishing.YoutubeClip clip, YoutubeVideoUpdateInfo updateInfo)
         {
-            
+            var listRq = service.Videos.List("snippet");
+            listRq.Id = clip.Id;
+            var video = listRq.Execute().Items[0];
+            video.Snippet.Title = updateInfo.Name ?? video.Snippet.Title;
+            video.Snippet.Description = updateInfo.Description ?? video.Snippet.Description;
+            service.Videos.Update(video, "snippet").Execute();
         }
 
 
@@ -81,7 +89,7 @@ namespace YoutubeApiTest
 
             credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
                 GoogleSecrets.Data,
-                new[] { YouTubeService.Scope.YoutubeReadonly },
+                new[] { YouTubeService.Scope.Youtube },
                 "user",
                 CancellationToken.None,
                 new FileDataStore(credentialsLocation)).RunSync();
