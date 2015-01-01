@@ -25,7 +25,7 @@ namespace YoutubeApiTest
         }
     }
 
-    class YoutubeApisProcessor : IYoutubeProcessor
+    public class YoutubeApisProcessor : IYoutubeProcessor
     {
         YouTubeService service;
         UserCredential credential;

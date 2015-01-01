@@ -19,9 +19,6 @@
                     <v:Tree DataContext="{Binding Root}" x:Name="Tree"/>
                 </DockPanel>
             </TabItem>
-        <TabItem Header="Setings">
-            <v:SettingsPanel DataContext="{Binding YoutubeSettings}"/>
-        </TabItem>
     </TabControl>
     </DockPanel>
 </Window>

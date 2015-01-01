@@ -8,6 +8,7 @@ using System.Windows;
 using Tuto.Model;
 using Tuto.Navigator;
 using Tuto.Publishing.Youtube.Views;
+using Tuto.Publishing.YoutubeData;
 
 namespace Tuto.Publishing
 {
@@ -21,13 +22,7 @@ namespace Tuto.Publishing
             set { directory = value; NotifyPropertyChanged(); }
         }
 
-        public YoutubeSettings youtubeSettings;
-
-        public YoutubeSettings YoutubeSettings
-        {
-            get { return youtubeSettings; }
-            set { youtubeSettings = value; NotifyPropertyChanged(); }
-        }
+      
 
         public Item[] root;
         public Item[] Root
@@ -57,22 +52,21 @@ namespace Tuto.Publishing
             set { youtubeNotMatched = value; NotifyPropertyChanged(); }
         }
         
-        public readonly YoutubeProcessor YoutubeProcessor;
+        public readonly IYoutubeProcessor YoutubeProcessor;
         #endregion
 
 
-        public MainViewModel(DirectoryInfo folder)
+        public MainViewModel(DirectoryInfo folder, IYoutubeProcessor processor)
         {
             Directory=folder;
             GlobalData = EditorModelIO.ReadGlobalData(folder);
-            YoutubeSettings = HeadedJsonFormat.Read<YoutubeSettings>(folder);
             var passwordFile = new FileInfo(Path.Combine(folder.FullName, "password"));
             string password = "";
             if (passwordFile.Exists)
                 password = File.ReadAllText(passwordFile.FullName);
             else
                 password = PasswordWindow.GetPassword();
-            YoutubeProcessor = new YoutubeProcessor(YoutubeSettings, password);
+            YoutubeProcessor = processor;
             var treeRoot = ItemTreeBuilder.Build<FolderWrap, LectureWrap, VideoWrap>(GlobalData);
             YoutubeDataBinding.LoadYoutubeData(treeRoot, Directory);
             Root = new[] { treeRoot };
@@ -88,7 +82,7 @@ namespace Tuto.Publishing
             List<YoutubeClip> clips = new List<YoutubeClip>();
             try
             {
-                clips = YoutubeProcessor.LoadVideos();
+                clips = YoutubeProcessor.GetAllClips();
             }
             catch
             {
@@ -104,7 +98,6 @@ namespace Tuto.Publishing
         public void Save()
         {
             YoutubeDataBinding.SaveYoutubeData(Root[0], Directory);
-            HeadedJsonFormat.Write(Directory, YoutubeSettings);
         }
 
 
@@ -115,7 +108,7 @@ namespace Tuto.Publishing
             //YoutubeProcessor.CreatePlaylist(lecture);
 
             var item = Root[0].Subtree().OfType<VideoWrap>().First();
-            YoutubeProcessor.UpdateClipData(GlobalData, item.YoutubeClip);
+            //YoutubeProcessor.UpdateClipData(GlobalData, item.YoutubeClip);
         }
 
         public RelayCommand SaveCommand { get; private set; }

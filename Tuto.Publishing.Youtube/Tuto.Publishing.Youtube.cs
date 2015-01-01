@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Tuto.Model;
 using Tuto.Publishing.Youtube.Views;
+using YoutubeApiTest;
 
 namespace Tuto.Publishing.Youtube
 {
@@ -19,7 +20,7 @@ namespace Tuto.Publishing.Youtube
             
             
             var folder=new DirectoryInfo(directory);
-            var model = new MainViewModel(folder);
+            var model = new MainViewModel(folder, new YoutubeApisProcessor());
 
             //var clips = new List<ClipData>();
 
