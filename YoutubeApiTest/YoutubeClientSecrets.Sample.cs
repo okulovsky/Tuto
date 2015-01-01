@@ -1,5 +1,4 @@
 ﻿/*
-
 // It is necessary to obtain ClientID and ClientSecret for this application.
 // Obtain your own at Google Console https://console.developers.google.com
 // Add the project
@@ -12,14 +11,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Google.Apis.Auth.OAuth2;
 
 namespace YoutubeApiTest
 {
-    public partial class YoutubeApiSecrets
+    public static class GoogleSecrets
     {
-        public readonly string ClientID="Your client ID";
-        public readonly string ClientSecret="Your client Secret";
+        public static ClientSecrets Data = new ClientSecrets
+        {
+            ClientId = ...,
+            ClientSecret = ...
+        };
     }
 }
 
- */
+*/

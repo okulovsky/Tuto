@@ -37,7 +37,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "Utilities\Util
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject", "TestProject\TestProject.csproj", "{D63804F0-A392-4CE0-8AC7-7841997E1438}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YoutubeApiTest", "YoutubeApiTest\YoutubeApiTest.csproj", "{389B6FC2-BBEB-4A9D-B22E-093CF7A759FD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tuto.Publishing.Youtube.Apis", "YoutubeApiTest\Tuto.Publishing.Youtube.Apis.csproj", "{389B6FC2-BBEB-4A9D-B22E-093CF7A759FD}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution

@@ -87,8 +87,10 @@
     <Compile Include="Publishing\MatchData.cs" />
     <Compile Include="Publishing\NameMatchAlgorithm\NameMatchAlgorithm.cs" />
     <Compile Include="Publishing\YoutubeData\DataBinding.cs" />
+    <Compile Include="Publishing\YoutubeData\IYoutubeProcessor.cs" />
     <Compile Include="Publishing\YoutubeData\YoutubeClip.cs" />
     <Compile Include="Publishing\YoutubeData\YoutubePlaylist.cs" />
+    <Compile Include="Publishing\YoutubeData\YoutubeVideoUpdateInfo.cs" />
     <Compile Include="Services\AssemblerService.cs" />
     <Compile Include="Services\Assembler\AvsAutoLevels.cs" />
     <Compile Include="Services\Assembler\AvsChangeFramerate.cs" />
