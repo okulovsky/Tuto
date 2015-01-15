@@ -14,8 +14,10 @@ namespace Updater
         static void Main(string[] args)
         {
             var srcDirectory = new DirectoryInfo(args[0]);
-            var dstDirectory = srcDirectory.Parent.CreateSubdirectory(srcDirectory.Name + "-converted");
-            var input = dstDirectory.CreateSubdirectory("Input");
+            //var dstDirectory = srcDirectory.Parent.CreateSubdirectory(srcDirectory.Name + "-converted");
+			var dstDirectory = new DirectoryInfo("C:\\users\\user\\AIML-output");
+			dstDirectory.Create();
+			var input = dstDirectory.CreateSubdirectory("Input");
             var output = dstDirectory.CreateSubdirectory("Output");
 
             var global = new GlobalData();
@@ -32,8 +34,8 @@ namespace Updater
                 var modelDst = input.CreateSubdirectory(e.Name);
                 model.HackLocations(srcDirectory, modelDst);
                 model.Save();
-                copying += string.Format(@"copy ""{0}\{2}"" ""{1}\{2}"""+"\n", e.FullName, modelDst.FullName, "face.mp4");
-                copying += string.Format(@"copy ""{0}\{2}"" ""{1}\{2}"""+"\n", e.FullName, modelDst.FullName, "desktop.avi");
+                //copying += string.Format(@"copy ""{0}\{2}"" ""{1}\{2}"""+"\n", e.FullName, modelDst.FullName, "face.mp4");
+                //copying += string.Format(@"copy ""{0}\{2}"" ""{1}\{2}"""+"\n", e.FullName, modelDst.FullName, "desktop.avi");
                 var files = e.GetFiles();
                 copying += string.Format(@"xcopy ""{0}\AIML*.avi"" ""{1}\""" + "\n", e.FullName, output.FullName);
             }

@@ -85,6 +85,7 @@
     <Compile Include="Publishing\Item.cs" />
     <Compile Include="Publishing\ItemTreeBuilder.cs" />
     <Compile Include="Publishing\MatchData.cs" />
+    <Compile Include="Publishing\Matchers.cs" />
     <Compile Include="Publishing\NameMatchAlgorithm\NameMatchAlgorithm.cs" />
     <Compile Include="Publishing\YoutubeData\DataBinding.cs" />
     <Compile Include="Publishing\YoutubeData\IYoutubeProcessor.cs" />

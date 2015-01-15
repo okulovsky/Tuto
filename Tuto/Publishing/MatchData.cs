@@ -21,10 +21,10 @@ namespace Tuto.Publishing
         public List<TItem> MatchedTreeItems { get; private set; }
         public List<TItem> UnmatchedTreeItems { get; private set; }
         List<TData> initialDataItems;
-        Func<TItem, List<TData>, TData> BestMatch;
+        Func<TItem, TData, double> distance;
         Func<TData, TData, bool> Equals;
 
-        public Matcher(IEnumerable<TData> allExternal, Func<TItem,List<TData>, TData> bestMatch, Func<TData,TData,bool> equals)
+        public Matcher(IEnumerable<TData> allExternal, Func<TItem,TData, double> distance, Func<TData,TData,bool> equals)
         {
             AllExternalDataItems = new List<TData>();
             MatchedTreeItems = new List<TItem>();
@@ -33,63 +33,108 @@ namespace Tuto.Publishing
             MatchedExternalDataItems = new List<TData>();
             UnmatchedExternalDataItems = new List<TData>();
             initialDataItems = allExternal.ToList();
-            BestMatch = bestMatch;
+			this.distance = distance;
             Equals = equals;
         }
 
 
-        public static Matcher<TItem, TData> ByName(IEnumerable<TData> allExternal, Func<TData, string> externalName, Func<TData, TData, bool> equals)
-        {
-            return new Matcher<TItem, TData>(
-                allExternal,
-                (item, datas) => NameMatchAlgorithm.FindBest(item.Caption, datas, externalName),
-                equals);
-        }
+		Dictionary<TItem,TData> match;
+		double[,] matrix;
 
-        TData AccountTreeItems(TItem item)
-        {
-            AllTreeItems.Add(item);
-            if (item.Get<TData>() != null) MatchedTreeItems.Add(item);
-            else UnmatchedTreeItems.Add(item);
-            return item.Get<TData>();
-        }
+		void MakeMatch(int itemIndex, int dataIndex)
+		{
+			match[AllTreeItems[itemIndex]] = AllExternalDataItems[dataIndex];
+			for (int i = 0; i < matrix.GetLength(0); i++)
+				matrix[0, dataIndex] = 0;
+			for (int j = 0; j < matrix.GetLength(1); j++)
+				matrix[itemIndex, j] = 0;
+			UnmatchedExternalDataItems.Remove(AllExternalDataItems[dataIndex]);
+			MatchedExternalDataItems.Add(AllExternalDataItems[dataIndex]);
+			UnmatchedTreeItems.Remove(AllTreeItems[itemIndex]);
+			MatchedTreeItems.Add(AllTreeItems[itemIndex]);
+		}
 
-        TData CheckExistingData(TItem item)
-        {
-            var storedData = item.Get<TData>();
-            if (storedData == null) return storedData;
-            var foundData = UnmatchedExternalDataItems.Where(z => Equals(z, storedData)).FirstOrDefault();
-            if (foundData == null) return foundData;
-            UnmatchedExternalDataItems.Remove(foundData);
-            MatchedExternalDataItems.Add(foundData);
-            return foundData;
-        }
+		public void Push(Item root)
+		{
+			AllExternalDataItems = initialDataItems.ToList();
+			MatchedExternalDataItems.Clear();
+			UnmatchedExternalDataItems = initialDataItems.ToList();
+			AllTreeItems.AddRange(root.Subtree().OfType<TItem>());
+			MatchedTreeItems.Clear();
+			UnmatchedTreeItems = AllTreeItems.ToList();
+			match = new Dictionary<TItem, TData>();
+			matrix = new double[AllTreeItems.Count, AllExternalDataItems.Count];
 
-        TData FoundNewData(TItem item)
-        {
-            var storedData = item.Get<TData>();
-            if (storedData != null) return storedData;
-            var newFoundData = BestMatch(item, UnmatchedExternalDataItems);
-            if (newFoundData != null)
-            {
-                UnmatchedExternalDataItems.Remove(newFoundData);
-                MatchedExternalDataItems.Add(newFoundData);
-            }
-            return newFoundData;
+			for (int i = 0; i < AllTreeItems.Count; i++)
+				for (int j = 0; j < AllExternalDataItems.Count; j++)
+					matrix[i, j] = distance(AllTreeItems[i], AllExternalDataItems[j]);
 
-        }
+			for (int i = 0; i < AllTreeItems.Count; i++)
+			{
+				var storedData = AllTreeItems[i].Get<TData>();
+				if (storedData != null)
+				{
+					var foundData = UnmatchedExternalDataItems.Where(z => Equals(z, storedData)).FirstOrDefault();
+					if (foundData != null) MakeMatch(i, AllExternalDataItems.IndexOf(foundData));
+					i--;
+				}
+			}
 
-        public void Push(Item root)
-        {
-            AllExternalDataItems = initialDataItems.ToList();
-            MatchedExternalDataItems.Clear();
-            UnmatchedExternalDataItems=initialDataItems.ToList();
-            AllTreeItems.Clear();
-            MatchedTreeItems.Clear();
-            UnmatchedTreeItems.Clear();
-            DataBinding<TItem>.Pull(root, CheckExistingData);
-            DataBinding<TItem>.Pull(root, FoundNewData);
-            DataBinding<TItem>.Pull(root, AccountTreeItems);
-        }
+
+
+			while (true)
+			{
+				int bestX = -1;
+				int bestY = -1;
+				double best = 0;
+				for (int i = 0; i < AllTreeItems.Count; i++)
+					for (int j = 0; j < AllExternalDataItems.Count; j++)
+						if (bestX < 0 || matrix[bestX, bestY] > best)
+						{
+							bestX = i;
+							bestY = j;
+						}
+				if (best > 0)
+					MakeMatch(bestX, bestY);
+				else break;
+			}
+
+			DataBinding<TItem>.Pull(root, z => match.ContainsKey(z) ? match[z] : default(TData));
+		}
+
+		//TData AccountTreeItems(TItem item)
+		//{
+		//	AllTreeItems.Add(item);
+		//	if (item.Get<TData>() != null) MatchedTreeItems.Add(item);
+		//	else UnmatchedTreeItems.Add(item);
+		//	return item.Get<TData>();
+		//}
+
+		//TData CheckExistingData(TItem item)
+		//{
+		//	var storedData = item.Get<TData>();
+		//	if (storedData == null) return storedData;
+		//	var foundData = UnmatchedExternalDataItems.Where(z => Equals(z, storedData)).FirstOrDefault();
+		//	if (foundData == null) return foundData;
+		//	UnmatchedExternalDataItems.Remove(foundData);
+		//	MatchedExternalDataItems.Add(foundData);
+		//	return foundData;
+		//}
+
+		//TData FoundNewData(TItem item)
+		//{
+		//	var storedData = item.Get<TData>();
+		//	if (storedData != null) return storedData;
+		//	var newFoundData = BestMatch(item, UnmatchedExternalDataItems);
+		//	if (newFoundData != null)
+		//	{
+		//		UnmatchedExternalDataItems.Remove(newFoundData);
+		//		MatchedExternalDataItems.Add(newFoundData);
+		//	}
+		//	return newFoundData;
+
+		//}
+
+        
     }
 }

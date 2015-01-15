@@ -18,21 +18,4 @@ namespace Tuto.Publishing
             return Name;
         }
     }
-
-    public class YoutubeClipMatcher<TItem> : Matcher<TItem, YoutubeClip>
-        where TItem : IItem
-    {
-
-        static YoutubeClip BestMatch(TItem item, List<YoutubeClip> clips)
-        {
-            return NameMatchAlgorithm.FindBest(item.Caption, clips, z => z.Name);
-        }
-
-        public YoutubeClipMatcher(IEnumerable<YoutubeClip> clips)
-            : base(
-                clips,
-                BestMatch,
-                (a, b) => a.Id == b.Id)
-        { }
-    }
 }

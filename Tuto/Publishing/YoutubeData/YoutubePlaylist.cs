@@ -17,20 +17,5 @@ namespace Tuto.Publishing
     }
 
 
-    public class YoutubePlaylistMatcher<TItem> : Matcher<TItem, YoutubePlaylist>
-        where TItem : IItem
-    {
-
-        static YoutubePlaylist BestMatch(TItem item, List<YoutubePlaylist> clips)
-        {
-            return NameMatchAlgorithm.FindBest(item.Caption, clips, z => z.PlaylistTitle);
-        }
-
-        public YoutubePlaylistMatcher(IEnumerable<YoutubePlaylist> clips)
-            : base(
-                clips,
-                BestMatch,
-                (a, b) => a.PlaylistId == b.PlaylistId)
-        { }
-    }
+  
 }

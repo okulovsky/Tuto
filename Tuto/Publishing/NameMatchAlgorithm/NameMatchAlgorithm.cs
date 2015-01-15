@@ -47,11 +47,12 @@ namespace Tuto.Publishing
             return (2.0 * match) / (s1.Length + s2.Length);
         }
 
-        public static TData FindBest<TData>(string etalon, IEnumerable<TData> data, Func<TData, string> selector)
+        public static TData FindBest<TData>(string etalon, IEnumerable<TData> data, Func<TData, string> selector, double threashold=0.2)
         {
             return data
                 .Select(z => new { Data = z, Caption = selector(z) })
                 .Select(z => new { Data = z.Data, Metric = RelativeMatchNames(etalon, z.Caption) })
+				.Where(z=>z.Metric>threashold)
                 .OrderByDescending(z => z.Metric)
                 .Select(z=>z.Data)
                 .FirstOrDefault();

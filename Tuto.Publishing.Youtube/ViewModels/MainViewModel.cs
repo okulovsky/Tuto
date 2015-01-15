@@ -83,11 +83,11 @@ namespace Tuto.Publishing
             {
                MessageBox.Show("Loading video from Youtube failed.");
             }
-            var matcher = new YoutubeClipMatcher<VideoWrap>(clips);
+            var matcher = Matchers.Clips(clips);
             matcher.Push(Root[0]);
 
             var playlists = YoutubeProcessor.GetAllPlaylists();
-            var listMatcher = new YoutubePlaylistMatcher<LectureWrap>(playlists);
+            var listMatcher = Matchers.Playlists(playlists);
             listMatcher.Push(Root[0]);
 
             Root = new[] { Root[0] };

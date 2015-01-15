@@ -26,11 +26,11 @@ namespace Tuto.Publishing.LatexPresentations
         static void Main(string[] args)
         {
             var directory = new DirectoryInfo(args[0]);
-            var slides=directory.CreateSubdirectory("Slides");
+            var slides=directory.CreateSubdirectory("LaTeXCompiledSlides");
             slides.Delete(true);
             slides.Create();
 
-            var latexDirectory = new DirectoryInfo(args[1]);
+			var latexDirectory = directory.CreateSubdirectory("LaTeX");
             var files = latexDirectory.GetFiles("L*.tex");
             var galleries = new List<GalleryInfo>();
             var processor = new LatexProcessor();
@@ -51,17 +51,12 @@ namespace Tuto.Publishing.LatexPresentations
             }
 
             var matcher = 
-                Matcher<VideoItem, GalleryInfo>
-                    .ByName(galleries, z => z.Name, (a, b) => a.Directory.FullName == b.Directory.FullName);
+                Matcher.ByName<VideoItem, GalleryInfo>(galleries, z => z.Name, (a, b) => a.Directory.FullName == b.Directory.FullName);
 
             var model = EditorModelIO.ReadGlobalData(directory);
             var root = ItemTreeBuilder.Build<FolderItem, LectureItem, VideoItem>(model);
             matcher.Push(root);
             DataBinding<VideoItem>.SaveLayer<GalleryInfo>(root, directory);
-
-                    
-
-
         }
     }
 }
