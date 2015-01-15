@@ -43,15 +43,18 @@ namespace Tuto.Publishing
 
 		void MakeMatch(int itemIndex, int dataIndex)
 		{
-			match[AllTreeItems[itemIndex]] = AllExternalDataItems[dataIndex];
+			var item = AllTreeItems[itemIndex];
+			var data = AllExternalDataItems[dataIndex];
+
+			match[item] = data;
 			for (int i = 0; i < matrix.GetLength(0); i++)
-				matrix[0, dataIndex] = 0;
+				matrix[i, dataIndex] = 0;
 			for (int j = 0; j < matrix.GetLength(1); j++)
 				matrix[itemIndex, j] = 0;
-			UnmatchedExternalDataItems.Remove(AllExternalDataItems[dataIndex]);
-			MatchedExternalDataItems.Add(AllExternalDataItems[dataIndex]);
-			UnmatchedTreeItems.Remove(AllTreeItems[itemIndex]);
-			MatchedTreeItems.Add(AllTreeItems[itemIndex]);
+			UnmatchedExternalDataItems.Remove(data);
+			MatchedExternalDataItems.Add(data);
+			UnmatchedTreeItems.Remove(item);
+			MatchedTreeItems.Add(item);
 		}
 
 		public void Push(Item root)
@@ -75,7 +78,8 @@ namespace Tuto.Publishing
 				if (storedData != null)
 				{
 					var foundData = UnmatchedExternalDataItems.Where(z => Equals(z, storedData)).FirstOrDefault();
-					if (foundData != null) MakeMatch(i, AllExternalDataItems.IndexOf(foundData));
+					if (foundData != null) 
+						MakeMatch(i, AllExternalDataItems.IndexOf(foundData));
 					i--;
 				}
 			}
@@ -89,10 +93,11 @@ namespace Tuto.Publishing
 				double best = 0;
 				for (int i = 0; i < AllTreeItems.Count; i++)
 					for (int j = 0; j < AllExternalDataItems.Count; j++)
-						if (bestX < 0 || matrix[bestX, bestY] > best)
+						if (bestX < 0 || matrix[i, j] > best)
 						{
 							bestX = i;
 							bestY = j;
+							best = matrix[i, j];
 						}
 				if (best > 0)
 					MakeMatch(bestX, bestY);

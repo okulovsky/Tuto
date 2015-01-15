@@ -51,7 +51,7 @@ namespace Tuto.Publishing.LatexPresentations
             }
 
             var matcher = 
-                Matcher.ByName<VideoItem, GalleryInfo>(galleries, z => z.Name, (a, b) => a.Directory.FullName == b.Directory.FullName);
+                Matchers.ByName<VideoItem, GalleryInfo>(galleries, z => z.Name, (a, b) => a.Directory.FullName == b.Directory.FullName);
 
             var model = EditorModelIO.ReadGlobalData(directory);
             var root = ItemTreeBuilder.Build<FolderItem, LectureItem, VideoItem>(model);
