@@ -96,9 +96,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="YoutubeClientSecrets.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="YoutubeClientSecrets.cs" />
     <Compile Include="YoutubeClientSecrets.Sample.cs" />
     <Compile Include="YoutubeProcessor.cs" />
   </ItemGroup>
