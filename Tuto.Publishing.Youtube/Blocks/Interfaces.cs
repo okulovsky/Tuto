@@ -4,15 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using Tuto.Model;
 using Tuto.Navigator;
 
 namespace Tuto.Publishing
 {
 	public interface IMaterialSource
 	{
-		void Load(IItem root);
-		void Pull(IItem root);
-		void Save(IItem root);
+		void Initialize(GlobalData data);
+		void Load(Item root);
+		void Pull(Item root);
+		void Save(Item root);
 		ICommandBlockModel ForVideo(VideoWrap wrap);
 		ICommandBlockModel ForLecture(LectureWrap wrap);
 	}
@@ -20,23 +22,23 @@ namespace Tuto.Publishing
 	public class VisualCommand
 	{
 		public RelayCommand Command { get; private set; }
-		public string ImageSource { get; private set; }
-		public VisualCommand(RelayCommand command, string imageSource)
+		public Uri ImageSource { get; private set; }
+		public VisualCommand(RelayCommand command, string imageName)
 		{
 			Command = command;
-			ImageSource = imageSource;
+			ImageSource = new Uri(@"/Img/" + imageName, UriKind.Relative);
 		}
 	}
 
 	public interface ICommandBlockModel
 	{
-		List<RelayCommand> Commands { get; }
-		string ImageSource { get; }
+		List<VisualCommand> Commands { get; }
+		Uri ImageSource { get; }
 		Brush Status { get;  }
 	}
 
 	public interface ICommandBlocksHolder
 	{
-		IEnumerable<ICommandBlockModel> CommandBlocks { get; }
+		List<ICommandBlockModel> CommandBlocks { get; }
 	}
 }

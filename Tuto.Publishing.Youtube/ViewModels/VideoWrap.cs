@@ -10,13 +10,18 @@ using Tuto.Publishing.YoutubeData;
 
 namespace Tuto.Publishing
 {
-    public partial class VideoWrap : VideoItem
+    public partial class VideoWrap : VideoItem, ICommandBlocksHolder
     {
-        public YoutubeVideoBlockModel VideoBlock { get; private set; }
+	
+        public VideoWrap()
+		{
+			CommandBlocks = new List<ICommandBlockModel>();
+		}
 
-        public void Initialize()
-        {
-            VideoBlock = new YoutubeVideoBlockModel(this);
-        }
-    }
+		public List<ICommandBlockModel> CommandBlocks
+		{
+			get;
+			private set;
+		}
+	}
 }

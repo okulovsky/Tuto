@@ -14,7 +14,7 @@ namespace Tuto.Publishing
         {
             pdfFile = pdfFile.CopyTo(Path.Combine(directory.FullName,pdfFile.Name));
             var process=new Process();
-            process.StartInfo.FileName=Program.Ghostscript;
+            //process.StartInfo.FileName=Program.Ghostscript;
             process.StartInfo.Arguments = 
                 @"-dBATCH -dNOPAUSE -sDEVICE=pnggray -r300 -dUseCropBox -sOutputFile=""%03d.png"" "+pdfFile.Name;
             process.StartInfo.WorkingDirectory = directory.FullName;

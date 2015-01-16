@@ -14,10 +14,6 @@ namespace Tuto.Publishing
     public class LectureWrap : LectureItem
     {
         
-        public YoutubeLectureBlockModel VideoBlock { get; private set; }
-        public void Initialize()
-        {
-            VideoBlock = new YoutubeLectureBlockModel(this);
-        }
+        
     }
 }

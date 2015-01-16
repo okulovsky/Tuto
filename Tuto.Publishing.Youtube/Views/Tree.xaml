@@ -19,13 +19,7 @@
                 </StackPanel>
             </HierarchicalDataTemplate>
             <HierarchicalDataTemplate DataType="{x:Type m:VideoWrap}" ItemsSource="{Binding Children}">
-                <DockPanel>
-                    <TextBlock Text="{Binding Caption}" DockPanel.Dock="Top"/>
-                    <Rectangle Width="30" DockPanel.Dock="Left"/>
-                    <StackPanel Orientation="Vertical">
-                        <m:YoutubeVideoBlock DataContext="{Binding VideoBlock}"/>
-                    </StackPanel>
-                </DockPanel>
+                <v:WrapControl DataContext="{Binding}"/>
             </HierarchicalDataTemplate>
         </TreeView.Resources>
     </TreeView>

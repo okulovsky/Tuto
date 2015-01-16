@@ -118,6 +118,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Blocks\StaticItems.cs" />
+    <Compile Include="Blocks\Youtube\YoutubeSource.cs" />
+    <Compile Include="Blocks\Youtube\YoutubeVideoCommands.cs" />
     <Compile Include="LatexProcessor\GalleryInfo.cs" />
     <Compile Include="LatexProcessor\LatexDocument.cs" />
     <Compile Include="LatexProcessor\LaTeXProcessor.cs" />
@@ -139,7 +142,6 @@
     <Compile Include="Tuto.Publishing.Youtube.cs" />
     <Compile Include="ViewModels\VideoWrap.Latex.cs" />
     <Compile Include="ViewModels\LectureWrap.Youtube.cs" />
-    <Compile Include="ViewModels\StaticItems.cs" />
     <Compile Include="ViewModels\VideoWrap.Youtube.cs" />
     <Compile Include="ViewModels\FolderWrap.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />

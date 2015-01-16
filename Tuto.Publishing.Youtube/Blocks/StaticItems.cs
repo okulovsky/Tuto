@@ -9,10 +9,9 @@ using YoutubeApiTest;
 
 namespace Tuto.Publishing
 {
-	public static class StaticItems
+	static class StaticItems
 	{
 		public static readonly IYoutubeProcessor YoutubeProcessor = new YoutubeApisProcessor();
-		public static readonly LatexProcessor LatexProcessor = new LatexProcessor();
 		public static GlobalData GlobalData { get; set; }
 	}
 }

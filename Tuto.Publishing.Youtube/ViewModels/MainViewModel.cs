@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using Tuto.Model;
 using Tuto.Navigator;
 using Tuto.Publishing.Youtube.Views;
@@ -22,6 +23,7 @@ namespace Tuto.Publishing
             set { directory = value; NotifyPropertyChanged(); }
         }
 
+	
       
 
         public Item[] root;
@@ -50,90 +52,75 @@ namespace Tuto.Publishing
    
         #endregion
 
+		List<IMaterialSource> sources;
 
-        public MainViewModel(DirectoryInfo folder)
+        public MainViewModel(GlobalData globalData, List<IMaterialSource> sources)
         {
-            Directory=folder;
-            StaticItems.GlobalData = EditorModelIO.ReadGlobalData(folder);
-            var treeRoot = ItemTreeBuilder.Build<FolderWrap, LectureWrap, VideoWrap>(StaticItems.GlobalData);
+			this.sources = sources;
+			Directory = globalData.GlobalDataFolder;
+			 var treeRoot = ItemTreeBuilder.Build<FolderWrap, LectureWrap, VideoWrap>(StaticItems.GlobalData);
+
+			
 			Root = new[] { treeRoot };
 			Load();
-			
-            foreach (var e in treeRoot.Subtree().OfType<VideoWrap>())
-                e.Initialize();
+			CreateCommandBlocks();
 
-            foreach (var e in treeRoot.Subtree().OfType<LectureWrap>())
-                e.Initialize();
 
             UpdateCommand = new RelayCommand(Update);
             SaveCommand = new RelayCommand(Save);
-            TestCommand = new RelayCommand(TestPlaylist);
+            //TestCommand = new RelayCommand(TestPlaylist);
         }
 
 		void Load()
 		{
-			YoutubeDataBinding.LoadYoutubeData(Root[0], Directory);
-			DataBinding<IItem>.Pull<IYoutubeProcessor>(Root[0], z => StaticItems.YoutubeProcessor);
-			UpdateLatex();
+			foreach (var s in sources)
+				s.Load(Root[0]);
+		}
+
+		void CreateCommandBlocks()
+		{
+			foreach (var e in Root[0].Subtree().OfType<VideoWrap>())
+				foreach (var b in sources)
+					e.CommandBlocks.Add(b.ForVideo(e));
 		}
 
 		void Update()
 		{
-			UpdateFromYoutube();
-			UpdateLatex();
+			foreach (var s in sources)
+				s.Pull(Root[0]);
 		}
 
-        void UpdateFromYoutube()
-        {
-            List<YoutubeClip> clips = new List<YoutubeClip>();
-            try
-            {
-                clips = StaticItems.YoutubeProcessor.GetAllClips();
-            }
-            catch
-            {
-               MessageBox.Show("Loading video from Youtube failed.");
-            }
-            var matcher = Matchers.Clips(clips);
-            matcher.Push(Root[0]);
-
-            var playlists = StaticItems.YoutubeProcessor.GetAllPlaylists();
-            var listMatcher = Matchers.Playlists(playlists);
-            listMatcher.Push(Root[0]);
-
-            Root = new[] { Root[0] };
-            FinishedNotMatched = matcher.UnmatchedTreeItems.Select(z => z.Video).ToList();
-            YoutubeNotMatched = matcher.UnmatchedExternalDataItems.ToList();
-        }
+      
 
 		void UpdateLatex()
 		{
-			var latexDirectory = Directory.CreateSubdirectory("Latex");
-			var documents = StaticItems.LatexProcessor.GetAllPresentations(latexDirectory);
-			var matcher = Matchers.ByName<VideoWrap, LatexDocument>(
-				documents,
-				document=>document.LastSection.Name,
-				(doc1,doc2)=>doc1==doc2
-				);
-			matcher.Push(Root[0]);
+			//var latexDirectory = Directory.CreateSubdirectory("Latex");
+			//var documents = StaticItems.LatexProcessor.GetAllPresentations(latexDirectory);
+			//var matcher = Matchers.ByName<VideoWrap, LatexDocument>(
+			//	documents,
+			//	document=>document.LastSection.Name,
+			//	(doc1,doc2)=>doc1==doc2
+			//	);
+			//matcher.Push(Root[0]);
 		}
 
 
         public void Save()
         {
-            YoutubeDataBinding.SaveYoutubeData(Root[0], Directory);
+			foreach (var s in sources)
+				s.Save(Root[0]);
         }
 
 
-        void TestPlaylist()
-        {
-            //var items = Root[0].Subtree().ToList();
-            //var lecture = items.OfType<LectureWrap>().First();
-            //YoutubeProcessor.CreatePlaylist(lecture);
+		//void TestPlaylist()
+		//{
+		//	//var items = Root[0].Subtree().ToList();
+		//	//var lecture = items.OfType<LectureWrap>().First();
+		//	//YoutubeProcessor.CreatePlaylist(lecture);
 
-            var item = Root[0].Subtree().OfType<VideoWrap>().First();
-            //YoutubeProcessor.UpdateClipData(GlobalData, item.YoutubeClip);
-        }
+		//	var item = Root[0].Subtree().OfType<VideoWrap>().First();
+		//	//YoutubeProcessor.UpdateClipData(GlobalData, item.YoutubeClip);
+		//}
 
         public RelayCommand SaveCommand { get; private set; }
         public RelayCommand UpdateCommand { get; private set; }

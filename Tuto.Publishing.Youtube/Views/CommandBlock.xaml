@@ -17,7 +17,7 @@
             <Setter Property="ItemTemplate">
                 <Setter.Value>
                     <DataTemplate>
-                        <Button Command="{Binding Command}">
+                        <Button Command="{Binding Command}" Height="20">
                             <Image Source="{Binding ImageSource}"/>
                         </Button>
                     </DataTemplate>
@@ -26,8 +26,8 @@
         </Style>
     </UserControl.Resources>
     <StackPanel Orientation="Horizontal">
-        <Ellipse Fill="{Binding Status}"/>
-        <Image Source="{Binding ImageSource}"/>
+        <Ellipse Fill="{Binding Status}" Width="10" Height="10"/>
+        <Image Source="{Binding ImageSource}" Height="20"/>
         <ListBox ItemsSource="{Binding Commands}"/>
     </StackPanel>
 </UserControl>

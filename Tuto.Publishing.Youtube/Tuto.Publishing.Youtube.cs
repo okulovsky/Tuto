@@ -17,12 +17,13 @@ namespace Tuto.Publishing.Youtube
         public static void Main(string[] args)
         {
             var directory = EditorModelIO.SubstituteDebugDirectories(args[0]);
-            
-            
             var folder=new DirectoryInfo(directory);
-            
-            StaticItems.YoutubeProcessor.Authorize(folder);
-            var model = new MainViewModel(folder);
+			StaticItems.GlobalData = EditorModelIO.ReadGlobalData(folder);
+			var sources = new List<IMaterialSource>();
+			sources.Add(new YoutubeSource());
+			foreach (var s in sources)
+				s.Initialize(StaticItems.GlobalData);
+            var model = new MainViewModel(StaticItems.GlobalData,sources);
 
             //var clips = new List<ClipData>();
 
