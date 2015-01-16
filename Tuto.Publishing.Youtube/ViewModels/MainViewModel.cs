@@ -30,12 +30,8 @@ namespace Tuto.Publishing
             get { return root; }
             set { root = value; NotifyPropertyChanged(); }
         }
-        public GlobalData globalData;
-        public GlobalData GlobalData
-        {
-            get { return globalData; }
-            set { globalData = value; }
-        }
+        
+
         public List<FinishedVideo> finishedNotMatched;
 
         public List<FinishedVideo> FinishedNotMatched
@@ -51,20 +47,20 @@ namespace Tuto.Publishing
             get { return youtubeNotMatched; }
             set { youtubeNotMatched = value; NotifyPropertyChanged(); }
         }
-        
-        public readonly IYoutubeProcessor YoutubeProcessor;
+   
         #endregion
 
 
-        public MainViewModel(DirectoryInfo folder, IYoutubeProcessor processor)
+        public MainViewModel(DirectoryInfo folder)
         {
             Directory=folder;
-            GlobalData = EditorModelIO.ReadGlobalData(folder);
-            YoutubeProcessor = processor;
-            var treeRoot = ItemTreeBuilder.Build<FolderWrap, LectureWrap, VideoWrap>(GlobalData);
+            StaticItems.GlobalData = EditorModelIO.ReadGlobalData(folder);
+            var treeRoot = ItemTreeBuilder.Build<FolderWrap, LectureWrap, VideoWrap>(StaticItems.GlobalData);
             YoutubeDataBinding.LoadYoutubeData(treeRoot, Directory);
-            DataBinding<IItem>.Pull<IYoutubeProcessor>(treeRoot, z => YoutubeProcessor);
+            DataBinding<IItem>.Pull<IYoutubeProcessor>(treeRoot, z => StaticItems.YoutubeProcessor);
             Root = new[] { treeRoot };
+            foreach (var e in treeRoot.Subtree().OfType<VideoWrap>())
+                e.VideoBlock = new YoutubeVideoBlockModel(e);
 
             UpdateCommand = new RelayCommand(UpdateFromYoutube);
             SaveCommand = new RelayCommand(Save);
@@ -77,7 +73,7 @@ namespace Tuto.Publishing
             List<YoutubeClip> clips = new List<YoutubeClip>();
             try
             {
-                clips = YoutubeProcessor.GetAllClips();
+                clips = StaticItems.YoutubeProcessor.GetAllClips();
             }
             catch
             {
@@ -86,7 +82,7 @@ namespace Tuto.Publishing
             var matcher = Matchers.Clips(clips);
             matcher.Push(Root[0]);
 
-            var playlists = YoutubeProcessor.GetAllPlaylists();
+            var playlists = StaticItems.YoutubeProcessor.GetAllPlaylists();
             var listMatcher = Matchers.Playlists(playlists);
             listMatcher.Push(Root[0]);
 

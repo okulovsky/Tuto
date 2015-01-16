@@ -53,14 +53,14 @@ namespace Tuto.Publishing
         {
             if (YoutubePlaylist == null)
                 YoutubePlaylist = Processor.CreatePlaylist(Topic.Caption);
-            Processor.FillPlaylist(YoutubePlaylist, Subtree().OfType<VideoWrap>().Select(z => z.YoutubeClip).Where(z => z != null));
+          //  Processor.FillPlaylist(YoutubePlaylist, Subtree().OfType<VideoWrap>().Select(z => z.YoutubeClip).Where(z => z != null));
         }
 
         void UpdateAll()
         {
-            UpdateLecture();
-            foreach (var e in Subtree().OfType<VideoWrap>())
-                e.UpdateVideo();
+            //UpdateLecture();
+            //foreach (var e in Subtree().OfType<VideoWrap>())
+            //    e.UpdateVideo();
         }
 
         public YoutubeData.IYoutubeProcessor Processor

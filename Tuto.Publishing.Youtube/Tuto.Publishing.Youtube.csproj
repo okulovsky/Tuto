@@ -133,6 +133,9 @@
     </Compile>
     <Compile Include="RelayCommand.cs" />
     <Compile Include="Tuto.Publishing.Youtube.cs" />
+    <Compile Include="ViewModels\StaticItems.cs" />
+    <Compile Include="ViewModels\YoutubeBlockModel.cs" />
+    <Compile Include="ViewModels\YoutubeVideoBlockModel.cs" />
     <Compile Include="ViewModels\FolderWrap.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\LectureWrap.cs" />
@@ -149,6 +152,9 @@
     </Compile>
     <Compile Include="Views\Tree.xaml.cs">
       <DependentUpon>Tree.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\YoutubeVideoBlock.xaml.cs">
+      <DependentUpon>YoutubeVideoBlock.xaml</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -181,6 +187,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\YoutubeVideoBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Tuto\Tuto.csproj">
@@ -191,6 +201,13 @@
       <Project>{389b6fc2-bbeb-4a9d-b22e-093cf7a759fd}</Project>
       <Name>Tuto.Publishing.Youtube.Apis</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\youtube.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\upload.png" />
+    <Resource Include="Img\view.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

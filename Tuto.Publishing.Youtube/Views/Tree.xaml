@@ -33,19 +33,7 @@
                     <TextBlock Text="{Binding Caption}" DockPanel.Dock="Top"/>
                     <Rectangle Width="30" DockPanel.Dock="Left"/>
                     <StackPanel Orientation="Vertical">
-                        <StackPanel Orientation="Vertical">
-                            <StackPanel Orientation="Horizontal">
-                                <StackPanel Orientation="Vertical">
-                                     <TextBlock>
-                                     <v:MyHyperlink NavigateUri="{Binding VideoURLFull}">
-                                     <TextBlock Text="{Binding VideoURLShort}"/>
-                                     </v:MyHyperlink>
-                                     </TextBlock>
-                                    <TextBlock FontSize="8" Text="{Binding YoutubeName}"/>
-                                </StackPanel>
-                                <Button Command="{Binding UpdateVideoCommand}">YT↑</Button>
-                            </StackPanel>
-                        </StackPanel>
+                        <m:YoutubeVideoBlock DataContext="{Binding VideoBlock}"/>
                     </StackPanel>
                 </DockPanel>
             </HierarchicalDataTemplate>
