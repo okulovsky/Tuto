@@ -118,6 +118,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LatexProcessor\LatexDocument.cs" />
+    <Compile Include="LatexProcessor\LaTeXProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -133,10 +135,10 @@
     </Compile>
     <Compile Include="RelayCommand.cs" />
     <Compile Include="Tuto.Publishing.Youtube.cs" />
-    <Compile Include="ViewModels\YoutubeLectureBlockModel.cs" />
+    <Compile Include="ViewModels\VideoWrap.Latex.cs" />
+    <Compile Include="ViewModels\LectureWrap.Youtube.cs" />
     <Compile Include="ViewModels\StaticItems.cs" />
-    <Compile Include="ViewModels\YoutubeBlockModel.cs" />
-    <Compile Include="ViewModels\YoutubeVideoBlockModel.cs" />
+    <Compile Include="ViewModels\VideoWrap.Youtube.cs" />
     <Compile Include="ViewModels\FolderWrap.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\LectureWrap.cs" />
