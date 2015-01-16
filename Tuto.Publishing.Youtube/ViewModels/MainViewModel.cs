@@ -23,7 +23,8 @@ namespace Tuto.Publishing
             set { directory = value; NotifyPropertyChanged(); }
         }
 
-	
+
+        readonly GlobalData globalData;
       
 
         public Item[] root;
@@ -57,8 +58,10 @@ namespace Tuto.Publishing
         public MainViewModel(GlobalData globalData, List<IMaterialSource> sources)
         {
 			this.sources = sources;
+            this.globalData = globalData;
 			Directory = globalData.GlobalDataFolder;
-			 var treeRoot = ItemTreeBuilder.Build<FolderWrap, LectureWrap, VideoWrap>(StaticItems.GlobalData);
+           
+            var treeRoot = ItemTreeBuilder.Build<FolderWrap, LectureWrap, VideoWrap>(globalData);
 
 			
 			Root = new[] { treeRoot };

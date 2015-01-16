@@ -13,12 +13,21 @@ namespace Tuto.Publishing
 {
 	public class YoutubeSource : IMaterialSource
 	{
+        GlobalData globalData;
+        readonly IYoutubeProcessor youtubeProcessor;
 		DirectoryInfo directory;
 		public Matcher<VideoItem, YoutubeClip> LastMatch { get; private set; }
+
+        public YoutubeSource()
+        {
+            youtubeProcessor = new YoutubeApisProcessor();
+        }
+
 		public void Initialize(GlobalData data)
 		{
+            this.globalData = data;
 			directory = data.GlobalDataFolder;
-			StaticItems.YoutubeProcessor.Authorize(directory);
+			youtubeProcessor.Authorize(directory);
 		}
 		public void Load(Item root)
 		{
@@ -30,7 +39,7 @@ namespace Tuto.Publishing
 			List<YoutubeClip> clips = new List<YoutubeClip>();
 			try
 			{
-				clips = StaticItems.YoutubeProcessor.GetAllClips();
+				clips = youtubeProcessor.GetAllClips();
 			}
 			catch
 			{
@@ -40,7 +49,7 @@ namespace Tuto.Publishing
 			LastMatch = Matchers.Clips(clips);
 			LastMatch.Push(root);
 
-			var playlists = StaticItems.YoutubeProcessor.GetAllPlaylists();
+			var playlists = youtubeProcessor.GetAllPlaylists();
 			var listMatcher = Matchers.Playlists(playlists);
 			listMatcher.Push(root);
 
@@ -56,12 +65,12 @@ namespace Tuto.Publishing
 
 		public ICommandBlockModel ForVideo(VideoWrap wrap)
 		{
-			return new YoutubeVideoCommands(wrap);
+			return new YoutubeVideoCommands(wrap,globalData,youtubeProcessor);
 		}
 
 		public ICommandBlockModel ForLecture(LectureWrap wrap)
 		{
-			return new YoutubeLectureCommands(wrap);
+            return new YoutubeLectureCommands(wrap, globalData, youtubeProcessor);
 		}
 
 		

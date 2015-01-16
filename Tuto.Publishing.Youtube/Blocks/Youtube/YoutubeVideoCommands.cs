@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Media;
 using Tuto.Model;
 using Tuto.Navigator;
+using Tuto.Publishing.YoutubeData;
 
 namespace Tuto.Publishing
 {
@@ -31,9 +32,11 @@ namespace Tuto.Publishing
 			}
 		}
 
-		public YoutubeVideoCommands(VideoWrap wrap)
+        public YoutubeVideoCommands(VideoWrap wrap, GlobalData globalData, IYoutubeProcessor processor)
 		{
-			Wrap = wrap;
+            this.Wrap = wrap;
+            this.globalData = globalData;
+            this.youtubeProcessor = processor;
 			InitializeDueNames();
 			Commands = new List<VisualCommand>();
 			Commands.Add(new VisualCommand(new RelayCommand(CmGo, () => YoutubeClip != null), "view.png"));
@@ -48,14 +51,14 @@ namespace Tuto.Publishing
 		{
 			var prefix = "";
 			var description = "";
-			prefix += StaticItems.GlobalData.CourseAbbreviation;
+			prefix += globalData.CourseAbbreviation;
 			var path = Wrap.PathFromRoot.Skip(1).ToArray();
 			for (int levelNumber = 0; levelNumber < path.Length; levelNumber++)
 			{
 
 				TopicLevel level = new TopicLevel();
-				if (levelNumber < StaticItems.GlobalData.TopicLevels.Count)
-					level = StaticItems.GlobalData.TopicLevels[levelNumber];
+				if (levelNumber < globalData.TopicLevels.Count)
+					level = globalData.TopicLevels[levelNumber];
 				prefix += "-";
 				prefix += string.Format("{0:D" + level.Digits + "}", path[levelNumber].NumberInTopic + 1);
 
@@ -67,14 +70,16 @@ namespace Tuto.Publishing
 			}
 
 			dueTitle = prefix + " " + Wrap.Video.Name;
-			description += StaticItems.GlobalData.DescriptionPS;
+			description += globalData.DescriptionPS;
 			dueDescription = description;
 		}
 		#endregion
 
 
 
-		public VideoWrap Wrap { get; private set; }
+        public VideoWrap Wrap { get; private set; }
+        readonly GlobalData globalData;
+        readonly IYoutubeProcessor youtubeProcessor;
 
 		public YoutubeClip YoutubeClip { get { return Wrap.Get<YoutubeClip>(); } }
 
@@ -85,7 +90,7 @@ namespace Tuto.Publishing
 			var clip = new YoutubeClip { Id = YoutubeClip.Id };
 			clip.Name = dueTitle;
 			clip.Description = dueDescription;
-			StaticItems.YoutubeProcessor.UpdateVideo(clip);
+			youtubeProcessor.UpdateVideo(clip);
 			Wrap.Store<YoutubeClip>(clip);
 			this.NotifyByExpression(z => z.Status);
 		}
