@@ -13,20 +13,10 @@
                 <TextBlock Width="300" Text="{Binding Caption}"/>
             </HierarchicalDataTemplate>
             <HierarchicalDataTemplate DataType="{x:Type m:LectureWrap}" ItemsSource="{Binding Children}">
-                <Border BorderThickness="2" BorderBrush="Gray">
-                    <StackPanel Orientation="Vertical">
-                        <TextBlock Width="200" Text="{Binding Caption}"/>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock>
-                                        <v:MyHyperlink NavigateUri="{Binding PlaylistUrlFull}">
-                                            <TextBlock Text="{Binding PlaylistUrlShort}"/>
-                                        </v:MyHyperlink>
-                                    </TextBlock>
-                                <Button Command="{Binding UpdatePlaylistCommand}">YT↑</Button>
-                                <Button Command="{Binding UpdateAllCommand}">YT↑↑</Button>
-                            </StackPanel>
-                    </StackPanel>
-                </Border>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding Caption}" DockPanel.Dock="Top"/>
+                    <m:YoutubeVideoBlock DataContext="{Binding VideoBlock}"/>
+                </StackPanel>
             </HierarchicalDataTemplate>
             <HierarchicalDataTemplate DataType="{x:Type m:VideoWrap}" ItemsSource="{Binding Children}">
                 <DockPanel>

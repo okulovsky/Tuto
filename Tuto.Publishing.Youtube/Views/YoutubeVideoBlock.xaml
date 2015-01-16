@@ -6,9 +6,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="30" d:DesignWidth="300">
     <StackPanel Orientation="Horizontal">
-        <Image Source="/Img/youtube.png" Height="20"/>
         <Ellipse Width="10" Height="10" Fill="{Binding StatusColor}"/>
-        <Rectangle Width="20"/>
+        <Image Source="/Img/youtube.png" Height="20"/>
+        <Rectangle Width="5"/>
         <Button Command="{Binding View}">
             <Image Source="/Img/View.png" Height="20"/>
         </Button>

@@ -11,7 +11,7 @@ using Tuto.Navigator;
 
 namespace Tuto.Publishing
 {
-    public class YoutubeVideoBlockModel
+    public class YoutubeVideoBlockModel : NotifierModel
     {
         string dueTitle;
         string dueDescription;
@@ -79,7 +79,8 @@ namespace Tuto.Publishing
             clip.Name = dueTitle;
             clip.Description = dueDescription;
             StaticItems.YoutubeProcessor.UpdateVideo(clip);
-            YoutubeClip = clip;
+            Wrap.Store<YoutubeClip>(clip);
+            this.NotifyByExpression(z => z.StatusColor);
         }
 
         public void CmGo()

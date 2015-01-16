@@ -23,7 +23,7 @@ namespace Tuto.Publishing
 
     public class VideoWrap : VideoItem
     {
-        public YoutubeVideoBlockModel VideoBlock { get; set; }
+        public YoutubeVideoBlockModel VideoBlock { get; private set; }
 
         public void Initialize()
         {

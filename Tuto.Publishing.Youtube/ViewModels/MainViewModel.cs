@@ -60,7 +60,10 @@ namespace Tuto.Publishing
             DataBinding<IItem>.Pull<IYoutubeProcessor>(treeRoot, z => StaticItems.YoutubeProcessor);
             Root = new[] { treeRoot };
             foreach (var e in treeRoot.Subtree().OfType<VideoWrap>())
-                e.VideoBlock = new YoutubeVideoBlockModel(e);
+                e.Initialize();
+
+            foreach (var e in treeRoot.Subtree().OfType<LectureWrap>())
+                e.Initialize();
 
             UpdateCommand = new RelayCommand(UpdateFromYoutube);
             SaveCommand = new RelayCommand(Save);
