@@ -10,18 +10,7 @@ using Tuto.Publishing.YoutubeData;
 
 namespace Tuto.Publishing
 {
-    public enum Status
-    {
-        MatchedOld,
-        MatchedNew,
-        NotFoundAtYoutube,
-        NotExpectedAtYoutube,
-        DeletedFromYoutube,
-        DeletedFromTuto,
-        DeletedFromBoth,
-    }
-
-    public class VideoWrap : VideoItem
+    public partial class VideoWrap : VideoItem
     {
         public YoutubeVideoBlockModel VideoBlock { get; private set; }
 

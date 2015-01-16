@@ -11,7 +11,7 @@ using Tuto.Navigator;
 
 namespace Tuto.Publishing
 {
-    public class YoutubeVideoBlockModel : NotifierModel
+    partial class VideoWrap
     {
         string dueTitle;
         string dueDescription;
