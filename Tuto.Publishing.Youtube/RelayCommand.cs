@@ -60,7 +60,6 @@ namespace Tuto.Navigator
 
         private readonly Action _execute;
         private readonly Func<bool> _canExecute;
-
         #endregion
 
         #region Constructors
