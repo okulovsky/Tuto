@@ -82,12 +82,23 @@ namespace Tuto.Publishing
 			foreach (var e in Root[0].Subtree().OfType<VideoWrap>())
 				foreach (var b in sources)
 					e.CommandBlocks.Add(b.ForVideo(e));
+
+			foreach (var e in Root[0].Subtree().OfType<LectureWrap>())
+				foreach (var b in sources)
+					e.CommandBlocks.Add(b.ForLecture(e));
 		}
 
 		void Update()
 		{
 			foreach (var s in sources)
 				s.Pull(Root[0]);
+
+			var youtubeSource = sources.OfType<YoutubeSource>().FirstOrDefault();
+			if (youtubeSource!=null)
+			{
+				FinishedNotMatched = youtubeSource.LastMatch.UnmatchedTreeItems.Select(z=>z.Video).ToList();
+				YoutubeNotMatched = youtubeSource.LastMatch.UnmatchedExternalDataItems.ToList();
+			}
 		}
 
       

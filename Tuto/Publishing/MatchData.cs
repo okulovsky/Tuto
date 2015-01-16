@@ -80,7 +80,6 @@ namespace Tuto.Publishing
 					var foundData = UnmatchedExternalDataItems.Where(z => Equals(z, storedData)).FirstOrDefault();
 					if (foundData != null) 
 						MakeMatch(i, AllExternalDataItems.IndexOf(foundData));
-					i--;
 				}
 			}
 

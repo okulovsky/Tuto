@@ -13,12 +13,12 @@ namespace Tuto.Publishing
 {
 	public class YoutubeSource : IMaterialSource
 	{
-		IYoutubeProcessor processor = new YoutubeApisProcessor();
 		DirectoryInfo directory;
+		public Matcher<VideoItem, YoutubeClip> LastMatch { get; private set; }
 		public void Initialize(GlobalData data)
 		{
 			directory = data.GlobalDataFolder;
-			processor.Authorize(directory);
+			StaticItems.YoutubeProcessor.Authorize(directory);
 		}
 		public void Load(Item root)
 		{
@@ -30,15 +30,15 @@ namespace Tuto.Publishing
 			List<YoutubeClip> clips = new List<YoutubeClip>();
 			try
 			{
-				clips = processor.GetAllClips();
+				clips = StaticItems.YoutubeProcessor.GetAllClips();
 			}
 			catch
 			{
 				MessageBox.Show("Loading video from Youtube failed.");
 				return;
 			}
-			var matcher = Matchers.Clips(clips);
-			matcher.Push(root);
+			LastMatch = Matchers.Clips(clips);
+			LastMatch.Push(root);
 
 			var playlists = StaticItems.YoutubeProcessor.GetAllPlaylists();
 			var listMatcher = Matchers.Playlists(playlists);
@@ -61,7 +61,7 @@ namespace Tuto.Publishing
 
 		public ICommandBlockModel ForLecture(LectureWrap wrap)
 		{
-			return null;
+			return new YoutubeLectureCommands(wrap);
 		}
 
 		

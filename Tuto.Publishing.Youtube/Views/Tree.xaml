@@ -13,10 +13,7 @@
                 <TextBlock Width="300" Text="{Binding Caption}"/>
             </HierarchicalDataTemplate>
             <HierarchicalDataTemplate DataType="{x:Type m:LectureWrap}" ItemsSource="{Binding Children}">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding Caption}" DockPanel.Dock="Top"/>
-                    <m:YoutubeVideoBlock DataContext="{Binding VideoBlock}"/>
-                </StackPanel>
+                 <v:WrapControl DataContext="{Binding}"/>
             </HierarchicalDataTemplate>
             <HierarchicalDataTemplate DataType="{x:Type m:VideoWrap}" ItemsSource="{Binding Children}">
                 <v:WrapControl DataContext="{Binding}"/>

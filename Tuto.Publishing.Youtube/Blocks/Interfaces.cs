@@ -41,4 +41,12 @@ namespace Tuto.Publishing
 	{
 		List<ICommandBlockModel> CommandBlocks { get; }
 	}
+
+	public static class IItemExtension
+	{
+		public static IEnumerable<TCommandBlock> ChildCommandBlocks<TCommandBlock>(this Item item)
+		{
+			return item.Subtree().OfType<ICommandBlocksHolder>().SelectMany(z => z.CommandBlocks.OfType<TCommandBlock>());
+		}
+	}
 }
