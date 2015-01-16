@@ -82,9 +82,28 @@ namespace Tuto.Publishing
                 if (document.LastSection != null && document.LastSection.LastSlide != null)
                     document.LastSection.LastSlide.Content += e;
             }
+			document.ModificationTime = file.LastWriteTime;
+			document.OriginalFile = file;
             return document;
         }
 
+		public IEnumerable<LatexDocument> GetAllPresentations(DirectoryInfo directory)
+		{
+			foreach(var file in directory.GetFiles("*.tex"))
+			{
+				var document = Parse(file);
+				var sectionDocuments = document.Sections.Select(section =>
+					new LatexDocument
+					{
+						Preamble = document.Preamble,
+						Sections = { section },
+						ModificationTime = document.ModificationTime,
+						OriginalFile = document.OriginalFile
+					});
+				foreach (var doc in sectionDocuments)
+					yield return doc;
+			}
+		}
 
     }
 }

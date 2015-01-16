@@ -118,6 +118,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LatexProcessor\GalleryInfo.cs" />
     <Compile Include="LatexProcessor\LatexDocument.cs" />
     <Compile Include="LatexProcessor\LaTeXProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

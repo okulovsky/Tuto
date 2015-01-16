@@ -56,22 +56,34 @@ namespace Tuto.Publishing
             Directory=folder;
             StaticItems.GlobalData = EditorModelIO.ReadGlobalData(folder);
             var treeRoot = ItemTreeBuilder.Build<FolderWrap, LectureWrap, VideoWrap>(StaticItems.GlobalData);
-            YoutubeDataBinding.LoadYoutubeData(treeRoot, Directory);
-            DataBinding<IItem>.Pull<IYoutubeProcessor>(treeRoot, z => StaticItems.YoutubeProcessor);
-            Root = new[] { treeRoot };
+			Root = new[] { treeRoot };
+			Load();
+			
             foreach (var e in treeRoot.Subtree().OfType<VideoWrap>())
                 e.Initialize();
 
             foreach (var e in treeRoot.Subtree().OfType<LectureWrap>())
                 e.Initialize();
 
-            UpdateCommand = new RelayCommand(UpdateFromYoutube);
+            UpdateCommand = new RelayCommand(Update);
             SaveCommand = new RelayCommand(Save);
             TestCommand = new RelayCommand(TestPlaylist);
         }
 
+		void Load()
+		{
+			YoutubeDataBinding.LoadYoutubeData(Root[0], Directory);
+			DataBinding<IItem>.Pull<IYoutubeProcessor>(Root[0], z => StaticItems.YoutubeProcessor);
+			UpdateLatex();
+		}
 
-        public void UpdateFromYoutube()
+		void Update()
+		{
+			UpdateFromYoutube();
+			UpdateLatex();
+		}
+
+        void UpdateFromYoutube()
         {
             List<YoutubeClip> clips = new List<YoutubeClip>();
             try
@@ -93,6 +105,19 @@ namespace Tuto.Publishing
             FinishedNotMatched = matcher.UnmatchedTreeItems.Select(z => z.Video).ToList();
             YoutubeNotMatched = matcher.UnmatchedExternalDataItems.ToList();
         }
+
+		void UpdateLatex()
+		{
+			var latexDirectory = Directory.CreateSubdirectory("Latex");
+			var documents = StaticItems.LatexProcessor.GetAllPresentations(latexDirectory);
+			var matcher = Matchers.ByName<VideoWrap, LatexDocument>(
+				documents,
+				document=>document.LastSection.Name,
+				(doc1,doc2)=>doc1==doc2
+				);
+			matcher.Push(Root[0]);
+		}
+
 
         public void Save()
         {

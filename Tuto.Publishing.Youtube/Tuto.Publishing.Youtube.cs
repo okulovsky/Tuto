@@ -20,7 +20,7 @@ namespace Tuto.Publishing.Youtube
             
             
             var folder=new DirectoryInfo(directory);
-            StaticItems.YoutubeProcessor = new YoutubeApisProcessor();
+            
             StaticItems.YoutubeProcessor.Authorize(folder);
             var model = new MainViewModel(folder);
 

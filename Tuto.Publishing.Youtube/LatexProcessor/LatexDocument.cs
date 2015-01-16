@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -20,6 +21,8 @@ namespace Tuto.Publishing
     class LatexDocument
     {
         public string Preamble;
+		public DateTime ModificationTime;
+		public FileInfo OriginalFile;
         public List<LatexSection> Sections = new List<LatexSection>();
         public LatexSection LastSection { get { if (Sections.Count != 0) return Sections[Sections.Count - 1]; return null; } }
     }
