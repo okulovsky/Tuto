@@ -12,39 +12,28 @@ using Tuto.Publishing.YoutubeData;
 
 namespace Tuto.Publishing
 {
-	public class YoutubeLectureCommands : NotifierModel, ICommandBlockModel
+	public class YoutubeLectureCommands : LectureCommandBlockModel<YoutubeSource,YoutubeVideoCommands>
 	{
-		readonly LectureWrap Wrap;
-        readonly GlobalData globalData;
-        readonly IYoutubeProcessor youtubeProcessor;
-		public YoutubeLectureCommands(LectureWrap wrap, GlobalData globalData, IYoutubeProcessor processor)
-		{
-			this.Wrap = wrap;
-            this.globalData = globalData;
-            this.youtubeProcessor = processor;
-
+		public YoutubeLectureCommands(YoutubeSource source, LectureWrap wrap)
+            : base (source,wrap)
+        {
+		
 			InitializeDueNames();
-			Commands = new List<VisualCommand>();
 			Commands.Add(new VisualCommand(new RelayCommand(CmGo), "view.png"));
 			Commands.Add(new VisualCommand(new RelayCommand(CmPush), "upload.png"));
 		}
 
+        public override string ImageFileName
+        {
+            get { return "youtube.png"; }
+        }
 
-		public List<VisualCommand> Commands { get; private set; }
-
-		public Uri ImageSource
-		{
-			get { return new Uri("/Img/youtube.png", UriKind.Relative); }
-		}
-
-		IEnumerable<YoutubeVideoCommands> VideoBlocks { get { return Wrap.ChildCommandBlocks<YoutubeVideoCommands>(); } }
-
-		public Brush Status
+		override public Brush Status
 		{
 			get
 			{
-				if (VideoBlocks.Any(z => z.Status == Brushes.Red)) return Brushes.Red;
-				if (VideoBlocks.Any(z => z.Status == Brushes.Yellow)) return Brushes.Yellow;
+				if (VideoData.Any(z => z.Status == Brushes.Red)) return Brushes.Red;
+				if (VideoData.Any(z => z.Status == Brushes.Yellow)) return Brushes.Yellow;
 				if (YoutubePlaylist == null) return Brushes.Yellow;
 				if (YoutubePlaylist.PlaylistTitle != dueTitle) return Brushes.Yellow;
 				return Brushes.Green;
@@ -57,14 +46,14 @@ namespace Tuto.Publishing
 		void InitializeDueNames()
 		{
 			var prefix = "";
-			prefix += globalData.CourseAbbreviation;
+			prefix += Source.GlobalData.CourseAbbreviation;
 			var path = Wrap.PathFromRoot.Skip(1).ToArray();
 			for (int levelNumber = 0; levelNumber < path.Length; levelNumber++)
 			{
 
 				TopicLevel level = new TopicLevel();
-				if (levelNumber < globalData.TopicLevels.Count)
-					level = globalData.TopicLevels[levelNumber];
+                if (levelNumber < Source.GlobalData.TopicLevels.Count)
+                    level = Source.GlobalData.TopicLevels[levelNumber];
 				prefix += "-";
 				prefix += string.Format("{0:D" + level.Digits + "}", path[levelNumber].NumberInTopic + 1);
 			}
@@ -84,10 +73,10 @@ namespace Tuto.Publishing
 		{
 			var playlist = YoutubePlaylist;
 			if (playlist == null)
-				playlist = youtubeProcessor.CreatePlaylist(Wrap.Topic.Caption);
-			youtubeProcessor.FillPlaylist(playlist, VideoBlocks.Select(z => z.YoutubeClip).Where(z => z != null));
+				playlist = Source.YoutubeProcessor.CreatePlaylist(Wrap.Topic.Caption);
+            Source.YoutubeProcessor.FillPlaylist(playlist, VideoData.Select(z => z.YoutubeClip).Where(z => z != null));
 
-			foreach (var e in VideoBlocks)
+            foreach (var e in VideoData)
 				e.CmPush();
 
 			Wrap.Store<YoutubePlaylist>(playlist);

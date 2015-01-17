@@ -10,7 +10,7 @@ namespace Tuto.Publishing
     class LatexProcessor
     {
 
-        public void ConvertToPng(FileInfo pdfFile, DirectoryInfo directory)
+        public static void ConvertToPng(FileInfo pdfFile, DirectoryInfo directory)
         {
             pdfFile = pdfFile.CopyTo(Path.Combine(directory.FullName,pdfFile.Name));
             var process=new Process();
@@ -33,7 +33,7 @@ namespace Tuto.Publishing
             process.WaitForExit();
         }
 
-        public FileInfo Compile(LatexDocument document, DirectoryInfo environmentDirectory)
+        public static FileInfo Compile(LatexDocument document, DirectoryInfo environmentDirectory)
         {
             var tempLatexFile = new FileInfo(Path.Combine(environmentDirectory.FullName, "temp.tex"));
             var builder = new StringBuilder();
@@ -52,7 +52,7 @@ namespace Tuto.Publishing
             return new FileInfo(Path.Combine(environmentDirectory.FullName, "temp.pdf"));
         }
 
-        public LatexDocument Parse(FileInfo file)
+        public static LatexDocument Parse(FileInfo file)
         {
             var lines = File.ReadAllLines(file.FullName);
             var document = new LatexDocument();
@@ -87,7 +87,7 @@ namespace Tuto.Publishing
             return document;
         }
 
-		public IEnumerable<LatexDocument> GetAllPresentations(DirectoryInfo directory)
+		public static IEnumerable<LatexDocument> GetAllPresentations(DirectoryInfo directory)
 		{
 			foreach(var file in directory.GetFiles("*.tex"))
 			{

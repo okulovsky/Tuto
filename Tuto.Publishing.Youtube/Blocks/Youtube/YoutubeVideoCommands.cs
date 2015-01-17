@@ -12,16 +12,14 @@ using Tuto.Publishing.YoutubeData;
 
 namespace Tuto.Publishing
 {
-	public class YoutubeVideoCommands : NotifierModel, ICommandBlockModel
+	public class YoutubeVideoCommands : CommandsBlockModel<YoutubeSource,VideoWrap>
 	{
-		public List<VisualCommand> Commands { get; private set; }
+        public override string ImageFileName
+        {
+            get { return "youtube.png"; }
+        }
 
-		public Uri ImageSource
-		{
-			get { return new Uri("/Img/youtube.png",UriKind.Relative); }
-		}
-
-		public Brush Status
+		override public Brush Status
 		{
 			get
 			{
@@ -32,13 +30,10 @@ namespace Tuto.Publishing
 			}
 		}
 
-        public YoutubeVideoCommands(VideoWrap wrap, GlobalData globalData, IYoutubeProcessor processor)
+        public YoutubeVideoCommands(YoutubeSource source, VideoWrap wrap)
+            : base(source,wrap)
 		{
-            this.Wrap = wrap;
-            this.globalData = globalData;
-            this.youtubeProcessor = processor;
-			InitializeDueNames();
-			Commands = new List<VisualCommand>();
+         	InitializeDueNames();
 			Commands.Add(new VisualCommand(new RelayCommand(CmGo, () => YoutubeClip != null), "view.png"));
 			Commands.Add(new VisualCommand(new RelayCommand(CmPush, () => YoutubeClip != null), "upload.png"));
 		}
@@ -51,14 +46,14 @@ namespace Tuto.Publishing
 		{
 			var prefix = "";
 			var description = "";
-			prefix += globalData.CourseAbbreviation;
+            prefix += Source.GlobalData.CourseAbbreviation;
 			var path = Wrap.PathFromRoot.Skip(1).ToArray();
 			for (int levelNumber = 0; levelNumber < path.Length; levelNumber++)
 			{
 
 				TopicLevel level = new TopicLevel();
-				if (levelNumber < globalData.TopicLevels.Count)
-					level = globalData.TopicLevels[levelNumber];
+                if (levelNumber < Source.GlobalData.TopicLevels.Count)
+                    level = Source.GlobalData.TopicLevels[levelNumber];
 				prefix += "-";
 				prefix += string.Format("{0:D" + level.Digits + "}", path[levelNumber].NumberInTopic + 1);
 
@@ -70,16 +65,10 @@ namespace Tuto.Publishing
 			}
 
 			dueTitle = prefix + " " + Wrap.Video.Name;
-			description += globalData.DescriptionPS;
+			description += Source.GlobalData.DescriptionPS;
 			dueDescription = description;
 		}
 		#endregion
-
-
-
-        public VideoWrap Wrap { get; private set; }
-        readonly GlobalData globalData;
-        readonly IYoutubeProcessor youtubeProcessor;
 
 		public YoutubeClip YoutubeClip { get { return Wrap.Get<YoutubeClip>(); } }
 
@@ -90,7 +79,7 @@ namespace Tuto.Publishing
 			var clip = new YoutubeClip { Id = YoutubeClip.Id };
 			clip.Name = dueTitle;
 			clip.Description = dueDescription;
-			youtubeProcessor.UpdateVideo(clip);
+			Source.YoutubeProcessor.UpdateVideo(clip);
 			Wrap.Store<YoutubeClip>(clip);
 			this.NotifyByExpression(z => z.Status);
 		}
