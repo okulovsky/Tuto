@@ -18,20 +18,17 @@
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
-                        <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <Label Grid.Column="0" Grid.Row="0">The course's name</Label>
-                    <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding CourseName }"/>
-
-                    <Label Grid.Column="0" Grid.Row="1">The course's abbreviation</Label>
-                    <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding CourseAbbreviation}"/>
+            
+                    <Label Grid.Column="0" Grid.Row="0">The course's abbreviation</Label>
+                    <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding CourseAbbreviation}"/>
 
 
-                    <Label Grid.Column="0" Grid.Row="2">The course's keywords</Label>
-                    <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Keywords}"/>
+                    <Label Grid.Column="0" Grid.Row="1">The course's keywords</Label>
+                    <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Keywords}"/>
 
-                    <Label Grid.Column="0" Grid.Row="3">The text to appear in Course Description</Label>
-                    <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding DescriptionPS}" TextWrapping="Wrap" AcceptsReturn="True" Height="100" />
+                    <Label Grid.Column="0" Grid.Row="2">The text to appear in Course Description</Label>
+                    <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding DescriptionPS}" TextWrapping="Wrap" AcceptsReturn="True" Height="100" />
                 </Grid>
                 <Label>Specify the names of each level in your topic's tree: module, section, lecture, etc. Also specify how many digits should be reserved for each level, for example, MyCourse-1-01-1</Label>
                 <DataGrid ItemsSource="{Binding TopicLevels}" AutoGenerateColumns="False" CanUserAddRows="True" CanUserDeleteRows="True">
