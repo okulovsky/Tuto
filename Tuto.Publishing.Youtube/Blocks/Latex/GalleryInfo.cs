@@ -13,7 +13,5 @@ namespace Tuto.Publishing
 	{
         [DataMember]
         public DateTime CompilationTime { get; set; }
-		[DataMember]
-		public DirectoryInfo Directory { get; set; }
 	}
 }

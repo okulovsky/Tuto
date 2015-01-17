@@ -118,6 +118,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Blocks\BlockStatus.cs" />
     <Compile Include="Blocks\CommandsBlockModel.cs" />
     <Compile Include="Blocks\Latex\LatexLectureCommands.cs" />
     <Compile Include="Blocks\Latex\LatexSource.cs" />

@@ -12,21 +12,21 @@ using Tuto.Publishing.YoutubeData;
 
 namespace Tuto.Publishing
 {
-	public class YoutubeVideoCommands : CommandsBlockModel<YoutubeSource,VideoWrap>
+	public class YoutubeVideoCommands : VideoCommandBlockModel<YoutubeSource,YoutubeLectureCommands>
 	{
         public override string ImageFileName
         {
             get { return "youtube.png"; }
         }
 
-		override public Brush Status
+		override public BlockStatus Status
 		{
 			get
 			{
-				if (YoutubeClip == null) return Brushes.Red;
-				if (YoutubeClip.Name != dueTitle || YoutubeClip.Description != dueDescription)
-					return Brushes.Yellow;
-				return Brushes.Green;
+                if (YoutubeClip == null) return BlockStatus.Error("Video is not found on YouTube");
+                if (YoutubeClip.Name != dueTitle || YoutubeClip.Description != dueDescription)
+                    return BlockStatus.Warning("Video title or description do not match");
+                return BlockStatus.OK();
 			}
 		}
 
@@ -81,7 +81,7 @@ namespace Tuto.Publishing
 			clip.Description = dueDescription;
 			Source.YoutubeProcessor.UpdateVideo(clip);
 			Wrap.Store<YoutubeClip>(clip);
-			this.NotifyByExpression(z => z.Status);
+            MakeChange();
 		}
 
 		public void CmGo()

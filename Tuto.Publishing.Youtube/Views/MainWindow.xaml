@@ -5,9 +5,7 @@
         Title="Tuto.Publisher" Height="600" Width="1000">
     <DockPanel>
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-            <Button Command="{Binding SaveCommand}">Save</Button>
             <Button Command="{Binding UpdateCommand}">Update</Button>
-            <Button Command="{Binding TestCommand}">Test</Button>
         </StackPanel>
     <TabControl HorizontalAlignment="Stretch" Height="auto" VerticalAlignment="Stretch" Width="auto">
         <TabItem Header="Videos">

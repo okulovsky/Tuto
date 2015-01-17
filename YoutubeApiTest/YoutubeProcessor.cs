@@ -89,7 +89,9 @@ namespace YoutubeApiTest
             var list = new Playlist();
             list.Snippet=new PlaylistSnippet();
             list.Snippet.Title = name;
-            list=service.Playlists.Insert(list,"snippet").Execute();
+            list.Status = new PlaylistStatus();
+            list.Status.PrivacyStatus = "public";
+            list=service.Playlists.Insert(list,"snippet,status").Execute();
             var playlist = new YoutubePlaylist();
             playlist.PlaylistId = list.Id;
             playlist.PlaylistTitle = list.Snippet.Title;

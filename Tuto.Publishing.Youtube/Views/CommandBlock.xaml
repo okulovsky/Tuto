@@ -26,7 +26,7 @@
         </Style>
     </UserControl.Resources>
     <StackPanel Orientation="Horizontal">
-        <Ellipse Fill="{Binding Status}" Width="10" Height="10"/>
+        <Ellipse Fill="{Binding Status.Brush}" ToolTip="{Binding Status.Explanation}" Width="10" Height="10"/>
         <Image Source="{Binding ImageSource}" Height="20"/>
         <ListBox ItemsSource="{Binding Commands}"/>
     </StackPanel>

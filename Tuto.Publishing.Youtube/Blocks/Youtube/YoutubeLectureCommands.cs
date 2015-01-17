@@ -28,15 +28,15 @@ namespace Tuto.Publishing
             get { return "youtube.png"; }
         }
 
-		override public Brush Status
+		override public BlockStatus Status
 		{
 			get
 			{
-				if (VideoData.Any(z => z.Status == Brushes.Red)) return Brushes.Red;
-				if (VideoData.Any(z => z.Status == Brushes.Yellow)) return Brushes.Yellow;
-				if (YoutubePlaylist == null) return Brushes.Yellow;
-				if (YoutubePlaylist.PlaylistTitle != dueTitle) return Brushes.Yellow;
-				return Brushes.Green;
+				if (VideoData.Any(z => z.Status.Status == Statuses.Error)) return BlockStatus.Error("One or more video have errors");
+                if (VideoData.Any(z => z.Status.Status == Statuses.Warning)) return BlockStatus.Warning("One or more video have warnings");
+                if (YoutubePlaylist == null) return BlockStatus.Warning("Playlist was not found at YouTube");
+                if (YoutubePlaylist.PlaylistTitle != dueTitle) return BlockStatus.Warning("Playlist title do not match");
+                return BlockStatus.OK();
 			}
 		}
 
@@ -72,8 +72,9 @@ namespace Tuto.Publishing
 		public void CmPush()
 		{
 			var playlist = YoutubePlaylist;
-			if (playlist == null)
-				playlist = Source.YoutubeProcessor.CreatePlaylist(Wrap.Topic.Caption);
+            if (playlist != null) Source.YoutubeProcessor.DeletePlaylist(playlist);
+
+            playlist = Source.YoutubeProcessor.CreatePlaylist(dueTitle);
             Source.YoutubeProcessor.FillPlaylist(playlist, VideoData.Select(z => z.YoutubeClip).Where(z => z != null));
 
             foreach (var e in VideoData)

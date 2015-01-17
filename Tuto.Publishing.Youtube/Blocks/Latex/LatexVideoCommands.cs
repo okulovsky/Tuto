@@ -10,7 +10,7 @@ using System.Windows.Shapes;
 
 namespace Tuto.Publishing
 {
-    class LatexVideoCommands : CommandsBlockModel<LatexSource,VideoWrap>
+    class LatexVideoCommands : VideoCommandBlockModel<LatexSource,LatexLectureCommands>
     {
 
         public LatexVideoCommands(LatexSource source, VideoWrap wrap) : base(source,wrap)
@@ -44,15 +44,14 @@ namespace Tuto.Publishing
             GalleryInfo galleryData = null;
             if (pdfFile != null)
             {
-                var directory = Source.LatexSlidesStorage.CreateSubdirectory(Wrap.Video.Guid.ToString());
+                var directory = DueSlidesDirectory;
                 if (directory.Exists) directory.Delete(true);
                 directory.Create();
                 LatexProcessor.ConvertToPng(pdfFile, directory);
-                galleryData = new GalleryInfo { CompilationTime = DateTime.Now, Directory = directory };
+                galleryData = new GalleryInfo { CompilationTime = DateTime.Now };
             }
             Wrap.Store(galleryData);
-            Source.Save(Wrap.Root);
-            this.NotifyByExpression(z => z.Status);
+            MakeChange();
         }
 
         void ViewGallery()
@@ -61,6 +60,14 @@ namespace Tuto.Publishing
             var path = System.IO.Path.Combine(Source.LatexSlidesStorage.FullName, Wrap.Video.Guid.ToString());
             if (!Directory.Exists(path)) return;
             Process.Start("\"" + path + "\"");
+        }
+
+        public DirectoryInfo DueSlidesDirectory
+        {
+            get
+            {
+                return Source.LatexSlidesStorage.CreateSubdirectory(Wrap.Video.Guid.ToString());
+            }
         }
 
         public override string ImageFileName
@@ -73,13 +80,16 @@ namespace Tuto.Publishing
             get { return Wrap.Get<GalleryInfo>(); }
         }
 
-        override public System.Windows.Media.Brush Status
+        override public BlockStatus Status
         {
             get
             {
-                if (LatexSource == null) return Brushes.Gray;
-                if (Gallery==null || !Gallery.Directory.Exists || Gallery.CompilationTime<LatexSource.ModificationTime) return Brushes.Red;
-                return Brushes.Green;
+                if (LatexSource == null) return BlockStatus.NA("No LaTeX source is found for this video");
+                if (Gallery == null) return BlockStatus.Error("Slides were not compiled");
+                if (!DueSlidesDirectory.Exists) return BlockStatus.Error("Slides were compiled, but they are not found now. Recompile them");
+                if (Gallery.CompilationTime < LatexSource.ModificationTime) return BlockStatus.Error("Slides are outdated. Recompile them");
+                if (DueSlidesDirectory.GetFiles().Length == 0) return BlockStatus.Warning("No slides are produced for this video. Check the presentation and remove the section, if it was intended");
+                return BlockStatus.OK();
             }
         }
     }

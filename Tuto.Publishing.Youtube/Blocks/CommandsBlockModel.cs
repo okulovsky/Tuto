@@ -33,12 +33,27 @@ namespace Tuto.Publishing
             get { return new Uri("/Img/" + ImageFileName, UriKind.Relative); }
         }
 
-        public abstract System.Windows.Media.Brush Status { get; }
+        public abstract BlockStatus Status { get; }
     }
 
-    public abstract class LectureCommandBlockModel<TSource, TVideoItem> : CommandsBlockModel<TSource, LectureItem>
+    public abstract class LectureCommandBlockModel<TSource, TVideoData> : CommandsBlockModel<TSource, LectureWrap>
     {
-        public LectureCommandBlockModel(TSource source, LectureItem item) : base(source, item) { }
-        public IEnumerable<TVideoItem> VideoData { get { return Wrap.Subtree().OfType<VideoWrap>().SelectMany(z => z.CommandBlocks.OfType<TVideoItem>()); } }
+        public LectureCommandBlockModel(TSource source, LectureWrap item) : base(source, item) { }
+        public IEnumerable<TVideoData> VideoData { get { return Wrap.Subtree().OfType<VideoWrap>().SelectMany(z => z.CommandBlocks.OfType<TVideoData>()); } }
+    }
+
+    public abstract class VideoCommandBlockModel<TSource, TLectureData> : CommandsBlockModel<TSource, VideoWrap>
+        where TSource : IMaterialSource
+        where TLectureData : NotifierModel, ICommandBlockModel
+    {
+        public VideoCommandBlockModel(TSource source, VideoWrap item) : base(source, item) { }
+      
+        public void MakeChange()
+        {
+            base.Source.Save(Wrap.Root);
+            this.NotifyByExpression(z => z.Status);
+            var parentData = (Wrap.Parent as LectureWrap).CommandBlocks.OfType<TLectureData>().FirstOrDefault();
+            parentData.NotifyByExpression(z => z.Status);
+        }
     }
 }

@@ -11,6 +11,7 @@ namespace Tuto.Publishing
     {
         const string Ghostscript = @"C:\Program Files\gs\gs9.15\bin\gswin64.exe";
         const string temporalFileName = "tuto.temp.tex";
+        const string pdfFileName = "tuto.temp.pdf";
 
         public static void ConvertToPng(FileInfo pdfFile, DirectoryInfo directory)
         {
@@ -18,7 +19,7 @@ namespace Tuto.Publishing
             var process=new Process();
             process.StartInfo.FileName=Ghostscript;
             process.StartInfo.Arguments = 
-                @"-dBATCH -dNOPAUSE -sDEVICE=pnggray -r300 -dUseCropBox -sOutputFile=""%03d.png"" "+pdfFile.Name;
+                @"-dBATCH -dNOPAUSE -sDEVICE=png16m -r300 -dUseCropBox -sOutputFile=""%03d.png"" "+pdfFile.Name;
             process.StartInfo.WorkingDirectory = directory.FullName;
             process.Start();
             process.WaitForExit();
@@ -58,7 +59,7 @@ namespace Tuto.Publishing
             var tempLatexFile = PrepareSeparateSource(document, environmentDirectory);            
             if (!StartLatex(tempLatexFile)) return null;
             //StartLatex(tempLatexFile);
-            return new FileInfo(Path.Combine(environmentDirectory.FullName, "temp.pdf"));
+            return new FileInfo(Path.Combine(environmentDirectory.FullName, pdfFileName));
         }
 
         public static LatexDocument Parse(FileInfo file)

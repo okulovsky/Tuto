@@ -9,7 +9,7 @@ namespace Tuto.Publishing
 {
     class LatexLectureCommands : LectureCommandBlockModel<LatexSource,LatexVideoCommands>
     {
-        public LatexLectureCommands(LatexSource source, LectureItem item)
+        public LatexLectureCommands(LatexSource source, LectureWrap item)
             : base(source, item)
         {
             Commands.Add(new VisualCommand(CompileAll, () => true, "compile.png"));
@@ -27,14 +27,16 @@ namespace Tuto.Publishing
             get { return "latex.png"; }
         }
 
-        public override System.Windows.Media.Brush Status
+        public override BlockStatus Status
         {
             get
             {
-                if (VideoData.Any(z => z.Status == Brushes.Red)) return Brushes.Red;
-                if (VideoData.Any(z=>z.Status==Brushes.Green)) return Brushes.Green;
-                return Brushes.Gray;
+                if (VideoData.Any(z => z.Status.Status == Statuses.Error)) return BlockStatus.Error("One ore more videos have errors");
+                if (VideoData.Any(z=>z.Status.Status== Statuses.Warning)) return BlockStatus.Warning("One or more video have warninhs");
+                if (VideoData.Any(z => z.Status.Status == Statuses.OK)) return BlockStatus.OK();
+                return BlockStatus.NA();
             }
         }
+
     }
 }

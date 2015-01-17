@@ -37,7 +37,7 @@ namespace Tuto.Publishing
 	{
 		List<VisualCommand> Commands { get; }
 		Uri ImageSource { get; }
-		Brush Status { get;  }
+		BlockStatus Status { get;  }
 	}
 
 	public interface ICommandBlocksHolder
