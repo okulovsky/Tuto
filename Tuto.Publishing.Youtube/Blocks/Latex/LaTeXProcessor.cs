@@ -9,12 +9,13 @@ namespace Tuto.Publishing
 {
     class LatexProcessor
     {
+        const string Ghostscript = @"C:\Program Files\gs\gs9.15\bin\gswin64.exe";
 
         public static void ConvertToPng(FileInfo pdfFile, DirectoryInfo directory)
         {
             pdfFile = pdfFile.CopyTo(Path.Combine(directory.FullName,pdfFile.Name));
             var process=new Process();
-            //process.StartInfo.FileName=Program.Ghostscript;
+            process.StartInfo.FileName=Ghostscript;
             process.StartInfo.Arguments = 
                 @"-dBATCH -dNOPAUSE -sDEVICE=pnggray -r300 -dUseCropBox -sOutputFile=""%03d.png"" "+pdfFile.Name;
             process.StartInfo.WorkingDirectory = directory.FullName;
@@ -23,7 +24,7 @@ namespace Tuto.Publishing
             pdfFile.Delete();
         }
 
-        static void StartLatex(FileInfo latexFile)
+        static bool StartLatex(FileInfo latexFile)
         {
             var process = new Process();
             process.StartInfo.FileName = "pdflatex";
@@ -31,9 +32,10 @@ namespace Tuto.Publishing
             process.StartInfo.Arguments = latexFile.Name;
             process.Start();
             process.WaitForExit();
+            return process.ExitCode == 0;
         }
 
-        public static FileInfo Compile(LatexDocument document, DirectoryInfo environmentDirectory)
+        public static FileInfo PrepareSeparateSource(LatexDocument document, DirectoryInfo environmentDirectory)
         {
             var tempLatexFile = new FileInfo(Path.Combine(environmentDirectory.FullName, "temp.tex"));
             var builder = new StringBuilder();
@@ -47,7 +49,13 @@ namespace Tuto.Publishing
             }
             builder.Append("\\end{document}");
             File.WriteAllText(tempLatexFile.FullName, builder.ToString());
-            StartLatex(tempLatexFile);
+            return tempLatexFile;
+        }
+
+        public static FileInfo Compile(LatexDocument document, DirectoryInfo environmentDirectory)
+        {
+            var tempLatexFile = PrepareSeparateSource(document, environmentDirectory);            
+            if (!StartLatex(tempLatexFile)) return null;
             //StartLatex(tempLatexFile);
             return new FileInfo(Path.Combine(environmentDirectory.FullName, "temp.pdf"));
         }
@@ -57,8 +65,9 @@ namespace Tuto.Publishing
             var lines = File.ReadAllLines(file.FullName);
             var document = new LatexDocument();
             bool inPreamble = true;
-            foreach (var e in lines)
+            foreach (var _e in lines)
             {
+                var e = _e + "\r\n";
                 if (e.Contains("\\begin{document}"))
                 {
                     inPreamble = false;

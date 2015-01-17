@@ -119,6 +119,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Blocks\CommandsBlockModel.cs" />
+    <Compile Include="Blocks\Latex\LatexLectureCommands.cs" />
     <Compile Include="Blocks\Latex\LatexSource.cs" />
     <Compile Include="Blocks\Latex\LatexVideoCommands.cs" />
     <Compile Include="Blocks\Youtube\YoutubeLectureCommands.cs" />
@@ -233,6 +234,18 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="LatexProcessor\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\latex.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\edit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\compile.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\file.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

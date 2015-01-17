@@ -80,16 +80,24 @@ namespace Tuto.Publishing
 				s.Load(Root[0]);
 		}
 
-		void CreateCommandBlocks()
-		{
-			foreach (var e in Root[0].Subtree().OfType<VideoWrap>())
-				foreach (var b in sources)
-					e.CommandBlocks.Add(b.ForVideo(e));
 
-			foreach (var e in Root[0].Subtree().OfType<LectureWrap>())
-				foreach (var b in sources)
-					e.CommandBlocks.Add(b.ForLecture(e));
-		}
+        void Assign<TItem>(Func<IMaterialSource,TItem,ICommandBlockModel> modelCreator)
+            where TItem : ICommandBlocksHolder
+        {
+            foreach (var e in Root[0].Subtree().OfType<TItem>())
+                foreach (var b in sources)
+                {
+                    var cmdBlock = modelCreator(b,e);
+                    if (cmdBlock != null)
+                        e.CommandBlocks.Add(cmdBlock);
+                }
+        }
+
+        void CreateCommandBlocks()
+        {
+            Assign<VideoWrap>((sources, wrap) => sources.ForVideo(wrap));
+            Assign<LectureWrap>((source, wrap) => source.ForLecture(wrap));
+        }
 
 		void Update()
 		{

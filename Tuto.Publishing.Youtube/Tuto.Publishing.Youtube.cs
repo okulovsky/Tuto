@@ -21,6 +21,7 @@ namespace Tuto.Publishing.Youtube
 			var globalData = EditorModelIO.ReadGlobalData(folder);
 			var sources = new List<IMaterialSource>();
 			sources.Add(new YoutubeSource());
+            sources.Add(new LatexSource());
 			foreach (var s in sources)
 				s.Initialize(globalData);
             var model = new MainViewModel(globalData,sources);

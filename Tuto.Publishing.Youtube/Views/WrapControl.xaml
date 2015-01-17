@@ -12,14 +12,17 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ListBox">
-                        <StackPanel Orientation="Vertical" IsItemsHost="true"/>
+                            <StackPanel Orientation="Horizontal" IsItemsHost="true"/>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
             <Setter Property="ItemTemplate">
                 <Setter.Value>
                     <DataTemplate>
-                        <v:CommandBlock DataContext="{Binding}"/>
+                        <StackPanel Orientation="Horizontal">
+                            <v:CommandBlock DataContext="{Binding}"/>
+                            <Rectangle Width="30"/>
+                        </StackPanel>
                     </DataTemplate>
                 </Setter.Value>
             </Setter>

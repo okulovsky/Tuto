@@ -16,6 +16,7 @@ namespace Tuto.Publishing
         {
             var result = BuildTopic<TFolderItem, TLectureItem, TVideoItem>(globalData, globalData.TopicsRoot);
             result.GlobalData = globalData;
+            result.Root = result;
             InitializeItem(result);
             return result;
         }

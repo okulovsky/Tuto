@@ -11,9 +11,8 @@ namespace Tuto.Publishing
 	[DataContract]
 	class GalleryInfo
 	{
-		public DateTime CompilationTime { get; set; }
-		[DataMember]
-		public string Name { get; set; }
+        [DataMember]
+        public DateTime CompilationTime { get; set; }
 		[DataMember]
 		public DirectoryInfo Directory { get; set; }
 	}

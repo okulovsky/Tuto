@@ -28,6 +28,9 @@ namespace Tuto.Publishing
 			Command = command;
 			ImageSource = new Uri(@"/Img/" + imageName, UriKind.Relative);
 		}
+        public VisualCommand(Action action, Func<bool> actionAvailable, string imageName)
+            : this(new RelayCommand(action, actionAvailable), imageName)
+        { }
 	}
 
 	public interface ICommandBlockModel
