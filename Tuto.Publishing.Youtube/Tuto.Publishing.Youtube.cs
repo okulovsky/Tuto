@@ -18,13 +18,20 @@ namespace Tuto.Publishing.Youtube
         {
             var directory = EditorModelIO.SubstituteDebugDirectories(args[0]);
             var folder=new DirectoryInfo(directory);
-			var globalData = EditorModelIO.ReadGlobalData(folder);
+			
+            var globalData = EditorModelIO.ReadGlobalData(folder);
+            var root = ItemTreeBuilder.Build<FolderWrap, LectureWrap, VideoWrap>(globalData);
+
+
+            var settings = HeadedJsonFormat.Read<PublishingSettings>(folder);
+            settings.Location = folder;
+            if (settings == null) settings = new PublishingSettings();
 			var sources = new List<IMaterialSource>();
 			sources.Add(new YoutubeSource());
             sources.Add(new LatexSource());
 			foreach (var s in sources)
-				s.Initialize(globalData);
-            var model = new MainViewModel(globalData,sources);
+				s.Initialize(settings);
+            var model = new MainViewModel(settings, root, sources);
 
             //var clips = new List<ClipData>();
 

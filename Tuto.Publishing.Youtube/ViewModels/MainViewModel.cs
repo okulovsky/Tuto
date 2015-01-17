@@ -24,7 +24,11 @@ namespace Tuto.Publishing
         }
 
 
-        readonly GlobalData globalData;
+        public PublishingSettings Settings 
+        { 
+            get; 
+            private set; 
+        }
       
 
         public Item[] root;
@@ -55,16 +59,12 @@ namespace Tuto.Publishing
 
 		List<IMaterialSource> sources;
 
-        public MainViewModel(GlobalData globalData, List<IMaterialSource> sources)
+        public MainViewModel(PublishingSettings settings, Item root, List<IMaterialSource> sources)
         {
 			this.sources = sources;
-            this.globalData = globalData;
-			Directory = globalData.GlobalDataFolder;
-           
-            var treeRoot = ItemTreeBuilder.Build<FolderWrap, LectureWrap, VideoWrap>(globalData);
-
-			
-			Root = new[] { treeRoot };
+            this.Settings = settings;
+            Directory = settings.Location;
+            Root = new[] { root };
 			Load();
 			CreateCommandBlocks();
 

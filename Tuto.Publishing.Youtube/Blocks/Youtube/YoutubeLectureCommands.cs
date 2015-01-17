@@ -46,14 +46,14 @@ namespace Tuto.Publishing
 		void InitializeDueNames()
 		{
 			var prefix = "";
-			prefix += Source.GlobalData.CourseAbbreviation;
+			prefix += Source.Settings.CourseAbbreviation;
 			var path = Wrap.PathFromRoot.Skip(1).ToArray();
 			for (int levelNumber = 0; levelNumber < path.Length; levelNumber++)
 			{
 
 				TopicLevel level = new TopicLevel();
-                if (levelNumber < Source.GlobalData.TopicLevels.Count)
-                    level = Source.GlobalData.TopicLevels[levelNumber];
+                if (levelNumber < Source.Settings.TopicLevels.Count)
+                    level = Source.Settings.TopicLevels[levelNumber];
 				prefix += "-";
 				prefix += string.Format("{0:D" + level.Digits + "}", path[levelNumber].NumberInTopic + 1);
 			}

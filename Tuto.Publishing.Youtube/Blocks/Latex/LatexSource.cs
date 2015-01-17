@@ -12,20 +12,20 @@ namespace Tuto.Publishing
     {
         public DirectoryInfo LatexFilesStorage { get; private set; }
         public DirectoryInfo LatexSlidesStorage { get; private set; }
-        public GlobalData GlobalData { get; private set; }
+        public PublishingSettings Settings { get; private set; }
 
-        public void Initialize(Model.GlobalData data)
+        public void Initialize(PublishingSettings settings)
         {
-            GlobalData = data;
-            LatexFilesStorage = data.GlobalDataFolder.CreateSubdirectory("Latex");
-            LatexSlidesStorage = data.GlobalDataFolder.CreateSubdirectory("LatexCompiledSlides");
+            Settings = settings;
+            LatexFilesStorage = settings.Location.CreateSubdirectory(settings.LatexSourceSubdirectory);
+            LatexSlidesStorage = settings.Location.CreateSubdirectory(settings.LatexCompiledSlidesSubdirectory);
             if (!LatexSlidesStorage.Exists) LatexSlidesStorage.Create();
         }
 
         public void Load(Item root)
         {
             Pull(root);
-            DataBinding<VideoWrap>.PullFromFile<GalleryInfo>(root, GlobalData.GlobalDataFolder);
+            DataBinding<VideoWrap>.PullFromFile<GalleryInfo>(root, Settings.Location);
         }
 
         public void Pull(Item root)
@@ -37,7 +37,7 @@ namespace Tuto.Publishing
 
         public void Save(Item root)
         {
-            DataBinding<VideoWrap>.SaveLayer<GalleryInfo>(root, GlobalData.GlobalDataFolder);
+            DataBinding<VideoWrap>.SaveLayer<GalleryInfo>(root, Settings.Location);
         }
 
         public ICommandBlockModel ForVideo(VideoWrap wrap)

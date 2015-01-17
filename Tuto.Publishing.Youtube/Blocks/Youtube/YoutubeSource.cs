@@ -13,7 +13,7 @@ namespace Tuto.Publishing
 {
 	public class YoutubeSource : IMaterialSource
 	{
-        public GlobalData GlobalData { get; private set; }
+        public PublishingSettings Settings { get; private set; }
         public readonly IYoutubeProcessor YoutubeProcessor;
 		DirectoryInfo directory;
 		public Matcher<VideoItem, YoutubeClip> LastMatch { get; private set; }
@@ -23,10 +23,10 @@ namespace Tuto.Publishing
             YoutubeProcessor = new YoutubeApisProcessor();
         }
 
-		public void Initialize(GlobalData data)
+        public void Initialize(PublishingSettings settings)
 		{
-            this.GlobalData = data;
-			directory = data.GlobalDataFolder;
+            this.Settings = settings;
+			directory = settings.Location;
 			YoutubeProcessor.Authorize(directory);
 		}
 		public void Load(Item root)

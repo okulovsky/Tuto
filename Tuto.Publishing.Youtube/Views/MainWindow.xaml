@@ -19,6 +19,9 @@
                     <v:Tree DataContext="{Binding Root}" x:Name="Tree"/>
                 </DockPanel>
             </TabItem>
-    </TabControl>
+            <TabItem Header="Settings">
+                <v:SettingsPanel DataContext="{Binding Settings}"/>
+            </TabItem>
+        </TabControl>
     </DockPanel>
 </Window>

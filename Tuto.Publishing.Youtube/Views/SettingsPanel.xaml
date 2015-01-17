@@ -6,39 +6,59 @@
              xmlns:v="clr-namespace:Tuto.Publishing.Youtube.Views"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="600">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="2*"/>
-        </Grid.ColumnDefinitions>
-        <Label Grid.Column="0" Grid.Row="0">Developer's key.</Label>
-        <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="0">
-            <TextBox Text="{Binding DeveloperKey}"/>
-            <TextBlock TextWrapping="Wrap">Sinse Tuto is open source software, we cannot store it in the source code. Please obtain your own <v:MyHyperlink NavigateUri="https://code.google.com/apis/youtube/dashboard/gwt/index.html">here</v:MyHyperlink></TextBlock>
-        </StackPanel>
-        <Label Grid.Column="0" Grid.Row="1">Your username for Youtube service</Label>
-        <StackPanel Grid.Column="1" Grid.Row="1" >
-        <TextBox  Text="{Binding Username}"/>
-            <TextBlock TextWrapping="Wrap">Please not that your Youtube account is not always the same as your gmail: it does not contain dots</TextBlock>
-        </StackPanel>
-        <Label Grid.Column="0" Grid.Row="2">The channel where the course is published</Label>
-        <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Vertical" >
-            <TextBox Text="{Binding ChannelId}"/>
-            <TextBlock TextWrapping="Wrap">This and the following ID may be seen <v:MyHyperlink NavigateUri="https://www.youtube.com/account_advanced">here</v:MyHyperlink></TextBlock>
-        </StackPanel>
-        <Label Grid.Column="0" Grid.Row="3">Channel User Id</Label>
-        <StackPanel Grid.Column="1" Grid.Row="3" Orientation="Vertical" >
-            <TextBox Text="{Binding ChannelUserId}"/>
-            <TextBlock TextWrapping="Wrap">It is not your username! Please check <v:MyHyperlink NavigateUri="https://www.youtube.com/account_advanced">this link</v:MyHyperlink></TextBlock>
-        </StackPanel>
+    <StackPanel>
+        <GroupBox Header="Youtube naming">
+            <StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Column="0" Grid.Row="0">The course's name</Label>
+                    <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Name }"/>
+
+                    <Label Grid.Column="0" Grid.Row="1">The course's abbreviation</Label>
+                    <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding CourseAbbreviation}"/>
 
 
+                    <Label Grid.Column="0" Grid.Row="2">The course's keywords</Label>
+                    <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Keywords}"/>
 
-    </Grid>
+                    <Label Grid.Column="0" Grid.Row="3">The text to appear in Course Description</Label>
+                    <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding DescriptionPS}" TextWrapping="Wrap" AcceptsReturn="True" Height="100" />
+                </Grid>
+                <Label>Specify the names of each level in your topic's tree: module, section, lecture, etc. Also specify how many digits should be reserved for each level, for example, MyCourse-1-01-1</Label>
+                <DataGrid ItemsSource="{Binding Levels}" AutoGenerateColumns="False" CanUserAddRows="True" CanUserDeleteRows="True">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding Caption}" Header="Caption"/>
+                        <DataGridTextColumn Binding="{Binding Digits}" Header="Count of digits in abbrv."/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Header="LaTeX settings">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Label Grid.Column="0" Grid.Row="0">Subdirectory with LaTeX files</Label>
+                <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding LatexSourceSubdirectory}"/>
+
+                <Label Grid.Column="0" Grid.Row="1">Subdirectory where compiled LaTeX slides will be placed (ignore it in Git)</Label>
+                <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding LatexCompiledSlidesSubdirectory}"/>
+            </Grid>
+        </GroupBox>
+        <Button Command="{Binding SaveCommand}">Save settings</Button>
+    </StackPanel>
 </UserControl>

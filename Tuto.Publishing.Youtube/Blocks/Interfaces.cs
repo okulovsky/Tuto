@@ -11,7 +11,7 @@ namespace Tuto.Publishing
 {
 	public interface IMaterialSource
 	{
-		void Initialize(GlobalData data);
+		void Initialize(PublishingSettings settings);
 		void Load(Item root);
 		void Pull(Item root);
 		void Save(Item root);
