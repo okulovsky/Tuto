@@ -10,6 +10,7 @@ namespace Tuto.Publishing
     class LatexProcessor
     {
         const string Ghostscript = @"C:\Program Files\gs\gs9.15\bin\gswin64.exe";
+        const string temporalFileName = "tuto.temp.tex";
 
         public static void ConvertToPng(FileInfo pdfFile, DirectoryInfo directory)
         {
@@ -37,7 +38,7 @@ namespace Tuto.Publishing
 
         public static FileInfo PrepareSeparateSource(LatexDocument document, DirectoryInfo environmentDirectory)
         {
-            var tempLatexFile = new FileInfo(Path.Combine(environmentDirectory.FullName, "temp.tex"));
+            var tempLatexFile = new FileInfo(Path.Combine(environmentDirectory.FullName, temporalFileName));
             var builder = new StringBuilder();
             builder.Append(document.Preamble);
             builder.Append("\\begin{document}\r\n");
@@ -100,6 +101,7 @@ namespace Tuto.Publishing
 		{
 			foreach(var file in directory.GetFiles("*.tex"))
 			{
+                if (file.Name == temporalFileName) continue;
 				var document = Parse(file);
 				var sectionDocuments = document.Sections.Select(section =>
 					new LatexDocument
@@ -108,7 +110,7 @@ namespace Tuto.Publishing
 						Sections = { section },
 						ModificationTime = document.ModificationTime,
 						OriginalFile = document.OriginalFile
-					});
+					}).ToList();
 				foreach (var doc in sectionDocuments)
 					yield return doc;
 			}
