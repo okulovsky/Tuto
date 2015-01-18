@@ -68,10 +68,16 @@ namespace Tuto.Publishing
 			Load();
 			CreateCommandBlocks();
 
-
+            DataBinding<IExpandingDataHolder>.PullFromFile<ExpandingData>(root, settings.Location);
+           
             UpdateCommand = new RelayCommand(Update);
             SaveCommand = new RelayCommand(Save);
             //TestCommand = new RelayCommand(TestPlaylist);
+        }
+
+        public void Closing()
+        {
+            DataBinding<IExpandingDataHolder>.SaveLayer<ExpandingData>(Root[0], Settings.Location);
         }
 
 		void Load()

@@ -11,9 +11,13 @@ using Tuto.Publishing.YoutubeData;
 namespace Tuto.Publishing
 {
 
-    public class LectureWrap : LectureItem, ICommandBlocksHolder
+    public class LectureWrap : LectureItem, ICommandBlocksHolder, IExpandingDataHolder
     {
 
+        public ExpandingData ExpandingData
+        {
+            get { return this.GetExpandingData(); }
+        }
 
 		public List<ICommandBlockModel> CommandBlocks
 		{

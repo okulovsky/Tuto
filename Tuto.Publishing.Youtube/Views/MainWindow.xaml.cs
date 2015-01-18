@@ -23,5 +23,12 @@ namespace Tuto.Publishing.Youtube.Views
         {
             InitializeComponent();
         }
+
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            var model = DataContext as MainViewModel;
+            if (model != null) model.Closing();
+        }
     }
 }

@@ -7,8 +7,13 @@
              xmlns:v="clr-namespace:Tuto.Publishing.Youtube.Views"
              mc:Ignorable="d"              
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <Style TargetType="{x:Type TreeViewItem}">
+            <Setter Property="IsExpanded" Value="{Binding ExpandingData.IsExpanded, Mode=TwoWay}"/>
+        </Style>
+    </UserControl.Resources>
     <TreeView ItemsSource="{Binding}" x:Name="InnerTree">
-        <TreeView.Resources>
+        <TreeView.Resources>            
             <HierarchicalDataTemplate DataType="{x:Type m:FolderWrap}" ItemsSource="{Binding Children}">
                 <TextBlock Width="300" Text="{Binding Caption}"/>
             </HierarchicalDataTemplate>

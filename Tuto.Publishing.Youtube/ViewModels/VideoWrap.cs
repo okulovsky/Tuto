@@ -10,7 +10,7 @@ using Tuto.Publishing.YoutubeData;
 
 namespace Tuto.Publishing
 {
-    public partial class VideoWrap : VideoItem, ICommandBlocksHolder
+    public partial class VideoWrap : VideoItem, ICommandBlocksHolder, IExpandingDataHolder
     {
 	
         public VideoWrap()
@@ -23,5 +23,10 @@ namespace Tuto.Publishing
 			get;
 			private set;
 		}
-	}
+
+        public ExpandingData ExpandingData
+        {
+            get { return this.GetExpandingData(); }
+        }
+    }
 }

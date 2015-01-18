@@ -8,8 +8,11 @@ using Tuto.Model;
 namespace Tuto.Publishing
 {
 
-    public class FolderWrap : FolderItem
+    public class FolderWrap : FolderItem, IExpandingDataHolder
     {
-        
+        public ExpandingData ExpandingData
+        {
+            get { return this.GetExpandingData(); }
+        }
     }
 }
