@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Input;
 
-namespace Tuto.Navigator
+namespace Tuto
 {
     public class RelayCommand<T> : ICommand where T : class
     {

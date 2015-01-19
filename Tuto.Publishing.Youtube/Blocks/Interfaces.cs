@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using Tuto.Model;
-using Tuto.Navigator;
+using Tuto;
 
 namespace Tuto.Publishing
 {

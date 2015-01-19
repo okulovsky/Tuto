@@ -143,7 +143,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="RelayCommand.cs" />
     <Compile Include="Tuto.Publishing.Youtube.cs" />
     <Compile Include="ViewModels\ExpandingData.cs" />
     <Compile Include="ViewModels\IExpandingDataHolder.cs" />

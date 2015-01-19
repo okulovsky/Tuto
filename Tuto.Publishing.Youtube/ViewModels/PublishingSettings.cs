@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using Tuto.Model;
-using Tuto.Navigator;
+using Tuto;
 
 namespace Tuto.Publishing
 {

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using Tuto.Model;
-using Tuto.Navigator;
+using Tuto;
 using Tuto.Publishing.YoutubeData;
 
 namespace Tuto.Publishing
