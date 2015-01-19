@@ -67,6 +67,7 @@
     <Compile Include="FinishedVideoPanel.xaml.cs">
       <DependentUpon>FinishedVideoPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

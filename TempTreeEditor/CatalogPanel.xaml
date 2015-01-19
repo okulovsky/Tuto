@@ -63,13 +63,6 @@
                 </Style>
                 </ListBox.Resources>
             </ListBox>
-            <Label>Levels of the tree</Label>
-            <DataGrid ItemsSource="{Binding Levels}" AutoGenerateColumns="False" CanUserAddRows="True" CanUserDeleteRows="True">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding Caption}" Header="Caption"/>
-                    <DataGridTextColumn Binding="{Binding Digits}" Header="Count of digits in abbrv."/>
-                </DataGrid.Columns>
-            </DataGrid>
         </StackPanel>
     </Grid>
 </Window>
