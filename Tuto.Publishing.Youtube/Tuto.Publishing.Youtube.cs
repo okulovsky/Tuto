@@ -13,18 +13,47 @@ namespace Tuto.Publishing.Youtube
 {
     public static class TutoPublishingYoutubeProgram
     {
+        static DirectoryInfo currentDirectory;
+        static Application Application;
+
         [STAThread]
         public static void Main(string[] args)
         {
-            var directory = EditorModelIO.SubstituteDebugDirectories(args[0]);
-            var folder=new DirectoryInfo(directory);
-			
-            var globalData = EditorModelIO.ReadGlobalData(folder);
+            var currentDirectoryName = EditorModelIO.SubstituteDebugDirectories(args[0]);
+            currentDirectory = new DirectoryInfo(currentDirectoryName);
+            Application = new System.Windows.Application();
+            Application.Run(CreateMainWindow());
+        }
+
+        public static void RunCatalogWindow()
+        {
+            var globalData = EditorModelIO.ReadGlobalData(currentDirectory);
+            var model = new Tuto.TreeEditor.PublishViewModel(globalData.TopicsRoot, globalData.VideoData);
+            var wnd = new Tuto.TreeEditor.PublishPanel();
+            wnd.DataContext = model;
+            wnd.Closed += wnd_Closed;
+            Application.MainWindow.Close();
+            Application.MainWindow = wnd;
+            wnd.Show();
+        }
+
+        static void wnd_Closed(object sender, EventArgs e)
+        {
+            var oldWindow = Application.MainWindow;
+            Application.MainWindow = CreateMainWindow();
+            Application.MainWindow.Show();
+            oldWindow.Close();
+        }
+
+
+        public static MainWindow CreateMainWindow()
+        {
+            var globalData = EditorModelIO.ReadGlobalData(currentDirectory);
             var root = ItemTreeBuilder.Build<FolderWrap, LectureWrap, VideoWrap>(globalData);
 
 
-            var settings = HeadedJsonFormat.Read<PublishingSettings>(folder);
-            settings.Location = folder;
+            var settings = HeadedJsonFormat.Read<PublishingSettings>(currentDirectory);
+            settings.Location = currentDirectory;
             if (settings == null) settings = new PublishingSettings();
 			var sources = new List<IMaterialSource>();
 			sources.Add(new YoutubeSource());
@@ -33,28 +62,10 @@ namespace Tuto.Publishing.Youtube
 				s.Initialize(settings);
             var model = new MainViewModel(settings, root, sources);
 
-            //var clips = new List<ClipData>();
-
-
-            //try
-            //{
-            //    clips = youtubeProcessor.LoadVideos();
-            //}
-            //catch
-            //{
-            //    MessageBox.Show("Loading video from Youtube failed.");
-            //}
-            
-            //var match = Algorithms.MatchVideos(globalData.VideoData, youtubeData.Videos, clips);
-            //var root = Algorithms.CreateTree(globalData.TopicsRoot, match, globalData.TopicLevels);
-
-            //var playlists = youtubeProcessor.FindPlaylists();
-            //Algorithms.AddPlaylists(root, youtubeData.Topics, playlists);
-
-            //var model = new MainViewModel(folder, globalData, youtubeData.Settings, root, youtubeProcessor, match);
+        
             var window = new MainWindow();
             window.DataContext = model;
-            new Application().Run(window);
+            return window;
         }
     }
 }

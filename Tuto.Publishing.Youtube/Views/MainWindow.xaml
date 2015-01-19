@@ -6,6 +6,7 @@
     <DockPanel>
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
             <Button Command="{Binding UpdateCommand}">Update</Button>
+            <Button x:Name="EditTree">EditTree</Button>
         </StackPanel>
     <TabControl HorizontalAlignment="Stretch" Height="auto" VerticalAlignment="Stretch" Width="auto">
         <TabItem Header="Videos">

@@ -22,6 +22,12 @@ namespace Tuto.Publishing.Youtube.Views
         public MainWindow()
         {
             InitializeComponent();
+            EditTree.Click += EditTree_Click;
+        }
+
+        void EditTree_Click(object sender, RoutedEventArgs e)
+        {
+            TutoPublishingYoutubeProgram.RunCatalogWindow();
         }
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
@@ -30,5 +36,7 @@ namespace Tuto.Publishing.Youtube.Views
             var model = DataContext as MainViewModel;
             if (model != null) model.Closing();
         }
+
+
     }
 }

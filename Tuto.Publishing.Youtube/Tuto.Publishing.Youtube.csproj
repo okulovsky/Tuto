@@ -130,6 +130,14 @@
     <Compile Include="Blocks\Latex\LatexDocument.cs" />
     <Compile Include="Blocks\Latex\LaTeXProcessor.cs" />
     <Compile Include="Blocks\Interfaces.cs" />
+    <Compile Include="Catalog\CatalogPanel.xaml.cs">
+      <DependentUpon>CatalogPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Catalog\CatalogViewModel.cs" />
+    <Compile Include="Catalog\CatalogWraps.cs" />
+    <Compile Include="Catalog\FinishedVideoPanel.xaml.cs">
+      <DependentUpon>FinishedVideoPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -189,6 +197,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Catalog\CatalogPanel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Catalog\FinishedVideoPanel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\CommandBlock.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
