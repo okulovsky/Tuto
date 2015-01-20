@@ -21,9 +21,11 @@ namespace Tuto.TreeEditor
         public ObservableCollection<VideoWrap> UnassignedVideos { get; private set; }
         public Wrap SelectedItem { get; set; }
         public VideoWrap SelectedItemInUnassignedList { get; set; }
+        List<FinishedVideo> givenVideos;
 
         public PublishViewModel(Topic topicRoot, List<FinishedVideo> videos)
         {
+            this.givenVideos = videos;
             Root = new TopicWrap[] { new TopicWrap(topicRoot) };
             UnassignedVideos = new ObservableCollection<VideoWrap>();
             foreach (var e in videos.Where(z => z.TopicGuid == Guid.Empty))
@@ -183,18 +185,16 @@ namespace Tuto.TreeEditor
             }
         }
 
-        //public void Commit()
-        //{
-        //    foreach (var e in GlobalData.VideoData)
-        //    {
-        //        e.TopicGuid = Guid.Empty;
-        //        e.NumberInTopic = 0;
-        //    }
-        //    Commit(Root[0]);
-        //    GlobalData.TopicLevels.Clear();
-        //    foreach (var e in Levels)
-        //        GlobalData.TopicLevels.Add(e);
-        //}
+        public Tuple<Topic,List<FinishedVideo>> Commit()
+        {
+            foreach (var e in givenVideos)
+            {
+                e.TopicGuid = Guid.Empty;
+                e.NumberInTopic = 0;
+            }
+            Commit(Root[0]);
+            return Tuple.Create(Root[0].Topic, givenVideos);
+        }
 
         void DeleteFromList()
         {

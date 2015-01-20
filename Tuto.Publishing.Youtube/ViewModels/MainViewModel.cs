@@ -24,10 +24,11 @@ namespace Tuto.Publishing
         }
 
 
-        public PublishingSettings Settings 
-        { 
-            get; 
-            private set; 
+        PublishingSettings settings;
+        public PublishingSettings Settings
+        {
+            get { return settings; }
+            set { settings = value; NotifyPropertyChanged(); }
         }
       
 
@@ -58,21 +59,36 @@ namespace Tuto.Publishing
         #endregion
 
 		List<IMaterialSource> sources;
+        Func<IEnumerable<IMaterialSource>> sourcesFactory;
 
-        public MainViewModel(PublishingSettings settings, Item root, List<IMaterialSource> sources)
+        public MainViewModel(DirectoryInfo directory, Func<IEnumerable<IMaterialSource>> sourcesFactory)
         {
-			this.sources = sources;
-            this.Settings = settings;
-            Directory = settings.Location;
-            Root = new[] { root };
-			Load();
-			CreateCommandBlocks();
-
-            DataBinding<IExpandingDataHolder>.PullFromFile<ExpandingData>(root, settings.Location);
-           
+            this.sourcesFactory = sourcesFactory;
+            this.Directory = directory;
             UpdateCommand = new RelayCommand(Update);
             SaveCommand = new RelayCommand(Save);
-            //TestCommand = new RelayCommand(TestPlaylist);
+            Reload();
+        }
+
+
+        public void Reload()
+        {
+            var globalData = EditorModelIO.ReadGlobalData(Directory);
+            var root = ItemTreeBuilder.Build<FolderWrap, LectureWrap, VideoWrap>(globalData);
+            Root = new[] { root };
+
+            Settings= HeadedJsonFormat.Read<PublishingSettings>(Directory);
+            if (Settings == null) Settings = new PublishingSettings();
+            Settings.Location = Directory;
+
+            sources = sourcesFactory().ToList();
+            foreach (var source in sources)
+                source.Initialize(Settings);
+
+            Load();
+			CreateCommandBlocks();
+            DataBinding<IExpandingDataHolder>.PullFromFile<ExpandingData>(root, settings.Location);
+            
         }
 
         public void Closing()

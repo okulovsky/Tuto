@@ -28,10 +28,10 @@ namespace Tuto.Model
 
         #region Catalog 
         [DataMember]
-        public List<FinishedVideo> VideoData { get; internal set; }
+        public List<FinishedVideo> VideoData { get; set; }
 
         [DataMember]
-        public Topic TopicsRoot { get; internal set; }
+        public Topic TopicsRoot { get; set; }
 
         [DataMember]
         public List<TopicLevel> TopicLevels { get; internal set; }
