@@ -38,6 +38,7 @@ namespace Tuto.Publishing
 		List<VisualCommand> Commands { get; }
 		Uri ImageSource { get; }
 		BlockStatus Status { get;  }
+		void TryMakeItRight();
 	}
 
 	public interface ICommandBlocksHolder

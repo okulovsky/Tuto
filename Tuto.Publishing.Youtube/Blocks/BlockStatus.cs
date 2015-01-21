@@ -17,6 +17,7 @@ namespace Tuto.Publishing
 
     public class BlockStatus
     {
+		public bool InheritedFromChildren { get; private set; }
         public Statuses Status { get; private set; }
         public string Explanation { get; private set; }
         public Brush Brush
@@ -33,10 +34,10 @@ namespace Tuto.Publishing
             }
         }
         
-        public static BlockStatus OK(string message = "") { return new BlockStatus { Status = Statuses.OK, Explanation = message }; }
-        public static BlockStatus NA(string message = "") { return new BlockStatus { Status = Statuses.NotAvailable, Explanation = message }; }
-        public static BlockStatus Error(string message = "") { return new BlockStatus { Status = Statuses.Error, Explanation = message }; }
-        public static BlockStatus Warning(string message = "") { return new BlockStatus { Status = Statuses.Warning, Explanation = message }; }
+        public static BlockStatus OK(string message = "", bool inherited=false) { return new BlockStatus { Status = Statuses.OK, Explanation = message, InheritedFromChildren=inherited}; }
+		public static BlockStatus NA(string message = "", bool inherited = false) { return new BlockStatus { Status = Statuses.NotAvailable, Explanation = message, InheritedFromChildren = inherited }; }
+		public static BlockStatus Error(string message = "", bool inherited = false) { return new BlockStatus { Status = Statuses.Error, Explanation = message, InheritedFromChildren = inherited }; }
+		public static BlockStatus Warning(string message = "", bool inherited = false) { return new BlockStatus { Status = Statuses.Warning, Explanation = message, InheritedFromChildren = inherited }; }
 
     }
 }

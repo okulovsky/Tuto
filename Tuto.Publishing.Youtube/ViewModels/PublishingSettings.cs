@@ -25,6 +25,8 @@ namespace Tuto.Publishing
         public string LatexSourceSubdirectory { get;  set; }
         [DataMember]
         public string LatexCompiledSlidesSubdirectory { get;  set; }
+		[DataMember]
+		public string UlearnCourseDirectory { get; set; }
 
         public RelayCommand SaveCommand { get; private set; }
 

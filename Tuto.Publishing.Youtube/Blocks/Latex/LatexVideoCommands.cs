@@ -92,5 +92,11 @@ namespace Tuto.Publishing
                 return BlockStatus.OK();
             }
         }
+
+		public override void TryMakeItRight()
+		{
+			if (Status.Status != Statuses.Error) return;
+			Compile();
+		}
     }
 }

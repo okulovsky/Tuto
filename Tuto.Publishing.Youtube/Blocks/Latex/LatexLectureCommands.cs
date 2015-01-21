@@ -31,8 +31,8 @@ namespace Tuto.Publishing
         {
             get
             {
-                if (VideoData.Any(z => z.Status.Status == Statuses.Error)) return BlockStatus.Error("One ore more videos have errors");
-                if (VideoData.Any(z=>z.Status.Status== Statuses.Warning)) return BlockStatus.Warning("One or more video have warninhs");
+                if (VideoData.Any(z => z.Status.Status == Statuses.Error)) return BlockStatus.Error("One ore more videos have errors", true);
+				if (VideoData.Any(z => z.Status.Status == Statuses.Warning)) return BlockStatus.Warning("One or more video have warninhs", true);
                 if (VideoData.Any(z => z.Status.Status == Statuses.OK)) return BlockStatus.OK();
                 return BlockStatus.NA();
             }

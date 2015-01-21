@@ -90,6 +90,10 @@ namespace Tuto.Publishing
 			Process.Start(YoutubeClip.VideoURLFull);
 		}
 
-
+		public override void TryMakeItRight()
+		{
+			if (Status.Status == Statuses.Warning)
+				CmPush();
+		}
 	}
 }

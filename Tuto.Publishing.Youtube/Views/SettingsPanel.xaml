@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:v="clr-namespace:Tuto.Publishing.Youtube.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="600">
+             d:DesignHeight="400" d:DesignWidth="600">
     <StackPanel>
         <GroupBox Header="Youtube naming">
             <StackPanel>
@@ -54,6 +54,19 @@
 
                 <Label Grid.Column="0" Grid.Row="1">Subdirectory where compiled LaTeX slides will be placed (ignore it in Git)</Label>
                 <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding LatexCompiledSlidesSubdirectory}"/>
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="ULearn settings">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Label Grid.Column="0" Grid.Row="0">Directory with Ulearn output</Label>
+                <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding UlearnCourseDirectory}"/>
             </Grid>
         </GroupBox>
         <Button Command="{Binding SaveCommand}">Save settings</Button>

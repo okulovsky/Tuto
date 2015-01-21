@@ -123,6 +123,7 @@
     <Compile Include="Blocks\Latex\LatexLectureCommands.cs" />
     <Compile Include="Blocks\Latex\LatexSource.cs" />
     <Compile Include="Blocks\Latex\LatexVideoCommands.cs" />
+    <Compile Include="Blocks\ULearn\ULearnSource.cs" />
     <Compile Include="Blocks\Youtube\YoutubeLectureCommands.cs" />
     <Compile Include="Blocks\Youtube\YoutubeSource.cs" />
     <Compile Include="Blocks\Youtube\YoutubeVideoCommands.cs" />

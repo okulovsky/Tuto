@@ -32,8 +32,8 @@ namespace Tuto.Publishing
 		{
 			get
 			{
-				if (VideoData.Any(z => z.Status.Status == Statuses.Error)) return BlockStatus.Error("One or more video have errors");
-                if (VideoData.Any(z => z.Status.Status == Statuses.Warning)) return BlockStatus.Warning("One or more video have warnings");
+				if (VideoData.Any(z => z.Status.Status == Statuses.Error)) return BlockStatus.Error("One or more video have errors", true);
+                if (VideoData.Any(z => z.Status.Status == Statuses.Warning)) return BlockStatus.Warning("One or more video have warnings", true);
                 if (YoutubePlaylist == null) return BlockStatus.Warning("Playlist was not found at YouTube");
                 if (YoutubePlaylist.PlaylistTitle != dueTitle) return BlockStatus.Warning("Playlist title do not match");
                 return BlockStatus.OK();
@@ -67,22 +67,26 @@ namespace Tuto.Publishing
 			get { return Wrap.Get<YoutubePlaylist>(); }
 		}
 
-	
 
-		public void CmPush()
+		void UpdatePlaylist()
 		{
 			var playlist = YoutubePlaylist;
-            if (playlist != null) Source.YoutubeProcessor.DeletePlaylist(playlist);
+			if (playlist != null) Source.YoutubeProcessor.DeletePlaylist(playlist);
 
-            playlist = Source.YoutubeProcessor.CreatePlaylist(dueTitle);
-            Source.YoutubeProcessor.FillPlaylist(playlist, VideoData.Select(z => z.YoutubeClip).Where(z => z != null));
+			playlist = Source.YoutubeProcessor.CreatePlaylist(dueTitle);
+			Source.YoutubeProcessor.FillPlaylist(playlist, VideoData.Select(z => z.YoutubeClip).Where(z => z != null));
 
-            foreach (var e in VideoData)
-				e.CmPush();
 
 			Wrap.Store<YoutubePlaylist>(playlist);
 			this.NotifyByExpression(z => z.Status);
+		}
 
+		public void CmPush()
+		{
+			UpdatePlaylist();
+
+            foreach (var e in VideoData)
+				e.CmPush();
 		}
 
 		public void CmGo()
@@ -91,6 +95,10 @@ namespace Tuto.Publishing
 			Process.Start("https://www.youtube.com/playlist?list=" + YoutubePlaylist.PlaylistId);
 		}
 
-
+		public override void TryMakeItRight()
+		{
+			if (Status.Status == Statuses.Warning && !Status.InheritedFromChildren)
+				UpdatePlaylist();
+		}
 	}
 }

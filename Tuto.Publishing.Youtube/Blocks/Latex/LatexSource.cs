@@ -49,5 +49,6 @@ namespace Tuto.Publishing
         {
             return new LatexLectureCommands(this, wrap);
         }
+
     }
 }

@@ -28,6 +28,8 @@ namespace Tuto.Publishing
 
         public abstract string ImageFileName { get; }
 
+		public virtual void TryMakeItRight() { }
+
         public Uri ImageSource
         {
             get { return new Uri("/Img/" + ImageFileName, UriKind.Relative); }
