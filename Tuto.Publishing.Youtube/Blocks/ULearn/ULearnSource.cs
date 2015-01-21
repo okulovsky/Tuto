@@ -7,13 +7,14 @@ using System.Threading.Tasks;
 
 namespace Tuto.Publishing
 {
-	class ULearnSource : IMaterialSource
+	public class ULearnSource : IMaterialSource
 	{
 		public DirectoryInfo ULearnDirectory { get; private set; }
 	
 		public void Initialize(PublishingSettings settings)
 		{
-			ULearnDirectory = new DirectoryInfo(settings.UlearnCourseDirectory);
+			if (settings.UlearnCourseDirectory != null) 
+				ULearnDirectory = new DirectoryInfo(settings.UlearnCourseDirectory);
 		}
 
 		public void Load(Item root)
@@ -23,7 +24,7 @@ namespace Tuto.Publishing
 
 		public void Pull(Item root)
 		{
-			Load(root);
+
 		}
 
 		public void Save(Item root)
@@ -33,12 +34,12 @@ namespace Tuto.Publishing
 
 		public ICommandBlockModel ForVideo(VideoWrap wrap)
 		{
- 			throw new NotImplementedException();
+			return new ULearnVideoCommands(this, wrap);
 		}
 
 		public ICommandBlockModel ForLecture(LectureWrap wrap)
 		{
- 			throw new NotImplementedException();
+			return new ULearnLectureCommands(this, wrap);
 		}
 	}
 }

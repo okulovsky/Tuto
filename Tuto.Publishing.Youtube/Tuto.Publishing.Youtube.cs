@@ -58,7 +58,8 @@ namespace Tuto.Publishing.Youtube
         static IEnumerable<IMaterialSource> SourcesFactory()
         {
             yield return new YoutubeSource();
-            yield return new LatexSource();
+           // yield return new LatexSource();
+			yield return new ULearnSource();
         }
 
     }

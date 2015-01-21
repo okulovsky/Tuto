@@ -12,7 +12,8 @@ namespace Tuto.Publishing
         NotAvailable,
         Error,
         Warning,
-        OK
+        OK,
+		No
     }
 
     public class BlockStatus
@@ -29,7 +30,8 @@ namespace Tuto.Publishing
                     case Statuses.Error: return Brushes.Red;
                     case Statuses.OK: return Brushes.Green;
                     case Statuses.Warning: return Brushes.Yellow;
-                    default: return Brushes.LightGray;
+					case Statuses.No: return Brushes.Transparent;
+					default: return Brushes.LightGray;
                 }
             }
         }
@@ -38,6 +40,6 @@ namespace Tuto.Publishing
 		public static BlockStatus NA(string message = "", bool inherited = false) { return new BlockStatus { Status = Statuses.NotAvailable, Explanation = message, InheritedFromChildren = inherited }; }
 		public static BlockStatus Error(string message = "", bool inherited = false) { return new BlockStatus { Status = Statuses.Error, Explanation = message, InheritedFromChildren = inherited }; }
 		public static BlockStatus Warning(string message = "", bool inherited = false) { return new BlockStatus { Status = Statuses.Warning, Explanation = message, InheritedFromChildren = inherited }; }
-
+		public static BlockStatus No() { return new BlockStatus { Status = Statuses.No }; }
     }
 }
