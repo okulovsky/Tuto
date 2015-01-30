@@ -52,5 +52,10 @@ namespace Tuto.Publishing
 		{
 			return item.Subtree().OfType<ICommandBlocksHolder>().SelectMany(z => z.CommandBlocks.OfType<TCommandBlock>());
 		}
+
+        public static T BlockOfType<T>(this ICommandBlocksHolder holder)
+        {
+            return holder.CommandBlocks.OfType<T>().FirstOrDefault();
+        }
 	}
 }

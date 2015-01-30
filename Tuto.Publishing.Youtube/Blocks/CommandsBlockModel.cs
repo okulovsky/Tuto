@@ -36,6 +36,8 @@ namespace Tuto.Publishing
         }
 
         public abstract BlockStatus Status { get; }
+
+      
     }
 
     public abstract class LectureCommandBlockModel<TSource, TVideoData> : CommandsBlockModel<TSource, LectureWrap>
@@ -49,13 +51,20 @@ namespace Tuto.Publishing
         where TLectureData : NotifierModel, ICommandBlockModel
     {
         public VideoCommandBlockModel(TSource source, VideoWrap item) : base(source, item) { }
-      
+
+        public TLectureData LectureData
+        {
+            get
+            {
+                return (Wrap.Parent as LectureWrap).CommandBlocks.OfType<TLectureData>().FirstOrDefault();
+            }
+        }
+
         public void MakeChange()
         {
             base.Source.Save(Wrap.Root);
             this.NotifyByExpression(z => z.Status);
-            var parentData = (Wrap.Parent as LectureWrap).CommandBlocks.OfType<TLectureData>().FirstOrDefault();
-            parentData.NotifyByExpression(z => z.Status);
+            LectureData.NotifyByExpression(z => z.Status);
         }
     }
 }

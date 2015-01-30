@@ -182,9 +182,6 @@
     <Compile Include="Views\WrapControl.xaml.cs">
       <DependentUpon>WrapControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\YoutubeVideoBlock.xaml.cs">
-      <DependentUpon>YoutubeVideoBlock.xaml</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -229,10 +226,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\WrapControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\YoutubeVideoBlock.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
