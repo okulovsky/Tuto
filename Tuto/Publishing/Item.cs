@@ -92,6 +92,7 @@ namespace Tuto.Publishing
 
     public class LectureItem : FolderOrLectureItem
     {
+        public int LectureNumber { get; set; }
     }
 
     public class VideoItem : Item

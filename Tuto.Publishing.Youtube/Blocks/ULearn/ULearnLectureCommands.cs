@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,7 @@ namespace Tuto.Publishing
 			: base(source, wrap)
 		{
 			Commands.Add(new VisualCommand(Compile, () => true, "compile.png"));
-            Directory = Source.ULearnDirectory.CreateSubdirectory(string.Format("L{0:D2} - {1}", Wrap.NumberInTopic, Source.FileConvert(Wrap.Caption)));
+            Commands.Add(new VisualCommand(() => Process.Start("\"" + Source.DirectoryForLecture(Wrap).FullName + "\""), () => true, "view.png"));
 		}
 
 		public override string ImageFileName
@@ -21,7 +22,6 @@ namespace Tuto.Publishing
 			get { return "ULearn.png"; }
 		}
 
-        public readonly DirectoryInfo Directory;
 
         void Compile()
         {

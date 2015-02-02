@@ -10,8 +10,8 @@ using Tuto;
 
 namespace Tuto.Publishing
 {
-    [DataContract]
-   public  class PublishingSettings
+   [DataContract]
+   public class PublishingSettings
     {
         [DataMember]
         public string CourseAbbreviation { get; set; }
@@ -28,7 +28,11 @@ namespace Tuto.Publishing
 		[DataMember]
 		public string UlearnCourseDirectory { get; set; }
 
-        public RelayCommand SaveCommand { get; private set; }
+        RelayCommand _saveCommand;
+        public RelayCommand SaveCommand
+        {
+            get { if (_saveCommand == null)  _saveCommand = new RelayCommand(Save); return _saveCommand; }
+        }
 
         public DirectoryInfo Location { get; set; }
         
@@ -40,7 +44,7 @@ namespace Tuto.Publishing
         public PublishingSettings()
         {
             TopicLevels = new List<TopicLevel>();
-            SaveCommand = new RelayCommand(Save);
+            UlearnCourseDirectory = "";
             LatexSourceSubdirectory = "Latex";
             LatexCompiledSlidesSubdirectory = "LatexCompiledSlides";
             CourseAbbreviation = "";

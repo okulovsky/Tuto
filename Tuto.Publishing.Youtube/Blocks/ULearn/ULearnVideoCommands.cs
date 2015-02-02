@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -13,8 +14,10 @@ namespace Tuto.Publishing
 			: base(source, wrap)
 		{
 			Commands.Add(new VisualCommand(Compile, () => true, "compile.png"));
-            File = new FileInfo(Path.Combine(LectureData.Directory.FullName, string.Format("S{0:D2} - {1}", Wrap.NumberInTopic, Wrap.Caption)));
+            Commands.Add(new VisualCommand(() => Process.Start("\"" + Source.FileForSlide(Wrap).FullName + "\""), () => true, "view.png"));
         }
+
+
 
         string CreateContent(string entry)
         {
@@ -25,7 +28,7 @@ namespace {0}
     Slide[@""{1}"",""{2}""]
     public class {3}
         {{
-        {4}
+{4}
         }}
 }}";
 
@@ -33,24 +36,40 @@ namespace {0}
                 Source.Settings.CourseAbbreviation,
                 Wrap.Caption,
                 Wrap.Guid,
-                Source.CSConvert(Wrap.Caption));
+                Source.CSConvert(Wrap.Caption),
+                entry);
         }
 
         string CreateVideoEntry()
         {
             var clip =  Wrap.BlockOfType<YoutubeVideoCommands>().YoutubeClip;
-            if (clip != null) return string.Format("//#video " + clip.Id);
+            if (clip != null) return string.Format("\t\t//#video " + clip.Id);
             return "";
+        }
+
+        string PrepareGalleryAndCreateEntry()
+        {
+            var latexBlock = Wrap.BlockOfType<LatexVideoCommands>();
+            if (latexBlock.Status.Status != Statuses.OK) return "";
+            var sourceDirectory = latexBlock.DueSlidesDirectory;
+            string galleryName = string.Format("{0:D2}-files", Wrap.NumberInTopic);
+            var dstDirectory = new DirectoryInfo(Path.Combine(Source.FileForSlide(Wrap).Directory.FullName, galleryName));
+            if (dstDirectory.Exists) dstDirectory.Delete(true);
+            dstDirectory.Create();
+            foreach (var file in sourceDirectory.GetFiles())
+                file.CopyTo(Path.Combine(dstDirectory.FullName, file.Name));
+            return "\t\t//#gallery " + galleryName;
+
         }
 
         public void Compile()
         {
-            if (!File.Directory.Exists) File.Directory.Create();
-            var content = CreateContent(CreateVideoEntry());
-            System.IO.File.WriteAllText(File.FullName, content);
+            if (!Source.FileForSlide(Wrap).Directory.Exists) Source.FileForSlide(Wrap).Directory.Create();
+            var content = CreateContent(CreateVideoEntry()+"\n"+PrepareGalleryAndCreateEntry());
+            System.IO.File.WriteAllText(Source.FileForSlide(Wrap).FullName, content);
         }
 
-        FileInfo File;
+       
 
 		public override string ImageFileName
 		{

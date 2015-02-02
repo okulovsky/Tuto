@@ -12,14 +12,11 @@ namespace Tuto.Publishing
 	{
 
         public PublishingSettings Settings { get; private set; }
-        public DirectoryInfo ULearnDirectory { get; private set; }
 	
 		public void Initialize(PublishingSettings settings)
 		{
             Settings = settings;
-			if (settings.UlearnCourseDirectory != null) 
-				ULearnDirectory = new DirectoryInfo(settings.UlearnCourseDirectory);
-		}
+   		}
 
         Regex csRegex = new Regex(@"[ \.,:-]");
         Regex fileRegex = new Regex(@"[:\?]");
@@ -33,6 +30,20 @@ namespace Tuto.Publishing
         public string FileConvert(string str)
         {
             return fileRegex.Replace(str, "_");
+        }
+
+        public DirectoryInfo DirectoryForLecture(LectureWrap wrap)
+        {
+            return new DirectoryInfo(Path.Combine(
+                Settings.UlearnCourseDirectory,
+                string.Format("L{0:D2} - {1}", wrap.LectureNumber, FileConvert(wrap.Caption))));
+        }
+
+        public FileInfo FileForSlide(VideoWrap wrap)
+        {
+            return new FileInfo(Path.Combine(
+                DirectoryForLecture(wrap.Parent as LectureWrap).FullName,
+                string.Format("S{0:D2} - {1}.cs", wrap.NumberInTopic, wrap.Caption)));
         }
 
 		public void Load(Item root)

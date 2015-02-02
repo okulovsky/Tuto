@@ -17,9 +17,12 @@ namespace Tuto.Publishing
             var result = BuildTopic<TFolderItem, TLectureItem, TVideoItem>(globalData, globalData.TopicsRoot);
             result.GlobalData = globalData;
             result.Root = result;
+            lectureNumber = 0;
             InitializeItem(result);
             return result;
         }
+
+       static int lectureNumber = 0;
 
         public static Item BuildTopic<TFolderItem, TLectureItem, TVideoItem>(GlobalData globalData, Topic topic)
             where TFolderItem : FolderItem, new()
@@ -51,6 +54,10 @@ namespace Tuto.Publishing
 
         public static void InitializeItem(Item item)
         {
+            var lecture = item as LectureItem;
+            if (lecture != null)
+                lecture.LectureNumber = lectureNumber++;
+
             for (int i = 0; i < item.Children.Count; i++)
             {
                 var e = item.Children[i];

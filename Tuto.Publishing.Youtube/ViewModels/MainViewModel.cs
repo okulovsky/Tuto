@@ -117,8 +117,8 @@ namespace Tuto.Publishing
 
         void CreateCommandBlocks()
         {
-            Assign<VideoWrap>((sources, wrap) => sources.ForVideo(wrap));
             Assign<LectureWrap>((source, wrap) => source.ForLecture(wrap));
+            Assign<VideoWrap>((sources, wrap) => sources.ForVideo(wrap));
         }
 
 		void Update()
