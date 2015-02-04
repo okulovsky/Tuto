@@ -27,6 +27,9 @@ namespace Tuto.Publishing
         {
             foreach (var b in Wrap.ChildCommandBlocks<ULearnVideoCommands>())
                 b.Compile();
+            File.WriteAllText(
+                Path.Combine(Source.DirectoryForLecture(Wrap).FullName, "Title.txt"),
+                Wrap.Caption);
         }
 
 		public override BlockStatus Status
