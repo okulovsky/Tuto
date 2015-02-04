@@ -52,14 +52,11 @@ namespace {0}
         {
             var latexBlock = Wrap.BlockOfType<LatexVideoCommands>();
             if (latexBlock.Status.Status != Statuses.OK) return "";
-            var sourceDirectory = latexBlock.DueSlidesDirectory;
-            string galleryName = string.Format("{0:D2}-files", Wrap.NumberInTopic);
-            var dstDirectory = new DirectoryInfo(Path.Combine(Source.FileForSlide(Wrap).Directory.FullName, galleryName));
-            if (dstDirectory.Exists) dstDirectory.Delete(true);
-            dstDirectory.Create();
-            foreach (var file in sourceDirectory.GetFiles())
-                file.CopyTo(Path.Combine(dstDirectory.FullName, file.Name));
-            return "\t\t//#gallery " + galleryName;
+            var dstFile = new FileInfo(
+                Path.Combine(Source.FileForSlide(Wrap).Directory.FullName, 
+                string.Format("_S{0:D2}-slides.pdf",Wrap.NumberInTopic)));
+            latexBlock.PdfFile.CopyTo(dstFile.FullName,true);
+            return "\t\t/*\n\t\t[Презентация](" + dstFile.Name + ")\n\t\t*/\n";
 
         }
 

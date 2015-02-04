@@ -5,8 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Media;
-using System.Windows.Shapes;
 
 namespace Tuto.Publishing
 {
@@ -44,10 +42,11 @@ namespace Tuto.Publishing
             GalleryInfo galleryData = null;
             if (pdfFile != null)
             {
-                var directory = DueSlidesDirectory;
-                if (directory.Exists) directory.Delete(true);
-                directory.Create();
-                LatexProcessor.ConvertToPng(pdfFile, directory);
+                pdfFile.CopyTo(PdfFile.FullName, true);
+                //var directory = DueSlidesDirectory;
+                //if (directory.Exists) directory.Delete(true);
+                //directory.Create();
+                //LatexProcessor.ConvertToPng(pdfFile, directory;)
                 galleryData = new GalleryInfo { CompilationTime = DateTime.Now };
             }
             Wrap.Store(galleryData);
@@ -62,13 +61,24 @@ namespace Tuto.Publishing
             Process.Start("\"" + path + "\"");
         }
 
-        public DirectoryInfo DueSlidesDirectory
+        public DirectoryInfo OutputDirectory
         {
             get
             {
                 return Source.LatexSlidesStorage.CreateSubdirectory(Wrap.Video.Guid.ToString());
             }
         }
+
+        public DirectoryInfo DueSlidesDirectory
+        {
+            get { return OutputDirectory.CreateSubdirectory("pngs"); }
+        }
+
+        public FileInfo PdfFile
+        {
+            get { return new FileInfo(Path.Combine(OutputDirectory.FullName, "slides.pdf")); }
+        }
+
 
         public override string ImageFileName
         {
@@ -86,9 +96,12 @@ namespace Tuto.Publishing
             {
                 if (LatexSource == null) return BlockStatus.NA("No LaTeX source is found for this video");
                 if (Gallery == null) return BlockStatus.Error("Slides were not compiled");
-                if (!DueSlidesDirectory.Exists) return BlockStatus.Error("Slides were compiled, but they are not found now. Recompile them");
+                //if (!DueSlidesDirectory.Exists) return BlockStatus.Error("Slides were compiled, but they are not found now. Recompile them");
+                //if (Gallery.CompilationTime < LatexSource.ModificationTime) return BlockStatus.Error("Slides are outdated. Recompile them");
+                //if (DueSlidesDirectory.GetFiles().Length == 0) return BlockStatus.Warning("No slides are produced for this video. Check the presentation and remove the section, if it was intended");
+                if (!PdfFile.Exists) return BlockStatus.Error("Slides were compiled, but they are not found now. Recompile them");
                 if (Gallery.CompilationTime < LatexSource.ModificationTime) return BlockStatus.Error("Slides are outdated. Recompile them");
-                if (DueSlidesDirectory.GetFiles().Length == 0) return BlockStatus.Warning("No slides are produced for this video. Check the presentation and remove the section, if it was intended");
+                
                 return BlockStatus.OK();
             }
         }
