@@ -38,11 +38,11 @@ namespace Tuto.Publishing
             get { return root; }
             set { root = value; NotifyPropertyChanged(); }
         }
-        
 
-        public List<FinishedVideo> finishedNotMatched;
 
-        public List<FinishedVideo> FinishedNotMatched
+		public List<VideoPublishSummary> finishedNotMatched;
+
+        public List<VideoPublishSummary> FinishedNotMatched
         {
             get { return finishedNotMatched; }
             set { finishedNotMatched = value; NotifyPropertyChanged(); }
@@ -73,7 +73,7 @@ namespace Tuto.Publishing
 
         public void Reload()
         {
-            var globalData = EditorModelIO.ReadGlobalData(Directory);
+			var globalData = CourseTreeData.Load(Directory);
             var root = ItemTreeBuilder.Build<FolderWrap, LectureWrap, VideoWrap>(globalData);
             Root = new[] { root };
 

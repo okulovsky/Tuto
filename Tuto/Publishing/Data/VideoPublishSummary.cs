@@ -19,4 +19,6 @@ namespace Tuto.Publishing
 		[DataMember]
 		public TimeSpan Duration { get; set; }
 	}
+
+
 }

@@ -25,7 +25,6 @@ namespace Tuto.Publishing
 
     public abstract class Item : NotifierModel, IItem
     {
-        public GlobalData GlobalData { get; internal set; }
         public Item Root { get; internal set; }
         public bool IsRoot { get { return Root == this; } }
         public Item Parent { get; internal set; }
@@ -97,7 +96,7 @@ namespace Tuto.Publishing
 
     public class VideoItem : Item
     {
-        public FinishedVideo Video { get; internal set; }
+		public VideoPublishSummary Video { get; internal set; }
         public override Guid Guid
         {
             get { return Video.Guid; }

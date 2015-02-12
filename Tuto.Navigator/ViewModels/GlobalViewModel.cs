@@ -103,6 +103,7 @@ namespace Tuto.Navigator
 				HeadedJsonFormat.Write(file, currentList);
 			}
         }
+
         void Run(bool forceMontage)
         {
             var work = Subdirectories

@@ -9,13 +9,12 @@ namespace Tuto.Publishing
 {
     public static class ItemTreeBuilder
     {
-        public static Item Build<TFolderItem, TLectureItem, TVideoItem>(GlobalData globalData)
+        public static Item Build<TFolderItem, TLectureItem, TVideoItem>(CourseTreeData globalData)
             where TFolderItem : FolderItem, new()
             where TLectureItem : LectureItem, new()
             where TVideoItem : VideoItem, new()
         {
-            var result = BuildTopic<TFolderItem, TLectureItem, TVideoItem>(globalData, globalData.TopicsRoot);
-            result.GlobalData = globalData;
+            var result = BuildTopic<TFolderItem, TLectureItem, TVideoItem>(globalData, globalData.Structure.RootTopic);
             result.Root = result;
             lectureNumber = 0;
             InitializeItem(result);
@@ -24,14 +23,16 @@ namespace Tuto.Publishing
 
        static int lectureNumber = 0;
 
-        public static Item BuildTopic<TFolderItem, TLectureItem, TVideoItem>(GlobalData globalData, Topic topic)
+        public static Item BuildTopic<TFolderItem, TLectureItem, TVideoItem>(CourseTreeData globalData, Topic topic)
             where TFolderItem : FolderItem, new()
             where TLectureItem : LectureItem, new()
             where TVideoItem : VideoItem, new()
         {
             Item item = null;
-            var videos = globalData.VideoData.Where(z => z.TopicGuid == topic.Guid).OrderBy(z=>z.NumberInTopic).ToList();
-            if (videos.Count != 0 && topic.Items.Count != 0)
+            var videos = globalData.Structure.VideoToTopicRelations.Where(z => z.TopicGuid == topic.Guid).OrderBy(z=>z.NumberInTopic).ToList();
+            
+			
+			if (videos.Count != 0 && topic.Items.Count != 0)
                 throw new Exception("Topic " + topic.Caption + " contains both videos and subtopics");
 
             if (videos.Count == 0)
@@ -47,7 +48,9 @@ namespace Tuto.Publishing
             item = new TLectureItem() { Topic=topic };
             foreach (var e in videos)
             {
-                item.Children.Add(new TVideoItem { Video = e });
+				var video = globalData.Videos.Where(z => z.Guid == e.VideoGuid).FirstOrDefault();
+				if (video == null) continue;
+                item.Children.Add(new TVideoItem { Video = video });
             }
             return item;
         }
@@ -64,7 +67,6 @@ namespace Tuto.Publishing
                 e.Parent = item;
                 e.NumberInTopic = i;
                 e.Root = item.Root;
-                e.GlobalData = item.GlobalData;
                 InitializeItem(e);
             }
         }

@@ -30,8 +30,8 @@ namespace Tuto.Publishing.Youtube
 
         public static void RunCatalogWindow()
         {
-            var globalData = EditorModelIO.ReadGlobalData(currentDirectory);
-            var model = new Tuto.TreeEditor.PublishViewModel(globalData.TopicsRoot, globalData.VideoData);
+			var globalData = CourseTreeData.Load(currentDirectory);
+			var model = new Tuto.TreeEditor.PublishViewModel(globalData);
             var wnd = new Tuto.TreeEditor.PublishPanel();
             wnd.DataContext = model;
             wnd.Closed += wnd_Closed;
@@ -46,10 +46,7 @@ namespace Tuto.Publishing.Youtube
             if (response != MessageBoxResult.No)
             {
                 var data = catalog.Commit();
-                var globalData = EditorModelIO.ReadGlobalData(currentDirectory);
-                globalData.TopicsRoot = data.Item1;
-                globalData.VideoData = data.Item2;
-                EditorModelIO.Save(globalData);
+				HeadedJsonFormat.Write(currentDirectory, data);               
                 (Application.MainWindow.DataContext as MainViewModel).Reload();
             }
             Application.MainWindow.Show();

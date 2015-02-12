@@ -86,12 +86,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Publishing\DataBinding.cs" />
     <Compile Include="Publishing\DataLayer.cs" />
+    <Compile Include="Publishing\Data\CourseStructure.cs" />
     <Compile Include="Publishing\Item.cs" />
     <Compile Include="Publishing\ItemTreeBuilder.cs" />
     <Compile Include="Publishing\MatchData.cs" />
     <Compile Include="Publishing\Matchers.cs" />
     <Compile Include="Publishing\NameMatchAlgorithm\NameMatchAlgorithm.cs" />
-    <Compile Include="Publishing\VideoPublishSummary.cs" />
+    <Compile Include="Publishing\Data\VideoPublishSummary.cs" />
     <Compile Include="Publishing\YoutubeData\DataBinding.cs" />
     <Compile Include="Publishing\YoutubeData\IYoutubeProcessor.cs" />
     <Compile Include="Publishing\YoutubeData\YoutubeClip.cs" />

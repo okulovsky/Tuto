@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tuto.Model;
+using Tuto.Publishing;
 
 namespace Tuto.TreeEditor
 {
@@ -46,8 +47,8 @@ namespace Tuto.TreeEditor
 
     public class VideoWrap : Wrap
     {
-        public FinishedVideo Video { get; private set; }
-        public VideoWrap(FinishedVideo data)
+        public VideoPublishSummary Video { get; private set; }
+		public VideoWrap(VideoPublishSummary data)
         {
             Video = data;
         }

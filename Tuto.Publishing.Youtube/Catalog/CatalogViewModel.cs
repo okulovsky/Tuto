@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tuto.Model;
+using Tuto.Publishing;
 
 namespace Tuto.TreeEditor
 {
@@ -21,19 +22,55 @@ namespace Tuto.TreeEditor
         public ObservableCollection<VideoWrap> UnassignedVideos { get; private set; }
         public Wrap SelectedItem { get; set; }
         public VideoWrap SelectedItemInUnassignedList { get; set; }
-        List<FinishedVideo> givenVideos;
+        List<VideoPublishSummary> givenVideos;
 
-        public PublishViewModel(Topic topicRoot, List<FinishedVideo> videos)
+
+
+		public void Commit(TopicWrap wrap, CourseStructure structure)
+		{
+			wrap.Topic.Items.Clear();
+			foreach (var e in wrap.Items)
+			{
+				if (e is TopicWrap)
+				{
+					var tw = e as TopicWrap;
+					Commit(tw,structure);
+					wrap.Topic.Items.Add(tw.Topic);
+					continue;
+				}
+				if (e is VideoWrap)
+				{
+					var vw = e as VideoWrap;
+					var relation = new VideoToTopicRelation();
+					relation.TopicGuid = wrap.Topic.Guid;
+					relation.NumberInTopic = wrap.Items.IndexOf(vw);
+					relation.VideoGuid = vw.Video.Guid;
+					structure.VideoToTopicRelations.Add(relation);
+				}
+			}
+		}
+
+		public CourseStructure Commit()
+		{
+			var result = new CourseStructure();
+			Commit(Root[0], result);
+			result.RootTopic = Root[0].Topic;
+			return result;
+		}
+
+        public PublishViewModel(CourseTreeData globalData)
         {
-            this.givenVideos = videos;
-            Root = new TopicWrap[] { new TopicWrap(topicRoot) };
+            this.givenVideos = globalData.Videos;
+            Root = new TopicWrap[] { new TopicWrap(globalData.Structure.RootTopic) };
             UnassignedVideos = new ObservableCollection<VideoWrap>();
-            foreach (var e in videos.Where(z => z.TopicGuid == Guid.Empty))
+            foreach (var e in globalData.Videos.Where(z=>!globalData.Structure.VideoToTopicRelations.Any(x=>x.VideoGuid==z.Guid)))
                 UnassignedVideos.Add(new VideoWrap(e));
             foreach(var e in Root[0].Subtree.OfType<TopicWrap>())
-                foreach (var v in videos.Where(z => z.TopicGuid == e.Topic.Guid).OrderBy(z => z.NumberInTopic))
+                foreach (var v in globalData.Structure.VideoToTopicRelations.Where(z => z.TopicGuid == e.Topic.Guid).OrderBy(z => z.NumberInTopic))
                 {
-                    var vw = new VideoWrap(v);
+					var pv = globalData.Videos.Where(z=>z.Guid==v.VideoGuid).FirstOrDefault();
+					if (pv==null) continue;
+					var vw = new VideoWrap(pv);
                     e.Items.Add(vw);
                     vw.Parent = e;
                 }
@@ -162,38 +199,6 @@ namespace Tuto.TreeEditor
 
 
             Insert(what, where, beforeOf);
-        }
-
-        public void Commit(TopicWrap wrap)
-        {
-            wrap.Topic.Items.Clear();
-            foreach (var e in wrap.Items)
-            {
-                if (e is TopicWrap)
-                {
-                    var tw = e as TopicWrap;
-                    Commit(tw);
-                    wrap.Topic.Items.Add(tw.Topic);
-                    continue;
-                }
-                if (e is VideoWrap)
-                {
-                    var vw = e as VideoWrap;
-                    vw.Video.TopicGuid = wrap.Topic.Guid;
-                    vw.Video.NumberInTopic = wrap.Items.IndexOf(vw);
-                }
-            }
-        }
-
-        public Tuple<Topic,List<FinishedVideo>> Commit()
-        {
-            foreach (var e in givenVideos)
-            {
-                e.TopicGuid = Guid.Empty;
-                e.NumberInTopic = 0;
-            }
-            Commit(Root[0]);
-            return Tuple.Create(Root[0].Topic, givenVideos);
         }
 
         void DeleteFromList()
