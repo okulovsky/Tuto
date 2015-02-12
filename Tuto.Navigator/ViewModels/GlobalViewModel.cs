@@ -13,6 +13,7 @@ using System.Windows.Media.Media3D;
 using Microsoft.Win32;
 using Tuto.Model;
 using Tuto.Navigator.ViewModels;
+using Tuto.Publishing;
 
 namespace Tuto.Navigator
 {
@@ -80,6 +81,27 @@ namespace Tuto.Navigator
         {
             Publish.Commit();
             EditorModelIO.Save(GlobalData);
+			if (GlobalData.RelativeVideoListPath!=null)
+			{
+				var file = new FileInfo(Path.Combine(
+					GlobalData.GlobalDataFolder.FullName,
+					GlobalData.RelativeVideoListPath,
+					Tuto.Model.GlobalData.VideoListName));
+				List<VideoPublishSummary> currentList = new List<VideoPublishSummary>();
+				if (file.Exists)
+					currentList = HeadedJsonFormat.Read<List<VideoPublishSummary>>(file);
+
+				foreach (var e in models)
+					for (int i = 0; i < e.Montage.Information.Episodes.Count; i++)
+						if (!currentList.Any(z => z.Guid == e.Montage.Information.Episodes[i].Guid))
+						{
+							var fv = new FinishedVideo(e, i);
+							var pv = new VideoPublishSummary { Guid = fv.Guid, Name = fv.Name, Duration = fv.Duration };
+							currentList.Add(pv);
+						}
+
+				HeadedJsonFormat.Write(file, currentList);
+			}
         }
         void Run(bool forceMontage)
         {

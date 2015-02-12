@@ -8,42 +8,6 @@
              d:DesignWidth="500"
              >
     <StackPanel Orientation="Vertical">
-        <GroupBox Header="Main settings">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-
-                <Label Grid.Column="0" Grid.Row="0">The course's name</Label>
-                <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Name }"/>
-            
-                <Label Grid.Column="0" Grid.Row="1">The course's abbreviation</Label>
-                <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding CourseAbbreviation}"/>
-
-
-                <Label Grid.Column="0" Grid.Row="2">The course's keywords</Label>
-                <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Keywords}"/>
-
-                <Label Grid.Column="0" Grid.Row="3">The text to appear in Course Description</Label>
-                <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding DescriptionPS}" TextWrapping="Wrap" AcceptsReturn="True" Height="100" />
-
-
-                <Label Grid.Column="0" Grid.Row="4">Title image</Label>
-                <navigator:FilePickerControl  Grid.Column="1" Grid.Row="4" FilePath="{Binding TitleImage,Mode=TwoWay}" FileFilter="{StaticResource ImageFilesFilter}"/>
-
-                <Label Grid.Column="0" Grid.Row="5">Watermark image</Label>
-                <navigator:FilePickerControl  Grid.Column="1" Grid.Row="5" FilePath="{Binding WatermarkImage,Mode=TwoWay}"/>
-            </Grid>
-        </GroupBox>
         <GroupBox>
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -53,6 +17,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition></RowDefinition>
                     <RowDefinition ></RowDefinition>
+                    <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
 
                 <Label Grid.Column="0" Grid.Row="0" Content="Max distance to silence"></Label>
@@ -60,6 +25,9 @@
 
                 <Label Grid.Column="0" Grid.Row="1" Content="Silence margin"></Label>
                 <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding VoiceSettings.SilenceMargin}"></TextBox>
+
+                <Label Grid.Column="0" Grid.Row="2" Content="Subfolder where the video sumarry should be"></Label>
+                <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding RelativeVideoListPath}"></TextBox>
             </Grid>
         </GroupBox>
     </StackPanel>

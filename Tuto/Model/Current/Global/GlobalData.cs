@@ -11,6 +11,8 @@ namespace Tuto.Model
     [DataContract]
     public class GlobalData
     {
+		public const string VideoListName = "VideoSummaries.txt";
+
         [DataMember]
         public VoiceSettings VoiceSettings { get; set; }
 
@@ -50,6 +52,9 @@ namespace Tuto.Model
         public string DescriptionPS { get; set; }
 
         #endregion
+
+		[DataMember]
+		public string RelativeVideoListPath { get; set; }
 
         public DirectoryInfo GlobalDataFolder { get; internal set; }
 

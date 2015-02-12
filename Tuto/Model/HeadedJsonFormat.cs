@@ -45,14 +45,21 @@ namespace Tuto.Model
             return ReadWithoutHeader<T>(text);
         }
 
+
+		public static T Read<T>(FileInfo file)
+			where T : new()
+		{
+			var header = typeof(T).Name + " Tuto file";
+			if (!File.Exists(file.FullName)) return new T();
+			return Read<T>(file, header, 1);
+		}
+
         public static T Read<T>(DirectoryInfo directory)
             where T : new()
         {
             var fileName = typeof(T).Name + ".txt";
-            var header = typeof(T).Name + " Tuto file";
-            var filePath = Path.Combine(directory.FullName, fileName);
-            if (!File.Exists(filePath)) return new T();
-            return Read<T>(new FileInfo(filePath), header, 1);
+			var filePath = Path.Combine(directory.FullName, fileName);
+			return Read<T>(new FileInfo(filePath));
         }
 
 
@@ -70,12 +77,17 @@ namespace Tuto.Model
             }
         }
 
+		public static void Write<T>(FileInfo file, T Data)
+		{
+			var header = typeof(T).Name + " Tuto file";
+			Write(file, header, 1, Data);
+		}
+
         public static void Write<T>(DirectoryInfo directory, T Data)
         {
             var fileName = typeof(T).Name + ".txt";
-            var header = typeof(T).Name + " Tuto file";
-            var filePath = Path.Combine(directory.FullName, fileName);
-            Write(new FileInfo(filePath), header, 1, Data);
+			var filePath = Path.Combine(directory.FullName, fileName);
+			Write(new FileInfo(filePath), Data);
         }
     }
 }

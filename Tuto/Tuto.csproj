@@ -91,6 +91,7 @@
     <Compile Include="Publishing\MatchData.cs" />
     <Compile Include="Publishing\Matchers.cs" />
     <Compile Include="Publishing\NameMatchAlgorithm\NameMatchAlgorithm.cs" />
+    <Compile Include="Publishing\VideoPublishSummary.cs" />
     <Compile Include="Publishing\YoutubeData\DataBinding.cs" />
     <Compile Include="Publishing\YoutubeData\IYoutubeProcessor.cs" />
     <Compile Include="Publishing\YoutubeData\YoutubeClip.cs" />
