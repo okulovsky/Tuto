@@ -84,6 +84,17 @@ namespace YoutubeApiTest
             service.Videos.Update(video, "snippet").Execute();
         }
 
+		public void UpdateVideoThumbnail(YoutubeClip clip, FileInfo image)
+		{
+			// Create an API request that specifies that the mediaContent
+			// object is the thumbnail of the specified video.
+			using (var stream = File.Open(image.FullName, FileMode.Open))
+			{
+				var thumbnailSet = service.Thumbnails.Set(clip.Id, stream, "image/png");
+				thumbnailSet.Upload();
+			}
+		}
+
         public YoutubePlaylist CreatePlaylist(string name)
         {
             var list = new Playlist();

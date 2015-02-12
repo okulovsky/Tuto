@@ -21,6 +21,8 @@ namespace Tuto.Publishing
 			InitializeDueNames();
 			Commands.Add(new VisualCommand(new RelayCommand(CmGo), "view.png"));
 			Commands.Add(new VisualCommand(new RelayCommand(CmPush), "upload.png"));
+			Commands.Add(new VisualCommand(new RelayCommand(CmThumbnail), "thumbnail.png"));
+
 		}
 
         public override string ImageFileName
@@ -87,6 +89,12 @@ namespace Tuto.Publishing
 
             foreach (var e in VideoData)
 				e.CmPush();
+		}
+
+		public void CmThumbnail()
+		{
+			foreach (var e in VideoData)
+				e.CmThumbnail();
 		}
 
 		public void CmGo()

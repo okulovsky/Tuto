@@ -35,7 +35,10 @@ namespace Google.Apis.YouTube.Samples
                 Console.WriteLine("{0,-15}{1,10}", video.Id, video.Name);
 
             var v = videos.First();
-            v.Name = "XXX";
+			processor.UpdateVideoThumbnail(v, new FileInfo("aiml.png"));
+
+			return;
+			v.Name = "XXX";
             v.Description = "YYY";
             processor.UpdateVideo(v);
 

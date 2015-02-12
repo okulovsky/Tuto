@@ -16,6 +16,7 @@ namespace Tuto.Publishing.YoutubeData
         List<YoutubePlaylist> GetAllPlaylists();
         void DeletePlaylist(YoutubePlaylist playlist);
         void FillPlaylist(YoutubePlaylist list, IEnumerable<YoutubeClip> clips);
+		void UpdateVideoThumbnail(YoutubeClip clip, FileInfo image);
         
     }
 }

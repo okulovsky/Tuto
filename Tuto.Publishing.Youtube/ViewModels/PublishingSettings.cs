@@ -19,6 +19,8 @@ namespace Tuto.Publishing
         public string Keywords { get; set; }
         [DataMember]
         public string DescriptionPS { get; set; }
+	    [DataMember]
+		public string ThumbnailImagePath { get; set; }
         [DataMember]
         public List<TopicLevel> TopicLevels { get; private set; }
         [DataMember]

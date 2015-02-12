@@ -9,6 +9,7 @@ using System.Windows.Media;
 using Tuto.Model;
 using Tuto;
 using Tuto.Publishing.YoutubeData;
+using System.IO;
 
 namespace Tuto.Publishing
 {
@@ -36,6 +37,7 @@ namespace Tuto.Publishing
          	InitializeDueNames();
 			Commands.Add(new VisualCommand(new RelayCommand(CmGo, () => YoutubeClip != null), "view.png"));
 			Commands.Add(new VisualCommand(new RelayCommand(CmPush, () => YoutubeClip != null), "upload.png"));
+			Commands.Add(new VisualCommand(new RelayCommand(CmThumbnail, ()=>YoutubeClip!=null), "thumbnail.png"));
 		}
 
 		#region Разборка с именами
@@ -89,6 +91,16 @@ namespace Tuto.Publishing
 			if (YoutubeClip == null) return;
 			Process.Start(YoutubeClip.VideoURLFull);
 		}
+
+		public void CmThumbnail()
+		{
+			if (YoutubeClip == null) return;
+			if (Source.Settings.ThumbnailImagePath == null) return;
+			Source.YoutubeProcessor.UpdateVideoThumbnail(YoutubeClip,
+				new System.IO.FileInfo(Path.Combine(Source.Settings.Location.FullName,Source.Settings.ThumbnailImagePath)));
+		}
+
+
 
 		public override void TryMakeItRight()
 		{
