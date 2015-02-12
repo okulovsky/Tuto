@@ -97,6 +97,7 @@ namespace Tuto.Navigator
 						{
 							var fv = new FinishedVideo(e, i);
 							var pv = new VideoPublishSummary { Guid = fv.Guid, Name = fv.Name, Duration = fv.Duration };
+							pv.OrdinalSuffix = fv.RelativeSourceFolderLocation + "-" + fv.EpisodeNumber;
 							currentList.Add(pv);
 						}
 

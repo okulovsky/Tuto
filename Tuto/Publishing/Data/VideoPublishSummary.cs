@@ -18,6 +18,9 @@ namespace Tuto.Publishing
 
 		[DataMember]
 		public TimeSpan Duration { get; set; }
+
+		[DataMember]
+		public string OrdinalSuffix { get; set; }
 	}
 
 
