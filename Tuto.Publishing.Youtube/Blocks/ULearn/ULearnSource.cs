@@ -36,7 +36,7 @@ namespace Tuto.Publishing
         {
             return new DirectoryInfo(Path.Combine(
                 Settings.UlearnCourseDirectory,
-                string.Format("L{0:D2}", wrap.LectureNumber)));
+                string.Format("L{0:D2} - {1}", wrap.LectureNumber, wrap.Caption)));
         }
 
         public FileInfo FileForSlide(VideoWrap wrap)
