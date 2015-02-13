@@ -132,6 +132,8 @@ namespace Tuto.Publishing
 				FinishedNotMatched = youtubeSource.LastMatch.UnmatchedTreeItems.Select(z=>z.Video).ToList();
 				YoutubeNotMatched = youtubeSource.LastMatch.UnmatchedExternalDataItems.ToList();
 			}
+
+            Root = new[] { Root[0] };
 		}
 
       
