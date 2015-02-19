@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using Tuto.Model;
 
 namespace Tuto.Publishing
 {
@@ -21,6 +22,16 @@ namespace Tuto.Publishing
 
 		[DataMember]
 		public string OrdinalSuffix { get; set; }
+
+		public VideoPublishSummary() { }
+
+		public VideoPublishSummary(FinishedVideo fv)
+		{
+			Guid = fv.Guid;
+			Name = fv.Name;
+			Duration = fv.Duration;
+							
+		}
 	}
 
 

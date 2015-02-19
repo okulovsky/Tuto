@@ -16,11 +16,40 @@ namespace Tuto.Publishing.Youtube
         static DirectoryInfo currentDirectory;
         static Application Application;
 
+		static CourseTreeData Convert(GlobalData data)
+		{
+			var converted = new CourseTreeData();
+			converted.Directory = data.GlobalDataFolder;
+			converted.Videos = new List<VideoPublishSummary>();
+			converted.Structure=new CourseStructure();
+			foreach (var e in data.VideoData)
+			{
+				converted.Videos.Add(new VideoPublishSummary(e));
+				if (e.TopicGuid != null)
+					converted.Structure.VideoToTopicRelations.Add(new VideoToTopicRelation { VideoGuid = e.Guid, TopicGuid = e.TopicGuid, NumberInTopic = e.NumberInTopic });
+			}
+			converted.Structure.RootTopic = data.TopicsRoot;
+			return converted;
+
+		}
+
         [STAThread]
         public static void Main(string[] args)
         {
             var currentDirectoryName = EditorModelIO.SubstituteDebugDirectories(args[0]);
             currentDirectory = new DirectoryInfo(currentDirectoryName);
+
+			var oldFormatFile = new FileInfo(Path.Combine(currentDirectory.FullName, "project.tuto"));
+			var newFormatFile = new FileInfo(Path.Combine(currentDirectory.FullName, GlobalData.VideoListName));
+			if (oldFormatFile.Exists && !newFormatFile.Exists)
+			{
+				var globalData = EditorModelIO.ReadGlobalData(currentDirectory);
+				var structure = Convert(globalData);
+				structure.Save();
+
+			}
+
+
             Application = new System.Windows.Application();
             var model = new MainViewModel(currentDirectory, ()=>SourcesFactory());
             var window = new MainWindow();
