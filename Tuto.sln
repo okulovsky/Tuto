@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4BF4A651-C8C0-4B86-89F5-B3FC3034EBF7}"
 	ProjectSection(SolutionItems) = preProject
 		Local.testsettings = Local.testsettings
@@ -20,8 +22,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tuto.Navigator", "Tuto.Navi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Updater", "Updater\Updater.csproj", "{058A8A84-2A6E-48B2-97F7-2637B9D6B7B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tuto.Publishing.Youtube", "Tuto.Publishing.Youtube\Tuto.Publishing.Youtube.csproj", "{7983CF24-AEF3-4301-B7FB-C378A03F7654}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{EE9437D1-C337-4EE7-B6EC-468768B3E142}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
@@ -37,16 +37,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "Utilities\Util
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject", "TestProject\TestProject.csproj", "{D63804F0-A392-4CE0-8AC7-7841997E1438}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tuto.Publishing.Youtube.Apis", "YoutubeApiTest\Tuto.Publishing.Youtube.Apis.csproj", "{389B6FC2-BBEB-4A9D-B22E-093CF7A759FD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tuto.Publishing.Tests.Youtube", "YoutubeApiTest\Tuto.Publishing.Tests.Youtube.csproj", "{389B6FC2-BBEB-4A9D-B22E-093CF7A759FD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tuto.Publishing.LatexPresentations", "Tuto.Publishing.LatexPresentations\Tuto.Publishing.LatexPresentations.csproj", "{681878E0-DE18-4B98-8A6B-33AAEEBDAFB7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TempTreeEditor", "TempTreeEditor\TempTreeEditor.csproj", "{527CD336-BB5D-48BE-A86E-727502231805}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tuto.Publishing", "Tuto.Publishing.Youtube\Tuto.Publishing.csproj", "{7983CF24-AEF3-4301-B7FB-C378A03F7654}"
+EndProject
 Global
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = Video.vsmdi
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -106,16 +105,6 @@ Global
 		{058A8A84-2A6E-48B2-97F7-2637B9D6B7B5}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{058A8A84-2A6E-48B2-97F7-2637B9D6B7B5}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{058A8A84-2A6E-48B2-97F7-2637B9D6B7B5}.Release|x86.ActiveCfg = Release|Any CPU
-		{7983CF24-AEF3-4301-B7FB-C378A03F7654}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7983CF24-AEF3-4301-B7FB-C378A03F7654}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7983CF24-AEF3-4301-B7FB-C378A03F7654}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{7983CF24-AEF3-4301-B7FB-C378A03F7654}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{7983CF24-AEF3-4301-B7FB-C378A03F7654}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{7983CF24-AEF3-4301-B7FB-C378A03F7654}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7983CF24-AEF3-4301-B7FB-C378A03F7654}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7983CF24-AEF3-4301-B7FB-C378A03F7654}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{7983CF24-AEF3-4301-B7FB-C378A03F7654}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{7983CF24-AEF3-4301-B7FB-C378A03F7654}.Release|x86.ActiveCfg = Release|Any CPU
 		{BF28DB1B-7008-4D7B-A7EF-757267946201}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BF28DB1B-7008-4D7B-A7EF-757267946201}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF28DB1B-7008-4D7B-A7EF-757267946201}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -186,11 +175,24 @@ Global
 		{527CD336-BB5D-48BE-A86E-727502231805}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{527CD336-BB5D-48BE-A86E-727502231805}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{527CD336-BB5D-48BE-A86E-727502231805}.Release|x86.ActiveCfg = Release|Any CPU
+		{7983CF24-AEF3-4301-B7FB-C378A03F7654}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7983CF24-AEF3-4301-B7FB-C378A03F7654}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7983CF24-AEF3-4301-B7FB-C378A03F7654}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7983CF24-AEF3-4301-B7FB-C378A03F7654}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7983CF24-AEF3-4301-B7FB-C378A03F7654}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7983CF24-AEF3-4301-B7FB-C378A03F7654}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7983CF24-AEF3-4301-B7FB-C378A03F7654}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7983CF24-AEF3-4301-B7FB-C378A03F7654}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{7983CF24-AEF3-4301-B7FB-C378A03F7654}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{7983CF24-AEF3-4301-B7FB-C378A03F7654}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{DE3470BC-8CE1-4F5E-BA45-2118846740B2} = {4BF4A651-C8C0-4B86-89F5-B3FC3034EBF7}
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = Video.vsmdi
 	EndGlobalSection
 EndGlobal

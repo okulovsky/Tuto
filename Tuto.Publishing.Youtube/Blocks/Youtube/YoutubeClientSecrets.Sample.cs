@@ -13,7 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Google.Apis.Auth.OAuth2;
 
-namespace YoutubeApiTest
+namespace Tuto.Publishing.Youtube
 {
     public static class GoogleSecrets
     {

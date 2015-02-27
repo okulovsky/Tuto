@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Tuto.Model;
 using Tuto.Publishing.Youtube.Views;
-using YoutubeApiTest;
+using Tuto.Publishing.Youtube;
 
 namespace Tuto.Publishing.Youtube
 {

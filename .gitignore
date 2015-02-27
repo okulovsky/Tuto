@@ -28,3 +28,4 @@ bin
 /Montage/ImageGenerator/*.user
 YoutubeApi/DeveloperKey.txt
 YoutubeApiTest/YoutubeClientSecrets.cs
+Tuto.Publishing.Youtube/Blocks/Youtube/YoutubeClientSecrets.cs

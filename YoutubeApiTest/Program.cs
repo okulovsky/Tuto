@@ -13,7 +13,7 @@ using Google.Apis.Upload;
 using Google.Apis.Util.Store;
 using Google.Apis.YouTube.v3;
 using Google.Apis.YouTube.v3.Data;
-using YoutubeApiTest;
+using Tuto.Publishing.Youtube;
 
 namespace Google.Apis.YouTube.Samples
 {

@@ -126,7 +126,10 @@
     <Compile Include="Blocks\ULearn\ULearnSource.cs" />
     <Compile Include="Blocks\ULearn\ULearnLectureCommands.cs" />
     <Compile Include="Blocks\ULearn\ULearnVideoCommands.cs" />
+    <Compile Include="Blocks\Youtube\YoutubeClientSecrets.cs" />
+    <Compile Include="Blocks\Youtube\YoutubeClientSecrets.Sample.cs" />
     <Compile Include="Blocks\Youtube\YoutubeLectureCommands.cs" />
+    <Compile Include="Blocks\Youtube\YoutubeProcessor.cs" />
     <Compile Include="Blocks\Youtube\YoutubeSource.cs" />
     <Compile Include="Blocks\Youtube\YoutubeVideoCommands.cs" />
     <Compile Include="Blocks\Latex\GalleryInfo.cs" />
@@ -234,10 +237,6 @@
     <ProjectReference Include="..\Tuto\Tuto.csproj">
       <Project>{e69f7e9f-ed66-4935-8976-ff548ae72aec}</Project>
       <Name>Tuto</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\YoutubeApiTest\Tuto.Publishing.Youtube.Apis.csproj">
-      <Project>{389b6fc2-bbeb-4a9d-b22e-093cf7a759fd}</Project>
-      <Name>Tuto.Publishing.Youtube.Apis</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

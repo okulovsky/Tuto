@@ -14,7 +14,7 @@ using Google.Apis.YouTube.v3.Data;
 using Tuto.Publishing;
 using Tuto.Publishing.YoutubeData;
 
-namespace YoutubeApiTest
+namespace Tuto.Publishing.Youtube
 {
     public static class AwaitableExtensions
     {
