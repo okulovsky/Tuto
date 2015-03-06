@@ -67,8 +67,8 @@ namespace Tuto
                 foreach(var fix in subtitles.Where(z=>z.StartTime>=episodesLength[i] && z.StartTime<=episodesLength[i+1]))
                     builder.AppendFormat("{0}\r\n{1} --> {2}\r\n{3}\r\n\r\n",
                             number++,
-                    MsInSrtFormat(fix.StartTime),
-                    MsInSrtFormat(fix.StartTime+fix.Length),
+                    MsInSrtFormat(fix.StartTime-episodesLength[i]),
+                    MsInSrtFormat(fix.StartTime-episodesLength[i]+fix.Length),
                     fix.Text);
                 yield return builder.ToString();
             }
