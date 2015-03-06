@@ -46,7 +46,7 @@ namespace Tuto.Publishing
 		public CourseStructure Structure { get; set; }
 		public DirectoryInfo Directory { get; set; }
 
-		private CourseTreeData(){}
+		public CourseTreeData(){}
 
 		public static CourseTreeData Load(DirectoryInfo directory)
 		{
