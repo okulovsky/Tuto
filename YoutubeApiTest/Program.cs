@@ -14,6 +14,7 @@ using Google.Apis.Util.Store;
 using Google.Apis.YouTube.v3;
 using Google.Apis.YouTube.v3.Data;
 using Tuto.Publishing.Youtube;
+using System.Collections.Generic;
 
 namespace Google.Apis.YouTube.Samples
 {
@@ -24,87 +25,118 @@ namespace Google.Apis.YouTube.Samples
     /// </summary>
     internal class MyUploads
     {
-        [STAThread]
-        static void Main(string[] args)
-        {
-            var processor = new YoutubeApisProcessor();
-            var directory = new DirectoryInfo(".");
-            processor.Authorize(directory);
-            var videos = processor.GetAllClips();
-            foreach (var video in videos)
-                Console.WriteLine("{0,-15}{1,10}", video.Id, video.Name);
+		static void OverallTest()
+		{
+			var processor = new YoutubeApisProcessor();
+			var directory = new DirectoryInfo(".");
+			processor.Authorize(directory);
+			var videos = processor.GetAllClips();
+			foreach (var video in videos)
+				Console.WriteLine("{0,-15}{1,10}", video.Id, video.Name);
 
-            var v = videos.First();
+			var v = videos.First();
 			processor.UpdateVideoThumbnail(v, new FileInfo("aiml.png"));
 
 			return;
 			v.Name = "XXX";
-            v.Description = "YYY";
-            processor.UpdateVideo(v);
+			v.Description = "YYY";
+			processor.UpdateVideo(v);
 
-            var lists = processor.GetAllPlaylists();
-            foreach (var list in lists)
-            {
-                Console.WriteLine("{0}", list.PlaylistTitle);
-                processor.DeletePlaylist(list);
-            }
-            var newList = processor.CreatePlaylist("Test");
-            processor.FillPlaylist(newList, videos);
-        }
+			var lists = processor.GetAllPlaylists();
+			foreach (var list in lists)
+			{
+				Console.WriteLine("{0}", list.PlaylistTitle);
+				processor.DeletePlaylist(list);
+			}
+			var newList = processor.CreatePlaylist("Test");
+			processor.FillPlaylist(newList, videos);
 
-        private async Task Run()
+		}
+
+		static YouTubeService CreateService()
+		{
+			var credentialsLocation = ".";
+
+			var credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+				GoogleSecrets.Data,
+				new[] { YouTubeService.Scope.Youtube },
+				"user",
+				CancellationToken.None,
+				new FileDataStore(credentialsLocation)).RunSync();
+
+			var service = new YouTubeService(new BaseClientService.Initializer()
+			{
+				HttpClientInitializer = credential,
+				ApplicationName = "Tuto test"
+			});
+
+			return service;
+		}
+
+        [STAThread]
+        static void Main(string[] args)
         {
-            UserCredential credential;
-            
-            credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
-                GoogleSecrets.Data,
-                new[] { YouTubeService.Scope.YoutubeReadonly },
-                "user",
-                CancellationToken.None,
-                new FileDataStore(this.GetType().ToString())
-            );
-            
-
-            var youtubeService = new YouTubeService(new BaseClientService.Initializer()
-            {
-                HttpClientInitializer = credential,
-                ApplicationName = this.GetType().ToString()
-            });
-
-            var channelsListRequest = youtubeService.Channels.List("contentDetails");
-            channelsListRequest.Mine = true;
-
-            // Retrieve the contentDetails part of the channel resource for the authenticated user's channel.
-            var channelsListResponse = await channelsListRequest.ExecuteAsync();
-
-            foreach (var channel in channelsListResponse.Items)
-            {
-                // From the API response, extract the playlist ID that identifies the list
-                // of videos uploaded to the authenticated user's channel.
-                var uploadsListId = channel.ContentDetails.RelatedPlaylists.Uploads;
-
-                Console.WriteLine("Videos in list {0}", uploadsListId);
-
-                var nextPageToken = "";
-                while (nextPageToken != null)
-                {
-                    var playlistItemsListRequest = youtubeService.PlaylistItems.List("snippet");
-                    playlistItemsListRequest.PlaylistId = uploadsListId;
-                    playlistItemsListRequest.MaxResults = 50;
-                    playlistItemsListRequest.PageToken = nextPageToken;
-
-                    // Retrieve the list of videos uploaded to the authenticated user's channel.
-                    var playlistItemsListResponse = await playlistItemsListRequest.ExecuteAsync();
-
-                    foreach (var playlistItem in playlistItemsListResponse.Items)
-                    {
-                        // Print information about each video.
-                        Console.WriteLine("{0} ({1})", playlistItem.Snippet.Title, playlistItem.Snippet.ResourceId.VideoId);
-                    }
-
-                    nextPageToken = playlistItemsListResponse.NextPageToken;
-                }
-            }
+			var service = CreateService();
+			var listRq = service.Videos.List("snippet");
+			listRq.Id = "dYEutOH_dXA";
+			var video = listRq.Execute().Items[0];
+			video.Snippet.Tags = new List<string> { "GUID " + Guid.NewGuid().ToString() };
+			service.Videos.Update(video, "snippet").Execute();
         }
+
+		//private async Task Run()
+		//{
+		//	UserCredential credential;
+            
+		//	credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
+		//		GoogleSecrets.Data,
+		//		new[] { YouTubeService.Scope.YoutubeReadonly },
+		//		"user",
+		//		CancellationToken.None,
+		//		new FileDataStore(this.GetType().ToString())
+		//	);
+            
+
+		//	var youtubeService = new YouTubeService(new BaseClientService.Initializer()
+		//	{
+		//		HttpClientInitializer = credential,
+		//		ApplicationName = this.GetType().ToString()
+		//	});
+
+		//	var channelsListRequest = youtubeService.Channels.List("contentDetails");
+		//	channelsListRequest.Mine = true;
+
+		//	// Retrieve the contentDetails part of the channel resource for the authenticated user's channel.
+		//	var channelsListResponse = await channelsListRequest.ExecuteAsync();
+
+		//	foreach (var channel in channelsListResponse.Items)
+		//	{
+		//		// From the API response, extract the playlist ID that identifies the list
+		//		// of videos uploaded to the authenticated user's channel.
+		//		var uploadsListId = channel.ContentDetails.RelatedPlaylists.Uploads;
+
+		//		Console.WriteLine("Videos in list {0}", uploadsListId);
+
+		//		var nextPageToken = "";
+		//		while (nextPageToken != null)
+		//		{
+		//			var playlistItemsListRequest = youtubeService.PlaylistItems.List("snippet");
+		//			playlistItemsListRequest.PlaylistId = uploadsListId;
+		//			playlistItemsListRequest.MaxResults = 50;
+		//			playlistItemsListRequest.PageToken = nextPageToken;
+
+		//			// Retrieve the list of videos uploaded to the authenticated user's channel.
+		//			var playlistItemsListResponse = await playlistItemsListRequest.ExecuteAsync();
+
+		//			foreach (var playlistItem in playlistItemsListResponse.Items)
+		//			{
+		//				// Print information about each video.
+		//				Console.WriteLine("{0} ({1})", playlistItem.Snippet.Title, playlistItem.Snippet.ResourceId.VideoId);
+		//			}
+
+		//			nextPageToken = playlistItemsListResponse.NextPageToken;
+		//		}
+		//	}
+		//}
     }
 }
