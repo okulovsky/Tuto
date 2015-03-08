@@ -63,7 +63,7 @@ namespace Tuto.Publishing
 				if (errorData.ContainsKey(ErrorLevel.AutoCorrection))
 				{
 					okIsPossible = false;
-					yield return BlockStatus.Manual(errorData[ErrorLevel.ManualCorrection].Count() + " items require automatic correction").Inherited();
+					yield return BlockStatus.Auto(errorData[ErrorLevel.AutoCorrection].Count() + " items require automatic correction").Inherited();
 				}
 
 				foreach (var e in SelfErrors)
