@@ -41,10 +41,30 @@ namespace Tuto.Publishing
     }
 
     public abstract class LectureCommandBlockModel<TSource, TVideoData> : CommandsBlockModel<TSource, LectureWrap>
+		where TVideoData : ICommandBlockModel
     {
         public LectureCommandBlockModel(TSource source, LectureWrap item) : base(source, item) { }
         public IEnumerable<TVideoData> VideoData { get { return Wrap.Subtree().OfType<VideoWrap>().SelectMany(z => z.CommandBlocks.OfType<TVideoData>()); } }
-    }
+
+		public abstract IEnumerable<BlockStatus> SelfErrors { get; }
+
+		public override BlockStatus Status
+		{
+			get
+			{
+				var errorData = VideoData.Select(z => z.Status).GroupBy(z => z.ErrorLevel).ToDictionary(z => z.Key);
+				if (errorData.ContainsKey(ErrorLevel.ManualCorrection))
+					return BlockStatus.Manual(errorData[ErrorLevel.ManualCorrection].Count() + " items require manual correction").Inherited();
+				if (errorData.ContainsKey(ErrorLevel.AutoCorrection))
+					return BlockStatus.Manual(errorData[ErrorLevel.ManualCorrection].Count() + " items require automatic correction").Inherited();
+				var selfError = SelfErrors.FirstOrDefault();
+				if (selfError != null) return selfError;
+				return BlockStatus.OK();
+			}
+
+		}
+
+	}
 
     public abstract class VideoCommandBlockModel<TSource, TLectureData> : CommandsBlockModel<TSource, VideoWrap>
         where TSource : IMaterialSource

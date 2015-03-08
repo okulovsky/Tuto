@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace Tuto.Publishing
 {
@@ -94,13 +95,13 @@ namespace Tuto.Publishing
         {
             get
             {
-                if (LatexSource == null) return BlockStatus.NA("No LaTeX source is found for this video");
-                if (Gallery == null) return BlockStatus.Error("Slides were not compiled");
+                if (LatexSource == null) return BlockStatus.OK("No LaTeX source is found for this video").WithBrush(Brushes.LightGray);
+                if (Gallery == null) return BlockStatus.Auto("Slides were not compiled");
                 //if (!DueSlidesDirectory.Exists) return BlockStatus.Error("Slides were compiled, but they are not found now. Recompile them");
                 //if (Gallery.CompilationTime < LatexSource.ModificationTime) return BlockStatus.Error("Slides are outdated. Recompile them");
                 //if (DueSlidesDirectory.GetFiles().Length == 0) return BlockStatus.Warning("No slides are produced for this video. Check the presentation and remove the section, if it was intended");
-                if (!PdfFile.Exists) return BlockStatus.Error("Slides were compiled, but they are not found now. Recompile them");
-                if (Gallery.CompilationTime < LatexSource.ModificationTime) return BlockStatus.Error("Slides are outdated. Recompile them");
+                if (!PdfFile.Exists) return BlockStatus.Auto("Slides were compiled, but they are not found now. Recompile them");
+                if (Gallery.CompilationTime < LatexSource.ModificationTime) return BlockStatus.Auto("Slides are outdated. Recompile them");
                 
                 return BlockStatus.OK();
             }
@@ -108,7 +109,7 @@ namespace Tuto.Publishing
 
 		public override void TryMakeItRight()
 		{
-			if (Status.Status != Statuses.Error) return;
+			//if (Status.Status != Statuses.Error) return;
 			Compile();
 		}
     }

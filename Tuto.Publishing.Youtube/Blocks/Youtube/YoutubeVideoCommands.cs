@@ -24,9 +24,9 @@ namespace Tuto.Publishing
 		{
 			get
 			{
-                if (YoutubeClip == null) return BlockStatus.Error("Video is not found on YouTube");
+                if (YoutubeClip == null) return BlockStatus.Manual("Video is not found on YouTube");
                 if (YoutubeClip.Name != dueTitle || YoutubeClip.Description != dueDescription)
-                    return BlockStatus.Warning("Video title or description do not match");
+                    return BlockStatus.Auto("Video title or description do not match");
                 return BlockStatus.OK();
 			}
 		}
@@ -104,7 +104,7 @@ namespace Tuto.Publishing
 
 		public override void TryMakeItRight()
 		{
-			if (Status.Status == Statuses.Warning)
+			//if (Status.Status == Statuses.Warning)
 				CmPush();
 		}
 	}
