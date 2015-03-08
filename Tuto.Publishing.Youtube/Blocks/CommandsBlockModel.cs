@@ -35,7 +35,7 @@ namespace Tuto.Publishing
             get { return new Uri("/Img/" + ImageFileName, UriKind.Relative); }
         }
 
-        public abstract BlockStatus Status { get; }
+        public abstract IEnumerable<BlockStatus> Status { get; }
 
       
     }
@@ -48,18 +48,30 @@ namespace Tuto.Publishing
 
 		public abstract IEnumerable<BlockStatus> SelfErrors { get; }
 
-		public override BlockStatus Status
+		public override IEnumerable<BlockStatus> Status
 		{
 			get
 			{
-				var errorData = VideoData.Select(z => z.Status).GroupBy(z => z.ErrorLevel).ToDictionary(z => z.Key);
+				bool okIsPossible = true;
+				var errorData = VideoData.SelectMany(z => z.Status).GroupBy(z => z.ErrorLevel).ToDictionary(z => z.Key);
 				if (errorData.ContainsKey(ErrorLevel.ManualCorrection))
-					return BlockStatus.Manual(errorData[ErrorLevel.ManualCorrection].Count() + " items require manual correction").Inherited();
+				{
+					yield return BlockStatus.Manual(errorData[ErrorLevel.ManualCorrection].Count() + " items require manual correction").Inherited();
+					okIsPossible = false;
+				}
+
 				if (errorData.ContainsKey(ErrorLevel.AutoCorrection))
-					return BlockStatus.Manual(errorData[ErrorLevel.ManualCorrection].Count() + " items require automatic correction").Inherited();
-				var selfError = SelfErrors.FirstOrDefault();
-				if (selfError != null) return selfError;
-				return BlockStatus.OK();
+				{
+					okIsPossible = false;
+					yield return BlockStatus.Manual(errorData[ErrorLevel.ManualCorrection].Count() + " items require automatic correction").Inherited();
+				}
+
+				foreach (var e in SelfErrors)
+				{
+					okIsPossible = false;
+					yield return e;
+				}
+				if (okIsPossible) yield return BlockStatus.OK();
 			}
 
 		}

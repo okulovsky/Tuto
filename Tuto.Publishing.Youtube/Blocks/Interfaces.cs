@@ -37,7 +37,7 @@ namespace Tuto.Publishing
 	{
 		List<VisualCommand> Commands { get; }
 		Uri ImageSource { get; }
-		BlockStatus Status { get;  }
+		IEnumerable<BlockStatus> Status { get;  }
 		void TryMakeItRight();
 	}
 

@@ -76,9 +76,9 @@ namespace {0}
 			get { return "ULearn.png"; }
 		}
 
-		public override BlockStatus Status
+		public override IEnumerable<BlockStatus> Status
 		{
-			get { return BlockStatus.OK().WithBrush(Brushes.Transparent); }
+			get { yield return BlockStatus.OK().WithBrush(Brushes.Transparent); }
 		}
 	}
 }
