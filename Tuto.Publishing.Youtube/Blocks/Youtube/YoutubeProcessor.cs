@@ -31,6 +31,7 @@ namespace Tuto.Publishing.Youtube
         UserCredential credential;
         const string CredentialsForlderName = "YoutubeApiCredentials";
         const string ProgramName = "Tuto Editor";
+		const string GuidMarker = "GUID: ";
 
         public List<Tuto.Publishing.YoutubeClip> GetAllClips()
         {
@@ -90,11 +91,11 @@ namespace Tuto.Publishing.Youtube
 					clip.Description = e.Snippet.Description;
 
 					string guidMark = null;
-					if (e.Snippet.Tags != null) e.Snippet.Tags.Where(z => z.StartsWith("GUID: ")).FirstOrDefault();
+					if (e.Snippet.Tags != null) e.Snippet.Tags.Where(z => z.StartsWith(GuidMarker)).FirstOrDefault();
 					if (guidMark != null)
 					{
 						Guid guid;
-						guidMark = guidMark.Substring(6);
+						guidMark = guidMark.Substring(GuidMarker.Length);
 						if (Guid.TryParse(guidMark, out guid))
 							clip.StoredGuid = guid;
 					}
@@ -115,7 +116,11 @@ namespace Tuto.Publishing.Youtube
             var video = listRq.Execute().Items[0];
             video.Snippet.Title = clip.Name;
             video.Snippet.Description = clip.Description;
-            service.Videos.Update(video, "snippet").Execute();
+			if (clip.StoredGuid.HasValue)
+				video.Snippet.Tags = new List<string> { GuidMarker+clip.StoredGuid.Value.ToString() };
+			else
+				video.Snippet.Tags = null;
+			service.Videos.Update(video, "snippet").Execute();
         }
 
 		public void UpdateVideoThumbnail(YoutubeClip clip, FileInfo image)

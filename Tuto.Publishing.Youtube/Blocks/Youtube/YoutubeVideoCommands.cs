@@ -83,6 +83,7 @@ namespace Tuto.Publishing
 			var clip = new YoutubeClip { Id = YoutubeClip.Id };
 			clip.Name = dueTitle;
 			clip.Description = dueDescription;
+			clip.StoredGuid = Wrap.Guid;
 			Source.YoutubeProcessor.UpdateVideo(clip);
 			Wrap.Store<YoutubeClip>(clip);
             MakeChange();
