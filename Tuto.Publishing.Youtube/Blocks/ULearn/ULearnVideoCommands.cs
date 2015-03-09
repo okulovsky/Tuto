@@ -52,8 +52,8 @@ namespace {0}
         string PrepareGalleryAndCreateEntry()
         {
             var latexBlock = Wrap.BlockOfType<LatexVideoCommands>();
-            //if (latexBlock.Status.Status != Statuses.OK) return "";
-			return "";
+            if (latexBlock.Status.ExportPrevented()) return "";
+			
 			var dstFile = new FileInfo(
                 Path.Combine(Source.FileForSlide(Wrap).Directory.FullName, 
                 string.Format("_S{0:D2}-slides.pdf",Wrap.NumberInTopic)));

@@ -76,4 +76,24 @@ namespace Tuto.Publishing
 			return new BlockStatus(message, ErrorLevel.No);
 		}
 	}
+
+	public static class BlockStatusEnumerableExtensions
+	{
+		public static bool StartAutoCorrection(this IEnumerable<BlockStatus> status)
+		{
+			bool yes = false;
+			foreach(var e in status.Where(z=>!z.InheritedFromChildren))
+			{
+				if (e.ErrorLevel == ErrorLevel.ManualCorrection) return false;
+				if (e.ErrorLevel == ErrorLevel.AutoCorrection) yes = true;
+			}
+			return yes;
+		}
+
+		public static bool ExportPrevented(this IEnumerable<BlockStatus> status)
+		{
+			return status.Any(z => z.PreventsExport);
+		}
+
+	}
 }

@@ -107,7 +107,7 @@ namespace Tuto.Publishing
 
 		public override void TryMakeItRight()
 		{
-			//if (Status.Status == Statuses.Warning)
+			if (Status.StartAutoCorrection())
 				CmPush();
 		}
 	}
