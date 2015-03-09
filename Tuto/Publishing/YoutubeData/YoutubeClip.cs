@@ -13,6 +13,7 @@ namespace Tuto.Publishing
         public string Description { get; set; }
         public string VideoURLFull { get { return "http://youtube.com/watch?v=" + Id; } }
         public string GDataURL { get { return "http://gdata.youtube.com/feeds/api/videos/" + Id; } }
+		public Guid? StoredGuid { get; set; }
         public override string ToString()
         {
             return Name;

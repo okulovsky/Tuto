@@ -34,15 +34,14 @@ namespace Tuto.Publishing.Youtube
 
         public List<Tuto.Publishing.YoutubeClip> GetAllClips()
         {
-            
-
-
             var videos = new List<YoutubeClip>();
             var channelsListRequest = service.Channels.List("contentDetails");
             channelsListRequest.Mine = true;
 
             // Retrieve the contentDetails part of the channel resource for the authenticated user's channel.
             var channelsListResponse = channelsListRequest.Execute();
+
+			var ids = new List<string>();
 
             foreach (var channel in channelsListResponse.Items)
             {
@@ -64,13 +63,48 @@ namespace Tuto.Publishing.Youtube
                     foreach (var playlistItem in playlistItemsListResponse.Items)
                     {
                         var snippet = playlistItem.Snippet;
-                        videos.Add(new YoutubeClip { Id = snippet.ResourceId.VideoId, Name = snippet.Title, Description = snippet.Description });
+						ids.Add(snippet.ResourceId.VideoId);
+                        //videos.Add(new YoutubeClip { Id = snippet.ResourceId.VideoId, Name = snippet.Title, Description = snippet.Description });
                     }
 
                     nextPageToken = playlistItemsListResponse.NextPageToken;
                 }
             }
-            return videos;
+
+			var result = new List<YoutubeClip>();
+				
+
+			int takeCount = 50;
+			for (int skip = 0; skip < ids.Count; skip += takeCount)
+			{
+				var listRq = service.Videos.List("snippet");
+				var idsList = ids.Skip(skip).Take(takeCount).Aggregate((a, b) => a + "," + b);
+				listRq.Id = idsList;
+				var allVideos = listRq.Execute().Items;
+
+				foreach (var e in allVideos)
+				{
+					var clip = new YoutubeClip();
+					clip.Id = e.Id;
+					clip.Name = e.Snippet.Title;
+					clip.Description = e.Snippet.Description;
+
+					string guidMark = null;
+					if (e.Snippet.Tags != null) e.Snippet.Tags.Where(z => z.StartsWith("GUID: ")).FirstOrDefault();
+					if (guidMark != null)
+					{
+						Guid guid;
+						guidMark = guidMark.Substring(6);
+						if (Guid.TryParse(guidMark, out guid))
+							clip.StoredGuid = guid;
+					}
+
+					result.Add(clip);
+
+				}
+			}
+
+            return result;
         }
 
 
