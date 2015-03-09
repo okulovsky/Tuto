@@ -25,7 +25,7 @@ namespace Tuto.Publishing
 			get
 			{
                 if (YoutubeClip == null) 
-					yield return BlockStatus.Manual("Video is not found on YouTube");
+					yield return BlockStatus.Manual("Video is not found on YouTube").PreventExport();
                 else if (YoutubeClip.Name != dueTitle || YoutubeClip.Description != dueDescription)
                     yield return BlockStatus.Auto("Video title or description do not match");
                 else
