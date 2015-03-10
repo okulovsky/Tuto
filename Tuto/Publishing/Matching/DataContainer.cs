@@ -12,7 +12,9 @@ namespace Tuto.Publishing
 		Pending,
 		//Item was matched
 		Matched,
-		//Item was not matched, and should not be matched later
+		//Item is broken, and should be matched manually
+		Dirty,
+		//Item should be excluded from matching permanently
 		Denied
 	}
 
@@ -33,6 +35,8 @@ namespace Tuto.Publishing
 			Internal[_internal] = MatchStatus.Matched;
 			External[_external] = MatchStatus.Matched;
 		}
+
+
 
 		public MatchStatus GetStatus(object obj)
 		{
@@ -72,13 +76,5 @@ namespace Tuto.Publishing
 			throw new ArgumentException();
 		}
 
-		public void Deny(TInternal _internal)
-		{
-			Internal[_internal] = MatchStatus.Denied;
-		}
-		public void Deny(TExternal _external)
-		{
-			External[_external] = MatchStatus.Denied;
-		}
 	}
 }
