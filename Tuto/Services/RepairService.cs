@@ -30,7 +30,7 @@ namespace Tuto.TutoServices
 
         void ProcessFace(FileInfo brokenFile, FileInfo outputFile, bool print = false)
         {
-            var temp = new FileInfo(Path.Combine(outputFile.Directory.FullName, "temp.avi"));
+            var temp = new FileInfo(Path.Combine(outputFile.Directory.FullName, "temp"+outputFile.Extension));
             new RepairCommand { VideoInput = brokenFile, VideoOutput = temp }.Execute(print);
             File.Move(temp.FullName, outputFile.FullName);
         }
