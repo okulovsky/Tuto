@@ -123,6 +123,7 @@ namespace Tuto.TutoServices.Montager
     {
         public FileInfo VideoInput;
         public FileInfo VideoOutput;
+		public string VideoCodec;
 
 
         public override string ToString()
@@ -133,11 +134,14 @@ namespace Tuto.TutoServices.Montager
 
         public override void Execute(bool print)
         {
+			var codec = "";
+			if (VideoCodec != null) codec = "-vcodec " + VideoCodec;
             Shell.FFMPEG(
                 print,
-                @"-i ""{0}"" -vf scale=1280:720 -r 25 -q:v 0 -acodec libmp3lame -ar 44100 -ab 32k ""{1}""",
+				@"-i ""{0}"" -vf scale=1280:720 -r 25 -q:v 0 {2} -acodec libmp3lame -ar 44100 -ab 32k ""{1}""",
                 VideoInput,
-                VideoOutput);
+                VideoOutput,
+				codec);
         }
     }
 }

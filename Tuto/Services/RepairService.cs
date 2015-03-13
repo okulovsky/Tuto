@@ -23,6 +23,8 @@ namespace Tuto.TutoServices
             get { return HelpString; }
         }
 
+		
+
         void ProcessDesktop(FileInfo brokenFile, FileInfo outputFile, bool print = false)
         {
             new RepairCommand { VideoInput = brokenFile, VideoOutput = outputFile }.Execute(print);
@@ -31,7 +33,7 @@ namespace Tuto.TutoServices
         void ProcessFace(FileInfo brokenFile, FileInfo outputFile, bool print = false)
         {
             var temp = new FileInfo(Path.Combine(outputFile.Directory.FullName, "temp"+outputFile.Extension));
-            new RepairCommand { VideoInput = brokenFile, VideoOutput = temp }.Execute(print);
+            new RepairCommand { VideoInput = brokenFile, VideoOutput = temp, VideoCodec="libxvid" }.Execute(print);
             File.Move(temp.FullName, outputFile.FullName);
         }
 
@@ -63,7 +65,7 @@ namespace Tuto.TutoServices
             if (args[2] != "face" && args[2] != "desktop") throw new Exception("The second argument must be 'face' or 'desktop'");
 
             ExecMode mode;
-            if (!Enum.TryParse(args[2], true, out mode))
+            if (!Enum.TryParse(args[3], true, out mode))
                 throw (new ArgumentException(String.Format("Unknown mode: {0}", args[2])));
             var print = mode == ExecMode.Print;
 

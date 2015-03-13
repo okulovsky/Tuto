@@ -37,6 +37,7 @@ namespace Tuto.Navigator
 
             AssembleSelectedCommand = new RelayCommand(AssembleSelected, somethingSelected);
             RemontageSelectedCommand = new RelayCommand(MontageSelected, somethingSelected);
+			RepairFaceSelectedCommand = new RelayCommand(RepairFaceSelected, somethingSelected);				 
             CreateBackupCommand = new RelayCommand(CreateBackup);
         }
 
@@ -126,12 +127,28 @@ namespace Tuto.Navigator
             Run(true);
         }
 
+		public void RepairFaceSelected()
+		{
+			var work = Subdirectories
+				.Where(z => z.Selected)
+				.Select(z => new BatchWork
+					{
+						Name = "Repairing face in"+z.Name,
+						Work=() => 
+							TutoProgram.Repair(new DirectoryInfo(z.FullPath), true)
+					})
+				.ToArray();
+			var window = new BatchWorkWindow();
+			window.Run(work);
+		}
+
         #region commands
 
         public RelayCommand SaveCommand { get; private set; }
         public RelayCommand RefreshCommand { get; private set; }
         public RelayCommand AssembleSelectedCommand { get; private set; }
         public RelayCommand RemontageSelectedCommand { get; private set; }
+		public RelayCommand RepairFaceSelectedCommand { get; private set; }
         public RelayCommand CreateBackupCommand { get; private set; }
         #endregion
 

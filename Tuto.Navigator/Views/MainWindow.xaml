@@ -26,6 +26,7 @@
                     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
                         <Button Content="Refresh list" Command="{Binding RefreshCommand}"></Button>
                         <Button Content="Batch assembly" Command="{Binding AssembleSelectedCommand}"/>
+                        <Button Content="Batch repair face" Command="{Binding RepairFaceSelectedCommand}"/>
                         <!--<Button Content="Batch remontage" Command="{Binding RemontageSelectedCommand}"/>-->
                     </StackPanel>
                     <navigator:SubfoldersDataGrid DataContext="{Binding Subdirectories}"/>
