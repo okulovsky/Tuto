@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace Tuto.Publishing
 {
@@ -90,26 +91,30 @@ namespace Tuto.Publishing
             get { return Wrap.Get<GalleryInfo>(); }
         }
 
-        override public BlockStatus Status
+        override public IEnumerable<BlockStatus> Status
         {
             get
             {
-                if (LatexSource == null) return BlockStatus.NA("No LaTeX source is found for this video");
-                if (Gallery == null) return BlockStatus.Error("Slides were not compiled");
+                if (LatexSource == null) 
+					yield return BlockStatus.OK("No LaTeX source is found for this video").WithBrush(Brushes.LightGray);
+                else if (Gallery == null) 
+					yield return BlockStatus.Auto("Slides were not compiled").PreventExport();
                 //if (!DueSlidesDirectory.Exists) return BlockStatus.Error("Slides were compiled, but they are not found now. Recompile them");
                 //if (Gallery.CompilationTime < LatexSource.ModificationTime) return BlockStatus.Error("Slides are outdated. Recompile them");
                 //if (DueSlidesDirectory.GetFiles().Length == 0) return BlockStatus.Warning("No slides are produced for this video. Check the presentation and remove the section, if it was intended");
-                if (!PdfFile.Exists) return BlockStatus.Error("Slides were compiled, but they are not found now. Recompile them");
-                if (Gallery.CompilationTime < LatexSource.ModificationTime) return BlockStatus.Error("Slides are outdated. Recompile them");
-                
-                return BlockStatus.OK();
+                else if (!PdfFile.Exists) 
+					yield return BlockStatus.Auto("Slides were compiled, but they are not found now. Recompile them").PreventExport();
+                else if (Gallery.CompilationTime < LatexSource.ModificationTime) 
+					yield return BlockStatus.Auto("Slides are outdated. Recompile them").PreventExport();
+                else 
+					yield return BlockStatus.OK();
             }
         }
 
 		public override void TryMakeItRight()
 		{
-			if (Status.Status != Statuses.Error) return;
-			Compile();
+			if (Status.StartAutoCorrection())
+				Compile();
 		}
     }
 }

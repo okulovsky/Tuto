@@ -41,7 +41,7 @@ namespace Tuto.Publishing
 			{
 				clips = YoutubeProcessor.GetAllClips();
 			}
-			catch
+			catch(Exception e)
 			{
 				MessageBox.Show("Loading video from Youtube failed.");
 				return;

@@ -20,14 +20,16 @@ namespace Tuto.Publishing
             get { return "youtube.png"; }
         }
 
-		override public BlockStatus Status
+		override public IEnumerable<BlockStatus> Status
 		{
 			get
 			{
-                if (YoutubeClip == null) return BlockStatus.Error("Video is not found on YouTube");
-                if (YoutubeClip.Name != dueTitle || YoutubeClip.Description != dueDescription)
-                    return BlockStatus.Warning("Video title or description do not match");
-                return BlockStatus.OK();
+                if (YoutubeClip == null) 
+					yield return BlockStatus.Manual("Video is not found on YouTube").PreventExport();
+                else if (YoutubeClip.Name != dueTitle || YoutubeClip.Description != dueDescription)
+                    yield return BlockStatus.Auto("Video title or description do not match");
+                else
+					yield return BlockStatus.OK();
 			}
 		}
 
@@ -81,6 +83,7 @@ namespace Tuto.Publishing
 			var clip = new YoutubeClip { Id = YoutubeClip.Id };
 			clip.Name = dueTitle;
 			clip.Description = dueDescription;
+			clip.StoredGuid = Wrap.Guid;
 			Source.YoutubeProcessor.UpdateVideo(clip);
 			Wrap.Store<YoutubeClip>(clip);
             MakeChange();
@@ -104,7 +107,7 @@ namespace Tuto.Publishing
 
 		public override void TryMakeItRight()
 		{
-			if (Status.Status == Statuses.Warning)
+			if (Status.StartAutoCorrection())
 				CmPush();
 		}
 	}

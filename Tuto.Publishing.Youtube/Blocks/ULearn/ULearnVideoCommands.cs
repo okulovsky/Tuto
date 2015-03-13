@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace Tuto.Publishing
 {
@@ -51,8 +52,9 @@ namespace {0}
         string PrepareGalleryAndCreateEntry()
         {
             var latexBlock = Wrap.BlockOfType<LatexVideoCommands>();
-            if (latexBlock.Status.Status != Statuses.OK) return "";
-            var dstFile = new FileInfo(
+            if (latexBlock.Status.ExportPrevented()) return "";
+			
+			var dstFile = new FileInfo(
                 Path.Combine(Source.FileForSlide(Wrap).Directory.FullName, 
                 string.Format("_S{0:D2}-slides.pdf",Wrap.NumberInTopic)));
             latexBlock.PdfFile.CopyTo(dstFile.FullName,true);
@@ -74,9 +76,9 @@ namespace {0}
 			get { return "ULearn.png"; }
 		}
 
-		public override BlockStatus Status
+		public override IEnumerable<BlockStatus> Status
 		{
-			get { return BlockStatus.No(); }
+			get { yield return BlockStatus.OK().WithBrush(Brushes.Transparent); }
 		}
 	}
 }

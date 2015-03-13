@@ -35,16 +35,48 @@ namespace Tuto.Publishing
             get { return new Uri("/Img/" + ImageFileName, UriKind.Relative); }
         }
 
-        public abstract BlockStatus Status { get; }
+        public abstract IEnumerable<BlockStatus> Status { get; }
 
       
     }
 
     public abstract class LectureCommandBlockModel<TSource, TVideoData> : CommandsBlockModel<TSource, LectureWrap>
+		where TVideoData : ICommandBlockModel
     {
         public LectureCommandBlockModel(TSource source, LectureWrap item) : base(source, item) { }
         public IEnumerable<TVideoData> VideoData { get { return Wrap.Subtree().OfType<VideoWrap>().SelectMany(z => z.CommandBlocks.OfType<TVideoData>()); } }
-    }
+
+		public abstract IEnumerable<BlockStatus> SelfErrors { get; }
+
+		public override IEnumerable<BlockStatus> Status
+		{
+			get
+			{
+				bool okIsPossible = true;
+				var errorData = VideoData.SelectMany(z => z.Status).GroupBy(z => z.ErrorLevel).ToDictionary(z => z.Key);
+				if (errorData.ContainsKey(ErrorLevel.ManualCorrection))
+				{
+					yield return BlockStatus.Manual(errorData[ErrorLevel.ManualCorrection].Count() + " items require manual correction").Inherited();
+					okIsPossible = false;
+				}
+
+				if (errorData.ContainsKey(ErrorLevel.AutoCorrection))
+				{
+					okIsPossible = false;
+					yield return BlockStatus.Auto(errorData[ErrorLevel.AutoCorrection].Count() + " items require automatic correction").Inherited();
+				}
+
+				foreach (var e in SelfErrors)
+				{
+					okIsPossible = false;
+					yield return e;
+				}
+				if (okIsPossible) yield return BlockStatus.OK();
+			}
+
+		}
+
+	}
 
     public abstract class VideoCommandBlockModel<TSource, TLectureData> : CommandsBlockModel<TSource, VideoWrap>
         where TSource : IMaterialSource

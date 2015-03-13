@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace Tuto.Publishing
 {
@@ -32,9 +33,10 @@ namespace Tuto.Publishing
                 Wrap.Caption);
         }
 
-		public override BlockStatus Status
+		public override IEnumerable<BlockStatus> SelfErrors
 		{
-			get { return BlockStatus.No(); }
+			get { yield return BlockStatus.OK().WithBrush(Brushes.Transparent); }
 		}
+
 	}
 }

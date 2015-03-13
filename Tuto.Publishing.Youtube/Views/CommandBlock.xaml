@@ -6,7 +6,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
-        <Style TargetType="ListBox">
+        <Style TargetType="ListBox" x:Key="Buttons">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ListBox">
@@ -24,10 +24,27 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <Style TargetType="ListBox" x:Key="Statuses">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBox">
+                        <StackPanel Orientation="Vertical" IsItemsHost="true"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="ItemTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <Ellipse Fill="{Binding Brush}" ToolTip="{Binding Explanation}" Width="10" Height="10"/>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </UserControl.Resources>
     <StackPanel Orientation="Horizontal">
-        <Ellipse Fill="{Binding Status.Brush}" ToolTip="{Binding Status.Explanation}" Width="10" Height="10"/>
+        <ListBox Style="{StaticResource Statuses}" ItemsSource="{Binding Status}"/>
         <Image Source="{Binding ImageSource}" Height="20"/>
-        <ListBox ItemsSource="{Binding Commands}"/>
+        <ListBox Style="{StaticResource Buttons}" ItemsSource="{Binding Commands}"/>
     </StackPanel>
 </UserControl>

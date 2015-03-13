@@ -30,18 +30,16 @@ namespace Tuto.Publishing
             get { return "youtube.png"; }
         }
 
-		override public BlockStatus Status
+		public override IEnumerable<BlockStatus> SelfErrors
 		{
 			get
 			{
-				if (VideoData.Any(z => z.Status.Status == Statuses.Error)) return BlockStatus.Error("One or more video have errors", true);
-                if (VideoData.Any(z => z.Status.Status == Statuses.Warning)) return BlockStatus.Warning("One or more video have warnings", true);
-                if (YoutubePlaylist == null) return BlockStatus.Warning("Playlist was not found at YouTube");
-                if (YoutubePlaylist.PlaylistTitle != dueTitle) return BlockStatus.Warning("Playlist title do not match");
-                return BlockStatus.OK();
+				if (YoutubePlaylist == null) 
+					yield return BlockStatus.Warning("Playlist was not found at YouTube");
+				else if (YoutubePlaylist.PlaylistTitle != dueTitle) 
+					yield return BlockStatus.Warning("Playlist title do not match");
 			}
 		}
-
 		
 		string dueTitle;
 
@@ -105,7 +103,7 @@ namespace Tuto.Publishing
 
 		public override void TryMakeItRight()
 		{
-			if (Status.Status == Statuses.Warning && !Status.InheritedFromChildren)
+			//if (Status.Status == Statuses.Warning && !Status.InheritedFromChildren)
 				UpdatePlaylist();
 		}
 	}

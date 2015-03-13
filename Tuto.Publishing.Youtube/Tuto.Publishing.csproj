@@ -129,6 +129,7 @@
     <Compile Include="Blocks\Youtube\YoutubeClientSecrets.cs" />
     <Compile Include="Blocks\Youtube\YoutubeClientSecrets.Sample.cs" />
     <Compile Include="Blocks\Youtube\YoutubeLectureCommands.cs" />
+    <Compile Include="Blocks\Youtube\YoutubeMatchData.cs" />
     <Compile Include="Blocks\Youtube\YoutubeProcessor.cs" />
     <Compile Include="Blocks\Youtube\YoutubeSource.cs" />
     <Compile Include="Blocks\Youtube\YoutubeVideoCommands.cs" />

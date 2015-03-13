@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+<<<<<<< HEAD
+    <StartArguments>"D:\BP\Input\Module 6\701"</StartArguments>
+=======
+    <StartArguments>"debug\Input\10"</StartArguments>
+>>>>>>> c2402f46425ddba0ac701400453313fae65c5ae3
+  </PropertyGroup>
+</Project>

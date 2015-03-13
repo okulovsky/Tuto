@@ -91,6 +91,8 @@
     <Compile Include="Publishing\ItemTreeBuilder.cs" />
     <Compile Include="Publishing\MatchData.cs" />
     <Compile Include="Publishing\Matchers.cs" />
+    <Compile Include="Publishing\Matching\DataContainer.cs" />
+    <Compile Include="Publishing\Matching\TwoDirectionalId.cs" />
     <Compile Include="Publishing\NameMatchAlgorithm\NameMatchAlgorithm.cs" />
     <Compile Include="Publishing\Data\VideoPublishSummary.cs" />
     <Compile Include="Publishing\YoutubeData\DataBinding.cs" />
