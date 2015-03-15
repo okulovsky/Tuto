@@ -10,8 +10,10 @@ namespace Tuto.Publishing
 	{
 		//Item was not matched and is waiting for it
 		Pending,
-		//Item was matched
-		Matched,
+		//Item was already matched 
+		OldMatch,
+		//Item was just now matched
+		NewMatch,
 		//Item is broken, and should be matched manually
 		Dirty,
 		//Item should be excluded from matching permanently
@@ -29,11 +31,11 @@ namespace Tuto.Publishing
 			foreach (var e in _internal) Internal[e] = MatchStatus.Pending;
 			foreach (var e in _external) External[e] = MatchStatus.Pending;
 		}
-		public void MakeMatch(TInternal _internal, TExternal _external)
+		public void MakeMatch(TInternal _internal, bool internalOldMatch, TExternal _external, bool externalOldMatch)
 		{
 			Match[_internal] = _external;
-			Internal[_internal] = MatchStatus.Matched;
-			External[_external] = MatchStatus.Matched;
+			Internal[_internal] = internalOldMatch ? MatchStatus.OldMatch : MatchStatus.NewMatch;
+			External[_external] = externalOldMatch ? MatchStatus.OldMatch : MatchStatus.NewMatch;
 		}
 
 

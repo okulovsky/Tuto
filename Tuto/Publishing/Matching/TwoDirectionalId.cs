@@ -135,10 +135,11 @@ namespace Tuto.Publishing.Matching
 				if (result.GetStatus(e) != MatchStatus.Pending) continue;
 				var to = map[e];
 				if (to == null) continue;
+				var from = map[to];
 				if (Internal.Contains(e))
-					result.MakeMatch((TInternal)e, (TExternal)to);
+					result.MakeMatch((TInternal)e, true, (TExternal)to, from!=null);
 				else
-					result.MakeMatch((TInternal)to, (TExternal)e);
+					result.MakeMatch((TInternal)to, from!=null, (TExternal)e, true);
 			}
 		}
 
