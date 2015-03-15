@@ -4,7 +4,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{BF28DB1B-7008-4D7B-A7EF-757267946201}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Tuto.Tests</RootNamespace>
     <AssemblyName>Tuto.Tests</AssemblyName>
@@ -35,6 +35,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
   </ItemGroup>
@@ -52,7 +55,9 @@
   </Choose>
   <ItemGroup>
     <Compile Include="ImageComposerTests.cs" />
+    <Compile Include="LevensteinDistance.cs" />
     <Compile Include="MatchTest.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="SrtMakerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
