@@ -145,6 +145,10 @@
     <Compile Include="Catalog\FinishedVideoPanel.xaml.cs">
       <DependentUpon>FinishedVideoPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Matching\DataContainer.cs" />
+    <Compile Include="Matching\LevensteinDistance.cs" />
+    <Compile Include="Matching\NameMatcher.cs" />
+    <Compile Include="Matching\TwoDirectionalId.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
