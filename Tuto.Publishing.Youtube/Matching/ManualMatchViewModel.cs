@@ -88,7 +88,7 @@ namespace Tuto.Publishing.Matching
             UnmatchedExternals.Remove(SelectedExternal);
             SelectedInternal.Status= MatchStatus.NewMatch;
             SelectedExternal.Status= MatchStatus.NewMatch;
-            Matched.Add(new ManualMatchedPair<TInternal,TExternal>(this,SelectedInternal,SelectedExternal);
+            Matched.Add(new ManualMatchedPair<TInternal, TExternal>(this, SelectedInternal, SelectedExternal));
         }
 
         public void BreakMatch(ManualMatchedPair<TInternal, TExternal> pair)
