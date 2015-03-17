@@ -27,7 +27,7 @@ namespace Tuto.Publishing.Matching
 	
 
 		//result
-		readonly DataContainer<TInternal, TExternal> result;
+		readonly MatchDataContainer<TInternal, TExternal> result;
 
 		public TwoDirectionalIdMatch(
 			IEnumerable<TInternal> Internal,
@@ -43,7 +43,7 @@ namespace Tuto.Publishing.Matching
 			this.intToExt=intToExt;
 			this.extToInt=extToInt;
 			this.extToExt=extToExt;
-			result = new DataContainer<TInternal, TExternal>(Internal, External);
+			result = new MatchDataContainer<TInternal, TExternal>(Internal, External);
 		}
 
 		Dictionary<object, object> map;
@@ -146,7 +146,7 @@ namespace Tuto.Publishing.Matching
 
 
 
-		public DataContainer<TInternal, TExternal> Run()
+		public MatchDataContainer<TInternal, TExternal> Run()
 		{
 			BuildMapAndClearLinks();
 			MarkPrimaryDirtyLinks();

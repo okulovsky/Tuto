@@ -31,22 +31,22 @@ namespace Tuto.Publishing.Matching
 	}
 
 
-	public class NameMatcher<TInternal,TExternal>
+	public class NameMatch<TInternal,TExternal>
 	{
 		double[,] matrix;
 		TInternal[] internals;
 		TExternal[] externals;
 		Func<TInternal, string> internalSelector;
 		Func<TExternal, string> externalSelector;
-		DataContainer<TInternal, TExternal> result;
+		MatchDataContainer<TInternal, TExternal> result;
 
-		public NameMatcher(IEnumerable<TInternal> internals, IEnumerable<TExternal> externals, Func<TInternal, string> internalSelector, Func<TExternal, string> externalSelector)
+		public NameMatch(IEnumerable<TInternal> internals, IEnumerable<TExternal> externals, Func<TInternal, string> internalSelector, Func<TExternal, string> externalSelector)
 		{
 			this.internals = internals.ToArray();
 			this.externals = externals.ToArray();
 			this.internalSelector = internalSelector;
 			this.externalSelector = externalSelector;
-			result = new DataContainer<TInternal, TExternal>(internals, externals);
+			result = new MatchDataContainer<TInternal, TExternal>(internals, externals);
 		}
 
 		void MakeMatrix()
@@ -115,7 +115,7 @@ namespace Tuto.Publishing.Matching
 			return true;
 		}
 
-		public DataContainer<TInternal,TExternal> Run()
+		public MatchDataContainer<TInternal,TExternal> Run()
 		{
 			MakeMatrix();
 			while (MakeIteration()) ;

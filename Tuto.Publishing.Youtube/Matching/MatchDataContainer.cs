@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tuto.Publishing
+namespace Tuto.Publishing.Matching
 {
 	public enum MatchStatus
 	{
@@ -20,13 +20,13 @@ namespace Tuto.Publishing
 		Denied
 	}
 
-	public class DataContainer<TInternal,TExternal>
+	public class MatchDataContainer<TInternal,TExternal>
 	{
 		public readonly Dictionary<TInternal, MatchStatus> Internal = new Dictionary<TInternal, MatchStatus>();
 		public readonly Dictionary<TExternal, MatchStatus> External = new Dictionary<TExternal, MatchStatus>();
 		public readonly Dictionary<TInternal, TExternal> Match = new Dictionary<TInternal, TExternal>();
 
-		public DataContainer(IEnumerable<TInternal> _internal, IEnumerable<TExternal> _external)
+		public MatchDataContainer(IEnumerable<TInternal> _internal, IEnumerable<TExternal> _external)
 		{
 			foreach (var e in _internal) Internal[e] = MatchStatus.Pending;
 			foreach (var e in _external) External[e] = MatchStatus.Pending;

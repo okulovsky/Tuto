@@ -12,8 +12,8 @@ namespace Tuto.Tests
 		{
 			var s1 = "xyazubxcz";
 			var s2 = "fafgbfdch";
-			var matrix = Tuto.Publishing.LevensteinDistance.MatchNamesMatrix(s1, s2);
-			Tuto.Publishing.LevensteinDistance.Print(s1, s2, matrix);
+			var matrix = Tuto.Publishing.Matching.LevensteinDistance.MatchNamesMatrix(s1, s2);
+			Tuto.Publishing.Matching.LevensteinDistance.Print(s1, s2, matrix);
 		}
 	}
 }

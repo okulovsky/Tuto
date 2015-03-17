@@ -9,8 +9,8 @@ namespace Tuto.Publishing.Tests
 
         void Test(string s1, string s2, int match)
         {
-			Assert.AreEqual(match, Tuto.Publishing.LevensteinDistance.MatchNames(s1, s2));
-            Assert.AreEqual(match, Tuto.Publishing.LevensteinDistance.MatchNames(s2, s1));
+			Assert.AreEqual(match, Tuto.Publishing.Matching.LevensteinDistance.MatchNames(s1, s2));
+			Assert.AreEqual(match, Tuto.Publishing.Matching.LevensteinDistance.MatchNames(s2, s1));
         }
 
         [TestMethod]

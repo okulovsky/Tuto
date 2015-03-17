@@ -9,11 +9,7 @@ using System.Windows.Media;
 namespace Tuto.Publishing.Matching
 {
 
-    public class ManualMatchItemHandler<T>
-    {
-        public Func<T, string> Caption { get; set; }
-        public Action<T> Open { get; set; }
-    }
+
 
     public class ManualMatchItem<T>
     {
@@ -30,7 +26,7 @@ namespace Tuto.Publishing.Matching
             }
         }
         public T OriginalItem { get; private set; }
-        public ManualMatchItem(T item, MatchStatus status, ManualMatchItemHandler<T> handler)
+        public ManualMatchItem(T item, MatchStatus status, MatchItemHandler<T> handler)
         {
             Open = new RelayCommand(()=>handler.Open(item));
             Caption=handler.Caption(item);
@@ -67,11 +63,11 @@ namespace Tuto.Publishing.Matching
         public ManualMatchItem<TInternal> SelectedInternal { get; set; }
         public ManualMatchItem<TExternal> SelectedExternal { get; set; }
         public RelayCommand MakeMatchCommand { get; private set; }
-        ManualMatchItemHandler<TInternal> InternalHandler { get; private set; }
-        ManualMatchItemHandler<TExternal> ExternalHandler { get; private set; }
+		readonly MatchItemHandler<TInternal> InternalHandler;
+		readonly MatchItemHandler<TExternal> ExternalHandler;
 
 
-        public ManualMatchViewModel(ManualMatchItemHandler<TInternal> InternalHandler, ManualMatchItemHandler<TExternal> ExternalHandler)
+        public ManualMatchViewModel(MatchItemHandler<TInternal> InternalHandler, MatchItemHandler<TExternal> ExternalHandler)
         {
             this.InternalHandler = InternalHandler;
             this.ExternalHandler = ExternalHandler;

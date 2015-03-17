@@ -62,6 +62,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Tuto.Publishing.Youtube\Tuto.Publishing.csproj">
+      <Project>{7983cf24-aef3-4301-b7fb-c378a03f7654}</Project>
+      <Name>Tuto.Publishing</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Tuto\Tuto.csproj">
       <Project>{e69f7e9f-ed66-4935-8976-ff548ae72aec}</Project>
       <Name>Tuto</Name>
