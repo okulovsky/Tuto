@@ -148,6 +148,7 @@
     <Compile Include="Matching\MatchDataContainer.cs" />
     <Compile Include="Matching\LevensteinDistance.cs" />
     <Compile Include="Matching\ManualMatchViewModel.cs" />
+    <Compile Include="Matching\MatchingAlgorithm.cs" />
     <Compile Include="Matching\MatchItemHandler.cs" />
     <Compile Include="Matching\NameMatcher.cs" />
     <Compile Include="Matching\TwoDirectionalIdMatcher.cs" />

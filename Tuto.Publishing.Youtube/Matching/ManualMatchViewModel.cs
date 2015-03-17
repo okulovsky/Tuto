@@ -67,10 +67,10 @@ namespace Tuto.Publishing.Matching
 		readonly MatchItemHandler<TExternal> ExternalHandler;
 
 
-        public ManualMatchViewModel(MatchItemHandler<TInternal> InternalHandler, MatchItemHandler<TExternal> ExternalHandler)
+        public ManualMatchViewModel(MatchHandlers<TInternal, TExternal> handlers)
         {
-            this.InternalHandler = InternalHandler;
-            this.ExternalHandler = ExternalHandler;
+            this.InternalHandler = handlers.InternalHandler;
+            this.ExternalHandler = handlers.ExternalHandler;
             UnmatchedInternals = new ObservableCollection<ManualMatchItem<TInternal>>();
             UnmatchedExternals = new ObservableCollection<ManualMatchItem<TExternal>>();
             Matched = new ObservableCollection<ManualMatchedPair<TInternal, TExternal>>();
@@ -113,5 +113,15 @@ namespace Tuto.Publishing.Matching
                 new ManualMatchItem<TExternal>(_external, externalStatus, ExternalHandler)
                 ));
         }
-    }
+
+		public void Pull(MatchDataContainer<TInternal, TExternal> dataContainer)
+		{
+			foreach (var e in dataContainer.Match)
+				AddMatch(e.Key, dataContainer.Internal[e.Key], e.Value, dataContainer.External[e.Value]);
+			foreach (var e in dataContainer.Internal.Where(z => z.Value == MatchStatus.Dirty))
+				AddInternalUnmatched(e.Key, e.Value);
+			foreach (var e in dataContainer.External.Where(z => z.Value == MatchStatus.Dirty))
+				AddExternalUnmatched(e.Key, e.Value);
+		}
+	}
 }

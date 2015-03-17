@@ -30,19 +30,15 @@ namespace Tuto.Publishing.Matching
 		readonly MatchDataContainer<TInternal, TExternal> result;
 
 		public TwoDirectionalIdMatch(
-			IEnumerable<TInternal> Internal,
-			IEnumerable<TExternal> External,
-			Func<TInternal, TInternalKey> intToInt,
-			Func<TInternal, TExternalKey> intToExt,
-			Func<TExternal, TInternalKey> extToInt,
-			Func<TExternal, TExternalKey> extToExt)
+			MatchingPendingData<TInternal, TExternal> pendingData,
+			MatchKeySet<TInternal, TExternal, TInternalKey, TExternalKey> KeySet)
 		{
-			this.Internal=Internal;
-			this.External=External;
-			this.intToInt=intToInt;
-			this.intToExt=intToExt;
-			this.extToInt=extToInt;
-			this.extToExt=extToExt;
+			this.Internal=pendingData.Internals.ToList();
+			this.External=pendingData.Externals.ToList();
+			this.intToInt=KeySet.IntToInt;
+			this.intToExt=KeySet.IntToExt;
+			this.extToInt=KeySet.ExtToInt;
+			this.extToExt=KeySet.ExtToExt;
 			result = new MatchDataContainer<TInternal, TExternal>(Internal, External);
 		}
 

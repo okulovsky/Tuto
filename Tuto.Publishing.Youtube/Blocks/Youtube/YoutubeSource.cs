@@ -34,7 +34,7 @@ namespace Tuto.Publishing
 			YoutubeDataBinding.LoadYoutubeData(root, directory);
 		}
 
-		public void Pull(Item root)
+		public void OldPull(Item root)
 		{
 			List<YoutubeClip> clips = new List<YoutubeClip>();
 			try
@@ -56,6 +56,20 @@ namespace Tuto.Publishing
 			//Root = new[] { Root[0] };
 			//FinishedNotMatched = matcher.UnmatchedTreeItems.Select(z => z.Video).ToList();
 			//YoutubeNotMatched = matcher.UnmatchedExternalDataItems.ToList();
+		}
+
+		public void Pull(Item root)
+		{
+			List<YoutubeClip> clips = new List<YoutubeClip>();
+			try
+			{
+				clips = YoutubeProcessor.GetAllClips();
+			}
+			catch (Exception e)
+			{
+				MessageBox.Show("Loading video from Youtube failed.");
+				return;
+			}
 		}
 
 		public void Save(Item root)

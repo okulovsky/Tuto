@@ -123,15 +123,13 @@ namespace Tuto.Publishing
 
 		void Update()
 		{
+			sources.OfType<YoutubeSource>().FirstOrDefault().Pull(Root[0]);
+			return;
+
+
 			foreach (var s in sources)
 				s.Pull(Root[0]);
 
-			var youtubeSource = sources.OfType<YoutubeSource>().FirstOrDefault();
-			if (youtubeSource!=null)
-			{
-				FinishedNotMatched = youtubeSource.LastMatch.UnmatchedTreeItems.Select(z=>z.Video).ToList();
-				YoutubeNotMatched = youtubeSource.LastMatch.UnmatchedExternalDataItems.ToList();
-			}
 
             Root = new[] { Root[0] };
 		}

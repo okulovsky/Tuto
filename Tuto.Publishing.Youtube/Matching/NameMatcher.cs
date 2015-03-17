@@ -40,12 +40,12 @@ namespace Tuto.Publishing.Matching
 		Func<TExternal, string> externalSelector;
 		MatchDataContainer<TInternal, TExternal> result;
 
-		public NameMatch(IEnumerable<TInternal> internals, IEnumerable<TExternal> externals, Func<TInternal, string> internalSelector, Func<TExternal, string> externalSelector)
+		public NameMatch(MatchingPendingData<TInternal,TExternal> pendingData, MatchHandlers<TInternal, TExternal> handlers)
 		{
-			this.internals = internals.ToArray();
-			this.externals = externals.ToArray();
-			this.internalSelector = internalSelector;
-			this.externalSelector = externalSelector;
+			this.internals = pendingData.Internals.ToArray();
+			this.externals = pendingData.Externals.ToArray();
+			this.internalSelector = handlers.InternalHandler.Name;
+			this.externalSelector = handlers.ExternalHandler.Name;
 			result = new MatchDataContainer<TInternal, TExternal>(internals, externals);
 		}
 

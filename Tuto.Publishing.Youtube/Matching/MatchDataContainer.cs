@@ -78,5 +78,13 @@ namespace Tuto.Publishing.Matching
 			throw new ArgumentException();
 		}
 
+		public MatchingPendingData<TInternal, TExternal> GetPendingData()
+		{
+			return new MatchingPendingData<TInternal,TExternal>(
+				Internal.Where(z=>z.Value== MatchStatus.Pending).Select(z=>z.Key),
+				External.Where(z=>z.Value== MatchStatus.Pending).Select(z=>z.Key)
+				);
+		}
+
 	}
 }
