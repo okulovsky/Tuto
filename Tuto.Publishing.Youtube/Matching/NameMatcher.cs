@@ -54,9 +54,14 @@ namespace Tuto.Publishing.Matching
 			matrix=new double[internals.Length,externals.Length];
 			for (int i = 0; i < internals.Length; i++)
 				for (int j = 0; j < externals.Length; j++)
-					matrix[i, j] = LevensteinDistance.RelativeDistance(
+				{
+
+					var dst = LevensteinDistance.RelativeDistance(
 						internalSelector(internals[i]),
 						externalSelector(externals[j]));
+
+					matrix[i, j] = dst;
+				}
 		}
 
 		void MakeMatch(int internalNum, int externalNum)

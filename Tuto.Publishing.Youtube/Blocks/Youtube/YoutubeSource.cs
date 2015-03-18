@@ -59,18 +59,32 @@ namespace Tuto.Publishing
 			//YoutubeNotMatched = matcher.UnmatchedExternalDataItems.ToList();
 		}
 
-		public void Pull(Item root)
+		public List<YoutubeClip> GetYoutubeClips()
 		{
+			return HeadedJsonFormat.Read<List<YoutubeClip>>(new DirectoryInfo(Environment.CurrentDirectory));
+
 			List<YoutubeClip> clips = new List<YoutubeClip>();
 			try
 			{
 				clips = YoutubeProcessor.GetAllClips();
+				HeadedJsonFormat.Write(new DirectoryInfo(Environment.CurrentDirectory), clips);
+				return clips;
 			}
 			catch (Exception e)
 			{
 				MessageBox.Show("Loading video from Youtube failed.");
-				return;
+				return null;
 			}
+		}
+
+		public void Pull(Item root)
+		{
+			var clips = GetYoutubeClips();
+			if (clips == null) return;
+
+
+
+
 			var lectures = root.Subtree().OfType<VideoWrap>();
 
 			var clipHandler = new Matching.MatchItemHandler<YoutubeClip>(z => z.Name, z => z.Name, z => Process.Start(z.VideoURLFull));

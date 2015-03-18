@@ -59,7 +59,8 @@ namespace Tuto.Publishing.Matching
 
 		public static double RelativeDistance(string s1, string s2)
 		{
-			return (double)MatchNames(s1, s2) / (s1.Length + s2.Length);
+			double matchResult =MatchNames(s1, s2); 
+			return 1 - matchResult / (s1.Length + s2.Length);
 		}
 
     }
