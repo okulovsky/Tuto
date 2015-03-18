@@ -19,8 +19,6 @@ namespace Tuto.Publishing
 		public string Description { get; set; }
 		public string VideoURLFull { get { return "http://youtube.com/watch?v=" + Id; } }
 		public string GDataURL { get { return "http://gdata.youtube.com/feeds/api/videos/" + Id; } }
-		[DataMember]
-		public Guid? StoredGuid { get; set; }
         public override string ToString()
         {
             return Name;
@@ -35,6 +33,30 @@ namespace Tuto.Publishing
 
 			if (match.Success) return Name.Substring(match.Length, Name.Length - match.Length);
 			return Name;
+		}
+
+		static Regex GuidRegex = new Regex(@"\[GUID: ([a-f0-9\-]+)\]");
+
+		public static string GuidMarker(Guid guid)
+		{
+			return "[GUID: " + guid.ToString() + "]";
+		}
+
+		public Guid? GetGuid()
+		{
+			var match = GuidRegex.Match(Description);
+			if (match.Success) return Guid.Parse(match.Groups[1].Value);
+			return null;
+		}
+
+		public void UpdateGuid(Guid? guid)
+		{
+			string guidString = "";
+			if (!guid.HasValue) guidString = ""; 
+			else guidString = GuidMarker(guid.Value);
+			var match = GuidRegex.Match(Description);
+			if (match.Success) Description = GuidRegex.Replace(Description,guidString);
+			else Description = Description + "\n" + guidString;
 		}
     }
 }

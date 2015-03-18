@@ -89,9 +89,9 @@ namespace Tuto.Publishing
 			var lectureHandler = new Matching.MatchItemHandler<VideoWrap>(z => z.Caption, z => z.Caption, z => { });
 			var updaters = new Matching.MatchUpdater<VideoWrap, YoutubeClip>(
 				(wrap, clip) => wrap.Store<YoutubeClip>(clip),
-				(clip, wrap) => { clip.StoredGuid = wrap.Guid; YoutubeProcessor.UpdateVideo(clip); },
-				wrap=>wrap.Store<YoutubeClip>(null),
-				clip=>clip.StoredGuid=null
+				(clip, wrap) => { clip.UpdateGuid(wrap.Guid); YoutubeProcessor.UpdateVideo(clip); },
+				wrap => wrap.Store<YoutubeClip>(null),
+				clip => { clip.UpdateGuid(null); YoutubeProcessor.UpdateVideo(clip); }
 				);
 
 			var handlers = new Matching.MatchHandlers<VideoWrap, YoutubeClip>(lectureHandler, clipHandler);
@@ -103,7 +103,7 @@ namespace Tuto.Publishing
 			var keys = new Matching.MatchKeySet<VideoWrap, YoutubeClip, Guid?, string>(
 				wrap => wrap.Guid,
 				wrap => { var c = wrap.Get<YoutubeClip>(); if (c != null) return c.Id; return null; },
-				clip => clip.StoredGuid,
+				clip => clip.GetGuid(),
 				clip=>clip.Id,
 				guid=>!guid.HasValue,
 				id=>id==null
@@ -111,6 +111,7 @@ namespace Tuto.Publishing
 			var allData = new Matching.MatchHandlersAndKeys<VideoWrap, YoutubeClip, Guid?, string>(handlers, keys, updaters);
 
 			Matching.MatchingAlgorithm.Run(lectures, clips, allData);
+			YoutubeDataBinding.SaveYoutubeData(root, directory);
 		}
 
 		public void Save(Item root)

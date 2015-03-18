@@ -38,12 +38,16 @@ namespace Tuto.Publishing.Matching
 			if (window.DialogResult==true)
 			{
 				foreach (var e in manualMatchViewModel.UnmatchedInternals)
-					handlers.Updaters.ClearInternal(e.OriginalItem);
+					if (e.Status!= MatchStatus.Pending)
+						handlers.Updaters.ClearInternal(e.OriginalItem);
 				foreach (var e in manualMatchViewModel.UnmatchedExternals)
-					handlers.Updaters.ClearExternal(e.OriginalItem);
+					if (e.Status!= MatchStatus.Pending)
+						handlers.Updaters.ClearExternal(e.OriginalItem);
 				foreach (var pair in manualMatchViewModel.Matched)
 				{
-					handlers.Updaters.InternalTakesExternal(pair.Internal.OriginalItem, pair.External.OriginalItem);
+					if (pair.Internal.Status!= MatchStatus.OldMatch)
+						handlers.Updaters.InternalTakesExternal(pair.Internal.OriginalItem, pair.External.OriginalItem);
+					if (pair.External.Status!= MatchStatus.OldMatch)
 					handlers.Updaters.ExternalTakesInternal(pair.External.OriginalItem, pair.Internal.OriginalItem);
 				}
 			}

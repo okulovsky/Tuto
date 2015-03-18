@@ -65,47 +65,16 @@ namespace Tuto.Publishing.Youtube
                     {
                         var snippet = playlistItem.Snippet;
 						ids.Add(snippet.ResourceId.VideoId);
-                        //videos.Add(new YoutubeClip { Id = snippet.ResourceId.VideoId, Name = snippet.Title, Description = snippet.Description });
+                        videos.Add(new YoutubeClip { Id = snippet.ResourceId.VideoId, Name = snippet.Title, Description = snippet.Description });
                     }
 
                     nextPageToken = playlistItemsListResponse.NextPageToken;
                 }
             }
 
-			var result = new List<YoutubeClip>();
-				
+			
 
-			int takeCount = 50;
-			for (int skip = 0; skip < ids.Count; skip += takeCount)
-			{
-				var listRq = service.Videos.List("snippet");
-				var idsList = ids.Skip(skip).Take(takeCount).Aggregate((a, b) => a + "," + b);
-				listRq.Id = idsList;
-				var allVideos = listRq.Execute().Items;
-
-				foreach (var e in allVideos)
-				{
-					var clip = new YoutubeClip();
-					clip.Id = e.Id;
-					clip.Name = e.Snippet.Title;
-					clip.Description = e.Snippet.Description;
-
-					string guidMark = null;
-					if (e.Snippet.Tags != null) e.Snippet.Tags.Where(z => z.StartsWith(GuidMarker)).FirstOrDefault();
-					if (guidMark != null)
-					{
-						Guid guid;
-						guidMark = guidMark.Substring(GuidMarker.Length);
-						if (Guid.TryParse(guidMark, out guid))
-							clip.StoredGuid = guid;
-					}
-
-					result.Add(clip);
-
-				}
-			}
-
-            return result;
+            return videos;
         }
 
 
@@ -117,10 +86,7 @@ namespace Tuto.Publishing.Youtube
             var video = listRq.Execute().Items[0];
             video.Snippet.Title = clip.Name;
             video.Snippet.Description = clip.Description;
-			if (clip.StoredGuid.HasValue)
-				video.Snippet.Tags = new List<string> { GuidMarker+clip.StoredGuid.Value.ToString() };
-			else
-				video.Snippet.Tags = null;
+			video.Snippet.Tags = null;
 			service.Videos.Update(video, "snippet").Execute();
         }
 
