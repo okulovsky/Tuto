@@ -17,7 +17,7 @@ namespace Tuto.Publishing.Matching
 		//Item is broken, and should be matched manually
 		Dirty,
 		//Item should be excluded from matching permanently
-		Denied
+		Denied,
 	}
 
 	public class MatchDataContainer<TInternal,TExternal>

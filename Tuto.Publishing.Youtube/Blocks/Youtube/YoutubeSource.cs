@@ -8,6 +8,7 @@ using System.Windows;
 using Tuto.Model;
 using Tuto.Publishing.YoutubeData;
 using Tuto.Publishing.Youtube;
+using System.Diagnostics;
 
 namespace Tuto.Publishing
 {
@@ -70,6 +71,22 @@ namespace Tuto.Publishing
 				MessageBox.Show("Loading video from Youtube failed.");
 				return;
 			}
+			var lectures = root.Subtree().OfType<VideoWrap>();
+
+			var clipHandler = new Matching.MatchItemHandler<YoutubeClip>(z => z.Name, z => z.Name, z => Process.Start(z.VideoURLFull));
+			var lectureHandler = new Matching.MatchItemHandler<VideoWrap>(z => z.Caption, z => z.Caption, z => { });
+			var handlers = new Matching.MatchHandlers<VideoWrap, YoutubeClip>(lectureHandler, clipHandler);
+			var keys = new Matching.MatchKeySet<VideoWrap, YoutubeClip, Guid?, string>(
+				wrap => wrap.Guid,
+				wrap => { var c = wrap.Get<YoutubeClip>(); if (c != null) return c.Id; return null; },
+				clip => clip.StoredGuid,
+				clip=>clip.Id,
+				guid=>!guid.HasValue,
+				id=>id==null
+				);
+			var allData = new Matching.MatchHandlersAndKeys<VideoWrap, YoutubeClip, Guid?, string>(handlers, keys);
+
+			Matching.MatchingAlgorithm.Run(lectures, clips, allData);
 		}
 
 		public void Save(Item root)

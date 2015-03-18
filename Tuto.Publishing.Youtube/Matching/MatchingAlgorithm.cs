@@ -14,8 +14,6 @@ namespace Tuto.Publishing.Matching
 			MatchHandlersAndKeys<TInternal, TExternal, TInternalKey, TExternalKey> handlers)
 			where TInternal : class
 			where TExternal : class
-			where TInternalKey : class
-			where TExternalKey : class
 		{
 			var manualMatchViewModel = new ManualMatchViewModel<TInternal, TExternal>(handlers.Handlers);
 			var pendingData = new MatchingPendingData<TInternal,TExternal>(internals,externals);

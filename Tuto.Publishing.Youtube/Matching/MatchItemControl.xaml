@@ -5,8 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <StackPanel Orientation="Horizontal">
-        <Label Content="{Binding Caption}"/>
-        <Button Command="{Binding Open}"/>
-    </StackPanel>
+    <DockPanel>
+        <Button DockPanel.Dock="Right" Command="{Binding Open}"/>
+        <Label Background="{Binding Brush}" Content="{Binding Caption}"/>
+    </DockPanel>
 </UserControl>

@@ -95,6 +95,7 @@ namespace Tuto.Publishing.Matching
 
 		bool MakeIteration()
 		{
+			if (Points.Count() == 0) return false;
 			var point = Points.ArgMax(z => matrix[z.Item1, z.Item2]);
 			var bestValue = matrix[point.Item1,point.Item2];
 			if (bestValue<matchThreshold) return false;

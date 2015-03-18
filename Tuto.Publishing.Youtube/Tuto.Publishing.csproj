@@ -180,10 +180,10 @@
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ManualMatch.xaml.cs">
+    <Compile Include="Matching\ManualMatch.xaml.cs">
       <DependentUpon>ManualMatch.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MatchItemControl.xaml.cs">
+    <Compile Include="Matching\MatchItemControl.xaml.cs">
       <DependentUpon>MatchItemControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MyHyperlink.cs" />
@@ -230,11 +230,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ManualMatch.xaml">
+    <Page Include="Matching\ManualMatch.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\MatchItemControl.xaml">
+    <Page Include="Matching\MatchItemControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

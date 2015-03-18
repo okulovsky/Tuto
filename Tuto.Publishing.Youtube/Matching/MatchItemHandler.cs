@@ -40,25 +40,30 @@ namespace Tuto.Publishing.Matching
 	}
 
 	public class MatchKeySet<TInternal, TExternal, TInternalKey, TExternalKey>
-		where TInternalKey : class
-		where TExternalKey : class
 	{
 		public readonly Func<TInternal, TInternalKey> IntToInt;
 		public readonly Func<TInternal, TExternalKey> IntToExt;
 		public readonly Func<TExternal, TInternalKey> ExtToInt;
 		public readonly Func<TExternal, TExternalKey> ExtToExt;
+		public readonly Func<TInternalKey, bool> EmptyInternal;
+		public readonly Func<TExternalKey, bool> EmptyExternal;
+
 
 
 		public MatchKeySet(
 			Func<TInternal, TInternalKey> intToInt,
 			Func<TInternal, TExternalKey> intToExt,
 			Func<TExternal, TInternalKey> extToInt,
-			Func<TExternal, TExternalKey> extToExt)
+			Func<TExternal, TExternalKey> extToExt,
+			Func<TInternalKey, bool> emptyInternal,
+			Func<TExternalKey, bool> emptyExternal)
 		{
-			this.IntToInt=intToInt;
-			this.IntToExt=intToExt;
-			this.ExtToInt=extToInt;
-			this.ExtToExt=extToExt;
+			IntToInt=intToInt;
+			IntToExt=intToExt;
+			ExtToInt=extToInt;
+			ExtToExt=extToExt;
+			EmptyExternal = emptyExternal;
+			EmptyInternal = emptyInternal;
 		}
 	}
 
@@ -74,8 +79,6 @@ namespace Tuto.Publishing.Matching
 	}
 
 	public class MatchHandlersAndKeys<TInternal, TExternal, TInternalKey, TExternalKey>
-		where TInternalKey : class
-		where TExternalKey : class
 	{
 		public readonly MatchHandlers<TInternal, TExternal> Handlers;
 		public readonly MatchKeySet<TInternal, TExternal, TInternalKey, TExternalKey> KeySet;

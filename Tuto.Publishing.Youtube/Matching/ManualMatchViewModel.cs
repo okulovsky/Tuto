@@ -20,8 +20,10 @@ namespace Tuto.Publishing.Matching
         {
             get 
             {
-                if (Status == MatchStatus.NewMatch) return Brushes.LightPink;
-                else if (Status == MatchStatus.OldMatch) return Brushes.LightGreen;
+				if (Status == MatchStatus.NewMatch) return Brushes.LightBlue;
+				else if (Status == MatchStatus.OldMatch) return Brushes.LightGreen;
+				else if (Status == MatchStatus.Dirty) return Brushes.LightPink;
+				else if (Status == MatchStatus.Pending) return Brushes.White;
                 return Brushes.White;
             }
         }
@@ -80,16 +82,19 @@ namespace Tuto.Publishing.Matching
         void MakeMatch()
         {
             if (SelectedExternal == null || SelectedExternal == null) return;
-            UnmatchedInternals.Remove(SelectedInternal);
-            UnmatchedExternals.Remove(SelectedExternal);
+
             SelectedInternal.Status= MatchStatus.NewMatch;
             SelectedExternal.Status= MatchStatus.NewMatch;
-            Matched.Add(new ManualMatchedPair<TInternal, TExternal>(this, SelectedInternal, SelectedExternal));
+            Matched.Insert(0,new ManualMatchedPair<TInternal, TExternal>(this, SelectedInternal, SelectedExternal));
+			UnmatchedInternals.Remove(SelectedInternal);
+			UnmatchedExternals.Remove(SelectedExternal);
         }
 
         public void BreakMatch(ManualMatchedPair<TInternal, TExternal> pair)
         {
             Matched.Remove(pair);
+			pair.Internal.Status = MatchStatus.Dirty;
+			pair.External.Status = MatchStatus.Dirty;
             UnmatchedInternals.Add(pair.Internal);
             UnmatchedExternals.Add(pair.External);
         }

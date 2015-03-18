@@ -1,33 +1,33 @@
 ﻿<Window x:Class="Tuto.Publishing.Views.ManualMatch"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:v="clr-namespace:Tuto.Publishing.Youtube.Views"
-        Title="ManualMatch" Height="300" Width="300">
+        xmlns:v="clr-namespace:Tuto.Publishing.Views"
+        Title="ManualMatch" Height="600" Width="800">
     <Window.Resources>
 
-        <Style TargetType="ListBox" x:Name="ForPairs">
+        <Style TargetType="ListBox" x:Key="ForPairs">
             <Setter Property="ItemTemplate">
                 <Setter.Value>
                     <DataTemplate>
-                        <Grid>
+                        <Grid HorizontalAlignment="Stretch">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="10*"/>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="10*"/>
+                                <ColumnDefinition Width="320"/>
+                                <ColumnDefinition Width="50"/>
+                                <ColumnDefinition Width="320"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
-                            <Button Command="Detach" Content="X"/>
-                            <!--<v:MatchItemControl Grid.Row="0" Grid.Column="0" DataContext="{Binding Internal}"/>
-                            <v:MatchItemControl Grid.Row="0" Grid.Column="1" DataContext="{Binding External}"/>-->
+                            <Button Command="{Binding Detach}" Grid.Row="0" Grid.Column="1" Content="X" Width="20"/>
+                            <v:MatchItemControl Grid.Row="0" Grid.Column="0" DataContext="{Binding Internal}"/>
+                            <v:MatchItemControl Grid.Row="0" Grid.Column="2" DataContext="{Binding External}"/>
                         </Grid>
                     </DataTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
 
-        <!--<Style TargetType="ListBox" x:Name="ForItems">
+        <Style TargetType="ListBox" x:Key="ForItems">
             <Setter Property="ItemTemplate">
                 <Setter.Value>
                     <DataTemplate>
@@ -35,13 +35,13 @@
                     </DataTemplate>
                 </Setter.Value>
             </Setter>
-        </Style>-->
+        </Style>
     </Window.Resources>
     <StackPanel Orientation="Vertical">
-        <Grid>
+        <Grid Height="250">
             <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="220"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50*"/>
@@ -50,15 +50,15 @@
             <Label Content="Internal data" Grid.Row="0" Grid.Column="0"/>
             <Label Content="External data" Grid.Row="0" Grid.Column="1"/>
             <ScrollViewer Grid.Row="1" Grid.Column="0" >
-                <ListBox ItemsSource="{Binding Internals}" SelectedItem="{Binding SelectedInternal}" />
+                <ListBox ItemsSource="{Binding UnmatchedInternals}" SelectedItem="{Binding SelectedInternal}" Style="{StaticResource ForItems}" />
             </ScrollViewer>
             <ScrollViewer Grid.Row="1" Grid.Column="1">
-                <ListBox ItemsSource="{Binding Externals}" SelectedItem="{Binding SelectedExternal}" />
+                <ListBox ItemsSource="{Binding UnmatchedExternals}" SelectedItem="{Binding SelectedExternal}" Style="{StaticResource ForItems}"/>
             </ScrollViewer>
         </Grid>
         <Button Content="Match selected items" Width="200" Command="{Binding MakeMatchCommand}"/>
-        <ScrollViewer>
-            <ListBox ItemsSource="{Binding Matched}"/>
+        <ScrollViewer Height="250">
+            <ListBox ItemsSource="{Binding Matched}" Style="{StaticResource ForPairs}"/>
         </ScrollViewer>
     </StackPanel>
 </Window>

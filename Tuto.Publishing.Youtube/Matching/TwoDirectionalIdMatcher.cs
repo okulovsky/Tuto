@@ -9,8 +9,6 @@ namespace Tuto.Publishing.Matching
 {
 	
 	public partial class TwoDirectionalIdMatch<TInternal, TExternal, TInternalKey, TExternalKey>
-		where TInternalKey : class
-		where TExternalKey : class
 		where TInternal : class
 		where TExternal : class
 		
@@ -23,6 +21,8 @@ namespace Tuto.Publishing.Matching
 		readonly Func<TInternal, TExternalKey> intToExt;
 		readonly Func<TExternal, TInternalKey> extToInt;
 		readonly Func<TExternal, TExternalKey> extToExt;
+		readonly Func<TInternalKey, bool> emptyInternal;
+		readonly Func<TExternalKey, bool> emptyExternal;
 
 	
 
@@ -39,6 +39,9 @@ namespace Tuto.Publishing.Matching
 			this.intToExt=KeySet.IntToExt;
 			this.extToInt=KeySet.ExtToInt;
 			this.extToExt=KeySet.ExtToExt;
+			this.emptyExternal = KeySet.EmptyExternal;
+			this.emptyInternal = KeySet.EmptyInternal;
+				 
 			result = new MatchDataContainer<TInternal, TExternal>(Internal, External);
 		}
 
@@ -57,7 +60,7 @@ namespace Tuto.Publishing.Matching
 			{
 				map[i] = null;
 				var eKey = intToExt(i);
-				if (eKey == null) continue;
+				if ( emptyExternal(eKey) ) continue;
 				if (!extIds.ContainsKey(eKey))
 				{
 					result.SetStatus(i, MatchStatus.Dirty);
@@ -70,7 +73,7 @@ namespace Tuto.Publishing.Matching
 			{
 				map[e] = null;
 				var iKey = extToInt(e);
-				if (iKey == null) continue;
+				if ( emptyInternal(iKey) ) continue;
 				if (!intIds.ContainsKey(iKey))
 				{
 					result.SetStatus(e, MatchStatus.Denied);
