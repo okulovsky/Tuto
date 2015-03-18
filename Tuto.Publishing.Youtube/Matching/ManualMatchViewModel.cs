@@ -13,6 +13,7 @@ namespace Tuto.Publishing.Matching
 
     public class ManualMatchItem<T>
     {
+		public string Name { get; private set; }
         public string Caption { get; private set; }
         public RelayCommand Open { get; private set; }
         public MatchStatus Status { get; set; }
@@ -30,6 +31,7 @@ namespace Tuto.Publishing.Matching
         public T OriginalItem { get; private set; }
         public ManualMatchItem(T item, MatchStatus status, MatchItemHandler<T> handler)
         {
+			Name = handler.Name(item);
             Open = new RelayCommand(()=>handler.Open(item));
             Caption=handler.Caption(item);
             OriginalItem=item;
@@ -44,12 +46,15 @@ namespace Tuto.Publishing.Matching
         private ManualMatchViewModel<TInternal,TExternal> model;
         public RelayCommand Detach { get; private set; }
 
+		public double Distance { get; private set; }
+
         public ManualMatchedPair(ManualMatchViewModel<TInternal, TExternal> model, ManualMatchItem<TInternal> _internal, ManualMatchItem<TExternal> _external)
         {
             Internal = _internal;
             External = _external;
             this.model = model;
             Detach = new RelayCommand(() => model.BreakMatch(this));
+			Distance = LevensteinDistance.RelativeDistance(Internal.Name, External.Name);
 
         }
     }

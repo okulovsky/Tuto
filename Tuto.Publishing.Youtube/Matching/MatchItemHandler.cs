@@ -67,6 +67,26 @@ namespace Tuto.Publishing.Matching
 		}
 	}
 
+	public class MatchUpdater<TInternal, TExternal>
+	{
+		public readonly Action<TExternal, TInternal> ExternalTakesInternal;
+		public readonly Action<TInternal, TExternal> InternalTakesExternal;
+		public readonly Action<TInternal> ClearInternal;
+		public readonly Action<TExternal> ClearExternal;
+		public MatchUpdater(
+			Action<TInternal, TExternal> internalTakesExternal, 
+			Action<TExternal, TInternal> externalTakesInternal,
+			Action<TInternal> clearInternal,
+			Action<TExternal> clearExternal
+			)
+		{
+			ExternalTakesInternal = externalTakesInternal;
+			InternalTakesExternal = internalTakesExternal;
+			ClearInternal = clearInternal;
+			ClearExternal = clearExternal;
+		}
+	}
+
 	public class MatchHandlers<TInternal, TExternal>
 	{
 		public readonly MatchItemHandler<TInternal> InternalHandler;
@@ -75,6 +95,7 @@ namespace Tuto.Publishing.Matching
 		{
 			InternalHandler = internalHandler;
 			ExternalHandler = externalHandler;
+			
 		}
 	}
 
@@ -82,10 +103,15 @@ namespace Tuto.Publishing.Matching
 	{
 		public readonly MatchHandlers<TInternal, TExternal> Handlers;
 		public readonly MatchKeySet<TInternal, TExternal, TInternalKey, TExternalKey> KeySet;
-		public MatchHandlersAndKeys(MatchHandlers<TInternal, TExternal> handlers, MatchKeySet<TInternal, TExternal, TInternalKey, TExternalKey> keySet )
+		public readonly MatchUpdater<TInternal, TExternal> Updaters;
+		public MatchHandlersAndKeys(
+			MatchHandlers<TInternal, TExternal> handlers, 
+			MatchKeySet<TInternal, TExternal, TInternalKey, TExternalKey> keySet,
+			MatchUpdater<TInternal,TExternal> updaters)
 		{
 			Handlers = handlers;
 			KeySet = keySet;
+			Updaters = updaters;
 		}
 	}
 }

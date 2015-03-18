@@ -12,15 +12,17 @@
                         <Grid HorizontalAlignment="Stretch">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="320"/>
+                                <ColumnDefinition Width="30"/>
                                 <ColumnDefinition Width="50"/>
                                 <ColumnDefinition Width="320"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
-                            <Button Command="{Binding Detach}" Grid.Row="0" Grid.Column="1" Content="X" Width="20"/>
                             <v:MatchItemControl Grid.Row="0" Grid.Column="0" DataContext="{Binding Internal}"/>
-                            <v:MatchItemControl Grid.Row="0" Grid.Column="2" DataContext="{Binding External}"/>
+                            <Button             Grid.Row="0" Grid.Column="1" Command="{Binding Detach}"  Content="X" Width="20"/>
+                            <Label Grid.Row="0" Grid.Column="2" Content="{Binding Distance}"/>
+                            <v:MatchItemControl Grid.Row="0" Grid.Column="3" DataContext="{Binding External}"/>
                         </Grid>
                     </DataTemplate>
                 </Setter.Value>
@@ -60,5 +62,10 @@
         <ScrollViewer Height="250">
             <ListBox ItemsSource="{Binding Matched}" Style="{StaticResource ForPairs}"/>
         </ScrollViewer>
+        <DockPanel>
+            <Button x:Name="cancel" DockPanel.Dock="Right" Content="Cancel" Width="100"/>
+            <Button x:Name="ok" DockPanel.Dock="Right" Content="OK" Width="100"/>
+            <Label />
+        </DockPanel>
     </StackPanel>
 </Window>

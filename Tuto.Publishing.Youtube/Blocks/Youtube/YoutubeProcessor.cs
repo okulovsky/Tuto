@@ -109,6 +109,7 @@ namespace Tuto.Publishing.Youtube
         }
 
 
+
         public void UpdateVideo(YoutubeClip clip)
         {
             var listRq = service.Videos.List("snippet");

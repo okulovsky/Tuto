@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Tuto.Publishing
@@ -24,5 +25,16 @@ namespace Tuto.Publishing
         {
             return Name;
         }
+
+		static Regex PrefixRegex = new Regex(@"^[a-zA-Z]+[0-9\-]+ ");
+
+		//TODO: tests!
+		public string GetProperName()
+		{
+			var match = PrefixRegex.Match(Name);
+
+			if (match.Success) return Name.Substring(match.Length, Name.Length - match.Length);
+			return Name;
+		}
     }
 }

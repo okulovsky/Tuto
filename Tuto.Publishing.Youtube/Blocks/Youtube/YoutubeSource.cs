@@ -61,8 +61,6 @@ namespace Tuto.Publishing
 
 		public List<YoutubeClip> GetYoutubeClips()
 		{
-			return HeadedJsonFormat.Read<List<YoutubeClip>>(new DirectoryInfo(Environment.CurrentDirectory));
-
 			List<YoutubeClip> clips = new List<YoutubeClip>();
 			try
 			{
@@ -87,9 +85,21 @@ namespace Tuto.Publishing
 
 			var lectures = root.Subtree().OfType<VideoWrap>();
 
-			var clipHandler = new Matching.MatchItemHandler<YoutubeClip>(z => z.Name, z => z.Name, z => Process.Start(z.VideoURLFull));
+			var clipHandler = new Matching.MatchItemHandler<YoutubeClip>(z => z.GetProperName(), z => z.Name, z => Process.Start(z.VideoURLFull));
 			var lectureHandler = new Matching.MatchItemHandler<VideoWrap>(z => z.Caption, z => z.Caption, z => { });
+			var updaters = new Matching.MatchUpdater<VideoWrap, YoutubeClip>(
+				(wrap, clip) => wrap.Store<YoutubeClip>(clip),
+				(clip, wrap) => { clip.StoredGuid = wrap.Guid; YoutubeProcessor.UpdateVideo(clip); },
+				wrap=>wrap.Store<YoutubeClip>(null),
+				clip=>clip.StoredGuid=null
+				);
+
 			var handlers = new Matching.MatchHandlers<VideoWrap, YoutubeClip>(lectureHandler, clipHandler);
+				
+
+
+
+				
 			var keys = new Matching.MatchKeySet<VideoWrap, YoutubeClip, Guid?, string>(
 				wrap => wrap.Guid,
 				wrap => { var c = wrap.Get<YoutubeClip>(); if (c != null) return c.Id; return null; },
@@ -98,7 +108,7 @@ namespace Tuto.Publishing
 				guid=>!guid.HasValue,
 				id=>id==null
 				);
-			var allData = new Matching.MatchHandlersAndKeys<VideoWrap, YoutubeClip, Guid?, string>(handlers, keys);
+			var allData = new Matching.MatchHandlersAndKeys<VideoWrap, YoutubeClip, Guid?, string>(handlers, keys, updaters);
 
 			Matching.MatchingAlgorithm.Run(lectures, clips, allData);
 		}

@@ -34,6 +34,20 @@ namespace Tuto.Publishing.Matching
 			var window = new Tuto.Publishing.Views.ManualMatch();
 			window.DataContext = manualMatchViewModel;
 			window.ShowDialog();
+
+			if (window.DialogResult==true)
+			{
+				foreach (var e in manualMatchViewModel.UnmatchedInternals)
+					handlers.Updaters.ClearInternal(e.OriginalItem);
+				foreach (var e in manualMatchViewModel.UnmatchedExternals)
+					handlers.Updaters.ClearExternal(e.OriginalItem);
+				foreach (var pair in manualMatchViewModel.Matched)
+				{
+					handlers.Updaters.InternalTakesExternal(pair.Internal.OriginalItem, pair.External.OriginalItem);
+					handlers.Updaters.ExternalTakesInternal(pair.External.OriginalItem, pair.Internal.OriginalItem);
+				}
+			}
+			
 		}
 	}
 }

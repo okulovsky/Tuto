@@ -69,6 +69,8 @@ namespace Tuto.Publishing.Matching
 			result.MakeMatch(internals[internalNum], false, externals[externalNum], false);
 			for (int j = 0; j < externals.Length; j++)
 				matrix[internalNum, j] = -1;
+			for (int i = 0; i < internals.Length; i++)
+				matrix[i, externalNum] = -1;
 		}
 
 		void DisableExternal(int externalNum)
@@ -95,7 +97,7 @@ namespace Tuto.Publishing.Matching
 		}
 
 		const double tooCloseThreshold = 0.8;
-		const double matchThreshold = 0.4;
+		const double matchThreshold = 0.85;
 		
 
 		bool MakeIteration()
@@ -103,10 +105,18 @@ namespace Tuto.Publishing.Matching
 			if (Points.Count() == 0) return false;
 			var point = Points.ArgMax(z => matrix[z.Item1, z.Item2]);
 			var bestValue = matrix[point.Item1,point.Item2];
+
+			if (externalSelector(externals[point.Item2]).Contains("DRY"))
+			{
+				Console.Write("!");
+			}
+
+
 			if (bestValue<matchThreshold) return false;
 
 			var nextOptimum = PointForInternal(point.Item1)
 				.Where(z => z.Item2 != point.Item2)
+				.Where(z=> result.External[externals[z.Item2]] == MatchStatus.Pending)
 				.Where(z => matrix[z.Item1, z.Item2] > bestValue * tooCloseThreshold)
 				.ToList();
 

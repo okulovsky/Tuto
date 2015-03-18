@@ -22,6 +22,8 @@ namespace Tuto.Publishing.Views
         public ManualMatch()
         {
             InitializeComponent();
+			ok.Click+=(s,a)=>{ DialogResult= true; Close(); };
+			cancel.Click += (s, a) => { DialogResult = false; Close(); };
         }
     }
 }
