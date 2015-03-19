@@ -32,7 +32,7 @@ namespace Tuto.TutoServices
         {
             SrtMaker.WriteSrtFiles(model);
 
-            var epsodes = ListEpisodes(model.Montage.FileChunks).Select(e => MakeEpisode(model, e));
+			var epsodes = ListEpisodes(model.Montage.FileChunks).Select(e => MakeEpisode(model, e)).ToList();
 
             var episodeNumber = 0;
             foreach (var episode in epsodes)
@@ -133,6 +133,8 @@ namespace Tuto.TutoServices
 
         private static List<EpisodesChunks> ListEpisodes(List<FileChunk> fileChunks)
         {
+			var test = fileChunks.Any(z => z.StartsNewEpisode);
+
             var result = new List<EpisodesChunks>();
             var i = 0;
             while (i < fileChunks.Count)

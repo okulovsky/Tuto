@@ -32,18 +32,25 @@ namespace Tuto.Publishing
             return fileRegex.Replace(str, "_");
         }
 
+
+
         public DirectoryInfo DirectoryForLecture(LectureWrap wrap)
         {
             return new DirectoryInfo(Path.Combine(
                 Settings.UlearnCourseDirectory,
-                string.Format("L{0:D2} - {1}", wrap.LectureNumber, wrap.Caption)));
+                string.Format("L{0:D3} - {1}", wrap.LectureNumber*10, wrap.Caption)));
         }
+
+		public string FilePrefixForSlide(VideoWrap wrap)
+		{
+			return string.Format("S{0:D3}", (wrap.NumberInTopic + 1) * 10);
+		}
 
         public FileInfo FileForSlide(VideoWrap wrap)
         {
             return new FileInfo(Path.Combine(
                 DirectoryForLecture(wrap.Parent as LectureWrap).FullName,
-                string.Format("S{0:D2} - {1}.cs", wrap.NumberInTopic, wrap.Caption)));
+                string.Format("{0} - {1}.cs", FilePrefixForSlide(wrap), wrap.Caption)));
         }
 
 		public void Load(Item root)

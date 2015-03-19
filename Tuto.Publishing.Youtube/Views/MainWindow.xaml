@@ -5,7 +5,8 @@
         Title="Tuto.Publisher" Height="600" Width="1000">
     <DockPanel>
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-            <Button Command="{Binding UpdateCommand}">Update</Button>
+            <Button Command="{Binding UpdateVideoCommand}">Update video</Button>
+            <Button Command="{Binding UpdateLatexCommand}">Update latex</Button>
             <Button x:Name="EditTree">EditTree</Button>
         </StackPanel>
     <TabControl HorizontalAlignment="Stretch" Height="auto" VerticalAlignment="Stretch" Width="auto">

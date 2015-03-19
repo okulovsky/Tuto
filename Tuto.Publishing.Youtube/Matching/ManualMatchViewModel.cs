@@ -82,6 +82,10 @@ namespace Tuto.Publishing.Matching
             UnmatchedExternals = new ObservableCollection<ManualMatchItem<TExternal>>();
             Matched = new ObservableCollection<ManualMatchedPair<TInternal, TExternal>>();
             MakeMatchCommand = new RelayCommand(MakeMatch, () => SelectedInternal != null && SelectedExternal != null);
+			SortByNameCommand = new RelayCommand(() => Sort(z => z.Internal.Name));
+			SortByDistanceCommand = new RelayCommand(() => Sort(z => z.Distance));
+			SortByStatusCommand = new RelayCommand(() => Sort(z =>
+				(z.Internal.Status == MatchStatus.NewMatch || z.External.Status == MatchStatus.NewMatch) ? 0 : 1));
         }
 
         void MakeMatch()
@@ -132,6 +136,47 @@ namespace Tuto.Publishing.Matching
 				AddInternalUnmatched(e.Key, e.Value);
 			foreach (var e in dataContainer.External.Where(z => z.Value == MatchStatus.Dirty))
 				AddExternalUnmatched(e.Key, e.Value);
+		}
+
+		public void Pull(MatchingPendingData<TInternal,TExternal> pendingData)
+		{
+			foreach (var e in pendingData.Internals) AddInternalUnmatched(e, MatchStatus.Pending);
+			foreach (var e in pendingData.Externals) AddExternalUnmatched(e, MatchStatus.Pending);
+		}
+
+		#region Sorting
+		void Sort<T>(Func<ManualMatchedPair<TInternal,TExternal>,T> sortKey)
+		{
+			var list = Matched.OrderBy(sortKey).ToList();
+			Matched.Clear();
+			foreach (var e in list) Matched.Add(e);
+		}
+
+		public RelayCommand SortByNameCommand { get; private set; }
+		public RelayCommand SortByStatusCommand { get; private set; }
+		public RelayCommand SortByDistanceCommand { get; private set; }
+
+		public void Prepare()
+		{
+			Sort(z => z.Internal.Name);
+		}
+		#endregion
+
+		public void Push(MatchUpdater<TInternal,TExternal> updater)
+		{
+			foreach (var e in UnmatchedInternals)
+				if (e.Status != MatchStatus.Pending)
+					updater.ClearInternal(e.OriginalItem);
+			foreach (var e in UnmatchedExternals)
+				if (e.Status != MatchStatus.Pending)
+					updater.ClearExternal(e.OriginalItem);
+			foreach (var pair in Matched)
+			{
+				if (pair.Internal.Status != MatchStatus.OldMatch)
+					updater.InternalTakesExternal(pair.Internal.OriginalItem, pair.External.OriginalItem);
+				if (pair.External.Status != MatchStatus.OldMatch)
+					updater.ExternalTakesInternal(pair.External.OriginalItem, pair.Internal.OriginalItem);
+			}
 		}
 	}
 }

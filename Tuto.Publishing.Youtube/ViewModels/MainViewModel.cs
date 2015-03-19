@@ -65,7 +65,9 @@ namespace Tuto.Publishing
         {
             this.sourcesFactory = sourcesFactory;
             this.Directory = directory;
-            UpdateCommand = new RelayCommand(Update);
+            UpdateVideoCommand = new RelayCommand(UpdateVideo);
+			UpdateLatexCommand = new RelayCommand(UpdateLatex);
+				 
             SaveCommand = new RelayCommand(Save);
             Reload();
         }
@@ -121,33 +123,17 @@ namespace Tuto.Publishing
             Assign<VideoWrap>((sources, wrap) => sources.ForVideo(wrap));
         }
 
-		void Update()
+		void UpdateVideo()
 		{
 			sources.OfType<YoutubeSource>().FirstOrDefault().Pull(Root[0]);
-			return;
-
-
-			foreach (var s in sources)
-				s.Pull(Root[0]);
-
-
-            Root = new[] { Root[0] };
+			Root = new[] { Root[0] };
 		}
-
-      
 
 		void UpdateLatex()
 		{
-			//var latexDirectory = Directory.CreateSubdirectory("Latex");
-			//var documents = StaticItems.LatexProcessor.GetAllPresentations(latexDirectory);
-			//var matcher = Matchers.ByName<VideoWrap, LatexDocument>(
-			//	documents,
-			//	document=>document.LastSection.Name,
-			//	(doc1,doc2)=>doc1==doc2
-			//	);
-			//matcher.Push(Root[0]);
+			sources.OfType<LatexSource>().FirstOrDefault().Pull(Root[0]);
+			Root = new[] { Root[0] };
 		}
-
 
         public void Save()
         {
@@ -167,8 +153,9 @@ namespace Tuto.Publishing
 		//}
 
         public RelayCommand SaveCommand { get; private set; }
-        public RelayCommand UpdateCommand { get; private set; }
-        public RelayCommand TestCommand { get; private set; }
+		public RelayCommand UpdateVideoCommand { get; private set; }
+		public RelayCommand UpdateLatexCommand { get; private set; }
+		public RelayCommand TestCommand { get; private set; }
 
 
 

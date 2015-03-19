@@ -75,13 +75,11 @@ namespace Tuto.Publishing
 			}
 		}
 
-		public void Pull(Item root)
+
+		void PullClips(Item root)
 		{
 			var clips = GetYoutubeClips();
 			if (clips == null) return;
-
-
-
 
 			var lectures = root.Subtree().OfType<VideoWrap>();
 
@@ -95,22 +93,57 @@ namespace Tuto.Publishing
 				);
 
 			var handlers = new Matching.MatchHandlers<VideoWrap, YoutubeClip>(lectureHandler, clipHandler);
-				
 
-
-
-				
 			var keys = new Matching.MatchKeySet<VideoWrap, YoutubeClip, Guid?, string>(
 				wrap => wrap.Guid,
 				wrap => { var c = wrap.Get<YoutubeClip>(); if (c != null) return c.Id; return null; },
 				clip => clip.GetGuid(),
-				clip=>clip.Id,
-				guid=>!guid.HasValue,
-				id=>id==null
+				clip => clip.Id,
+				guid => !guid.HasValue,
+				id => id == null
 				);
 			var allData = new Matching.MatchHandlersAndKeys<VideoWrap, YoutubeClip, Guid?, string>(handlers, keys, updaters);
 
-			Matching.MatchingAlgorithm.Run(lectures, clips, allData);
+			Matching.MatchingAlgorithm.RunStrongAlgorithm(lectures, clips, allData);
+
+		}
+
+		void PullPlaylists(Item root)
+		{
+			var playLists = YoutubeProcessor.GetAllPlaylists();
+			var topics = root.Subtree().OfType<LectureWrap>().ToList();
+
+			var playListHandler = new Matching.MatchItemHandler<YoutubePlaylist>(
+				z => z.PlaylistTitle,
+				z => z.PlaylistTitle,
+				z => { }
+				);
+
+			var topicHandler = new Matching.MatchItemHandler<LectureWrap>(
+				z => z.Caption,
+				z => z.Caption,
+				z => { }
+				);
+
+			var updaters = new Matching.MatchUpdater<LectureWrap,YoutubePlaylist>(
+				(wrap,list)=>wrap.Store<YoutubePlaylist>(list),
+				(list, wrap)=>{},
+				wrap=>wrap.Store<YoutubePlaylist>(null),
+				list=>{}
+				);
+
+
+			Matching.MatchingAlgorithm.RunWeakAlgorithm(
+				topics,
+				playLists,
+				new Matching.MatchHandlers<LectureWrap, YoutubePlaylist>(topicHandler, playListHandler),
+				updaters);
+		}
+
+		public void Pull(Item root)
+		{
+			PullClips(root);
+			PullPlaylists(root);
 			YoutubeDataBinding.SaveYoutubeData(root, directory);
 		}
 

@@ -70,6 +70,7 @@ namespace Tuto.Publishing
 
 			dueTitle = prefix + " " + Wrap.Video.Name;
 			description += Source.Settings.DescriptionPS;
+			description += "\n\n" + YoutubeClip.GuidMarker(Wrap.Guid);
 			dueDescription = description;
 		}
 		#endregion

@@ -53,10 +53,10 @@ namespace {0}
         {
             var latexBlock = Wrap.BlockOfType<LatexVideoCommands>();
             if (latexBlock.Status.ExportPrevented()) return "";
-			
+
 			var dstFile = new FileInfo(
-                Path.Combine(Source.FileForSlide(Wrap).Directory.FullName, 
-                string.Format("_S{0:D2}-slides.pdf",Wrap.NumberInTopic)));
+				Path.Combine(Source.FileForSlide(Wrap).Directory.FullName,
+				"_"+Source.FilePrefixForSlide(Wrap) + ".pdf"));
             latexBlock.PdfFile.CopyTo(dstFile.FullName,true);
             return "\t\t/*\n\t\t[Презентация](" + dstFile.Name + ")\n\t\t*/\n";
 
@@ -66,7 +66,7 @@ namespace {0}
         {
             if (!Source.FileForSlide(Wrap).Directory.Exists) Source.FileForSlide(Wrap).Directory.Create();
             var content = CreateContent(CreateVideoEntry()+"\n"+PrepareGalleryAndCreateEntry());
-            System.IO.File.WriteAllText(Source.FileForSlide(Wrap).FullName, content);
+			System.IO.File.WriteAllText(Source.FileForSlide(Wrap).FullName, content);
         }
 
        

@@ -95,18 +95,18 @@ namespace Tuto.Publishing
         {
             get
             {
-                if (LatexSource == null) 
-					yield return BlockStatus.OK("No LaTeX source is found for this video").WithBrush(Brushes.LightGray);
-                else if (Gallery == null) 
+				if (LatexSource == null)
+					yield return BlockStatus.OK("No LaTeX source is found for this video").WithBrush(Brushes.LightGray).PreventExport();
+				else if (Gallery == null)
 					yield return BlockStatus.Auto("Slides were not compiled").PreventExport();
-                //if (!DueSlidesDirectory.Exists) return BlockStatus.Error("Slides were compiled, but they are not found now. Recompile them");
-                //if (Gallery.CompilationTime < LatexSource.ModificationTime) return BlockStatus.Error("Slides are outdated. Recompile them");
-                //if (DueSlidesDirectory.GetFiles().Length == 0) return BlockStatus.Warning("No slides are produced for this video. Check the presentation and remove the section, if it was intended");
-                else if (!PdfFile.Exists) 
+				//if (!DueSlidesDirectory.Exists) return BlockStatus.Error("Slides were compiled, but they are not found now. Recompile them");
+				//if (Gallery.CompilationTime < LatexSource.ModificationTime) return BlockStatus.Error("Slides are outdated. Recompile them");
+				//if (DueSlidesDirectory.GetFiles().Length == 0) return BlockStatus.Warning("No slides are produced for this video. Check the presentation and remove the section, if it was intended");
+				else if (!PdfFile.Exists)
 					yield return BlockStatus.Auto("Slides were compiled, but they are not found now. Recompile them").PreventExport();
-                else if (Gallery.CompilationTime < LatexSource.ModificationTime) 
+				else if (Gallery.CompilationTime < LatexSource.ModificationTime)
 					yield return BlockStatus.Auto("Slides are outdated. Recompile them").PreventExport();
-                else 
+				else
 					yield return BlockStatus.OK();
             }
         }

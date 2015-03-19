@@ -8,7 +8,23 @@ namespace Tuto.Publishing.Matching
 {
 	public static class MatchingAlgorithm
 	{
-		public static void Run<TInternal, TExternal, TInternalKey, TExternalKey>(
+		public static void RunWeakAlgorithm<TInternal,TExternal>(
+			IEnumerable<TInternal> internals, 
+			IEnumerable<TExternal> externals,
+			MatchHandlers<TInternal,TExternal> handlers,
+			MatchUpdater<TInternal,TExternal> updates)
+		{
+			var pendingData = new MatchingPendingData<TInternal, TExternal>(internals, externals);
+			var nameMatch = new NameMatch<TInternal, TExternal>(pendingData, handlers);
+			var nameMatchResult = nameMatch.Run();
+			var model = new ManualMatchViewModel<TInternal, TExternal>(handlers);
+			model.Pull(nameMatchResult);
+			model.Pull(nameMatchResult.GetPendingData());
+			model.Push(updates);
+		}
+
+
+		public static void RunStrongAlgorithm<TInternal, TExternal, TInternalKey, TExternalKey>(
 			IEnumerable<TInternal> internals,
 			IEnumerable<TExternal> externals,
 			MatchHandlersAndKeys<TInternal, TExternal, TInternalKey, TExternalKey> handlers)
@@ -28,30 +44,17 @@ namespace Tuto.Publishing.Matching
 			manualMatchViewModel.Pull(nameMatchResult);
 			pendingData = nameMatchResult.GetPendingData();
 
-			foreach (var e in pendingData.Internals) manualMatchViewModel.AddInternalUnmatched(e, MatchStatus.Pending);
-			foreach (var e in pendingData.Externals) manualMatchViewModel.AddExternalUnmatched(e, MatchStatus.Pending);
-
+			manualMatchViewModel.Pull(pendingData);
+		
+			manualMatchViewModel.Prepare();
 			var window = new Tuto.Publishing.Views.ManualMatch();
 			window.DataContext = manualMatchViewModel;
 			window.ShowDialog();
 
 			if (window.DialogResult==true)
 			{
-				foreach (var e in manualMatchViewModel.UnmatchedInternals)
-					if (e.Status!= MatchStatus.Pending)
-						handlers.Updaters.ClearInternal(e.OriginalItem);
-				foreach (var e in manualMatchViewModel.UnmatchedExternals)
-					if (e.Status!= MatchStatus.Pending)
-						handlers.Updaters.ClearExternal(e.OriginalItem);
-				foreach (var pair in manualMatchViewModel.Matched)
-				{
-					if (pair.Internal.Status!= MatchStatus.OldMatch)
-						handlers.Updaters.InternalTakesExternal(pair.Internal.OriginalItem, pair.External.OriginalItem);
-					if (pair.External.Status!= MatchStatus.OldMatch)
-					handlers.Updaters.ExternalTakesInternal(pair.External.OriginalItem, pair.Internal.OriginalItem);
-				}
+				manualMatchViewModel.Push(handlers.Updaters);
 			}
-			
 		}
 	}
 }

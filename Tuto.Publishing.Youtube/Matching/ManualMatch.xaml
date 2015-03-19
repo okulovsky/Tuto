@@ -59,9 +59,16 @@
             </ScrollViewer>
         </Grid>
         <Button Content="Match selected items" Width="200" Command="{Binding MakeMatchCommand}"/>
-        <ScrollViewer Height="250">
-            <ListBox ItemsSource="{Binding Matched}" Style="{StaticResource ForPairs}"/>
-        </ScrollViewer>
+        <DockPanel>
+            <StackPanel Orientation="Vertical">
+                <Button Command="{Binding SortByNameCommand}" Content="Sort by name"/>
+                <Button Command="{Binding SortByDistanceCommand}" Content="Sort by dst"/>
+                <Button Command="{Binding SortByStatusCommand}" Content="Sort by status"/>
+            </StackPanel>
+            <ScrollViewer Height="250">
+                <ListBox ItemsSource="{Binding Matched}" Style="{StaticResource ForPairs}"/>
+            </ScrollViewer>
+        </DockPanel>
         <DockPanel>
             <Button x:Name="cancel" DockPanel.Dock="Right" Content="Cancel" Width="100"/>
             <Button x:Name="ok" DockPanel.Dock="Right" Content="OK" Width="100"/>

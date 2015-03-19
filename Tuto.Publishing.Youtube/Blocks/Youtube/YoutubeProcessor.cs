@@ -123,10 +123,14 @@ namespace Tuto.Publishing.Youtube
             return lists.Items.Select(z => new YoutubePlaylist { PlaylistId = z.Id, PlaylistTitle = z.Snippet.Title }).ToList();
         }
 
-        public void DeletePlaylist(YoutubePlaylist playlist)
-        {
-            service.Playlists.Delete(playlist.PlaylistId).Execute();
-        }
+		public void DeletePlaylist(YoutubePlaylist playlist)
+		{
+			try
+			{
+				service.Playlists.Delete(playlist.PlaylistId).Execute();
+			}
+			catch { }
+		}
 
         public void FillPlaylist(YoutubePlaylist list, IEnumerable<YoutubeClip> clips)
         {
