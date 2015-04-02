@@ -94,13 +94,14 @@ namespace Tuto.Navigator
 
 				foreach (var e in models)
 					for (int i = 0; i < e.Montage.Information.Episodes.Count; i++)
-						if (!currentList.Any(z => z.Guid == e.Montage.Information.Episodes[i].Guid))
-						{
-							var fv = new FinishedVideo(e, i);
-							var pv = new VideoPublishSummary { Guid = fv.Guid, Name = fv.Name, Duration = fv.Duration };
-							pv.OrdinalSuffix = fv.RelativeSourceFolderLocation + "-" + fv.EpisodeNumber;
-							currentList.Add(pv);
-						}
+					{
+						var alreadySaved = currentList.Where(z => z.Guid == e.Montage.Information.Episodes[i].Guid).FirstOrDefault();
+						if (alreadySaved != null) currentList.Remove(alreadySaved);
+						var fv = new FinishedVideo(e, i);
+						var pv = new VideoPublishSummary { Guid = fv.Guid, Name = fv.Name, Duration = fv.Duration };
+						pv.OrdinalSuffix = fv.RelativeSourceFolderLocation + "-" + fv.EpisodeNumber;
+						currentList.Add(pv);
+					}
 
 				HeadedJsonFormat.Write(file, currentList);
 			}
