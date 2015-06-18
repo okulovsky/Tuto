@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Editor;
+using System.Windows;
 
 namespace Tuto.Model
 {
@@ -64,9 +65,8 @@ namespace Tuto.Model
                     break;
             }
 
-            var programFolder = new FileInfo(Assembly.GetExecutingAssembly().FullName).Directory;
-
-            return new EditorModel(localDirectory, rootDirectory, programFolder);
+            var programFolder = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory;
+			return new EditorModel(localDirectory, rootDirectory, programFolder);
         }
 
 

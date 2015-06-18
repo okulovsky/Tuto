@@ -21,7 +21,13 @@ namespace Tuto.Navigator
             mainWindow.DataContext = globalModel;
             mainWindow.WindowState = System.Windows.WindowState.Maximized;
 
-            var path = EditorModelIO.SubstituteDebugDirectories(args[0]);
+			string directoryName = args[0];
+			if (File.Exists(args[0]))
+			{
+				directoryName = new FileInfo(args[0]).Directory.FullName;
+			}
+			
+			var path = EditorModelIO.SubstituteDebugDirectories(directoryName);
             var file = System.IO.Path.Combine(path,"Project.tuto");
             globalModel.Load(new FileInfo(file));
 

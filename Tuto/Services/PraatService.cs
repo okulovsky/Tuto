@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Tuto.Model;
 
 namespace Tuto.TutoServices
@@ -54,20 +55,22 @@ namespace Tuto.TutoServices
             if (!model.Locations.PraatVoice.Exists)
                 Shell.FFMPEG(false, "-i \"{0}\" -vn -q:a 0 \"{1}\"", model.Locations.FaceVideo, model.Locations.PraatVoice);
 
-            Shell.Exec(false, model.Locations.PraatExecutable,
-                String.Format(
-                    CultureInfo.InvariantCulture,
-                    "\"{0}\" \"{1}\" \"{2}\" {3} {4} {5} {6} {7} {8} {9}",
-                    model.Locations.PraatScriptSource,
-                    model.Locations.PraatVoice,
-                    model.Locations.PraatOutput,
-                    SilentLabel,
-                    SoundLabel,
-                    MinPitch,
-                    TimeStep,
-                    SilenceThreshold,
-                    MinSilentInterval,
-                    MinSoundInterval));
+			
+				Shell.Exec(false, model.Locations.PraatExecutable,
+					String.Format(
+						CultureInfo.InvariantCulture,
+						"\"{0}\" \"{1}\" \"{2}\" {3} {4} {5} {6} {7} {8} {9}",
+						model.Locations.PraatScriptSource,
+						model.Locations.PraatVoice,
+						model.Locations.PraatOutput,
+						SilentLabel,
+						SoundLabel,
+						MinPitch,
+						TimeStep,
+						SilenceThreshold,
+						MinSilentInterval,
+						MinSoundInterval));
+			
 
             model.Montage.SoundIntervals.Clear();
             using (var reader = new StreamReader(model.Locations.PraatOutput.FullName))

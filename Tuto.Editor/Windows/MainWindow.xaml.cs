@@ -56,6 +56,7 @@ namespace Editor
             ScreenVideo.Source = new Uri(model.Locations.DesktopVideo.FullName);
             FaceVideo.LoadedBehavior = MediaState.Manual;
             ScreenVideo.LoadedBehavior = MediaState.Manual;
+			ScreenVideo.Volume = 0;
 
             
             ModeChanged();
@@ -279,7 +280,7 @@ namespace Editor
         void RunProcess(Services service, DirectoryInfo directory)
         {
             this.IsEnabled = false;
-            Tuto.TutoProgram.Run(service, directory);
+            Tuto.TutoProgram.Run(service, directory, ExecMode.Run);
             this.IsEnabled = true;
             MessageBox.Show("The action is complete");
             return;

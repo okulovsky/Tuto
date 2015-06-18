@@ -31,8 +31,9 @@ namespace Tuto
                     };
         }
 
-        public static void Run(Services service, DirectoryInfo directory, ExecMode mode = ExecMode.Run)
+        public static void Run(Services service, DirectoryInfo directory, ExecMode mode = ExecMode.Run, bool noNewWindows=true)
         {
+			Shell.SilentMode = noNewWindows;
             Main(new string[] { service.ToString(), directory.FullName, mode.ToString() });
         }
 
