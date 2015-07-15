@@ -95,7 +95,7 @@ namespace Editor
             }
 
             model.WindowState.FaceVideoIsVisible = montage.Chunks[index].Mode == Mode.Face;
-            model.WindowState.DesktopVideoIsVisible = montage.Chunks[index].Mode == Mode.Screen;
+            model.WindowState.DesktopVideoIsVisible = montage.Chunks[index].Mode == Mode.Desktop;
 
             double speed = FastSpeed;
             var bindex = montage.Borders.FindBorder(ms);

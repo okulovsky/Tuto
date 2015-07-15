@@ -173,7 +173,7 @@ namespace Editor
                     times.Add(current);
                     current = 0;
                 }
-                if (c.Mode == Mode.Face || c.Mode == Mode.Screen)
+                if (c.Mode == Mode.Face || c.Mode == Mode.Desktop)
                     current += c.Length;
             }
             times.Add(current);

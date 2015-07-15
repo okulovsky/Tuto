@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,6 +11,8 @@ namespace Tuto.Model
     /// <summary>
     /// The chunk is a region of video that is between two neighbors tokens
     /// </summary>
+    /// 
+    [DataContract]
     public class StreamChunk
     {
         public readonly int StartTime;

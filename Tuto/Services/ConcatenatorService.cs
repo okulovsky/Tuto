@@ -50,20 +50,20 @@ namespace Tuto.TutoServices
                     Path.Combine(model.ChunkFolder.FullName, e.EndChunkFileName));
         }
 
-        List<List<FileChunk>> SeparateByEpisode(EditorModel model)
+        List<List<MontageChunk>> SeparateByEpisode(EditorModel model)
         {
-            List<List<FileChunk>> list = new List<List<FileChunk>>();
-            var temp = new List<FileChunk>();
+            List<List<MontageChunk>> list = new List<List<MontageChunk>>();
+            var temp = new List<MontageChunk>();
             foreach (var e in model.Montage.FileChunks)
             {
-                if (e.StartsNewEpisode) { list.Add(temp); temp = new List<FileChunk>(); }
+                if (e.StartsNewEpisode) { list.Add(temp); temp = new List<MontageChunk>(); }
                 temp.Add(e);
             }
             list.Add(temp);
             return list;
         }
 
-        string GetChunkFileName(FileChunk chunk)
+        string GetChunkFileName(MontageChunk chunk)
         {
             return recodeBeforeAssembling ? chunk.EndChunkFileName : chunk.ChunkFilename;
         }

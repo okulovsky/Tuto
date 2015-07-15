@@ -10,7 +10,7 @@ using Tuto.TutoServices.Montager;
 
 namespace Tuto.TutoServices
 {
-    class AssemblerService : Service
+    public class AssemblerService : Service
     {
 
         public override string Name
@@ -28,14 +28,14 @@ namespace Tuto.TutoServices
             get { return HelpString; }
         }
 
+
         public void DoWork(EditorModel model, bool print)
         {
             SrtMaker.WriteSrtFiles(model);
-			model.CreateFileChunks();
-			var epsodes = ListEpisodes(model.Montage.FileChunks).Select(e => MakeEpisode(model, e)).ToList();
-
+			model.FormPreparedChunks();
+			var episodes = ListEpisodes(model.Montage.PreparedChunks).Select(e => MakeEpisode(model, e)).ToList();
             var episodeNumber = 0;
-            foreach (var episode in epsodes)
+            foreach (var episode in episodes)
             {
                 var avsContext = new AvsContext();
                 episode.SerializeToContext(avsContext);
@@ -61,18 +61,63 @@ namespace Tuto.TutoServices
 
         private AvsNode MakeEpisode(EditorModel model, EpisodesChunks episode)
         {
-            var fileChunks = episode.chunks;
+            var chunks = episode.chunks;
             var avsChunks = new AvsConcatList { Items = new List<AvsNode>() };
             var fps = 25;
+            var shift =  model.Montage.SynchronizationShift;
 
-            avsChunks.Items.Add(AvsNode.NormalizedNode(model.Locations.Make(model.ChunkFolder, fileChunks[0].ChunkFilename), fps, fileChunks[0].Mode == Mode.Face));
             //making cross-fades
-            for (int i = 1; i < fileChunks.Count; i++)
+
+            //avsChunks.Items.Add(AvsNode.NormalizedNode(chunks[0], fps, true, shift));
+            ////making cross-fades
+            //for (int i = 1; i < chunks.Count; i++)
+            //{
+            //    var currentChunk = chunks[i];
+            //    var prevChunk = chunks[i - 1];
+            //    AvsNode currentAvsChunk = AvsNode.NormalizedNode(currentChunk, fps, currentChunk.Mode == Mode.Face, shift);
+            //    AvsNode prevAvsChunk = avsChunks.Items[avsChunks.Items.Count - 1];
+            //    if (prevChunk.Mode == Mode.Face && currentChunk.Mode == Mode.Face)
+            //        avsChunks.Items[avsChunks.Items.Count - 1] = new AvsCrossFade
+            //        {
+            //            FadeFrom = prevAvsChunk,
+            //            FadeTo = currentAvsChunk
+            //        };
+            //    else
+            //        avsChunks.Items.Add(currentAvsChunk);
+            //}
+
+            for (int i = 1; i < chunks.Count; i++)
             {
-                var currentChunk = fileChunks[i];
-                var prevChunk = fileChunks[i - 1];
-                AvsNode currentAvsChunk = AvsNode.NormalizedNode(model.Locations.Make(model.ChunkFolder, currentChunk.ChunkFilename), fps, currentChunk.Mode == Mode.Face);
-                AvsNode prevAvsChunk = avsChunks.Items[avsChunks.Items.Count - 1];
+                if (chunks[i].IsNotActive)
+                    continue;
+                var currentChunk = chunks[i];
+                var prevChunk = chunks[i - 1];
+                AvsNode currentAvsChunk = AvsNode.NormalizedNode(currentChunk, fps, currentChunk.Mode == Mode.Face, model.Montage.SynchronizationShift);
+                AvsNode prevAvsChunk = avsChunks.Items.Count >= 1  ? avsChunks.Items[avsChunks.Items.Count - 1] : AvsNode.NormalizedNode(chunks[0], fps,false, model.Montage.SynchronizationShift);
+
+                //F-D-F initial handler
+                if (i < chunks.Count - 1)
+                {
+                    var nextChunk = chunks[i + 1];
+                    if (prevChunk.Mode == Mode.Face && currentChunk.Mode == Mode.Desktop && nextChunk.Mode == Mode.Face)
+                    {
+                        AvsNode nextAvsChunk = AvsNode.NormalizedNode(nextChunk, fps, currentChunk.Mode == Mode.Face, model.Montage.SynchronizationShift);
+                        AvsConcatList videoChunk = new AvsConcatList();
+                        videoChunk.Items = new List<AvsNode>() { prevAvsChunk, currentAvsChunk, nextAvsChunk };
+                        var length = prevChunk.StartTime + prevChunk.Length + currentChunk.Length + nextChunk.Length;
+                        var audioChunk = new StreamChunk(prevChunk.StartTime, length , Mode.Face, false);
+                        AvsNode audioAvsChunk = AvsNode.NormalizedNode(audioChunk, fps, currentChunk.Mode == Mode.Face, model.Montage.SynchronizationShift);
+                        AvsMix mix = new AvsMix();
+                        mix.First = videoChunk;
+                        mix.Second = audioAvsChunk;
+                        avsChunks.Items.Add(mix); //added
+                        i += 1;
+                        continue;
+                    }
+
+                }
+
+
                 if (prevChunk.Mode == Mode.Face && currentChunk.Mode == Mode.Face)
                     avsChunks.Items[avsChunks.Items.Count - 1] = new AvsCrossFade
                     {
@@ -127,11 +172,11 @@ namespace Tuto.TutoServices
 
         class EpisodesChunks
         {
-            public List<FileChunk> chunks = new List<FileChunk>();
+            public List<StreamChunk> chunks = new List<StreamChunk>();
             public int episodeNumber = 0;
         }
 
-        private static List<EpisodesChunks> ListEpisodes(List<FileChunk> fileChunks)
+        private static List<EpisodesChunks> ListEpisodes(List<StreamChunk> fileChunks)
         {
 			var test = fileChunks.Any(z => z.StartsNewEpisode);
 

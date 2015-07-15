@@ -34,7 +34,7 @@ namespace Tuto.Model
         public VideoInformation Information { get; private set; }
 
         [DataMember]
-        public List<FileChunk> FileChunks { get; set; }
+        public List<StreamChunk> PreparedChunks { get; set; }
 
         [DataMember]
         public int SynchronizationShift { get; set; }

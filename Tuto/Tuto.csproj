@@ -79,7 +79,6 @@
     <Compile Include="Model\Current\Montage\VideoInfo.cs" />
     <Compile Include="Model\Current\Montage\Border.cs" />
     <Compile Include="Model\Current\Montage\Further Refactoring\ChunkMode.cs" />
-    <Compile Include="Model\Current\Montage\Further Refactoring\FileChunk.cs" />
     <Compile Include="Model\Current\Montage\SoundInterval.cs" />
     <Compile Include="Main\Program.cs" />
     <Compile Include="Model\RelayCommand.cs" />
@@ -101,6 +100,8 @@
     <Compile Include="Services\Assembler\AvsAutoLevels.cs" />
     <Compile Include="Services\Assembler\AvsChangeFramerate.cs" />
     <Compile Include="Services\Assembler\AvsChunk.cs" />
+    <Compile Include="Services\Assembler\AvsMix.cs" />
+    <Compile Include="Services\Assembler\AvsFileChunk.cs" />
     <Compile Include="Services\Assembler\AvsConcatList.cs" />
     <Compile Include="Services\Assembler\AvsConcatTwo.cs" />
     <Compile Include="Services\Assembler\AvsContext.cs" />
@@ -114,12 +115,10 @@
     <Compile Include="Services\Assembler\AssumeSameAVLength.cs" />
     <Compile Include="Services\Assembler\AvsSubtitle.cs" />
     <Compile Include="Services\Assembler\AvsWatermark.cs" />
-    <Compile Include="Services\ConcatenatorService.cs" />
     <Compile Include="Services\ImageMaker\ImageComposer.cs" />
     <Compile Include="Services\ImageMaker\ParisComposer.cs" />
     <Compile Include="Services\MontagerService.cs" />
     <Compile Include="Services\Montager\FFMPEGCommands.cs" />
-    <Compile Include="Services\Montager\ProcessingCommands.cs" />
     <Compile Include="Services\RepairService.cs" />
     <Compile Include="Services\Service.cs" />
     <Compile Include="Services\PraatService.cs" />

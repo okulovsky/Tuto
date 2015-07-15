@@ -44,7 +44,7 @@ namespace Tuto.Model
                     if (tokens[index].FromStream[0])
                         mode = Mode.Face;
                     else if (tokens[index].FromStream[1])
-                        mode = Mode.Screen;
+                        mode = Mode.Desktop;
                     else
                         mode = Mode.Drop;
                 };

@@ -50,7 +50,7 @@ namespace Editor
                     return true;
 
                 case KeyboardCommands.Desktop:
-                    model.MarkHere(Mode.Screen, key.Ctrl);
+                    model.MarkHere(Mode.Desktop, key.Ctrl);
                     return true;
 
                 case KeyboardCommands.Drop:

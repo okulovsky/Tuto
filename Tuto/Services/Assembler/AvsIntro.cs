@@ -16,7 +16,7 @@ namespace Tuto.TutoServices.Assembler
         public override void SerializeToContext(AvsContext context)
         {
             id = context.Id;
-            var reference = new AvsChunk {ChunkFile = VideoReference, ConvertToFps = Fps};
+            var reference = new AvsFileChunk {ChunkFile = VideoReference, ConvertToFps = Fps};
             reference.SerializeToContext(context);
             context.AddData(string.Format(Format, Id, reference.Id, ImageFile, Duration));
             /*

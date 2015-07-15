@@ -10,7 +10,7 @@ namespace Editor
     {
         Undefined,
         Drop,
-        Screen,
+        Desktop,
         Face
     }
 }

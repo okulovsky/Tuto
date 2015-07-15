@@ -2,11 +2,11 @@
 
 namespace Tuto.TutoServices.Assembler
 {
-    class AvsConcatTwo : AvsNode
+    class AvsMix : AvsNode
     {
-        public AvsNode First { get; set; }
+        public AvsNode First { get; set; } //video
 
-        public AvsNode Second { get; set; }
+        public AvsNode Second { get; set; } //audio
 
         public override void SerializeToContext(AvsContext context)
         {
@@ -22,6 +22,6 @@ namespace Tuto.TutoServices.Assembler
             get { return new[] { First, Second }; }
         }
 
-        protected override string Format { get { return "{0} = {1} ++ {2}"; } }
+        protected override string Format { get { return "{0} = audiodub({1}.KillAudio(), {2}.KillVideo())"; } }
     }
 }

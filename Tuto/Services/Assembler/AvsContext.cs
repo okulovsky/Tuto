@@ -20,7 +20,9 @@ namespace Tuto.TutoServices.Assembler
                 model.Locations.AutoLevelsLibrary.FullName,
                 model.Locations.VSFilterLibrary.FullName,
                 internalData,
-                String.Format(AvsNode.Template, 0));  // root of the tree has id 0
+                String.Format(AvsNode.Template, 0),
+                model.Locations.ConvertedFaceVideo.FullName,
+                model.Locations.ConvertedDesktopVideo.FullName);  // root of the tree has id 0
         }
 
         public int Id { get { id++;
@@ -28,10 +30,12 @@ namespace Tuto.TutoServices.Assembler
         } }
 
         private int id = -1;
-        private const string Format = 
+        private const string Format =
 @"import(""{0}"")
 loadplugin(""{1}"")
 loadplugin(""{2}"")
+face = DirectShowSource(""{5}"").ChangeFPS(25)
+desktop = DirectShowSource(""{6}"").ChangeFPS(25)
 {3}
 return {4}";
 
