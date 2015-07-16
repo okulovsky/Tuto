@@ -119,17 +119,18 @@ namespace Tuto.TutoServices
                 if (chain != null)
                 {
                     currentAvsChunk = chain.Item1;
-                    i = chain.Item2;
+                    i = chain.Item2;     
                 }
-                //if (prevChunk != null && prevChunk.Mode == Mode.Face && currentChunk.Mode == Mode.Face)
-                //    avsChunks.Items[avsChunks.Items.Count - 1] = new AvsCrossFade
-                //    {
-                //        FadeFrom = prevAvsChunk,
-                //        FadeTo = currentAvsChunk
-                //    };
-                //else 
+                if (prevChunk != null && prevChunk.Mode == Mode.Face && currentChunk.Mode == Mode.Face)
+                    avsChunks.Items[avsChunks.Items.Count - 1] = new AvsCrossFade
+                    {
+                        FadeFrom = prevAvsChunk,
+                        FadeTo = currentAvsChunk
+                    };
+                else 
                 if (currentChunk.IsActive)
                     avsChunks.Items.Add(currentAvsChunk);
+                currentChunk = chunks[i];
             }
 
             // intro with fadein and fadeout
