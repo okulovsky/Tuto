@@ -15,8 +15,8 @@ namespace Tuto.TutoServices.Assembler
 
         public abstract IList<AvsNode> ChildNodes { get; }
 
-        public int SyncShift = 0;
 
+        public int SyncShift = 0;
         public string Id
         {
             get

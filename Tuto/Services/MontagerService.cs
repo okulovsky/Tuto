@@ -37,11 +37,11 @@ namespace Tuto.TutoServices
             }
             Thread.Sleep(100); //без этого почему-то вылетают ошибки
             if (File.Exists(model.Locations.FaceVideo.FullName) && !File.Exists(model.Locations.ConvertedFaceVideo.FullName))
-                Shell.FFMPEG(print, @"-i ""{0}"" -vf scale=1280:720 -q:v 0 -acodec libmp3lame -ar 44100 -ab 32k ""{1}""",
+                Shell.FFMPEG(print, @"-i ""{0}"" -vf ""scale=1280:720, fps=25"" -q:v 0 -r 25 -acodec libmp3lame -ar 44100 -ab 32k ""{1}""",
                     model.Locations.FaceVideo.FullName, model.Locations.ConvertedFaceVideo.FullName);
 
             if (File.Exists(model.Locations.DesktopVideo.FullName) && !File.Exists(model.Locations.ConvertedDesktopVideo.FullName))
-                Shell.FFMPEG(print, @"-i ""{0}"" -vf scale=1280:720 -q:v 0 -an ""{1}""",
+                Shell.FFMPEG(print, @"-i ""{0}"" -r 25 -vf ""scale=1280:720, fps=25"" -q:v 0 -an ""{1}""",
                                 model.Locations.DesktopVideo.FullName, model.Locations.ConvertedDesktopVideo.FullName);
         }
 
