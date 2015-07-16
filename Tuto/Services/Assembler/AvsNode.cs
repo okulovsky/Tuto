@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Editor;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -40,6 +41,9 @@ namespace Tuto.TutoServices.Assembler
         }
 
         protected virtual string Format{get { return ""; }}
+
+        public Mode LeftMode { get; set; }
+        public Mode RightMode { get; set; }
 
         public static AvsNode NormalizedNode(StreamChunk chunkFile, int fps, bool autolevel, int shift)
         {
