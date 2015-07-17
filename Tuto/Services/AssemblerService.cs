@@ -31,9 +31,8 @@ namespace Tuto.TutoServices
 
         public void DoWork(EditorModel model, bool print)
         {
-            SrtMaker.WriteSrtFiles(model);
-			model.FormPreparedChunks();
-			var episodes = ListEpisodes(model.Montage.PreparedChunks).Select(e => MakeEpisode(model, e)).ToList();
+            //SrtMaker.WriteSrtFiles(model);
+            var episodes = GetEpisodesNodes(model);
             var episodeNumber = 0;
             foreach (var episode in episodes)
             {
@@ -57,6 +56,13 @@ namespace Tuto.TutoServices
                 episodeNumber++;
             }
 
+        }
+
+        public List<AvsNode> GetEpisodesNodes(EditorModel model)
+        {
+            model.FormPreparedChunks();
+            var episodes = ListEpisodes(model.Montage.PreparedChunks).Select(e => MakeEpisode(model, e)).ToList();
+            return episodes;
         }
 
         private bool IsDifferentMode(Mode mode1, Mode mode2)
@@ -146,17 +152,17 @@ namespace Tuto.TutoServices
             // fadeout last item
             avsChunks.Items[avsChunks.Items.Count - 1] = new AvsFadeOut { Payload = avsChunks.Items[avsChunks.Items.Count - 1] };
 
-            AvsNode resultedAvs = avsChunks;
-            if (!string.IsNullOrEmpty(File.ReadAllText(model.Locations.GetSrtFile(episode.episodeNumber).FullName)))
-            {
-                resultedAvs = new AvsSubtitle { SrtPath = model.Locations.GetSrtFile(episode.episodeNumber).FullName, Payload = avsChunks };
-            }
+            //AvsNode resultedAvs = avsChunks;
+            //if (!string.IsNullOrEmpty(File.ReadAllText(model.Locations.GetSrtFile(episode.episodeNumber).FullName)))
+            //{
+            //    resultedAvs = new AvsSubtitle { SrtPath = model.Locations.GetSrtFile(episode.episodeNumber).FullName, Payload = avsChunks };
+            //}
 
 
             // autolevel
             // ???
 
-            return resultedAvs;;
+            return avsChunks;
 
             // watermark
             //return new AvsWatermark
@@ -175,7 +181,7 @@ namespace Tuto.TutoServices
         }
 
 
-        class EpisodesChunks
+        private class EpisodesChunks
         {
             public List<StreamChunk> chunks = new List<StreamChunk>();
             public int episodeNumber = 0;

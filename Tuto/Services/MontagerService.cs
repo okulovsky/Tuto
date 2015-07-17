@@ -30,10 +30,10 @@ namespace Tuto.TutoServices
 
         public void DoWork(EditorModel model, bool print)
         {
-            if (!model.ChunkFolder.Exists)
+            if (!model.TempFolder.Exists)
             {
-                model.ChunkFolder.Delete(true);
-                model.ChunkFolder.Create();
+                model.TempFolder.Delete(true);
+                model.TempFolder.Create();
             }
             Thread.Sleep(100); //без этого почему-то вылетают ошибки
             if (File.Exists(model.Locations.FaceVideo.FullName) && !File.Exists(model.Locations.ConvertedFaceVideo.FullName))

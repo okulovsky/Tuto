@@ -7,7 +7,7 @@ using Tuto.Model;
 
 namespace Tuto.TutoServices.Assembler
 {
-    class AvsChunk : AvsNode
+    public class AvsChunk : AvsNode
     {
         public StreamChunk Chunk { get; set; }
         public int ConvertToFps { get; set; }

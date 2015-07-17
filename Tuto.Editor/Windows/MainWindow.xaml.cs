@@ -108,6 +108,18 @@ namespace Editor
                 IsEnabled = true;
             };
 
+            NoiseReduction.Click += (s, a) =>
+            {
+                model.Save();
+                if (!model.Locations.ClearedSound.Exists)
+                {
+                    var serv = new Tuto.TutoServices.NoiseReductionService();
+                    serv.CreateCleanedMP3(model);
+                    MessageBox.Show("Cleaned.mp3 created");
+                }
+                else MessageBox.Show("Already cleared. Will be assembled with new sound.");
+            };
+
             Help.Click += (s, a) =>
                 {
                     var data = HelpCreator.CreateModeHelp();

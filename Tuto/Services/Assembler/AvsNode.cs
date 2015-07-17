@@ -10,7 +10,7 @@ using Tuto.Model;
 
 namespace Tuto.TutoServices.Assembler
 {
-    internal abstract class AvsNode
+    public abstract class AvsNode
     {
         public abstract void SerializeToContext(AvsContext context);
 
@@ -41,9 +41,6 @@ namespace Tuto.TutoServices.Assembler
         }
 
         protected virtual string Format{get { return ""; }}
-
-        public Mode LeftMode { get; set; }
-        public Mode RightMode { get; set; }
 
         public static AvsNode NormalizedNode(StreamChunk chunkFile, int fps, bool autolevel, int shift)
         {
