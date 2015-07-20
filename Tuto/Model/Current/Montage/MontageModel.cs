@@ -39,6 +39,9 @@ namespace Tuto.Model
         [DataMember]
         public int SynchronizationShift { get; set; }
 
+        [DataMember]
+        public bool CrossfadesEnabled { get; set; }
+
         /// <summary>
         /// String fixes for video, which are to encoded as subtitiles
         /// </summary>
@@ -63,6 +66,7 @@ namespace Tuto.Model
             Information = new VideoInformation();
             SoundIntervals = new List<SoundInterval>();
             SubtitleFixes = new List<SubtitleFix>();
+            CrossfadesEnabled = true;
         }
     }
 }

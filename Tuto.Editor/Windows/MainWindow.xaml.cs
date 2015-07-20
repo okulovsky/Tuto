@@ -40,9 +40,6 @@ namespace Editor
             InitializeComponent();
             FaceVideo.LoadedBehavior = MediaState.Manual;
             ScreenVideo.LoadedBehavior = MediaState.Manual;
-            
-            
-            
 
         }
 
@@ -74,6 +71,8 @@ namespace Editor
             PreviewKeyDown += MainWindow_KeyDown;
             ModelView.MouseDown += Timeline_MouseDown;
             Slider.MouseDown += Timeline_MouseDown;
+
+            FadesSwitcher.Content = model.Montage.CrossfadesEnabled ? "Fades ON" : "Fades OFF";
 
             Save.Click += (s, a) =>
             {
@@ -118,6 +117,24 @@ namespace Editor
                     MessageBox.Show("Cleaned.mp3 created");
                 }
                 else MessageBox.Show("Already cleared. Will be assembled with new sound.");
+            };
+
+            FadesSwitcher.Click += (s, a) =>
+            {
+                if (model.Montage.CrossfadesEnabled == false)
+                {
+                    model.Montage.CrossfadesEnabled = true;
+                    FadesSwitcher.Content = "Fades ON";
+                    MessageBox.Show("Crossfades enabled");
+                }
+                else
+                {
+                    FadesSwitcher.Content = "Fades OFF";
+                    model.Montage.CrossfadesEnabled = false;
+                    MessageBox.Show("Crossfades disabled");
+                }
+                model.Save();
+
             };
 
             Help.Click += (s, a) =>
@@ -287,6 +304,7 @@ namespace Editor
                 Subtitles.Text = model.WindowState.CurrentSubtitle;
             }
         }
+
 
 
         void RunProcess(Services service, DirectoryInfo directory)

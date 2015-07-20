@@ -49,6 +49,7 @@
             <Button Focusable="False" x:Name="RepairDesktop">Repair Desktop</Button>
             <Button Focusable="False" x:Name="Help" Content="Help"/>
             <Button Focusable="False" x:Name="NoiseReduction" Content="-Noise"/>
+            <Button Focusable="False" x:Name="FadesSwitcher" Content="Fades" Width="76"/>
         </StackPanel>
         <StackPanel Orientation="Vertical" DockPanel.Dock="Right">
             <Label Content="{Binding WindowState.CurrentPosition}"/>

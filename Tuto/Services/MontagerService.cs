@@ -28,6 +28,12 @@ namespace Tuto.TutoServices
             get { return HelpString; }
         }
 
+        public bool IsDesktopConverted;
+        public bool IsFaceConverted;
+
+        public delegate void VideoConverter();
+        public event VideoConverter onConverted;
+
         public void DoWork(EditorModel model, bool print)
         {
             if (!model.TempFolder.Exists)
@@ -36,14 +42,15 @@ namespace Tuto.TutoServices
                 model.TempFolder.Create();
             }
             Thread.Sleep(100); //без этого почему-то вылетают ошибки
-            if (File.Exists(model.Locations.FaceVideo.FullName) && !File.Exists(model.Locations.ConvertedFaceVideo.FullName))
+            if (File.Exists(model.Locations.FaceVideo.FullName) && !model.Locations.ConvertedFaceVideo.Exists)
                 Shell.FFMPEG(print, @"-i ""{0}"" -vf ""scale=1280:720, fps=25"" -q:v 0 -acodec libmp3lame -ar 44100 -ab 32k ""{1}""",
                     model.Locations.FaceVideo.FullName, model.Locations.ConvertedFaceVideo.FullName);
 
-            if (File.Exists(model.Locations.DesktopVideo.FullName) && !File.Exists(model.Locations.ConvertedDesktopVideo.FullName))
+            if (File.Exists(model.Locations.DesktopVideo.FullName) && !model.Locations.ConvertedDesktopVideo.Exists)
                 Shell.FFMPEG(print, @"-i ""{0}"" -vf ""scale=1280:720, fps=25"" -q:v 0 -an ""{1}""",
                                 model.Locations.DesktopVideo.FullName, model.Locations.ConvertedDesktopVideo.FullName);
         }
+
 
         public override void DoWork(string[] args)
         {

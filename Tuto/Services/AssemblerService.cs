@@ -45,7 +45,7 @@ namespace Tuto.TutoServices
                 
                 var videoFile =  model.Locations.GetOutputFile(episodeNumber);
                 if (videoFile.Exists) videoFile.Delete();
-                
+
                 var ffmpegCommand = new RenderAvsScript
                 {
                     AvsInput = avsFile,
@@ -127,7 +127,7 @@ namespace Tuto.TutoServices
                     currentAvsChunk = chain.Item1;
                     i = chain.Item2;     
                 }
-                if (prevChunk != null && prevChunk.Mode == Mode.Face && currentChunk.Mode == Mode.Face)
+                if (prevChunk != null && prevChunk.Mode == Mode.Face && currentChunk.Mode == Mode.Face && model.Montage.CrossfadesEnabled)
                     avsChunks.Items[avsChunks.Items.Count - 1] = new AvsCrossFade
                     {
                         FadeFrom = prevAvsChunk,
