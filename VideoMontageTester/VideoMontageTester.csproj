@@ -54,10 +54,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Tuto.Editor\Tuto.Editor.csproj">
-      <Project>{68c87361-e095-4312-bc36-089cd63b79c3}</Project>
-      <Name>Tuto.Editor</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Tuto\Tuto.csproj">
       <Project>{e69f7e9f-ed66-4935-8976-ff548ae72aec}</Project>
       <Name>Tuto</Name>

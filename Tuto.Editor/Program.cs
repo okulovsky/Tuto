@@ -19,7 +19,7 @@ namespace Editor
         public static string TimesFile="times.txt";
 
         [STAThread]
-        public static void Main(string[] args)
+        public static void DoEditorJob(string[] args)
         {
             if (args.Length == 0)
             {

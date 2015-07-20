@@ -68,7 +68,44 @@ namespace Tuto.Navigator
                 Subdirectories.Add(new SubfolderViewModel(e));
             Publish = new PublishViewModel(globalData);
 
+            var wind = new BatchWorkWindow();
+            var tasks = new List<BatchWork>();
+            foreach (var model in data.Models)
+            {
+                    if (File.Exists(model.Locations.FaceVideo.FullName) && !model.Locations.ConvertedFaceVideo.Exists)
+                    {
+                        Action convertFace = () =>
+                        {
+                            Shell.FFMPEG(false, @"-i ""{0}"" -vf ""scale=1280:720, fps=25"" -q:v 0 -acodec libmp3lame -ar 44100 -ab 32k ""{1}""",
+                                    model.Locations.FaceVideo.FullName, model.Locations.ConvertedFaceVideo.FullName);
+                        };
+                        var task = new BatchWork();
+                        task.Name = "Conv: " + model.Locations.FaceVideo.FullName;
+                        task.Work = convertFace;
+                        tasks.Add(task);
+
+                    }
+        
+                    if (File.Exists(model.Locations.DesktopVideo.FullName) && !model.Locations.ConvertedDesktopVideo.Exists)
+                    {
+                        Action convertDesktop = () =>
+                        {
+                            Shell.FFMPEG(false, @"-i ""{0}"" -vf ""scale=1280:720, fps=25"" -q:v 0 -an ""{1}""",
+                                            model.Locations.DesktopVideo.FullName, model.Locations.ConvertedDesktopVideo.FullName);
+                        };
+                        var task = new BatchWork();
+                        task.Name = "Conv: " + model.Locations.DesktopVideo.FullName;
+                        task.Work = convertDesktop;
+                        tasks.Add(task);
+                    }
+            }
+            wind.Run(tasks);
                      
+        }
+
+        void Montage()
+        {
+
         }
 
         void CreateBackup()

@@ -50,6 +50,12 @@ namespace Tuto.Navigator
             }
         }
 
+        public void LoadTasks(IEnumerable<BatchWork> work)
+        {
+            this.work = work;
+            this.DataContext = work;
+        }
+
         public void Run(IEnumerable<BatchWork> work)
         {
             this.work=work;
