@@ -13,6 +13,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Tuto.BatchWorks;
+using System.Collections.Concurrent;
 
 namespace Tuto.Navigator
 {
@@ -26,17 +28,22 @@ namespace Tuto.Navigator
             InitializeComponent();
         }
 
-        IEnumerable<BatchWork> work;
+        ConcurrentQueue<BatchWork> work = new ConcurrentQueue<BatchWork>();
+        bool QueueWorking { get; set; }
+        Thread queueThread { get; set; }
 
         void Execute()
         {
-            foreach (var e in work)
+            while (!work.IsEmpty)
             {
+                BatchWork e;
+                work.TryPeek(out e);  
                 e.Status = BatchWorkStatus.Running;
                 try
                 {
                     e.Work();
                     e.Status = BatchWorkStatus.Success;
+                    work.TryDequeue(out e);
                 }
                 catch (ThreadAbortException ex)
                 {
@@ -48,31 +55,39 @@ namespace Tuto.Navigator
                     e.ExceptionMessage = ex.Message;
                 }
             }
-        }
-
-        public void LoadTasks(IEnumerable<BatchWork> work)
-        {
-            this.work = work;
-            this.DataContext = work;
+            QueueWorking = false;
         }
 
         public void Run(IEnumerable<BatchWork> work)
         {
-            this.work=work;
-            this.DataContext = work;
-            var thread = new Thread(Execute);
-            thread.Start();
+            foreach (var e in work)
+                this.work.Enqueue(e);
+            this.DataContext = this.work.ToList();
+            if (!QueueWorking)
+            {
+                
+                queueThread = new Thread(Execute);
+                queueThread.Start();
+            }
+            QueueWorking = true;
             CancelButton.Click += (s, a) =>
+            {
+                queueThread.Abort();
+                bool found = false;
+                foreach (var e in this.work)
                 {
-                    thread.Abort();
-                    bool found = false;
-                    foreach (var e in work)
-                    {
-                        if (e.Status == BatchWorkStatus.Aborted) found = true;
-                        else if (found) e.Status = BatchWorkStatus.Cancelled;
-                    }
-                };
+                    e.Clean();
+                    if (e.Status == BatchWorkStatus.Aborted) found = true;
+                    else if (found) e.Status = BatchWorkStatus.Cancelled;
+                }
+            };
             Show();
+        }
+
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            e.Cancel = true;
+            this.Hide();
         }
     }
 }

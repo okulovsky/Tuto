@@ -42,7 +42,7 @@
                 Fixes
             </ToggleButton>
             <Rectangle Width="50"/>
-            <Button Focusable="False" x:Name="Montage">Montage</Button>
+            <Button Focusable="False" x:Name="Montage">Convert</Button>
             <Button Focusable="False" x:Name="Assembly">Assembly</Button>
             <Rectangle Width="50"/>
             <Button Focusable="False" x:Name="RepairFace" Content="Repair Face"/>

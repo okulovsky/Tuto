@@ -47,7 +47,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\BatchWork.cs" />
     <Compile Include="Model\Current\IO\GlobalUpdaters.cs" />
     <Compile Include="Model\Current\IO\LocalUpdaters.cs" />
     <Compile Include="Model\Current\IO\Miscellanous.cs" />
@@ -115,6 +114,10 @@
     <Compile Include="Services\Assembler\AssumeSameAVLength.cs" />
     <Compile Include="Services\Assembler\AvsSubtitle.cs" />
     <Compile Include="Services\Assembler\AvsWatermark.cs" />
+    <Compile Include="Services\BatchWorks\BatchWork.cs" />
+    <Compile Include="Services\BatchWorks\ConvertDesktopVideoWork.cs" />
+    <Compile Include="Services\BatchWorks\AssemblyVideoWork.cs" />
+    <Compile Include="Services\BatchWorks\ConvertFaceVideoWork.cs" />
     <Compile Include="Services\NoiseReductionService.cs" />
     <Compile Include="Services\ImageMaker\ImageComposer.cs" />
     <Compile Include="Services\ImageMaker\ParisComposer.cs" />

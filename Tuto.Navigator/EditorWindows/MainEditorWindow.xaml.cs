@@ -21,6 +21,8 @@ using Editor.Windows;
 using Tuto;
 using Tuto.Model;
 using Tuto.TutoServices;
+using Tuto.Navigator;
+using Tuto.BatchWorks;
 
 namespace Editor
 {
@@ -29,9 +31,8 @@ namespace Editor
     /// </summary>
     public partial class MainEditorWindow : Window
     {
+        public Action<IEnumerable<BatchWork>> addTaskToQueue;
         EditorModel model;
-
-
 
         public MainEditorWindow()
 
@@ -82,13 +83,24 @@ namespace Editor
             Montage.Click += (s, a) =>
                 {
                     model.Save();
-                    RunProcess(Services.Montager,model.VideoFolder);
+                    if (!model.Locations.ConvertedDesktopVideo.Exists)
+                    {
+                        var task = new ConvertDesktopVideoWork(model);
+                        addTaskToQueue(new List<BatchWork>(){task});
+                    }
+
+                    if (!model.Locations.ConvertedFaceVideo.Exists)
+                    {
+                        var task = new ConvertFaceVideoWork(model);
+                        addTaskToQueue(new List<BatchWork>() { task });
+                    }
                 };
 
             Assembly.Click += (s, a) =>
                 {
                     model.Save();
-                    RunProcess(Services.Assembler, model.VideoFolder);
+                    var task = new AssemblyVideoWork(model);
+                    addTaskToQueue(new List<BatchWork>() { task });
                 };
 
             RepairFace.Click += (s, a) =>

@@ -1,7 +1,7 @@
 ﻿<Window x:Class="Tuto.Navigator.BatchWorkWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Batch work" SizeToContent="WidthAndHeight">
+        Title="Batch work" SizeToContent="WidthAndHeight" Closing="Window_Closing">
     <StackPanel>
         <DataGrid IsReadOnly="true" ItemsSource="{Binding}" AutoGenerateColumns="False">
             <DataGrid.Columns>

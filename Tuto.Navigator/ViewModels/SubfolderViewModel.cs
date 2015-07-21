@@ -6,12 +6,16 @@ using Tuto.Model;
 using System.Linq;
 using System.Diagnostics;
 using Editor;
+using Tuto.BatchWorks;
+using System.Collections.Generic;
 
 namespace Tuto.Navigator
 {
 
     public class SubfolderViewModel
     {
+        public Action<IEnumerable<BatchWork>> addTaskToQueue;
+
         public SubfolderViewModel(EditorModel model)
         {
             
@@ -64,6 +68,7 @@ namespace Tuto.Navigator
             }
 
             var window = new MainEditorWindow();
+            window.addTaskToQueue = addTaskToQueue;
             window.DataContext = model;
             window.Show();
         }
