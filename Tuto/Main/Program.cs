@@ -43,8 +43,7 @@ namespace Tuto
             {
                 new PraatService(),
                 new MontagerService(),
-                new AssemblerService(),
-                new RepairService(),
+                new AssemblerService()
             };
 
             if (args.Length < 1)

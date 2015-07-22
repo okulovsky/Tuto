@@ -17,6 +17,15 @@ namespace Tuto.Model
             return new FileInfo(Path.Combine(info.FullName, fname));
         }
 
+        internal FileInfo GetThumbName(FileInfo source)
+        {
+            var newPath = source.FullName.Split('\\');
+            var nameAndExt = source.Name.Split('.');
+            nameAndExt[0] = nameAndExt[0] + "-thumb";
+            newPath[newPath.Length - 1] = string.Join(".", nameAndExt);
+            return new FileInfo(string.Join("\\", newPath));
+        }
+
         public FileInfo PraatExecutable { get { return Make(model.ProgramFolder, "praatcon.exe"); } }
         public FileInfo ClearedSound { get { return Make(model.Locations.TemporalDirectory, "cleaned.mp3"); } }
         public FileInfo PraatScriptSource { get { return Make(model.ProgramFolder, "split_pauses.praat"); } }
@@ -29,6 +38,9 @@ namespace Tuto.Model
 
         public FileInfo FaceVideo { get { return Make(model.VideoFolder, FaceVideoFileName); } }
         public FileInfo DesktopVideo { get { return Make(model.VideoFolder, DesktopVideoFileName ); } }
+
+        public FileInfo FaceVideoThumb { get { return GetThumbName(FaceVideo); } }
+        public FileInfo DesktopVideoThumb { get { return GetThumbName(DesktopVideo); } }
         
         public FileInfo ConvertedFaceVideo { get { return Make(model.TempFolder, "face-converted.avi"); } }
         public FileInfo ConvertedDesktopVideo { get { return Make(model.TempFolder, "desktop-converted.avi"); } }

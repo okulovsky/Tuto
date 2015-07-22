@@ -39,6 +39,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -117,13 +118,14 @@
     <Compile Include="Services\BatchWorks\BatchWork.cs" />
     <Compile Include="Services\BatchWorks\ConvertDesktopVideoWork.cs" />
     <Compile Include="Services\BatchWorks\AssemblyVideoWork.cs" />
+    <Compile Include="Services\BatchWorks\CreateCleanSoundWork.cs" />
+    <Compile Include="Services\BatchWorks\CreateThumbWork.cs" />
+    <Compile Include="Services\BatchWorks\RepairVideoWork.cs" />
     <Compile Include="Services\BatchWorks\ConvertFaceVideoWork.cs" />
-    <Compile Include="Services\NoiseReductionService.cs" />
     <Compile Include="Services\ImageMaker\ImageComposer.cs" />
     <Compile Include="Services\ImageMaker\ParisComposer.cs" />
     <Compile Include="Services\MontagerService.cs" />
     <Compile Include="Services\Montager\FFMPEGCommands.cs" />
-    <Compile Include="Services\RepairService.cs" />
     <Compile Include="Services\Service.cs" />
     <Compile Include="Services\PraatService.cs" />
     <Compile Include="Main\Services.cs" />
