@@ -37,7 +37,11 @@ namespace Tuto.BatchWorks
             Process.StartInfo.CreateNoWindow = true;
             Process.Start();
             Process.WaitForExit();
-
+            try {
+                if (Process.ExitCode != 0)
+                    throw new ArgumentException("Failed");
+            }
+            catch { throw new ArgumentException("Failed"); }
         }
 
         public virtual void Work() {}
@@ -50,6 +54,7 @@ namespace Tuto.BatchWorks
             get { return status; }
             set { status = value; OnPropertyChanged("Status"); }
         }
+
 
         string exceptionMessage;
         public string ExceptionMessage

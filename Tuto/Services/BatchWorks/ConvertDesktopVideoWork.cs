@@ -13,7 +13,7 @@ namespace Tuto.BatchWorks
         public ConvertDesktopVideoWork(EditorModel model)
         {
             Model = model;
-            Name = "Converting Desktop Video: " + model.Locations.DesktopVideo;
+            Name = "Preparing Desktop Video: " + model.Locations.DesktopVideo;
         }
         public override void Work()
         {
@@ -21,7 +21,7 @@ namespace Tuto.BatchWorks
             {
                 Args = string.Format(@"-i ""{0}"" -vf ""scale=1280:720, fps=25"" -q:v 0 -an ""{1}""",
                                             Model.Locations.DesktopVideo.FullName, Model.Locations.ConvertedDesktopVideo.FullName);
-                FullPath = @"C:\ffmpeg\bin\ffmpeg.exe";
+                FullPath = Model.Locations.FFmpegExecutable.FullName;
                 RunProcess();
             }
         }

@@ -20,9 +20,10 @@ namespace Tuto.BatchWorks
         {
             Model = model;
             Name = "Assembly Course: " + model.Locations.FaceVideo.Directory.Name;
-            FullPath = @"C:\ffmpeg\bin\ffmpeg.exe";
+            FullPath = model.Locations.FFmpegExecutable.FullName;
             filesToDelIfAborted = new List<string>();
         }
+
         public override void Work()
         {
             var serv = new AssemblerService();

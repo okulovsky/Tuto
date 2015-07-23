@@ -77,25 +77,46 @@ namespace Tuto.Navigator
             }
             Publish = new PublishViewModel(globalData);
 
-            //var tasks = new List<BatchWork>();
-            //foreach (var model in data.Models)
-            //{
-            //    //base conversion if possible
-            //        if (File.Exists(model.Locations.FaceVideo.FullName) && !model.Locations.ConvertedFaceVideo.Exists)
-            //        {
-            //            var task = new ConvertFaceVideoWork(model);
-            //            tasks.Add(task);
-            //        }
-        
-            //        if (File.Exists(model.Locations.DesktopVideo.FullName) && !model.Locations.ConvertedDesktopVideo.Exists)
-            //        {
-            //            var task = new ConvertDesktopVideoWork(model);
-            //            tasks.Add(task);
-            //        }
-            //}
-            
-            //if (tasks.Count != 0)
-            //    queueWindow.Run(tasks);           
+
+            var tasks = new List<BatchWork>();
+
+            if (data.Global.AutoConversionEnabled)
+            {
+                foreach (var model in data.Models)
+                {
+                    //base conversion if possible
+                    if (File.Exists(model.Locations.FaceVideo.FullName) && !model.Locations.ConvertedFaceVideo.Exists)
+                    {
+                        tasks.Add(new ConvertFaceVideoWork(model));
+                    }
+
+                    if (File.Exists(model.Locations.DesktopVideo.FullName) && !model.Locations.ConvertedDesktopVideo.Exists)
+                    {
+                        tasks.Add(new ConvertDesktopVideoWork(model));
+                    }
+                }
+
+               
+            }
+
+            if (data.Global.AutoThumbsEnabled)
+            {
+                foreach (var model in data.Models)
+                {
+                    if (File.Exists(model.Locations.FaceVideo.FullName) && !model.Locations.FaceVideoThumb.Exists)
+                    {
+                        tasks.Add(new CreateThumbWork(model.Locations.FaceVideo, model));
+                    }
+
+                    if (File.Exists(model.Locations.DesktopVideo.FullName) && !model.Locations.DesktopVideoThumb.Exists)
+                    {
+                        tasks.Add(new CreateThumbWork(model.Locations.DesktopVideo, model));
+                    }
+                }
+            }
+
+            if (tasks.Count != 0)
+                queueWindow.Run(tasks);
         }
 
         void Montage()

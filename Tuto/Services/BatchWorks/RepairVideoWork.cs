@@ -39,7 +39,7 @@ namespace Tuto.BatchWorks
                 FileDeleted = true;
                 Args = string.Format(@"-i ""{0}"" -vf scale=1280:720 -r 25 -q:v 0 {2} -acodec libmp3lame -ar 44100 -ab 32k ""{1}""",
                         originPath, source.FullName, codec);
-                FullPath = @"C:\ffmpeg\bin\ffmpeg.exe";
+                FullPath = Model.Locations.FFmpegExecutable.FullName;
                 RunProcess();
                 ConversionOver = true;
             }

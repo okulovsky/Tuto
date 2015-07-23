@@ -50,9 +50,9 @@ namespace Editor
             model = (EditorModel)DataContext;
             model.WindowState.PropertyChanged += WindowState_PropertyChanged;
 
-            var vid = model.Locations.FaceVideoThumb.Exists ? model.Locations.FaceVideoThumb : model.Locations.FaceVideo;
+            var face = model.Locations.FaceVideoThumb.Exists ? model.Locations.FaceVideoThumb : model.Locations.FaceVideo;
             var desk = model.Locations.DesktopVideoThumb.Exists ? model.Locations.DesktopVideoThumb : model.Locations.DesktopVideo;
-            FaceVideo.Source = new Uri(vid.FullName);
+            FaceVideo.Source = new Uri(face.FullName);
             ScreenVideo.Source = new Uri(desk.FullName);
             FaceVideo.LoadedBehavior = MediaState.Manual;
             ScreenVideo.LoadedBehavior = MediaState.Manual;
@@ -107,8 +107,13 @@ namespace Editor
             Assembly.Click += (s, a) =>
                 {
                     model.Save();
-                    var task = new AssemblyVideoWork(model);
-                    addTaskToQueue(new List<BatchWork>() { task });
+                    var tasks = new List<BatchWork>();
+                    if (model.Global.AutoSoundCorrection && !model.Locations.ClearedSound.Exists)
+                        tasks.Add(new CreateCleanSoundWork(model.Locations.FaceVideo, model));
+                    tasks.Add(new ConvertDesktopVideoWork(model));
+                    tasks.Add(new ConvertFaceVideoWork(model));
+                    tasks.Add(new AssemblyVideoWork(model));
+                    addTaskToQueue(tasks);
                 };
 
             RepairFace.Click += (s, a) =>
@@ -157,26 +162,34 @@ namespace Editor
             ThumbFace.Click += (s, a) =>
                 {
                     model.Save();
-                    var task = new CreateThumbWork(model.Locations.FaceVideo);
-                    addTaskToQueue(new List<BatchWork> { task });
-                    task.ThumbCreated += (z, x) =>
+                    if (!model.Locations.FaceVideoThumb.Exists)
                     {
-                        Action t = () => { FaceVideo.Source = new Uri((string)z); };
-                        this.Dispatcher.BeginInvoke((Delegate)t);
-                    };
+                        var task = new CreateThumbWork(model.Locations.FaceVideo, model);
+                        addTaskToQueue(new List<BatchWork> { task });
+                        task.ThumbCreated += (z, x) =>
+                        {
+                            Action t = () => { FaceVideo.Source = new Uri((string)z); };
+                            this.Dispatcher.BeginInvoke((Delegate)t);
+                        };
+                    }
+                    else MessageBox.Show("Already done");
                 };
 
             
             ThumbDesktop.Click += (s, a) =>
                 {
                     model.Save();
-                    var task = new CreateThumbWork(model.Locations.DesktopVideo);
-                    addTaskToQueue(new List<BatchWork> { task });
-                    task.ThumbCreated += (z, x) =>
-                        {
-                            Action t = () => { ScreenVideo.Source = new Uri((string)z); };
-                            this.Dispatcher.BeginInvoke((Delegate)t);
-                        };
+                    if (!model.Locations.DesktopVideoThumb.Exists)
+                    {
+                        var task = new CreateThumbWork(model.Locations.DesktopVideo, model);
+                        addTaskToQueue(new List<BatchWork> { task });
+                        task.ThumbCreated += (z, x) =>
+                            {
+                                Action t = () => { ScreenVideo.Source = new Uri((string)z); };
+                                this.Dispatcher.BeginInvoke((Delegate)t);
+                            };
+                    }
+                    else MessageBox.Show("Already done");
                 };
 
             Help.Click += (s, a) =>

@@ -56,6 +56,15 @@ namespace Tuto.Model
 		[DataMember]
 		public string RelativeVideoListPath { get; set; }
 
+        [DataMember]
+        public bool AutoConversionEnabled { get; set; }
+
+        [DataMember]
+        public bool AutoThumbsEnabled { get; set; }
+
+        [DataMember]
+        public bool AutoSoundCorrection { get; set; }
+
         public DirectoryInfo GlobalDataFolder { get; internal set; }
 
         public GlobalLocations Locations { get; private set; }

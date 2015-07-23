@@ -49,12 +49,14 @@ namespace Tuto.Navigator
                 {
                     e.Status = BatchWorkStatus.Aborted;
                     e.Clean();
+                    work.TryDequeue(out e);
                 }
                 catch(Exception ex)
                 {
                     e.Status = BatchWorkStatus.Failure;
                     e.ExceptionMessage = ex.Message;
                     e.Clean();
+                    work.TryDequeue(out e);
                 }
             }
             QueueWorking = false;
@@ -72,7 +74,7 @@ namespace Tuto.Navigator
                 queueThread.Start();
             }
             QueueWorking = true;
-            BatchWork temp;
+            
             CancelButton.Click += (s, a) =>
             {
                 queueThread.Abort();
@@ -80,13 +82,18 @@ namespace Tuto.Navigator
                 bool found = false;
                 foreach (var e in this.work)
                 {
-                    e.Clean();
-                    this.work.TryDequeue(out temp);
-                    if (e.Status == BatchWorkStatus.Aborted) found = true;
+                    if (e.Status == BatchWorkStatus.Aborted) { found = true; e.Clean();}
                     else if (found) e.Status = BatchWorkStatus.Cancelled;
                 }
+                CleanQueue();
             };
             Show();
+        }
+
+        private void CleanQueue()
+        {
+            BatchWork temp;
+            while (!this.work.IsEmpty) this.work.TryDequeue(out temp);
         }
 
         private void Window_Closing(object sender, CancelEventArgs e)

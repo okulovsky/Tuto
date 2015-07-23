@@ -27,6 +27,10 @@ namespace Tuto.Model
         }
 
         public FileInfo PraatExecutable { get { return Make(model.ProgramFolder, "praatcon.exe"); } }
+        public FileInfo FFmpegExecutable { get { return new FileInfo(@"C:\ffmpeg\bin\ffmpeg.exe"); } }
+        public FileInfo SoxExecutable { get { return new FileInfo(@"C:\sox\sox.exe"); } }
+        public DirectoryInfo NoiseReductionFolder { get { return new DirectoryInfo(Directory.GetParent(model.ProgramFolder.FullName).Parent.FullName + @"\NoiseReduction"); } }
+
         public FileInfo ClearedSound { get { return Make(model.Locations.TemporalDirectory, "cleaned.mp3"); } }
         public FileInfo PraatScriptSource { get { return Make(model.ProgramFolder, "split_pauses.praat"); } }
         public FileInfo AvsLibrary { get { return Make(model.ProgramFolder, "library.avs"); } }
