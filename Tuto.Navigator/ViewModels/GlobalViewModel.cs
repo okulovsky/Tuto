@@ -14,6 +14,7 @@ using Microsoft.Win32;
 using Tuto.Model;
 using Tuto.Navigator.ViewModels;
 using Tuto.Publishing;
+using Tuto.BatchWorks;
 
 namespace Tuto.Navigator
 {
@@ -55,20 +56,51 @@ namespace Tuto.Navigator
         }
 
         List<EditorModel> models;
+        public BatchWorkWindow queueWindow = new BatchWorkWindow();
 
         public void ReadSubdirectories()
         {
             var data=EditorModelIO.ReadAllProjectData(LoadedFile.Directory);
             this.globalData=data.Global;
             models = new List<EditorModel>();
-            models.AddRange(data.Models);
+            foreach (var m in data.Models)
+            {
+                models.Add(m);
+            }
 
             Subdirectories = new ObservableCollection<SubfolderViewModel>();
-            foreach(var e in data.Models)
-                Subdirectories.Add(new SubfolderViewModel(e));
+            foreach (var e in data.Models)
+            {
+                var m = new SubfolderViewModel(e);
+                m.addTaskToQueue = queueWindow.Run;
+                Subdirectories.Add(m);
+            }
             Publish = new PublishViewModel(globalData);
 
-                     
+            //var tasks = new List<BatchWork>();
+            //foreach (var model in data.Models)
+            //{
+            //    //base conversion if possible
+            //        if (File.Exists(model.Locations.FaceVideo.FullName) && !model.Locations.ConvertedFaceVideo.Exists)
+            //        {
+            //            var task = new ConvertFaceVideoWork(model);
+            //            tasks.Add(task);
+            //        }
+        
+            //        if (File.Exists(model.Locations.DesktopVideo.FullName) && !model.Locations.ConvertedDesktopVideo.Exists)
+            //        {
+            //            var task = new ConvertDesktopVideoWork(model);
+            //            tasks.Add(task);
+            //        }
+            //}
+            
+            //if (tasks.Count != 0)
+            //    queueWindow.Run(tasks);           
+        }
+
+        void Montage()
+        {
+
         }
 
         void CreateBackup()
@@ -113,8 +145,8 @@ namespace Tuto.Navigator
                 .Where(z => z.Selected)
                 .SelectMany(z => TutoProgram.MakeAll(z.FullPath, forceMontage))
                 .ToArray();
-            var window = new BatchWorkWindow();
-            window.Run(work);
+            //var window = new BatchWorkWindow();
+            queueWindow.Run(work);
 
         }
 
@@ -130,17 +162,17 @@ namespace Tuto.Navigator
 
 		public void RepairFaceSelected()
 		{
-			var work = Subdirectories
-				.Where(z => z.Selected)
-				.Select(z => new BatchWork
-					{
-						Name = "Repairing face in"+z.Name,
-						Work=() => 
-							TutoProgram.Repair(new DirectoryInfo(z.FullPath), true)
-					})
-				.ToArray();
-			var window = new BatchWorkWindow();
-			window.Run(work);
+            //var work = Subdirectories
+            //    .Where(z => z.Selected)
+            //    .Select(z => new BatchWork
+            //        {
+            //            Name = "Repairing face in"+z.Name,
+            //            Work=() => 
+            //                TutoProgram.Repair(new DirectoryInfo(z.FullPath), true)
+            //        })
+            //    .ToArray();
+            //var window = new BatchWorkWindow();
+            //window.Run(work);
 		}
 
         #region commands

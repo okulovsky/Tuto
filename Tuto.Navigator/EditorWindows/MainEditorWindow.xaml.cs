@@ -21,28 +21,27 @@ using Editor.Windows;
 using Tuto;
 using Tuto.Model;
 using Tuto.TutoServices;
+using Tuto.Navigator;
+using Tuto.BatchWorks;
+using System.ComponentModel;
 
 namespace Editor
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainEditorWindow : Window
     {
+        public Action<IEnumerable<BatchWork>> addTaskToQueue;
         EditorModel model;
 
-
-
-        public MainWindow()
+        public MainEditorWindow()
 
         {
             Loaded += MainWindow_Initialized;
             InitializeComponent();
             FaceVideo.LoadedBehavior = MediaState.Manual;
             ScreenVideo.LoadedBehavior = MediaState.Manual;
-            
-            
-            
 
         }
 
@@ -51,9 +50,10 @@ namespace Editor
             model = (EditorModel)DataContext;
             model.WindowState.PropertyChanged += WindowState_PropertyChanged;
 
-
-            FaceVideo.Source = new Uri(model.Locations.FaceVideo.FullName);
-            ScreenVideo.Source = new Uri(model.Locations.DesktopVideo.FullName);
+            var vid = model.Locations.FaceVideoThumb.Exists ? model.Locations.FaceVideoThumb : model.Locations.FaceVideo;
+            var desk = model.Locations.DesktopVideoThumb.Exists ? model.Locations.DesktopVideoThumb : model.Locations.DesktopVideo;
+            FaceVideo.Source = new Uri(vid.FullName);
+            ScreenVideo.Source = new Uri(desk.FullName);
             FaceVideo.LoadedBehavior = MediaState.Manual;
             ScreenVideo.LoadedBehavior = MediaState.Manual;
 			ScreenVideo.Volume = 0;
@@ -75,38 +75,109 @@ namespace Editor
             ModelView.MouseDown += Timeline_MouseDown;
             Slider.MouseDown += Timeline_MouseDown;
 
+            FadesSwitcher.Content = model.Montage.CrossfadesEnabled ? "Fades ON" : "Fades OFF";
+
             Save.Click += (s, a) =>
             {
                 model.Save();
             };
 
+
             Montage.Click += (s, a) =>
                 {
                     model.Save();
-                    RunProcess(Services.Montager,model.VideoFolder);
+                    var conversionNeeded = false;
+                    if (!model.Locations.ConvertedDesktopVideo.Exists)
+                    {
+                        var task = new ConvertDesktopVideoWork(model);
+                        addTaskToQueue(new List<BatchWork>(){task});
+                        conversionNeeded = true;
+                    }
+
+                    if (!model.Locations.ConvertedFaceVideo.Exists)
+                    {
+                        var task = new ConvertFaceVideoWork(model);
+                        addTaskToQueue(new List<BatchWork>() { task });
+                        conversionNeeded = true;
+                    }
+                    if (!conversionNeeded)
+                        MessageBox.Show("Already converted");
                 };
 
             Assembly.Click += (s, a) =>
                 {
                     model.Save();
-                    RunProcess(Services.Assembler, model.VideoFolder);
+                    var task = new AssemblyVideoWork(model);
+                    addTaskToQueue(new List<BatchWork>() { task });
                 };
 
             RepairFace.Click += (s, a) =>
                 {
                     model.Save();
-                    IsEnabled = false;
-                    new Tuto.TutoServices.RepairService().DoWork(model.Locations.FaceVideo,true);
-                    IsEnabled = true;
+                    var task = new RepairVideoWork(model, model.Locations.FaceVideo);
+                    addTaskToQueue(new List<BatchWork>{task});
                 };
 
             RepairDesktop.Click += (s, a) =>
             {
                 model.Save();
-                IsEnabled = false;
-                new Tuto.TutoServices.RepairService().DoWork(model.Locations.DesktopVideo,false);
-                IsEnabled = true;
+                var task = new RepairVideoWork(model, model.Locations.DesktopVideo);
+                addTaskToQueue(new List<BatchWork> { task });
             };
+
+            NoiseReduction.Click += (s, a) =>
+            {
+                model.Save();
+                if (!model.Locations.ClearedSound.Exists)
+                {
+                    var task = new CreateCleanSoundWork(model.Locations.FaceVideo, model);
+                    addTaskToQueue(new List<BatchWork> { task });
+                }
+                else MessageBox.Show("Already cleared. Will be assembled with new sound.");
+            };
+
+            FadesSwitcher.Click += (s, a) =>
+            {
+                if (model.Montage.CrossfadesEnabled == false)
+                {
+                    model.Montage.CrossfadesEnabled = true;
+                    FadesSwitcher.Content = "Fades ON";
+                    MessageBox.Show("Crossfades enabled");
+                }
+                else
+                {
+                    FadesSwitcher.Content = "Fades OFF";
+                    model.Montage.CrossfadesEnabled = false;
+                    MessageBox.Show("Crossfades disabled");
+                }
+                model.Save();
+
+            };
+
+            ThumbFace.Click += (s, a) =>
+                {
+                    model.Save();
+                    var task = new CreateThumbWork(model.Locations.FaceVideo);
+                    addTaskToQueue(new List<BatchWork> { task });
+                    task.ThumbCreated += (z, x) =>
+                    {
+                        Action t = () => { FaceVideo.Source = new Uri((string)z); };
+                        this.Dispatcher.BeginInvoke((Delegate)t);
+                    };
+                };
+
+            
+            ThumbDesktop.Click += (s, a) =>
+                {
+                    model.Save();
+                    var task = new CreateThumbWork(model.Locations.DesktopVideo);
+                    addTaskToQueue(new List<BatchWork> { task });
+                    task.ThumbCreated += (z, x) =>
+                        {
+                            Action t = () => { ScreenVideo.Source = new Uri((string)z); };
+                            this.Dispatcher.BeginInvoke((Delegate)t);
+                        };
+                };
 
             Help.Click += (s, a) =>
                 {
@@ -275,6 +346,7 @@ namespace Editor
                 Subtitles.Text = model.WindowState.CurrentSubtitle;
             }
         }
+
 
 
         void RunProcess(Services service, DirectoryInfo directory)

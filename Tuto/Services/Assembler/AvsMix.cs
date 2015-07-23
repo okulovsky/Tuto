@@ -2,7 +2,7 @@
 
 namespace Tuto.TutoServices.Assembler
 {
-    class AvsMix : AvsNode
+    public class AvsMix : AvsNode
     {
         public AvsNode First { get; set; } //video
 

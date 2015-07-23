@@ -5,12 +5,17 @@ using System.Windows.Forms;
 using Tuto.Model;
 using System.Linq;
 using System.Diagnostics;
+using Editor;
+using Tuto.BatchWorks;
+using System.Collections.Generic;
 
 namespace Tuto.Navigator
 {
 
     public class SubfolderViewModel
     {
+        public Action<IEnumerable<BatchWork>> addTaskToQueue;
+
         public SubfolderViewModel(EditorModel model)
         {
             
@@ -47,9 +52,25 @@ namespace Tuto.Navigator
 
         public void StartEditor()
         {
-	        var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            var editorExe = new FileInfo(Path.Combine(path, "editor.exe"));
-            Shell.ExecQuoteArgs(false, editorExe, FullPath);
+
+            var model = EditorModelIO.Load(EditorModelIO.SubstituteDebugDirectories(FullPath));
+
+            if (model.Montage.SoundIntervals == null || model.Montage.SoundIntervals.Count == 0)
+            {
+                try
+                {
+                    new Tuto.TutoServices.PraatService().DoWork(model);
+                }
+                catch (Exception e)
+                {
+
+                }
+            }
+
+            var window = new MainEditorWindow();
+            window.addTaskToQueue = addTaskToQueue;
+            window.DataContext = model;
+            window.Show();
         }
 
         public RelayCommand StartEditorCommand { get; private set; }

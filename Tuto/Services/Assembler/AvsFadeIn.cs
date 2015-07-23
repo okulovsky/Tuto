@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Tuto.TutoServices.Assembler
 {
-    class AvsFadeIn : AvsNode
+    public class AvsFadeIn : AvsNode
     {
         public AvsNode Payload { get; set; }
 

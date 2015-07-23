@@ -1,8 +1,8 @@
-﻿<Window x:Class="Editor.MainWindow"
+﻿<Window x:Class="Editor.MainEditorWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:ed="clr-namespace:Editor"
-        Title="Tuto Editor" WindowState="Maximized">
+        Title="Tuto Editor" WindowState="Maximized" Width="1089.463">
     <Window.Resources>
         <ed:EditorModeConverter x:Key="EditorModeCnv"/>
         <ed:PausedToStringConverter x:Key="PausedCnv"/>    
@@ -19,7 +19,7 @@
             <Button Focusable="False" x:Name="Save">Save</Button>
             <Button Focusable="False" x:Name="Synchronize">Synchronize</Button>
             <Button Focusable="False" x:Name="Infos">Infos</Button>
-            <Button Focusable="False" x:Name="GoTo">GoTo</Button>
+            <Button Focusable="False" x:Name="GoTo" Content="GoTo"/>
             <Rectangle Width="50"/>
             <ToggleButton 
                 Focusable="False"
@@ -42,12 +42,16 @@
                 Fixes
             </ToggleButton>
             <Rectangle Width="50"/>
-            <Button Focusable="False" x:Name="Montage">Montage</Button>
+            <Button Focusable="False" x:Name="Montage">Convert</Button>
             <Button Focusable="False" x:Name="Assembly">Assembly</Button>
             <Rectangle Width="50"/>
-            <Button Focusable="False" x:Name="RepairFace">Repair Face</Button>
-            <Button Focusable="False" x:Name="RepairDesktop">Repair Desktop</Button>
-            <Button Focusable="False" x:Name="Help">Help</Button>
+            <Button Focusable="False" x:Name="RepairFace" Content="Repair Face" Width="49"/>
+            <Button Focusable="False" x:Name="RepairDesktop" Width="51">Repair Desktop</Button>
+            <Button Focusable="False" x:Name="Help" Content="Help"/>
+            <Button Focusable="False" x:Name="NoiseReduction" Content="-Noise"/>
+            <Button Focusable="False" x:Name="FadesSwitcher" Content="Fades" Width="105"/>
+            <Button Focusable="False" Content="ThumbF" x:Name="ThumbFace" Width="58"/>
+            <Button Focusable="False" Content="ThumbD" x:Name="ThumbDesktop" Width="58"/>
         </StackPanel>
         <StackPanel Orientation="Vertical" DockPanel.Dock="Right">
             <Label Content="{Binding WindowState.CurrentPosition}"/>

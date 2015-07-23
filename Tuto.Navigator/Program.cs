@@ -7,16 +7,17 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Shapes;
 using Tuto.Model;
+using Editor;
 
 namespace Tuto.Navigator
 {
-    class Program
+    public class Program
     {
         [STAThread]
         public static void Main(string[] args)
         {
             TutoProgram.SetSilentMode();
-            var mainWindow = new MainWindow();
+            var mainWindow = new MainNavigatorWindow();
             var globalModel = new GlobalViewModel();
             mainWindow.DataContext = globalModel;
             mainWindow.WindowState = System.Windows.WindowState.Maximized;
@@ -33,5 +34,9 @@ namespace Tuto.Navigator
 
             new Application().Run(mainWindow);
         }
+
+        public static string MontageFile="montage.editor";
+        public static string TimesFile="times.txt";
+
     }
 }

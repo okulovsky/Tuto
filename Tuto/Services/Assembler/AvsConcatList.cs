@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Tuto.TutoServices.Assembler
 {
-    class AvsConcatList : AvsNode
+    public class AvsConcatList : AvsNode
     {
         public List<AvsNode> Items { get; set; }
 

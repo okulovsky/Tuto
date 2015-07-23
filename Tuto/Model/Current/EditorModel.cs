@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
+using Tuto.TutoServices.Assembler;
 
 
 namespace Tuto.Model
@@ -24,7 +25,7 @@ namespace Tuto.Model
             this.VideoFolder = videoFolder;
         }
 
-        public DirectoryInfo ChunkFolder { get { return Locations.TemporalDirectory; } }
+        public DirectoryInfo TempFolder { get { return Locations.TemporalDirectory; } }
 
         public Locations Locations { get; private set; }
         public GlobalData Global { get; set; }
