@@ -75,7 +75,11 @@ namespace Tuto.Navigator
             lock (addLock)
             {
                 foreach (var e in work)
+                {
+                    this.work.AddRange(e.BeforeWorks);
                     this.work.Add(e);
+                    this.work.AddRange(e.AfterWorks);
+                }     
             }
             this.DataContext = this.work.ToList();
             if (!QueueWorking)

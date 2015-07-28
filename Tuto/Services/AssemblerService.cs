@@ -12,7 +12,11 @@ namespace Tuto.TutoServices
 {
     public class AssemblerService : Service
     {
-
+        private bool CrossFadesEnabled;
+        public AssemblerService(bool crossFadesEnabled)
+        {
+            CrossFadesEnabled = crossFadesEnabled;
+        }
         public override string Name
         {
             get { return Services.Assembler.ToString(); }
@@ -128,7 +132,7 @@ namespace Tuto.TutoServices
                     currentAvsChunk = chain.Item1;
                     i = chain.Item2;     
                 }
-                if (prevChunk != null && prevChunk.Mode == Mode.Face && currentChunk.Mode == Mode.Face && model.Global.CrossFadesEnabled)
+                if (prevChunk != null && prevChunk.Mode == Mode.Face && currentChunk.Mode == Mode.Face && CrossFadesEnabled)
                     avsChunks.Items[avsChunks.Items.Count - 1] = new AvsCrossFade
                     {
                         FadeFrom = prevAvsChunk,

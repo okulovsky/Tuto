@@ -87,6 +87,7 @@
     <Compile Include="GlobalFileContainer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Timeline.cs" />
+    <Compile Include="ViewModels\AssemblySettings.cs" />
     <Compile Include="ViewModels\Backup.cs" />
     <Compile Include="ViewModels\CatalogViewModel.cs" />
     <Compile Include="ViewModels\CatalogWraps.cs" />

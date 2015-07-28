@@ -26,8 +26,8 @@ namespace Tuto.Navigator
             //NewCommand = new RelayCommand(New);
             //OpenCommand = new RelayCommand(Open);
             //CloseCommand = new RelayCommand(Close, () => IsLoaded);
-         
 
+            PreWorks = new AssemblySettings();
             SaveCommand = new RelayCommand(Save, () => IsLoaded);
             RefreshCommand = new RelayCommand(ReadSubdirectories, () => IsLoaded);
 
@@ -37,9 +37,23 @@ namespace Tuto.Navigator
 
 
             AssembleSelectedCommand = new RelayCommand(AssembleSelected, somethingSelected);
+            AssembleSelectedWithOptionsCommand = new RelayCommand(AssembleWithOptions, somethingSelected);
             RemontageSelectedCommand = new RelayCommand(MontageSelected, somethingSelected);
 			RepairFaceSelectedCommand = new RelayCommand(RepairFaceSelected, somethingSelected);				 
             CreateBackupCommand = new RelayCommand(CreateBackup);
+        }
+
+        public void AssembleWithOptions()
+        {
+            var work = Subdirectories.Where(z => z.Selected);
+            var models = work.Select(x => EditorModelIO.Load(x.FullPath));
+            var tasks = new List<BatchWork>();
+            foreach (var m in models)
+            {
+                tasks.AddRange(PreWorks.GetWorksAccordingSettings(m));
+            }
+            if (tasks.Count != 0)
+                queueWindow.Run(tasks);
         }
 
         public void Load(FileInfo file)
@@ -94,10 +108,14 @@ namespace Tuto.Navigator
                 var works = new List<BatchWork>();
                 var e = data.Models[i];
                 var m = Subdirectories[i];
-                if (e.Global.WorkSettings.ThumbSettings.CurrentOption == Options.Before)
+                if (!e.Locations.PraatVoice.Exists)
+                {
+                    works.Add(new PraatWork(e));
+                }
+                if (e.Global.WorkSettings.ThumbSettings.CurrentOption == Options.BeforeEditing)
                     works.Add(new CreateThumbWork(e.Locations.FaceVideo, e));
 
-                if (e.Global.WorkSettings.AudioCleanSettings.CurrentOption == Options.Before)
+                if (e.Global.WorkSettings.AudioCleanSettings.CurrentOption == Options.BeforeEditing)
                     works.Add(new CreateCleanSoundWork(e.Locations.FaceVideo, e));
 
                 if (works.Count() != 0)
@@ -157,8 +175,8 @@ namespace Tuto.Navigator
         {
             var work = Subdirectories.Where(z => z.Selected);
             var models = work.Select(x => EditorModelIO.Load(x.FullPath));
-            var tasks = models.Select(x => 
-                new AssemblyVideoWork(x)).ToList();
+            var tasks = models.Select(x =>
+                new AssemblyVideoWork(x, x.Global.CrossFadesEnabled)).ToList();
             queueWindow.Run(tasks);
 
         }
@@ -187,6 +205,7 @@ namespace Tuto.Navigator
         public RelayCommand SaveCommand { get; private set; }
         public RelayCommand RefreshCommand { get; private set; }
         public RelayCommand AssembleSelectedCommand { get; private set; }
+        public RelayCommand AssembleSelectedWithOptionsCommand { get; private set; }
         public RelayCommand RemontageSelectedCommand { get; private set; }
 		public RelayCommand RepairFaceSelectedCommand { get; private set; }
         public RelayCommand CreateBackupCommand { get; private set; }
@@ -224,6 +243,8 @@ namespace Tuto.Navigator
                 NotifyPropertyChanged();
             }
         }
+
+        public AssemblySettings PreWorks{get; set;}
 
         public PublishViewModel Publish
         {

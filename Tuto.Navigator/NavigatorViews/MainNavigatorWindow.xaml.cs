@@ -27,5 +27,11 @@ namespace Tuto.Navigator
         {
             InitializeComponent();
         }
+
+        private void Tasks_Click(object sender, RoutedEventArgs e)
+        {
+            var mode = BatchWithOptions.Visibility == System.Windows.Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
+            BatchWithOptions.Visibility = mode;
+        }
     }
 }

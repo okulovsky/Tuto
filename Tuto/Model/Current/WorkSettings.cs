@@ -9,10 +9,10 @@ using Tuto.BatchWorks;
 
 namespace Tuto.Model
 {
-    public enum Options {Before, During, Skip};
+    public enum Options {BeforeEditing, DuringEditing, Skip, WithAssembly};
     public abstract class Settings
     {
-        public virtual List<Options> PossibleOptions { get { return new List<Options>() { Options.Before, Options.During, Options.Skip }; } }
+        public virtual List<Options> PossibleOptions { get { return new List<Options>() { Options.BeforeEditing, Options.DuringEditing, Options.Skip }; } }
         public List<string> OptionsAsStrings { get {return PossibleOptions.Select ( x => x.ToString()).ToList(); }}
         public string CurrentAsString { get; set; }
         public Options CurrentOption { get {return (Options)Enum.Parse(typeof(Options), CurrentAsString);} }
@@ -20,8 +20,8 @@ namespace Tuto.Model
 
     public class ConversionSettings : Settings
     {
-        public override List<Options> PossibleOptions { get { return new List<Options>() { Options.Before, Options.During }; } }
-        public ConversionSettings() { CurrentAsString = Options.During.ToString(); }
+        public override List<Options> PossibleOptions { get { return new List<Options>() { Options.BeforeEditing, Options.DuringEditing, Options.WithAssembly }; } }
+        public ConversionSettings() { CurrentAsString = Options.DuringEditing.ToString(); }
     }
 
     public class ThumbSettings : Settings
@@ -31,7 +31,7 @@ namespace Tuto.Model
 
     public class AudioCleanSettings : Settings
     {
-        public AudioCleanSettings() { CurrentAsString = Options.During.ToString(); }
+        public AudioCleanSettings() { CurrentAsString = Options.DuringEditing.ToString(); }
     }
 
     public class WorkSettings
@@ -49,16 +49,16 @@ namespace Tuto.Model
         public List<BatchWork> GetDuringWorks(EditorModel model)
         {
             var toDo = new List<BatchWork>();
-            if (model.Global.WorkSettings.AudioCleanSettings.CurrentOption == Options.During)
+            if (model.Global.WorkSettings.AudioCleanSettings.CurrentOption == Options.DuringEditing)
                 toDo.Add(new CreateCleanSoundWork(model.Locations.FaceVideo, model));
 
-            if (model.Global.WorkSettings.ConversionSettings.CurrentOption == Options.During)
+            if (model.Global.WorkSettings.ConversionSettings.CurrentOption == Options.DuringEditing)
             {
                 toDo.Add(new ConvertFaceVideoWork(model));
                 toDo.Add(new ConvertDesktopVideoWork(model));
             }
 
-            if (model.Global.WorkSettings.ThumbSettings.CurrentOption == Options.During)
+            if (model.Global.WorkSettings.ThumbSettings.CurrentOption == Options.DuringEditing)
             {
                 toDo.Add(new CreateThumbWork(model.Locations.FaceVideo, model));
                 toDo.Add(new CreateThumbWork(model.Locations.DesktopVideo, model));
