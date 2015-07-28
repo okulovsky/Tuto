@@ -43,7 +43,7 @@ namespace Tuto.Model
         public void OnMontageModelChanged()
         {
             OnNonSignificantChanged();
-            Montage.Montaged = false;
+            //Montage.Montaged = false;
         }
 
 
@@ -56,7 +56,9 @@ namespace Tuto.Model
             Locations = new Locations(this);
             WindowState = new WindowState();
             Global = new GlobalData();
+            Global.PreparingSettings = new PreparingSettings();
         }
+
 
         public void Save()
         {

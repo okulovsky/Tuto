@@ -8,17 +8,26 @@ using System.Diagnostics;
 using Editor;
 using Tuto.BatchWorks;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace Tuto.Navigator
 {
 
-    public class SubfolderViewModel
+    public class SubfolderViewModel : INotifyPropertyChanged
     {
         public Action<IEnumerable<BatchWork>> addTaskToQueue;
+        private EditorModel model { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         public SubfolderViewModel(EditorModel model)
         {
-            
+            this.model = model;
             StartEditorCommand = new RelayCommand(StartEditor);
             ResetMontageCommand = new RelayCommand(ResetMontage);
             OpenFolderCommand = new RelayCommand(OpenFolder);
@@ -33,14 +42,17 @@ namespace Tuto.Navigator
                     .Select(z=>z.Name)
                     .Aggregate((a, b) => a + "\r\n" + b);
             }
-            if (model.Montage.Montaged)
-                Montaged = true;
         }
         public bool Selected { get; set; }
 
         public bool Marked { get; private set; }
 
-        public bool Montaged { get; private set; }
+        private bool _readyToEdit;
+        public bool ReadyToEdit
+        {
+            get { return _readyToEdit; }
+            set { _readyToEdit = value; OnPropertyChanged("ReadyToEdit"); }
+        }
 
         public string FullPath { get; private set; }
 
@@ -54,19 +66,6 @@ namespace Tuto.Navigator
         {
 
             var model = EditorModelIO.Load(EditorModelIO.SubstituteDebugDirectories(FullPath));
-
-            if (model.Montage.SoundIntervals == null || model.Montage.SoundIntervals.Count == 0)
-            {
-                try
-                {
-                    new Tuto.TutoServices.PraatService().DoWork(model);
-                }
-                catch (Exception e)
-                {
-
-                }
-            }
-
             var window = new MainEditorWindow();
             window.addTaskToQueue = addTaskToQueue;
             window.DataContext = model;
@@ -80,9 +79,8 @@ namespace Tuto.Navigator
             var ok = MessageBox.Show("This action only makes sense if you corrected an internal error in Tuto. Have you done it?", "Tuto.Navigator", MessageBoxButtons.YesNoCancel);
             if (ok != DialogResult.Yes) return;
             var model = EditorModelIO.Load(FullPath);
-            model.Montage.Montaged = false;
+            model.Montage.ReadyToEdit = false;
             EditorModelIO.Save(model);
-            Montaged = false;
         }
 
         public RelayCommand ResetMontageCommand { get; private set; }

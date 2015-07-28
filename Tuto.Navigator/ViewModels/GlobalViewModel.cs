@@ -61,12 +61,20 @@ namespace Tuto.Navigator
         public void ReadSubdirectories()
         {
             var data=EditorModelIO.ReadAllProjectData(LoadedFile.Directory);
+
+            //for older version
+            if (data.Global.PreparingSettings == null)
+            {
+                data.Global.PreparingSettings = new PreparingSettings();
+            }
+
             this.globalData=data.Global;
             models = new List<EditorModel>();
             foreach (var m in data.Models)
             {
                 models.Add(m);
             }
+            var tasks = new List<BatchWork>();
 
             Subdirectories = new ObservableCollection<SubfolderViewModel>();
             foreach (var e in data.Models)
@@ -74,28 +82,58 @@ namespace Tuto.Navigator
                 var m = new SubfolderViewModel(e);
                 m.addTaskToQueue = queueWindow.Run;
                 Subdirectories.Add(m);
+
+                var works = globalData.PreparingSettings.GetWorks(e);
+                if (works.Count() != 0)
+                {
+                    var t = works.Last();
+                    t.TaskFinished += (s, a) => { m.ReadyToEdit = true; e.Save(); };
+                    tasks.AddRange(works);
+                }
+                else m.ReadyToEdit = true;
+                
+
             }
             Publish = new PublishViewModel(globalData);
 
-            //var tasks = new List<BatchWork>();
-            //foreach (var model in data.Models)
-            //{
-            //    //base conversion if possible
-            //        if (File.Exists(model.Locations.FaceVideo.FullName) && !model.Locations.ConvertedFaceVideo.Exists)
-            //        {
-            //            var task = new ConvertFaceVideoWork(model);
-            //            tasks.Add(task);
-            //        }
-        
-            //        if (File.Exists(model.Locations.DesktopVideo.FullName) && !model.Locations.ConvertedDesktopVideo.Exists)
-            //        {
-            //            var task = new ConvertDesktopVideoWork(model);
-            //            tasks.Add(task);
-            //        }
-            //}
-            
-            //if (tasks.Count != 0)
-            //    queueWindow.Run(tasks);           
+
+            if (data.Global.AutoConversionEnabled)
+            {
+                foreach (var model in data.Models)
+                {
+                    //base conversion if possible
+                    if (File.Exists(model.Locations.FaceVideo.FullName) && !model.Locations.ConvertedFaceVideo.Exists)
+                    {
+                        tasks.Add(new ConvertFaceVideoWork(model));
+                    }
+
+                    if (File.Exists(model.Locations.DesktopVideo.FullName) && !model.Locations.ConvertedDesktopVideo.Exists)
+                    {
+                        tasks.Add(new ConvertDesktopVideoWork(model));
+                    }
+                }
+
+               
+            }
+
+            if (data.Global.AutoThumbsEnabled)
+            {
+                foreach (var model in data.Models)
+                {
+                    if (File.Exists(model.Locations.FaceVideo.FullName) && !model.Locations.FaceVideoThumb.Exists)
+                    {
+                        tasks.Add(new CreateThumbWork(model.Locations.FaceVideo, model));
+                    }
+
+                    if (File.Exists(model.Locations.DesktopVideo.FullName) && !model.Locations.DesktopVideoThumb.Exists)
+                    {
+                        tasks.Add(new CreateThumbWork(model.Locations.DesktopVideo, model));
+                    }
+                }
+            }
+
+            if (tasks.Count != 0)
+                queueWindow.Run(tasks);
         }
 
         void Montage()
@@ -141,12 +179,11 @@ namespace Tuto.Navigator
 
         void Run(bool forceMontage)
         {
-            var work = Subdirectories
-                .Where(z => z.Selected)
-                .SelectMany(z => TutoProgram.MakeAll(z.FullPath, forceMontage))
-                .ToArray();
-            //var window = new BatchWorkWindow();
-            queueWindow.Run(work);
+            var work = Subdirectories.Where(z => z.Selected);
+            var models = work.Select(x => EditorModelIO.Load(x.FullPath));
+            var tasks = models.Select(x => 
+                new AssemblyVideoWork(x)).ToList();
+            queueWindow.Run(tasks);
 
         }
 
@@ -162,17 +199,11 @@ namespace Tuto.Navigator
 
 		public void RepairFaceSelected()
 		{
-            //var work = Subdirectories
-            //    .Where(z => z.Selected)
-            //    .Select(z => new BatchWork
-            //        {
-            //            Name = "Repairing face in"+z.Name,
-            //            Work=() => 
-            //                TutoProgram.Repair(new DirectoryInfo(z.FullPath), true)
-            //        })
-            //    .ToArray();
-            //var window = new BatchWorkWindow();
-            //window.Run(work);
+            var work = Subdirectories.Where(z => z.Selected);
+            var models = work.Select(x => EditorModelIO.Load(x.FullPath));
+            var tasks = models.Select(x =>
+                new RepairVideoWork(x, x.Locations.FaceVideo)).ToList();
+            queueWindow.Run(tasks);
 		}
 
         #region commands

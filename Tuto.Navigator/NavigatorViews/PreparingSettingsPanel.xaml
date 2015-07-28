@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="Tuto.Navigator.PreparingSettingsPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             xmlns:navigator="clr-namespace:Tuto.Navigator"
+             d:DesignWidth="500"
+             >
+    <StackPanel Orientation="Vertical">
+        <GroupBox>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition ></RowDefinition>
+                    <RowDefinition ></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Column="0" Grid.Row="0" Content="Necessary autoclean"></Label>
+                <CheckBox Grid.Column="1" VerticalAlignment="Center" IsChecked="{Binding PreparingSettings.NecessaryCleanVoice}" Grid.Row="0"></CheckBox>
+
+                <Label Grid.Column="0" Grid.Row="1" Content="Necessary conversion"></Label>
+                <CheckBox Grid.Column="1" VerticalAlignment="Center" IsChecked="{Binding PreparingSettings.ConvertVideos}" Grid.Row="1"></CheckBox>
+
+                <Label Grid.Column="0" Grid.Row="2" Content="Necessary thumbs"></Label>
+                <CheckBox Grid.Column="1" VerticalAlignment="Center" IsChecked="{Binding PreparingSettings.CreateThumbs}" Grid.Row="2"></CheckBox>
+            </Grid>
+        </GroupBox>
+    </StackPanel>
+</UserControl>

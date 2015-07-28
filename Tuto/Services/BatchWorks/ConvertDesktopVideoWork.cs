@@ -13,17 +13,18 @@ namespace Tuto.BatchWorks
         public ConvertDesktopVideoWork(EditorModel model)
         {
             Model = model;
-            Name = "Converting Desktop Video: " + model.Locations.DesktopVideo;
+            Name = "Preparing Desktop Video: " + model.Locations.DesktopVideo;
         }
         public override void Work()
         {
             if (Model.Locations.DesktopVideo.Exists && !Model.Locations.ConvertedDesktopVideo.Exists)
             {
-                Args = string.Format(@"-i ""{0}"" -vf ""scale=1280:720, fps=25"" -q:v 0 -an ""{1}""",
+                var args = string.Format(@"-i ""{0}"" -vf ""scale=1280:720, fps=25"" -q:v 0 -an ""{1}""",
                                             Model.Locations.DesktopVideo.FullName, Model.Locations.ConvertedDesktopVideo.FullName);
-                FullPath = @"C:\ffmpeg\bin\ffmpeg.exe";
-                RunProcess();
+                var fullPath = Model.Locations.FFmpegExecutable;
+                RunProcess(args, fullPath.FullName);
             }
+            OnTaskFinished();
         }
 
         public override void Clean()

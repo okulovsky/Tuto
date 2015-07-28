@@ -85,6 +85,9 @@
       <DependentUpon>MainEditorWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="GlobalFileContainer.cs" />
+    <Compile Include="NavigatorViews\PreparingSettingsPanel.xaml.cs">
+      <DependentUpon>PreparingSettingsPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Timeline.cs" />
     <Compile Include="ViewModels\Backup.cs" />
@@ -135,6 +138,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="NavigatorViews\PreparingSettingsPanel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="NavigatorViews\GlobalSettingsPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -183,6 +190,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="NoiseReduction\make.bat" />
+    <None Include="NoiseReduction\noise" />
+    <None Include="NoiseReduction\nr.conf" />
+    <None Include="NoiseReduction\_temp.csv" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -200,6 +211,14 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="NoiseReduction\cleared.mp3" />
+    <Content Include="NoiseReduction\gni.exe" />
+    <Content Include="NoiseReduction\gnp.exe" />
+    <Content Include="NoiseReduction\nr.exe" />
+    <Content Include="NoiseReduction\sample.wav" />
+    <Content Include="NoiseReduction\voice.mp3" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

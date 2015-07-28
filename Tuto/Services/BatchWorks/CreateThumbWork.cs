@@ -11,12 +11,11 @@ namespace Tuto.BatchWorks
 {
     public class CreateThumbWork : BatchWork
     {
-        public event EventHandler ThumbCreated;
-
-        public CreateThumbWork(FileInfo source)
+        public CreateThumbWork(FileInfo source, EditorModel model)
         {
             Name = "Thumb Video: " + source;
             this.source = source;
+            this.Model = model;
         }
 
         private FileInfo source;
@@ -31,13 +30,12 @@ namespace Tuto.BatchWorks
                 nameAndExt[0] = nameAndExt[0] + "-thumb";
                 newPath[newPath.Length - 1] = string.Join(".", nameAndExt);
                 temp = string.Join("\\", newPath);
-                Args = string.Format(@"-i ""{0}"" -r 25 -q:v 13 {2} -acodec libmp3lame -ar 44100 -ab 32k ""{1}"" -y",
+                var args = string.Format(@"-i ""{0}"" -r 25 -q:v 15 {2} -acodec libmp3lame -ar 44100 -ab 32k ""{1}"" -y",
                         source.FullName, temp, codec);
-                FullPath = @"C:\ffmpeg\bin\ffmpeg.exe";
-                RunProcess();
-                if (ThumbCreated != null)
-                    ThumbCreated(temp, null);
+                var fullPath = Model.Locations.FFmpegExecutable;
+                RunProcess(args, fullPath.FullName);
             }
+            OnTaskFinished();
         }
 
         public override void Clean()

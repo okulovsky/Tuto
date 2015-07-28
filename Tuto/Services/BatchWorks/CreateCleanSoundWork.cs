@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using Tuto.Model;
 using System.Windows.Controls;
+using System.Text.RegularExpressions;
 
 namespace Tuto.BatchWorks
 {
@@ -15,42 +16,61 @@ namespace Tuto.BatchWorks
         public CreateCleanSoundWork(FileInfo source, EditorModel model)
         {
             Name = "Make clean sound: " + source;
-            this.model = model;
+            Model = model;
             this.source= source;
         }
 
-        private string temp = "not_found";
-        private EditorModel model;
         private FileInfo source;
+        private List<string> filesToDel = new List<string>() {"\\result.wav", "\\noise", "\\input.wav", "\\loud.wav"};
 
         public override void Work()
         {
-            if (source.Exists)
+            if (source.Exists && !Model.Locations.ClearedSound.Exists)
             {
-                string args = "/C {0}&{1}&{2}&{3}";
-                var loc = model.Locations.FaceVideo;
-                var temp = model.Locations.TemporalDirectory;
-                var firstArg = string.Format("ffmpeg -i {0} -y -shortest {1}\\temp.mp3", loc, temp);
-                var secondArg = string.Format("ffmpeg -i {0}\\temp.mp3 -ss 0 -t 1 -y {0}\\sample.mp3", temp);
-                var thirdArg = string.Format("sox {0}\\sample.mp3 -n noiseprof noise.prof", temp);
-                var fourthArg = string.Format("sox {0}\\temp.mp3 {0}\\cleaned.mp3 noisered noise.prof", temp);
-                var fifthArg = string.Format("ffmpeg -i {0}\\temp2.mp3 -qscale 0 -shortest -acodec libmp3lame {1}\\cleaned.mp3 -y", temp, temp);
-                Args = string.Format(args, firstArg, secondArg, thirdArg, fourthArg);
-                FullPath = "CMD.exe";
-                RunProcess();
+                var progPath = Model.Locations.NoiseReductionFolder; //get program's folder for noicereduction utility.
+                var ffExe = Model.Locations.FFmpegExecutable.FullName;
+                var soxExe = Model.Locations.SoxExecutable.FullName;
+                List<string> commands = new List<string>();
+
+                var loc = Model.Locations.FaceVideo;
+                var temp = Model.Locations.TemporalDirectory;
+
+                commands.Add(string.Format(@"""{2}"" -i ""{0}"" -y -shortest ""{1}\input.wav""", loc, temp, ffExe));
+                commands.Add(string.Format(@"""{1}"" ""{0}\input.wav"" ""{0}\loud.wav"" --norm", temp, soxExe));
+
+                //profile for noise creation
+                if (!File.Exists(string.Format("{0}\\noise", temp)))
+                {
+                    commands.Add(string.Format(@"""{1}"" -i ""{0}\loud.wav"" -y -ss 0 -t 3 -shortest ""{0}\sample.wav"" -y", temp, ffExe));
+                    commands.Add(string.Format(@"""{0}\gnp"" ""{1}\sample.wav"" ""{1}\noise""", progPath, temp));
+                    commands.Add(string.Format(@"del ""{0}\sample.wav""", temp));
+
+                }
+
+                commands.Add(string.Format(@"""{0}\nr"" ""{1}\loud.wav"" ""{1}\noise"" ""{1}\result.wav""", progPath, temp));
+                commands.Add(string.Format(@"""{1}"" -i ""{0}\result.wav"" -qscale 0 -shortest -acodec libmp3lame ""{0}\cleaned.mp3"" -y", temp, ffExe)); 
+                commands.Add(string.Format(@"del ""{0}\result.wav""", temp));
+                commands.Add(string.Format(@"del ""{0}\loud.wav""", temp));
+                commands.Add(string.Format(@"del ""{0}\input.wav""", temp));
+                File.WriteAllLines(string.Format(@"{0}\clean.bat", temp), commands.ToArray());
+                var args = string.Format(@"/c ""{0}\clean.bat""", temp);
+                var fullPath = "CMD.exe";
+                RunProcess(args, fullPath);
             }
+            OnTaskFinished();
         }
 
         public override void Clean()
         {
             if (Process != null && !Process.HasExited)
                 Process.Kill();
-            if (File.Exists(temp))
+            foreach (var temp in filesToDel)
+                if (File.Exists(Model.Locations.TemporalDirectory.FullName +  temp))
             {
-                while (File.Exists(temp))
+                while (File.Exists(Model.Locations.TemporalDirectory.FullName + temp))
                     try
                     {
-                        File.Delete(temp);
+                        File.Delete(Model.Locations.TemporalDirectory.FullName + temp);
                     }
                     catch { }
             }

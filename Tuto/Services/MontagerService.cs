@@ -65,7 +65,7 @@ namespace Tuto.TutoServices
             var model = EditorModelIO.Load(folder);
             model.FormPreparedChunks();            
             DoWork(model, print);
-            model.Montage.Montaged = true;
+            model.Montage.ReadyToEdit = true;
             EditorModelIO.Save(model);
         }
         const string DescriptionString =

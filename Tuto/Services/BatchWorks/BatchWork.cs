@@ -26,18 +26,21 @@ namespace Tuto.BatchWorks
     {
         public virtual Process Process { get; set; }
         public virtual EditorModel Model { get; set; }
-        public string FullPath { get; set; }
-        public string Args { get; set; }
-        public void RunProcess()
+        public bool NeedToRewrite { get; set; }
+        public void RunProcess(string args, string path)
         {
             Process = new Process();
-            Process.StartInfo.FileName = FullPath;
-            Process.StartInfo.Arguments = Args;
-            Process.StartInfo.UseShellExecute = false;
-            Process.StartInfo.CreateNoWindow = true;
+            Process.StartInfo.FileName = path;
+            Process.StartInfo.Arguments = args;
+            Process.StartInfo.UseShellExecute = Model.Global.ShowProcesses;
+            Process.StartInfo.CreateNoWindow = !Model.Global.ShowProcesses;
             Process.Start();
             Process.WaitForExit();
-
+            try {
+                if (Process.ExitCode != 0)
+                    throw new ArgumentException("Failed");
+            }
+            catch { throw new ArgumentException("Failed"); }
         }
 
         public virtual void Work() {}
@@ -51,6 +54,7 @@ namespace Tuto.BatchWorks
             set { status = value; OnPropertyChanged("Status"); }
         }
 
+
         string exceptionMessage;
         public string ExceptionMessage
         {
@@ -59,8 +63,15 @@ namespace Tuto.BatchWorks
         }
 
 
+        public event EventHandler TaskFinished;
+        public void OnTaskFinished()
+        {
+            if (TaskFinished != null)
+                TaskFinished(this, EventArgs.Empty);
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
-        void OnPropertyChanged(string propertyName)
+        public void OnPropertyChanged(string propertyName)
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));

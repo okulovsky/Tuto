@@ -20,9 +20,9 @@ namespace Tuto.BatchWorks
         {
             Model = model;
             Name = "Assembly Course: " + model.Locations.FaceVideo.Directory.Name;
-            FullPath = @"C:\ffmpeg\bin\ffmpeg.exe";
             filesToDelIfAborted = new List<string>();
         }
+
         public override void Work()
         {
             var serv = new AssemblerService();
@@ -32,7 +32,7 @@ namespace Tuto.BatchWorks
 
             foreach (var episode in episodes)
             {
-                Args = @"-i ""{0}"" -q:v 0 ""{1}""";
+                var args = @"-i ""{0}"" -q:v 0 ""{1}""";
                 var avsContext = new AvsContext();
                 episode.SerializeToContext(avsContext);
                 var avsScript = avsContext.Serialize(Model);
@@ -43,10 +43,11 @@ namespace Tuto.BatchWorks
                 var videoFile = Model.Locations.GetOutputFile(episodeNumber);
                 if (videoFile.Exists) videoFile.Delete();
 
-                Args = string.Format(Args, avsFile.FullName, videoFile.FullName);
+                args = string.Format(args, avsFile.FullName, videoFile.FullName);
                 filesToDelIfAborted.Add(videoFile.FullName);
                 episodeNumber++;
-                RunProcess();
+                RunProcess(args, Model.Locations.FFmpegExecutable.FullName);
+                OnTaskFinished();
             }
         }
 
