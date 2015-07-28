@@ -20,8 +20,8 @@ namespace Tuto.BatchWorks
             this.source= source;
         }
 
-        private string temp = "not_found";
         private FileInfo source;
+        private List<string> filesToDel = new List<string>() {"\\result.wav", "\\noise", "\\input.wav", "\\loud.wav"};
 
         public override void Work()
         {
@@ -53,9 +53,9 @@ namespace Tuto.BatchWorks
                 commands.Add(string.Format(@"del ""{0}\loud.wav""", temp));
                 commands.Add(string.Format(@"del ""{0}\input.wav""", temp));
                 File.WriteAllLines(string.Format(@"{0}\clean.bat", temp), commands.ToArray());
-                Args = string.Format(@"/c ""{0}\clean.bat""", temp);
-                FullPath = "CMD.exe";
-                RunProcess();
+                var args = string.Format(@"/c ""{0}\clean.bat""", temp);
+                var fullPath = "CMD.exe";
+                RunProcess(args, fullPath);
             }
             OnTaskFinished();
         }
@@ -64,12 +64,13 @@ namespace Tuto.BatchWorks
         {
             if (Process != null && !Process.HasExited)
                 Process.Kill();
-            if (File.Exists(temp))
+            foreach (var temp in filesToDel)
+                if (File.Exists(Model.Locations.TemporalDirectory.FullName +  temp))
             {
-                while (File.Exists(temp))
+                while (File.Exists(Model.Locations.TemporalDirectory.FullName + temp))
                     try
                     {
-                        File.Delete(temp);
+                        File.Delete(Model.Locations.TemporalDirectory.FullName + temp);
                     }
                     catch { }
             }

@@ -19,10 +19,10 @@ namespace Tuto.BatchWorks
         {
             if (Model.Locations.DesktopVideo.Exists && !Model.Locations.ConvertedDesktopVideo.Exists)
             {
-                Args = string.Format(@"-i ""{0}"" -vf ""scale=1280:720, fps=25"" -q:v 0 -an ""{1}""",
+                var args = string.Format(@"-i ""{0}"" -vf ""scale=1280:720, fps=25"" -q:v 0 -an ""{1}""",
                                             Model.Locations.DesktopVideo.FullName, Model.Locations.ConvertedDesktopVideo.FullName);
-                FullPath = Model.Locations.FFmpegExecutable.FullName;
-                RunProcess();
+                var fullPath = Model.Locations.FFmpegExecutable;
+                RunProcess(args, fullPath.FullName);
             }
             OnTaskFinished();
         }

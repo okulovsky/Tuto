@@ -26,14 +26,12 @@ namespace Tuto.BatchWorks
     {
         public virtual Process Process { get; set; }
         public virtual EditorModel Model { get; set; }
-        public string FullPath { get; set; }
-        public string Args { get; set; }
         public bool NeedToRewrite { get; set; }
-        public void RunProcess()
+        public void RunProcess(string args, string path)
         {
             Process = new Process();
-            Process.StartInfo.FileName = FullPath;
-            Process.StartInfo.Arguments = Args;
+            Process.StartInfo.FileName = path;
+            Process.StartInfo.Arguments = args;
             Process.StartInfo.UseShellExecute = Model.Global.ShowProcesses;
             Process.StartInfo.CreateNoWindow = !Model.Global.ShowProcesses;
             Process.Start();

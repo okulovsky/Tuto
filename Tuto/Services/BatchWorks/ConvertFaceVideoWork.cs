@@ -19,10 +19,10 @@ namespace Tuto.BatchWorks
         {
             if (Model.Locations.FaceVideo.Exists && !Model.Locations.ConvertedFaceVideo.Exists)
             {
-                Args = string.Format(@"-i ""{0}"" -vf ""scale=1280:720, fps=25"" -q:v 0 -acodec libmp3lame -ar 44100 -ab 32k ""{1}""",
+                var args = string.Format(@"-i ""{0}"" -vf ""scale=1280:720, fps=25"" -q:v 0 -acodec libmp3lame -ar 44100 -ab 32k ""{1}""",
                         Model.Locations.FaceVideo.FullName, Model.Locations.ConvertedFaceVideo.FullName);
-                FullPath = Model.Locations.FFmpegExecutable.FullName;
-                RunProcess();
+                var fullPath = Model.Locations.FFmpegExecutable;
+                RunProcess(args, fullPath.FullName);
             }
             OnTaskFinished();
         }

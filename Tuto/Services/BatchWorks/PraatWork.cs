@@ -55,9 +55,9 @@ namespace Tuto.BatchWorks
                     MinSoundInterval,
                     Model.Locations.PraatExecutable);
             File.WriteAllLines(Model.Locations.TemporalDirectory + "\\praat.bat", new string[] { convert, work });
-            Args = string.Format(@"/c ""{0}\praat.bat""", Model.Locations.TemporalDirectory);
-            FullPath = "CMD.exe";
-            RunProcess();
+            var args = string.Format(@"/c ""{0}\praat.bat""", Model.Locations.TemporalDirectory);
+            var fullPath = "CMD.exe";
+            RunProcess(args, fullPath);
 
             Model.Montage.SoundIntervals.Clear();
             using (var reader = new StreamReader(Model.Locations.PraatOutput.FullName))

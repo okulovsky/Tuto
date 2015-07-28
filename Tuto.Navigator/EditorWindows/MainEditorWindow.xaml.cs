@@ -94,22 +94,10 @@ namespace Editor
             Montage.Click += (s, a) =>
                 {
                     model.Save();
-                    var conversionNeeded = false;
-                    if (!model.Locations.ConvertedDesktopVideo.Exists)
-                    {
-                        var task = new ConvertDesktopVideoWork(model);
-                        addTaskToQueue(new List<BatchWork>(){task});
-                        conversionNeeded = true;
-                    }
-
-                    if (!model.Locations.ConvertedFaceVideo.Exists)
-                    {
-                        var task = new ConvertFaceVideoWork(model);
-                        addTaskToQueue(new List<BatchWork>() { task });
-                        conversionNeeded = true;
-                    }
-                    if (!conversionNeeded)
-                        MessageBox.Show("Already converted");
+                    var task = new ConvertDesktopVideoWork(model);
+                    addTaskToQueue(new List<BatchWork>(){task});
+                    var task2 = new ConvertFaceVideoWork(model);
+                    addTaskToQueue(new List<BatchWork>() { task2 });
                 };
 
             Assembly.Click += (s, a) =>
@@ -141,18 +129,14 @@ namespace Editor
             NoiseReduction.Click += (s, a) =>
             {
                 model.Save();
-                if (!model.Locations.ClearedSound.Exists)
-                {
-                    var task = new CreateCleanSoundWork(model.Locations.FaceVideo, model);
-                    task.TaskFinished += (ss, aa) =>
-                        {
-                            useCleanedSound = true;
-                            CleanedAudio.Source = new Uri(model.Locations.ClearedSound.FullName);
-                            FaceVideo.Volume = 0;
-                        };
-                    addTaskToQueue(new List<BatchWork> { task });
-                }
-                else MessageBox.Show("Already cleared. Will be assembled with new sound.");
+                var task = new CreateCleanSoundWork(model.Locations.FaceVideo, model);
+                task.TaskFinished += (ss, aa) =>
+                    {
+                        useCleanedSound = true;
+                        CleanedAudio.Source = new Uri(model.Locations.ClearedSound.FullName);
+                        FaceVideo.Volume = 0;
+                    };
+                addTaskToQueue(new List<BatchWork> { task });
             };
 
             FadesSwitcher.Click += (s, a) =>
@@ -176,8 +160,6 @@ namespace Editor
             ThumbFace.Click += (s, a) =>
                 {
                     model.Save();
-                    if (!model.Locations.FaceVideoThumb.Exists)
-                    {
                         var task = new CreateThumbWork(model.Locations.FaceVideo, model);
                         addTaskToQueue(new List<BatchWork> { task });
                         task.TaskFinished += (z, x) =>
@@ -185,16 +167,12 @@ namespace Editor
                             Action t = () => { FaceVideo.Source = new Uri((string)z); };
                             this.Dispatcher.BeginInvoke((Delegate)t);
                         };
-                    }
-                    else MessageBox.Show("Already done");
                 };
 
             
             ThumbDesktop.Click += (s, a) =>
                 {
                     model.Save();
-                    if (!model.Locations.DesktopVideoThumb.Exists)
-                    {
                         var task = new CreateThumbWork(model.Locations.DesktopVideo, model);
                         addTaskToQueue(new List<BatchWork> { task });
                         task.TaskFinished += (z, x) =>
@@ -202,8 +180,6 @@ namespace Editor
                                 Action t = () => { ScreenVideo.Source = new Uri((string)z); };
                                 this.Dispatcher.BeginInvoke((Delegate)t);
                             };
-                    }
-                    else MessageBox.Show("Already done");
                 };
 
             Help.Click += (s, a) =>
