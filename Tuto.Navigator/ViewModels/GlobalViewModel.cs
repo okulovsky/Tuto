@@ -63,9 +63,9 @@ namespace Tuto.Navigator
             var data=EditorModelIO.ReadAllProjectData(LoadedFile.Directory);
 
             //for older version
-            if (data.Global.PreparingSettings == null)
+            if (data.Global.WorkSettings == null)
             {
-                data.Global.PreparingSettings = new PreparingSettings();
+                data.Global.WorkSettings = new WorkSettings();
             }
 
             this.globalData=data.Global;
@@ -74,16 +74,32 @@ namespace Tuto.Navigator
             {
                 models.Add(m);
             }
-            var tasks = new List<BatchWork>();
-
             Subdirectories = new ObservableCollection<SubfolderViewModel>();
             foreach (var e in data.Models)
             {
                 var m = new SubfolderViewModel(e);
                 m.addTaskToQueue = queueWindow.Run;
                 Subdirectories.Add(m);
+            }
+            Publish = new PublishViewModel(globalData);
+            FillQueue(data);
+        }
 
-                var works = globalData.PreparingSettings.GetWorks(e);
+        
+        void FillQueue(AllProjectData data)
+        {
+            var tasks = new List<BatchWork>();
+            for (var i = 0; i < data.Models.Count; i++)
+            {
+                var works = new List<BatchWork>();
+                var e = data.Models[i];
+                var m = Subdirectories[i];
+                if (e.Global.WorkSettings.ThumbSettings.CurrentOption == Options.Before)
+                    works.Add(new CreateThumbWork(e.Locations.FaceVideo, e));
+
+                if (e.Global.WorkSettings.AudioCleanSettings.CurrentOption == Options.Before)
+                    works.Add(new CreateCleanSoundWork(e.Locations.FaceVideo, e));
+
                 if (works.Count() != 0)
                 {
                     var t = works.Last();
@@ -91,47 +107,7 @@ namespace Tuto.Navigator
                     tasks.AddRange(works);
                 }
                 else m.ReadyToEdit = true;
-                
-
             }
-            Publish = new PublishViewModel(globalData);
-
-
-            if (data.Global.AutoConversionEnabled)
-            {
-                foreach (var model in data.Models)
-                {
-                    //base conversion if possible
-                    if (File.Exists(model.Locations.FaceVideo.FullName) && !model.Locations.ConvertedFaceVideo.Exists)
-                    {
-                        tasks.Add(new ConvertFaceVideoWork(model));
-                    }
-
-                    if (File.Exists(model.Locations.DesktopVideo.FullName) && !model.Locations.ConvertedDesktopVideo.Exists)
-                    {
-                        tasks.Add(new ConvertDesktopVideoWork(model));
-                    }
-                }
-
-               
-            }
-
-            if (data.Global.AutoThumbsEnabled)
-            {
-                foreach (var model in data.Models)
-                {
-                    if (File.Exists(model.Locations.FaceVideo.FullName) && !model.Locations.FaceVideoThumb.Exists)
-                    {
-                        tasks.Add(new CreateThumbWork(model.Locations.FaceVideo, model));
-                    }
-
-                    if (File.Exists(model.Locations.DesktopVideo.FullName) && !model.Locations.DesktopVideoThumb.Exists)
-                    {
-                        tasks.Add(new CreateThumbWork(model.Locations.DesktopVideo, model));
-                    }
-                }
-            }
-
             if (tasks.Count != 0)
                 queueWindow.Run(tasks);
         }

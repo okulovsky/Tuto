@@ -14,24 +14,24 @@ namespace Tuto.BatchWorks
         public CreateThumbWork(FileInfo source, EditorModel model)
         {
             Name = "Thumb Video: " + source;
-            this.source = source;
+            this.Source = source;
             this.Model = model;
         }
 
-        private FileInfo source;
+        public FileInfo Source;
         private string temp;
         public override void Work()
         {
-            if (source.Exists)
+            if (Source.Exists)
             {
                 var codec = "-vcodec libxvid";
-                var newPath = source.FullName.Split('\\');
-                var nameAndExt = source.Name.Split('.');
+                var newPath = Source.FullName.Split('\\');
+                var nameAndExt = Source.Name.Split('.');
                 nameAndExt[0] = nameAndExt[0] + "-thumb";
                 newPath[newPath.Length - 1] = string.Join(".", nameAndExt);
                 temp = string.Join("\\", newPath);
                 var args = string.Format(@"-i ""{0}"" -r 25 -q:v 15 {2} -acodec libmp3lame -ar 44100 -ab 32k ""{1}"" -y",
-                        source.FullName, temp, codec);
+                        Source.FullName, temp, codec);
                 var fullPath = Model.Locations.FFmpegExecutable;
                 RunProcess(args, fullPath.FullName);
             }

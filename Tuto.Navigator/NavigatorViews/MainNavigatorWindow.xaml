@@ -42,10 +42,6 @@
                 <navigator:GlobalSettingsPanel DataContext="{Binding GlobalData}"/>
             </TabItem>
 
-            <TabItem Header="Necessary preparing Settings" IsEnabled="{Binding IsLoaded}">
-                <navigator:PreparingSettingsPanel DataContext="{Binding GlobalData}"/>
-            </TabItem>
-
             <!--<TabItem Header="Debug">
                 <StackPanel
                     Background="BurlyWood">

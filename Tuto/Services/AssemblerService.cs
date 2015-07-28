@@ -128,7 +128,7 @@ namespace Tuto.TutoServices
                     currentAvsChunk = chain.Item1;
                     i = chain.Item2;     
                 }
-                if (prevChunk != null && prevChunk.Mode == Mode.Face && currentChunk.Mode == Mode.Face && model.Montage.CrossfadesEnabled)
+                if (prevChunk != null && prevChunk.Mode == Mode.Face && currentChunk.Mode == Mode.Face && model.Global.CrossFadesEnabled)
                     avsChunks.Items[avsChunks.Items.Count - 1] = new AvsCrossFade
                     {
                         FadeFrom = prevAvsChunk,

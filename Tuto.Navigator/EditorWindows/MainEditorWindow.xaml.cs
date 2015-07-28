@@ -56,12 +56,14 @@ namespace Editor
             var desk = model.Locations.DesktopVideoThumb.Exists ? model.Locations.DesktopVideoThumb : model.Locations.DesktopVideo;
             FaceVideo.Source = new Uri(face.FullName);
             ScreenVideo.Source = new Uri(desk.FullName);
+
             if (model.Locations.ClearedSound.Exists)
             {
                 useCleanedSound = true;
                 CleanedAudio.Source = new Uri(model.Locations.ClearedSound.FullName);
                 FaceVideo.Volume = 0;
             }
+
             FaceVideo.LoadedBehavior = MediaState.Manual;
             ScreenVideo.LoadedBehavior = MediaState.Manual;
 			ScreenVideo.Volume = 0;
@@ -104,8 +106,6 @@ namespace Editor
                 {
                     model.Save();
                     var tasks = new List<BatchWork>();
-                    if (model.Global.AutoSoundCorrection)
-                        tasks.Add(new CreateCleanSoundWork(model.Locations.FaceVideo, model));
                     tasks.Add(new ConvertDesktopVideoWork(model));
                     tasks.Add(new ConvertFaceVideoWork(model));
                     tasks.Add(new AssemblyVideoWork(model));
@@ -221,6 +221,33 @@ namespace Editor
             Synchronize.Click += Synchronize_Click;
 
             Infos.Click += Infos_Click;
+
+            var toDo = model.Global.WorkSettings.GetDuringWorks(model);
+            foreach (var t in toDo)
+            {
+                if (t.GetType() == typeof(CreateCleanSoundWork))
+                    t.TaskFinished += (ss, aa) =>
+                    {
+                        useCleanedSound = true;
+                        CleanedAudio.Source = new Uri(model.Locations.ClearedSound.FullName);
+                        FaceVideo.Volume = 0;
+                    };
+
+                if (t.GetType() == typeof(CreateThumbWork) && ((CreateThumbWork)t).Source == model.Locations.DesktopVideo )
+                    t.TaskFinished += (z, x) =>
+                    {
+                        Action act = () => { ScreenVideo.Source = new Uri((string)z); };
+                        this.Dispatcher.BeginInvoke((Delegate)act);
+                    };
+
+                if (t.GetType() == typeof(CreateThumbWork) && ((CreateThumbWork)t).Source == model.Locations.FaceVideo)
+                    t.TaskFinished += (z, x) =>
+                    {
+                        Action act = () => { FaceVideo.Source = new Uri((string)z); };
+                        this.Dispatcher.BeginInvoke((Delegate)act);
+                    };
+            }
+            addTaskToQueue(toDo);
         }
 
         void Synchronize_Click(object sender, RoutedEventArgs e)
