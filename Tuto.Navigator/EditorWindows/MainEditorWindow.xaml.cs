@@ -33,6 +33,7 @@ namespace Editor
     public partial class MainEditorWindow : Window
     {
         public Action<IEnumerable<BatchWork>> addTaskToQueue;
+        private bool useCleanedSound;
         EditorModel model;
 
         public MainEditorWindow()
@@ -42,6 +43,7 @@ namespace Editor
             InitializeComponent();
             FaceVideo.LoadedBehavior = MediaState.Manual;
             ScreenVideo.LoadedBehavior = MediaState.Manual;
+            CleanedAudio.LoadedBehavior = MediaState.Manual;
 
         }
 
@@ -54,6 +56,12 @@ namespace Editor
             var desk = model.Locations.DesktopVideoThumb.Exists ? model.Locations.DesktopVideoThumb : model.Locations.DesktopVideo;
             FaceVideo.Source = new Uri(face.FullName);
             ScreenVideo.Source = new Uri(desk.FullName);
+            if (model.Locations.ClearedSound.Exists)
+            {
+                useCleanedSound = true;
+                CleanedAudio.Source = new Uri(model.Locations.ClearedSound.FullName);
+                FaceVideo.Volume = 0;
+            }
             FaceVideo.LoadedBehavior = MediaState.Manual;
             ScreenVideo.LoadedBehavior = MediaState.Manual;
 			ScreenVideo.Volume = 0;
@@ -108,7 +116,7 @@ namespace Editor
                 {
                     model.Save();
                     var tasks = new List<BatchWork>();
-                    if (model.Global.AutoSoundCorrection && !model.Locations.ClearedSound.Exists)
+                    if (model.Global.AutoSoundCorrection)
                         tasks.Add(new CreateCleanSoundWork(model.Locations.FaceVideo, model));
                     tasks.Add(new ConvertDesktopVideoWork(model));
                     tasks.Add(new ConvertFaceVideoWork(model));
@@ -136,6 +144,12 @@ namespace Editor
                 if (!model.Locations.ClearedSound.Exists)
                 {
                     var task = new CreateCleanSoundWork(model.Locations.FaceVideo, model);
+                    task.TaskFinished += (ss, aa) =>
+                        {
+                            useCleanedSound = true;
+                            CleanedAudio.Source = new Uri(model.Locations.ClearedSound.FullName);
+                            FaceVideo.Volume = 0;
+                        };
                     addTaskToQueue(new List<BatchWork> { task });
                 }
                 else MessageBox.Show("Already cleared. Will be assembled with new sound.");
@@ -166,7 +180,7 @@ namespace Editor
                     {
                         var task = new CreateThumbWork(model.Locations.FaceVideo, model);
                         addTaskToQueue(new List<BatchWork> { task });
-                        task.ThumbCreated += (z, x) =>
+                        task.TaskFinished += (z, x) =>
                         {
                             Action t = () => { FaceVideo.Source = new Uri((string)z); };
                             this.Dispatcher.BeginInvoke((Delegate)t);
@@ -183,7 +197,7 @@ namespace Editor
                     {
                         var task = new CreateThumbWork(model.Locations.DesktopVideo, model);
                         addTaskToQueue(new List<BatchWork> { task });
-                        task.ThumbCreated += (z, x) =>
+                        task.TaskFinished += (z, x) =>
                             {
                                 Action t = () => { ScreenVideo.Source = new Uri((string)z); };
                                 this.Dispatcher.BeginInvoke((Delegate)t);
@@ -292,12 +306,14 @@ namespace Editor
             if (model.WindowState.Paused)
             {
                 FaceVideo.Pause();
+                if (useCleanedSound) CleanedAudio.Pause();
                 ScreenVideo.Pause();
        //         MessageBox.Show("Paused");
             }
             else
             {
                 FaceVideo.Play();
+                if (useCleanedSound) CleanedAudio.Play();
                 ScreenVideo.Play();
        //         MessageBox.Show("Played");
             }
@@ -318,6 +334,7 @@ namespace Editor
         {
             FaceVideo.SpeedRatio = model.WindowState.SpeedRatio;
             ScreenVideo.SpeedRatio = model.WindowState.SpeedRatio;
+            if (useCleanedSound) CleanedAudio.SpeedRatio = model.WindowState.SpeedRatio;
         }
 
         bool pauseRequested;
@@ -336,7 +353,7 @@ namespace Editor
 
             FaceVideo.Position = TimeSpan.FromMilliseconds(model.WindowState.CurrentPosition);
             ScreenVideo.Position = TimeSpan.FromMilliseconds(model.WindowState.CurrentPosition - model.Montage.SynchronizationShift);
-
+            if (useCleanedSound) CleanedAudio.Position = TimeSpan.FromMilliseconds(model.WindowState.CurrentPosition);
         }
 
 

@@ -24,6 +24,7 @@ namespace Tuto.BatchWorks
                 FullPath = Model.Locations.FFmpegExecutable.FullName;
                 RunProcess();
             }
+            OnTaskFinished();
         }
 
         public override void Clean()

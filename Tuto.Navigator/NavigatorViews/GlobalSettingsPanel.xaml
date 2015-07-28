@@ -21,6 +21,7 @@
                     <RowDefinition></RowDefinition>
                     <RowDefinition></RowDefinition>
                     <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
 
                 <Label Grid.Column="0" Grid.Row="0" Content="Max distance to silence"></Label>
@@ -40,6 +41,9 @@
 
                 <Label Grid.Column="0" Grid.Row="5" Content="Enable auto sound correction"></Label>
                 <CheckBox Grid.Column="1" VerticalAlignment="Center" IsChecked="{Binding AutoSoundCorrection}" Grid.Row="5"></CheckBox>
+
+                <Label Grid.Column="0" Grid.Row="6" Content="Show processes window"></Label>
+                <CheckBox Grid.Column="1" VerticalAlignment="Center" IsChecked="{Binding ShowProcesses}" Grid.Row="6"></CheckBox>
             </Grid>
         </GroupBox>
     </StackPanel>

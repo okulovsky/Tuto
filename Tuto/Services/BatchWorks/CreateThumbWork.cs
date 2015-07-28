@@ -11,8 +11,6 @@ namespace Tuto.BatchWorks
 {
     public class CreateThumbWork : BatchWork
     {
-        public event EventHandler ThumbCreated;
-
         public CreateThumbWork(FileInfo source, EditorModel model)
         {
             Name = "Thumb Video: " + source;
@@ -32,13 +30,12 @@ namespace Tuto.BatchWorks
                 nameAndExt[0] = nameAndExt[0] + "-thumb";
                 newPath[newPath.Length - 1] = string.Join(".", nameAndExt);
                 temp = string.Join("\\", newPath);
-                Args = string.Format(@"-i ""{0}"" -r 25 -q:v 13 {2} -acodec libmp3lame -ar 44100 -ab 32k ""{1}"" -y",
+                Args = string.Format(@"-i ""{0}"" -r 25 -q:v 15 {2} -acodec libmp3lame -ar 44100 -ab 32k ""{1}"" -y",
                         source.FullName, temp, codec);
                 FullPath = Model.Locations.FFmpegExecutable.FullName;
                 RunProcess();
-                if (ThumbCreated != null)
-                    ThumbCreated(temp, null);
             }
+            OnTaskFinished();
         }
 
         public override void Clean()

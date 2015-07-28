@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="572">
     <!--<ListBox ItemsSource="{Binding}" HorizontalContentAlignment="Stretch">
         <ListBox.Resources>
             <Style TargetType="ListBox">
@@ -40,11 +40,11 @@
             <DataGridTextColumn Binding="{Binding EpisodesNames}" Header="EpisodesNames"/>
             <DataGridTextColumn Binding="{Binding TotalDuration}" Header="TotalDuration"/>
             <DataGridCheckBoxColumn Binding="{Binding Marked, Mode=OneWay}" Header="Marked"/>
-            <DataGridCheckBoxColumn Binding="{Binding Montaged, Mode=OneWay}" Header="Montaged"/>
+            <DataGridCheckBoxColumn Binding="{Binding ReadyToEdit, Mode=OneWay}" Header="Ready for edit"/>
             <DataGridTemplateColumn>
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <Button Width="50" Height="30" Command="{Binding StartEditorCommand}" Content="Editor"/>
+                        <Button Width="50" Height="30" Command="{Binding StartEditorCommand}" IsEnabled="{Binding ReadyToEdit}" Content="Editor"/>
                         </DataTemplate>                    
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>

@@ -16,36 +16,24 @@ namespace Tuto.BatchWorks
         public CreateCleanSoundWork(FileInfo source, EditorModel model)
         {
             Name = "Make clean sound: " + source;
-            this.model = model;
+            Model = model;
             this.source= source;
         }
 
         private string temp = "not_found";
-        private EditorModel model;
         private FileInfo source;
-
-        private FileInfo assemblyDirectory
-        {
-            get
-            {
-                string codeBase = System.Reflection.Assembly.GetExecutingAssembly().CodeBase;
-                UriBuilder uri = new UriBuilder(codeBase);
-                string path = Uri.UnescapeDataString(uri.Path);
-                return new FileInfo(Path.GetDirectoryName(path));
-            }
-        }
 
         public override void Work()
         {
-            if (source.Exists)
+            if (source.Exists && !Model.Locations.ClearedSound.Exists)
             {
-                var progPath = model.Locations.NoiseReductionFolder; //get program's folder for noicereduction utility.
-                var ffExe = model.Locations.FFmpegExecutable.FullName;
-                var soxExe = model.Locations.SoxExecutable.FullName;
+                var progPath = Model.Locations.NoiseReductionFolder; //get program's folder for noicereduction utility.
+                var ffExe = Model.Locations.FFmpegExecutable.FullName;
+                var soxExe = Model.Locations.SoxExecutable.FullName;
                 List<string> commands = new List<string>();
 
-                var loc = model.Locations.FaceVideo;
-                var temp = model.Locations.TemporalDirectory;
+                var loc = Model.Locations.FaceVideo;
+                var temp = Model.Locations.TemporalDirectory;
 
                 commands.Add(string.Format(@"""{2}"" -i ""{0}"" -y -shortest ""{1}\input.wav""", loc, temp, ffExe));
                 commands.Add(string.Format(@"""{1}"" ""{0}\input.wav"" ""{0}\loud.wav"" --norm", temp, soxExe));
@@ -69,6 +57,7 @@ namespace Tuto.BatchWorks
                 FullPath = "CMD.exe";
                 RunProcess();
             }
+            OnTaskFinished();
         }
 
         public override void Clean()

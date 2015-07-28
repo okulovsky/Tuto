@@ -34,7 +34,7 @@ namespace Tuto.Navigator
 
         void Execute()
         {
-            while (!work.IsEmpty)
+            while (!work.IsEmpty && QueueWorking)
             {
                 BatchWork e;
                 work.TryPeek(out e); 
@@ -49,14 +49,14 @@ namespace Tuto.Navigator
                 {
                     e.Status = BatchWorkStatus.Aborted;
                     e.Clean();
-                    work.TryDequeue(out e);
+                    QueueWorking = false;
                 }
                 catch(Exception ex)
                 {
                     e.Status = BatchWorkStatus.Failure;
                     e.ExceptionMessage = ex.Message;
                     e.Clean();
-                    work.TryDequeue(out e);
+                    QueueWorking = false;
                 }
             }
             QueueWorking = false;
@@ -82,7 +82,7 @@ namespace Tuto.Navigator
                 bool found = false;
                 foreach (var e in this.work)
                 {
-                    if (e.Status == BatchWorkStatus.Aborted) { found = true; e.Clean();}
+                    if (e.Status == BatchWorkStatus.Aborted) { found = true;}
                     else if (found) e.Status = BatchWorkStatus.Cancelled;
                 }
                 CleanQueue();

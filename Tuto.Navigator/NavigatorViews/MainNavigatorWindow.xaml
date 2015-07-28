@@ -38,8 +38,12 @@
             </TabItem>
             
             
-            <TabItem Header="Settings" IsEnabled="{Binding IsLoaded}">
+            <TabItem Header="Global Settings" IsEnabled="{Binding IsLoaded}">
                 <navigator:GlobalSettingsPanel DataContext="{Binding GlobalData}"/>
+            </TabItem>
+
+            <TabItem Header="Necessary preparing Settings" IsEnabled="{Binding IsLoaded}">
+                <navigator:PreparingSettingsPanel DataContext="{Binding GlobalData}"/>
             </TabItem>
 
             <!--<TabItem Header="Debug">

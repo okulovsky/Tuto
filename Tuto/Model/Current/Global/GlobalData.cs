@@ -63,7 +63,13 @@ namespace Tuto.Model
         public bool AutoThumbsEnabled { get; set; }
 
         [DataMember]
+        public PreparingSettings PreparingSettings { get; set; }
+
+        [DataMember]
         public bool AutoSoundCorrection { get; set; }
+
+        [DataMember]
+        public bool ShowProcesses { get; set; }
 
         public DirectoryInfo GlobalDataFolder { get; internal set; }
 

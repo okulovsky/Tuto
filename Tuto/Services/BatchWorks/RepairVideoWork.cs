@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using Tuto.Model;
+using System.Threading;
 
 namespace Tuto.BatchWorks
 {
@@ -17,7 +18,7 @@ namespace Tuto.BatchWorks
             this.source = source;
         }
 
-        private string tempFile;
+        private string tempFile = "none";
         private bool CopyingOver;
         private bool ConversionOver;
         private bool FileDeleted;
@@ -35,23 +36,23 @@ namespace Tuto.BatchWorks
                 tempFile = originPath;
                 File.Copy(source.FullName, originPath);
                 CopyingOver = true;
-                File.Delete(source.FullName);
-                FileDeleted = true;
-                Args = string.Format(@"-i ""{0}"" -vf scale=1280:720 -r 25 -q:v 0 {2} -acodec libmp3lame -ar 44100 -ab 32k ""{1}""",
+                Args = string.Format(@"-i ""{0}"" -vf scale=1280:720 -r 25 -q:v 0 {2} -acodec libmp3lame -ar 44100 -ab 32k ""{1}"" -y",
                         originPath, source.FullName, codec);
                 FullPath = Model.Locations.FFmpegExecutable.FullName;
                 RunProcess();
                 ConversionOver = true;
             }
+            OnTaskFinished();
         }
 
         public override void Clean()
         {
             if (Process != null && !Process.HasExited)
                 Process.Kill();
-            if (source.Exists && CopyingOver)
+            Thread.Sleep(1000); //this time is required for system to free recources
+            if (source.Exists && File.Exists(tempFile) && CopyingOver)
             {
-                while (source.Exists)
+                if (source.Exists)
                     try
                     {
                         File.Delete(source.FullName);

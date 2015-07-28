@@ -48,6 +48,7 @@ namespace Tuto.BatchWorks
                 filesToDelIfAborted.Add(videoFile.FullName);
                 episodeNumber++;
                 RunProcess();
+                OnTaskFinished();
             }
         }
 
