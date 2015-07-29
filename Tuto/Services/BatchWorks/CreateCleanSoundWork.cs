@@ -59,6 +59,7 @@ namespace Tuto.BatchWorks
             var file = Model.Locations.ClearedSound;
             if (File.Exists(file.FullName))
                 File.Delete(file.FullName);
+            Thread.Sleep(200);
             File.Move(GetTempFile(file).FullName, file.FullName);
             OnTaskFinished();
         }

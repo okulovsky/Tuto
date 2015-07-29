@@ -21,6 +21,8 @@ namespace Tuto.BatchWorks
             Model = model;
             Name = "Assembly Course: " + model.Locations.FaceVideo.Directory.Name;
             filesToDelIfAborted = new List<string>();
+            if (model.Global.WorkSettings.AudioCleanSettings.CurrentOption == Options.WithAssembly && !File.Exists(model.Locations.ClearedSound.FullName))
+                BeforeWorks.Add(new CreateCleanSoundWork(model.Locations.FaceVideo, model));
             if (!model.Locations.ConvertedDesktopVideo.Exists)
                 BeforeWorks.Add(new ConvertDesktopVideoWork(model));
             if (!model.Locations.ConvertedFaceVideo.Exists)

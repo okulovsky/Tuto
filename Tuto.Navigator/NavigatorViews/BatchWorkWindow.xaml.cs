@@ -116,7 +116,9 @@ namespace Tuto.Navigator
                 for (var i = currentIndex; i < this.work.Count; i++)
                 {
                     if (i == currentIndex)
-                    this.work[i].Status = BatchWorkStatus.Aborted;
+                    {
+                        this.work[i].Status = BatchWorkStatus.Aborted;
+                    }
                     else
                         this.work[i].Status = BatchWorkStatus.Cancelled;
                 }

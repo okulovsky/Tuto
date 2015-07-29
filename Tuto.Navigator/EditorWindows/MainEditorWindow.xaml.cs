@@ -33,7 +33,6 @@ namespace Editor
     public partial class MainEditorWindow : Window
     {
         public Action<IEnumerable<BatchWork>> addTaskToQueue;
-        private bool useCleanedSound;
         EditorModel model;
 
         public MainEditorWindow()
@@ -43,7 +42,6 @@ namespace Editor
             InitializeComponent();
             FaceVideo.LoadedBehavior = MediaState.Manual;
             ScreenVideo.LoadedBehavior = MediaState.Manual;
-            CleanedAudio.LoadedBehavior = MediaState.Manual;
 
         }
 
@@ -56,13 +54,6 @@ namespace Editor
             var desk = model.Locations.DesktopVideoThumb.Exists ? model.Locations.DesktopVideoThumb : model.Locations.DesktopVideo;
             FaceVideo.Source = new Uri(face.FullName);
             ScreenVideo.Source = new Uri(desk.FullName);
-
-            if (model.Locations.ClearedSound.Exists)
-            {
-                useCleanedSound = true;
-                CleanedAudio.Source = new Uri(model.Locations.ClearedSound.FullName);
-                FaceVideo.Volume = 0;
-            }
 
             FaceVideo.LoadedBehavior = MediaState.Manual;
             ScreenVideo.LoadedBehavior = MediaState.Manual;
@@ -132,16 +123,6 @@ namespace Editor
                 model.Save();
                 var task = new CreateCleanSoundWork(model.Locations.FaceVideo, model);
                 task.Forced = true;
-                task.TaskFinished += (ss, aa) =>
-                    {
-                        Action t = () =>
-                        {
-                            useCleanedSound = true;
-                            CleanedAudio.Source = new Uri(model.Locations.ClearedSound.FullName);
-                            FaceVideo.Volume = 0;
-                        };
-                        this.Dispatcher.BeginInvoke((Delegate)t);
-                    };
                 addTaskToQueue(new List<BatchWork> { task });
             };
 
@@ -218,18 +199,6 @@ namespace Editor
             var toDo = model.Global.WorkSettings.GetDuringWorks(model);
             foreach (var t in toDo)
             {
-                if (t.GetType() == typeof(CreateCleanSoundWork))
-                    t.TaskFinished += (ss, aa) =>
-                    {
-                        Action switchSound = () =>
-                        {
-                            useCleanedSound = true;
-                            CleanedAudio.Source = new Uri(model.Locations.ClearedSound.FullName);
-                            FaceVideo.Volume = 0;
-                        };
-                        this.Dispatcher.BeginInvoke((Delegate)switchSound);
-                    };
-
                 if (t.GetType() == typeof(CreateThumbWork) && ((CreateThumbWork)t).Source == model.Locations.DesktopVideo)
                     t.TaskFinished += (z, x) =>
                     {
@@ -307,14 +276,12 @@ namespace Editor
             if (model.WindowState.Paused)
             {
                 FaceVideo.Pause();
-                if (useCleanedSound) CleanedAudio.Pause();
                 ScreenVideo.Pause();
        //         MessageBox.Show("Paused");
             }
             else
             {
                 FaceVideo.Play();
-                if (useCleanedSound) CleanedAudio.Play();
                 ScreenVideo.Play();
        //         MessageBox.Show("Played");
             }
@@ -335,7 +302,6 @@ namespace Editor
         {
             FaceVideo.SpeedRatio = model.WindowState.SpeedRatio;
             ScreenVideo.SpeedRatio = model.WindowState.SpeedRatio;
-            if (useCleanedSound) CleanedAudio.SpeedRatio = model.WindowState.SpeedRatio;
         }
 
         bool pauseRequested;
@@ -354,7 +320,6 @@ namespace Editor
 
             FaceVideo.Position = TimeSpan.FromMilliseconds(model.WindowState.CurrentPosition);
             ScreenVideo.Position = TimeSpan.FromMilliseconds(model.WindowState.CurrentPosition - model.Montage.SynchronizationShift);
-            if (useCleanedSound) CleanedAudio.Position = TimeSpan.FromMilliseconds(model.WindowState.CurrentPosition);
         }
 
 
@@ -387,15 +352,6 @@ namespace Editor
             this.IsEnabled = true;
             MessageBox.Show("The action is complete");
             return;
-
-
-            //var process = new Process();
-            //process.StartInfo.FileName = model.Locations.TutoExecutable.FullName;
-            //process.StartInfo.Arguments = arguments
-            //    .Select(z => z.Contains(" ") ? "\"" + z + "\"" : z)
-            //    .Aggregate((a, b) => a + " " + b);
-            //process.StartInfo.CreateNoWindow = false;
-            //process.Start();
 
         }
 

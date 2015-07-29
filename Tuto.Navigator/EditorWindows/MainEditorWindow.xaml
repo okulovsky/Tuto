@@ -51,8 +51,8 @@
                 <Button Focusable="False" x:Name="Help" Content="Help"/>
                 <Button Focusable="False" x:Name="NoiseReduction" Content="-Noise"/>
                 <Button Focusable="False" Content="ThumbF" x:Name="ThumbFace" Width="58"/>
-                <Button Focusable="False" x:Name="Montage" Content="Convert"/>
                 <Button Focusable="False" Content="ThumbD" x:Name="ThumbDesktop" Width="58"/>
+                <Button Focusable="False" x:Name="Montage" Content="Convert"/>
             </StackPanel>
             <Button Content="Tools" x:Name="Tools" Height="50" Width="50" Click="Tools_Click"/>
         </StackPanel>
@@ -66,8 +66,6 @@
                     Width="400"
                     x:Name="ScreenVideo"  
                     Grid.Column="1"/>
-
-            <MediaElement x:Name="CleanedAudio" Visibility="Hidden"  Height="83" Width="247"/>
 
             <TextBlock x:Name="Subtitles" Width="400" TextWrapping="Wrap" FontSize="18"/>
 
