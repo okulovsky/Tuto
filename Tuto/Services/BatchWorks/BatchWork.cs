@@ -46,10 +46,20 @@ namespace Tuto.BatchWorks
         public virtual void Work() {}
         public virtual void Clean() {}
 
+        public FileInfo GetTempFile(FileInfo info)
+        {
+            var newPath = info.FullName.Split('\\');
+            var nameAndExt = info.Name.Split('.');
+            nameAndExt[0] = nameAndExt[0] + "-tmp";
+            newPath[newPath.Length - 1] = string.Join(".", nameAndExt);
+            return new FileInfo(string.Join("\\", newPath));
+        }
+
         public List<BatchWork> BeforeWorks = new List<BatchWork>();
         public List<BatchWork> AfterWorks = new List<BatchWork>();
 
         public virtual bool Finished() { return false; }
+        public bool Forced { get; set; }
 
         public string Name { get; set; }
         BatchWorkStatus status;

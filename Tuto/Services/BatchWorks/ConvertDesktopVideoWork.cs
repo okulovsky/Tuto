@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using Tuto.Model;
+using System.Threading;
 
 namespace Tuto.BatchWorks
 {
@@ -13,17 +14,22 @@ namespace Tuto.BatchWorks
         public ConvertDesktopVideoWork(EditorModel model)
         {
             Model = model;
-            Name = "Preparing Desktop Video: " + model.Locations.DesktopVideo;
+            Name = "Converting Desktop Video: " + model.Locations.DesktopVideo;
         }
+
+        private FileInfo tempFile;
+
         public override void Work()
         {
-            if (Model.Locations.DesktopVideo.Exists && !Model.Locations.ConvertedDesktopVideo.Exists)
-            {
-                var args = string.Format(@"-i ""{0}"" -vf ""scale=1280:720, fps=25"" -q:v 0 -an ""{1}""",
-                                            Model.Locations.DesktopVideo.FullName, Model.Locations.ConvertedDesktopVideo.FullName);
-                var fullPath = Model.Locations.FFmpegExecutable;
-                RunProcess(args, fullPath.FullName);
-            }
+            tempFile = GetTempFile(Model.Locations.ConvertedDesktopVideo);          
+            var args = string.Format(@"-i ""{0}"" -vf ""scale=1280:720, fps=25"" -q:v 0 -an ""{1}"" -y",
+                                        Model.Locations.DesktopVideo.FullName, tempFile.FullName);
+            var fullPath = Model.Locations.FFmpegExecutable;
+            RunProcess(args, fullPath.FullName);
+            Thread.Sleep(500);
+            if (Model.Locations.ConvertedDesktopVideo.Exists)
+                Model.Locations.ConvertedDesktopVideo.Delete();
+            File.Move(tempFile.FullName, Model.Locations.ConvertedDesktopVideo.FullName);
             OnTaskFinished();
         }
 
@@ -36,10 +42,10 @@ namespace Tuto.BatchWorks
         {
             if (Process != null && !Process.HasExited)
                 Process.Kill();
-            while (Model.Locations.ConvertedDesktopVideo.Exists)
+            while (tempFile.Exists)
                 try
                 {
-                    File.Delete(Model.Locations.ConvertedDesktopVideo.FullName);
+                    File.Delete(tempFile.FullName);
                 }
                 catch { }
         }

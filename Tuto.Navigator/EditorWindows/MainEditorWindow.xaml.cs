@@ -96,8 +96,10 @@ namespace Editor
                 {
                     model.Save();
                     var task = new ConvertDesktopVideoWork(model);
+                    task.Forced = true;
                     addTaskToQueue(new List<BatchWork>(){task});
                     var task2 = new ConvertFaceVideoWork(model);
+                    task2.Forced = true;
                     addTaskToQueue(new List<BatchWork>() { task2 });
                 };
 
@@ -113,6 +115,7 @@ namespace Editor
                 {
                     model.Save();
                     var task = new RepairVideoWork(model, model.Locations.FaceVideo);
+                    task.Forced = true;
                     addTaskToQueue(new List<BatchWork>{task});
                 };
 
@@ -120,6 +123,7 @@ namespace Editor
             {
                 model.Save();
                 var task = new RepairVideoWork(model, model.Locations.DesktopVideo);
+                task.Forced = true;
                 addTaskToQueue(new List<BatchWork> { task });
             };
 
@@ -127,11 +131,16 @@ namespace Editor
             {
                 model.Save();
                 var task = new CreateCleanSoundWork(model.Locations.FaceVideo, model);
+                task.Forced = true;
                 task.TaskFinished += (ss, aa) =>
                     {
-                        useCleanedSound = true;
-                        CleanedAudio.Source = new Uri(model.Locations.ClearedSound.FullName);
-                        FaceVideo.Volume = 0;
+                        Action t = () =>
+                        {
+                            useCleanedSound = true;
+                            CleanedAudio.Source = new Uri(model.Locations.ClearedSound.FullName);
+                            FaceVideo.Volume = 0;
+                        };
+                        this.Dispatcher.BeginInvoke((Delegate)t);
                     };
                 addTaskToQueue(new List<BatchWork> { task });
             };
@@ -140,10 +149,11 @@ namespace Editor
                 {
                     model.Save();
                         var task = new CreateThumbWork(model.Locations.FaceVideo, model);
+                        task.Forced = true;
                         addTaskToQueue(new List<BatchWork> { task });
                         task.TaskFinished += (z, x) =>
                         {
-                            Action t = () => { FaceVideo.Source = new Uri((string)z); };
+                            Action t = () => { FaceVideo.Source = new Uri(((CreateThumbWork)z).ThumbName.FullName); };
                             this.Dispatcher.BeginInvoke((Delegate)t);
                         };
                 };
@@ -153,10 +163,11 @@ namespace Editor
                 {
                     model.Save();
                         var task = new CreateThumbWork(model.Locations.DesktopVideo, model);
+                        task.Forced = true;
                         addTaskToQueue(new List<BatchWork> { task });
                         task.TaskFinished += (z, x) =>
                             {
-                                Action t = () => { ScreenVideo.Source = new Uri((string)z); };
+                                Action t = () => { ScreenVideo.Source = new Uri(((CreateThumbWork)z).ThumbName.FullName); };
                                 this.Dispatcher.BeginInvoke((Delegate)t);
                             };
                 };
@@ -210,9 +221,13 @@ namespace Editor
                 if (t.GetType() == typeof(CreateCleanSoundWork))
                     t.TaskFinished += (ss, aa) =>
                     {
-                        useCleanedSound = true;
-                        CleanedAudio.Source = new Uri(model.Locations.ClearedSound.FullName);
-                        FaceVideo.Volume = 0;
+                        Action switchSound = () =>
+                        {
+                            useCleanedSound = true;
+                            CleanedAudio.Source = new Uri(model.Locations.ClearedSound.FullName);
+                            FaceVideo.Volume = 0;
+                        };
+                        this.Dispatcher.BeginInvoke((Delegate)switchSound);
                     };
 
                 if (t.GetType() == typeof(CreateThumbWork) && ((CreateThumbWork)t).Source == model.Locations.DesktopVideo)

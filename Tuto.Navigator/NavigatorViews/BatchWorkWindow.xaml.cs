@@ -75,8 +75,7 @@ namespace Tuto.Navigator
 
         public void Run(IEnumerable<BatchWork> work)
         {
-
-            work = work.Where(x => !x.Finished()).ToList();
+            work = work.Where(x => !x.Finished() || x.Forced).ToList();
             lock (addLock)
             {
                 foreach (var e in work)
@@ -86,7 +85,8 @@ namespace Tuto.Navigator
                     this.work.AddRange(e.AfterWorks);
                 }     
             }
-
+            if (this.work.Count == 0)
+                return;
             this.DataContext = this.work.ToList();
             if (!QueueWorking)
             {
@@ -128,6 +128,7 @@ namespace Tuto.Navigator
         private void CleanQueue()
         {
             this.work.Clear();
+            currentIndex = 0;
         }
 
         private void Window_Closing(object sender, CancelEventArgs e)
