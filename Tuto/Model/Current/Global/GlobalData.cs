@@ -57,16 +57,10 @@ namespace Tuto.Model
 		public string RelativeVideoListPath { get; set; }
 
         [DataMember]
-        public bool AutoConversionEnabled { get; set; }
+        public WorkSettings WorkSettings { get; set; }
 
         [DataMember]
-        public bool AutoThumbsEnabled { get; set; }
-
-        [DataMember]
-        public PreparingSettings PreparingSettings { get; set; }
-
-        [DataMember]
-        public bool AutoSoundCorrection { get; set; }
+        public bool CrossFadesEnabled { get; set; }
 
         [DataMember]
         public bool ShowProcesses { get; set; }
@@ -89,6 +83,7 @@ namespace Tuto.Model
             Name = "";
             Locations = new GlobalLocations(this);
             TopicLevels = new List<TopicLevel>();
+            WorkSettings = new WorkSettings();
         }
     }
 }

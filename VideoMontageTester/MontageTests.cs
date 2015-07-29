@@ -58,7 +58,7 @@ namespace VideoMontageTester
         public void CollapseDesktopChunkTest()
         {
             SetUp();
-            var serv = new AssemblerService();
+            var serv = new AssemblerService(true);
             var model = new EditorModel(new DirectoryInfo("test"), new DirectoryInfo("test"), new DirectoryInfo("test"));
             model.Montage.Chunks.Mark(1000, new bool[] { false, true }, false);
             model.Montage.Chunks.Mark(2000, new bool[] { false, true }, false);
@@ -271,7 +271,7 @@ namespace VideoMontageTester
 
         private void SetUp()
         {
-            serv = new AssemblerService();
+            serv = new AssemblerService(true);
             model = new EditorModel(new DirectoryInfo("test"), new DirectoryInfo("test"), new DirectoryInfo("test"));
         }
     }

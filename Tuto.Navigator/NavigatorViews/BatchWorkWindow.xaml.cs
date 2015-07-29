@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Tuto.BatchWorks;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 
 namespace Tuto.Navigator
 {
@@ -33,6 +34,7 @@ namespace Tuto.Navigator
         bool QueueWorking { get; set; }
         private int currentIndex { get; set; }
         Thread queueThread { get; set; }
+        private Process currentProcess;
 
         void Execute()
         {
@@ -47,6 +49,7 @@ namespace Tuto.Navigator
                 e.Status = BatchWorkStatus.Running;
                 try
                 {
+                    currentProcess = e.Process;
                     e.Work();
                     e.Status = BatchWorkStatus.Success;
                     currentIndex++;
@@ -72,11 +75,18 @@ namespace Tuto.Navigator
 
         public void Run(IEnumerable<BatchWork> work)
         {
+
+            work = work.Where(x => !x.Finished()).ToList();
             lock (addLock)
             {
                 foreach (var e in work)
+                {
+                    this.work.AddRange(e.BeforeWorks);
                     this.work.Add(e);
+                    this.work.AddRange(e.AfterWorks);
+                }     
             }
+
             this.DataContext = this.work.ToList();
             if (!QueueWorking)
             {
@@ -99,11 +109,16 @@ namespace Tuto.Navigator
                 }
                 queueThread.Abort();
                 QueueWorking = false;
-                bool found = false;
-                foreach (var e in this.work)
+                if (currentProcess != null && !currentProcess.HasExited)
                 {
-                    if (e.Status == BatchWorkStatus.Aborted) { found = true;}
-                    else if (found) e.Status = BatchWorkStatus.Cancelled;
+                    currentProcess.Kill();
+                }
+                for (var i = currentIndex; i < this.work.Count; i++)
+                {
+                    if (i == currentIndex)
+                    this.work[i].Status = BatchWorkStatus.Aborted;
+                    else
+                        this.work[i].Status = BatchWorkStatus.Cancelled;
                 }
                 CleanQueue();
             };

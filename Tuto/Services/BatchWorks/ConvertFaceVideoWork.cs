@@ -27,6 +27,11 @@ namespace Tuto.BatchWorks
             OnTaskFinished();
         }
 
+        public override bool Finished()
+        {
+            return Model.Locations.ConvertedFaceVideo.Exists;
+        }
+
         public override void Clean()
         {
             if (Process != null && !Process.HasExited)

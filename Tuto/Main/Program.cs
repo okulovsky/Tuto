@@ -18,7 +18,7 @@ namespace Tuto
         {
             var dir=new DirectoryInfo(fullPathOfModel);
             var model = EditorModelIO.Load(fullPathOfModel);
-            yield return new AssemblyVideoWork(model);
+            yield return new AssemblyVideoWork(model, model.Global.CrossFadesEnabled);
         }
 
         public static void Run(Services service, DirectoryInfo directory, ExecMode mode = ExecMode.Run, bool noNewWindows=true)
@@ -43,7 +43,7 @@ namespace Tuto
             {
                 new PraatService(),
                 new MontagerService(),
-                new AssemblerService()
+                new AssemblerService(true)
             };
 
             if (args.Length < 1)

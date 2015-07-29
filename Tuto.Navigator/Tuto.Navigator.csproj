@@ -85,11 +85,9 @@
       <DependentUpon>MainEditorWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="GlobalFileContainer.cs" />
-    <Compile Include="NavigatorViews\PreparingSettingsPanel.xaml.cs">
-      <DependentUpon>PreparingSettingsPanel.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Timeline.cs" />
+    <Compile Include="ViewModels\AssemblySettings.cs" />
     <Compile Include="ViewModels\Backup.cs" />
     <Compile Include="ViewModels\CatalogViewModel.cs" />
     <Compile Include="ViewModels\CatalogWraps.cs" />
@@ -137,10 +135,6 @@
     <Page Include="NavigatorViews\FinishedVideoPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="NavigatorViews\PreparingSettingsPanel.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="NavigatorViews\GlobalSettingsPanel.xaml">
       <SubType>Designer</SubType>
