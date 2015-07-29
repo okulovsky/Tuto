@@ -46,6 +46,11 @@ namespace Tuto.BatchWorks
         public virtual void Work() {}
         public virtual void Clean() {}
 
+        public List<BatchWork> BeforeWorks = new List<BatchWork>();
+        public List<BatchWork> AfterWorks = new List<BatchWork>();
+
+        public virtual bool Finished() { return false; }
+
         public string Name { get; set; }
         BatchWorkStatus status;
         public BatchWorkStatus Status

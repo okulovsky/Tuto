@@ -21,6 +21,7 @@ namespace Tuto.Model
             var data = HeadedJsonFormat.Read<GlobalData>(file, GlobalHeader,GlobalVersion, UpdateGlobalV0 );
             if (data.VideoData == null) data.VideoData = new List<FinishedVideo>();
             if (data.TopicsRoot == null) data.TopicsRoot = new Topic();
+            if (data.WorkSettings == null) data.WorkSettings = new WorkSettings();
             data.AfterLoad(rootFolder);
             return data;
         }

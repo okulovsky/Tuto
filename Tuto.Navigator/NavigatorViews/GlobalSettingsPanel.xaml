@@ -22,6 +22,7 @@
                     <RowDefinition></RowDefinition>
                     <RowDefinition></RowDefinition>
                     <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
 
                 <Label Grid.Column="0" Grid.Row="0" Content="Max distance to silence"></Label>
@@ -33,17 +34,31 @@
                 <Label Grid.Column="0" Grid.Row="2" Content="Subfolder where the video sumarry should be"></Label>
                 <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding RelativeVideoListPath}"></TextBox>
 
-                <Label Grid.Column="0" Grid.Row="3" Content="Enable auto conversion"></Label>
-                <CheckBox Grid.Column="1" VerticalAlignment="Center" IsChecked="{Binding AutoConversionEnabled}" Grid.Row="3"></CheckBox>
+                <Label Grid.Column="0" Grid.Row="3" Content="Conversion"></Label>
+                <ComboBox 
+                    Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Width="130" Grid.Row="3" 
+                    ItemsSource="{Binding WorkSettings.ConversionSettings.OptionsAsStrings}"
+                    SelectedItem="{Binding WorkSettings.ConversionSettings.CurrentAsString}">
+                </ComboBox>
 
-                <Label Grid.Column="0" Grid.Row="4" Content="Enable auto thumbs creation"></Label>
-                <CheckBox Grid.Column="1" VerticalAlignment="Center" IsChecked="{Binding AutoThumbsEnabled}" Grid.Row="4"></CheckBox>
+                <Label Grid.Column="0" Grid.Row="4" Content="Thumbs creation"></Label>
+                <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Width="130" Grid.Row="4"
+                    ItemsSource="{Binding WorkSettings.ThumbSettings.OptionsAsStrings}"
+                    SelectedItem="{Binding WorkSettings.ThumbSettings.CurrentAsString}"></ComboBox>
 
-                <Label Grid.Column="0" Grid.Row="5" Content="Enable auto sound correction"></Label>
-                <CheckBox Grid.Column="1" VerticalAlignment="Center" IsChecked="{Binding AutoSoundCorrection}" Grid.Row="5"></CheckBox>
+                <Label Grid.Column="0" Grid.Row="5" Content="Sound correction"></Label>
+                <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Width="130" Grid.Row="5"
+                    ItemsSource="{Binding WorkSettings.AudioCleanSettings.OptionsAsStrings}"
+                    SelectedItem="{Binding WorkSettings.AudioCleanSettings.CurrentAsString}"
+                          ></ComboBox>
 
                 <Label Grid.Column="0" Grid.Row="6" Content="Show processes window"></Label>
-                <CheckBox Grid.Column="1" VerticalAlignment="Center" IsChecked="{Binding ShowProcesses}" Grid.Row="6"></CheckBox>
+                <CheckBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Width="130" Grid.Row="6"
+                  IsChecked="{Binding ShowProcesses}"></CheckBox>
+
+                <Label Grid.Column="0" Grid.Row="7" Content="Cross Fades enabled"></Label>
+                <CheckBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Width="130" Grid.Row="7"
+                  IsChecked="{Binding CrossFadesEnabled}"></CheckBox> 
             </Grid>
         </GroupBox>
     </StackPanel>

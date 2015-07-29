@@ -15,17 +15,22 @@ namespace Tuto.BatchWorks
     {
 
         private List<string> filesToDelIfAborted { get; set; }
-        
-        public AssemblyVideoWork (EditorModel model)
+        private bool crossFades {get; set;}
+        public AssemblyVideoWork (EditorModel model, bool fadeMode)
         {
             Model = model;
             Name = "Assembly Course: " + model.Locations.FaceVideo.Directory.Name;
             filesToDelIfAborted = new List<string>();
+            if (!model.Locations.ConvertedDesktopVideo.Exists)
+                BeforeWorks.Add(new ConvertDesktopVideoWork(model));
+            if (!model.Locations.ConvertedFaceVideo.Exists)
+                BeforeWorks.Add(new ConvertFaceVideoWork(model));
+            this.crossFades = fadeMode;
         }
 
         public override void Work()
         {
-            var serv = new AssemblerService();
+            var serv = new AssemblerService(crossFades);
             var episodes = serv.GetEpisodesNodes(Model);
             var episodeNumber = 0;
             var count = episodes.Count;

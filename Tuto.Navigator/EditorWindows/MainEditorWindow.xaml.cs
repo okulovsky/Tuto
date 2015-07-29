@@ -56,12 +56,14 @@ namespace Editor
             var desk = model.Locations.DesktopVideoThumb.Exists ? model.Locations.DesktopVideoThumb : model.Locations.DesktopVideo;
             FaceVideo.Source = new Uri(face.FullName);
             ScreenVideo.Source = new Uri(desk.FullName);
+
             if (model.Locations.ClearedSound.Exists)
             {
                 useCleanedSound = true;
                 CleanedAudio.Source = new Uri(model.Locations.ClearedSound.FullName);
                 FaceVideo.Volume = 0;
             }
+
             FaceVideo.LoadedBehavior = MediaState.Manual;
             ScreenVideo.LoadedBehavior = MediaState.Manual;
 			ScreenVideo.Volume = 0;
@@ -83,7 +85,6 @@ namespace Editor
             ModelView.MouseDown += Timeline_MouseDown;
             Slider.MouseDown += Timeline_MouseDown;
 
-            FadesSwitcher.Content = model.Montage.CrossfadesEnabled ? "Fades ON" : "Fades OFF";
 
             Save.Click += (s, a) =>
             {
@@ -104,11 +105,7 @@ namespace Editor
                 {
                     model.Save();
                     var tasks = new List<BatchWork>();
-                    if (model.Global.AutoSoundCorrection)
-                        tasks.Add(new CreateCleanSoundWork(model.Locations.FaceVideo, model));
-                    tasks.Add(new ConvertDesktopVideoWork(model));
-                    tasks.Add(new ConvertFaceVideoWork(model));
-                    tasks.Add(new AssemblyVideoWork(model));
+                    tasks.Add(new AssemblyVideoWork(model, model.Global.CrossFadesEnabled));
                     addTaskToQueue(tasks);
                 };
 
@@ -137,24 +134,6 @@ namespace Editor
                         FaceVideo.Volume = 0;
                     };
                 addTaskToQueue(new List<BatchWork> { task });
-            };
-
-            FadesSwitcher.Click += (s, a) =>
-            {
-                if (model.Montage.CrossfadesEnabled == false)
-                {
-                    model.Montage.CrossfadesEnabled = true;
-                    FadesSwitcher.Content = "Fades ON";
-                    MessageBox.Show("Crossfades enabled");
-                }
-                else
-                {
-                    FadesSwitcher.Content = "Fades OFF";
-                    model.Montage.CrossfadesEnabled = false;
-                    MessageBox.Show("Crossfades disabled");
-                }
-                model.Save();
-
             };
 
             ThumbFace.Click += (s, a) =>
@@ -219,8 +198,39 @@ namespace Editor
                 };
 
             Synchronize.Click += Synchronize_Click;
-
             Infos.Click += Infos_Click;
+            AddDuringTasks(); 
+        }
+
+        void AddDuringTasks()
+        {
+            var toDo = model.Global.WorkSettings.GetDuringWorks(model);
+            foreach (var t in toDo)
+            {
+                if (t.GetType() == typeof(CreateCleanSoundWork))
+                    t.TaskFinished += (ss, aa) =>
+                    {
+                        useCleanedSound = true;
+                        CleanedAudio.Source = new Uri(model.Locations.ClearedSound.FullName);
+                        FaceVideo.Volume = 0;
+                    };
+
+                if (t.GetType() == typeof(CreateThumbWork) && ((CreateThumbWork)t).Source == model.Locations.DesktopVideo)
+                    t.TaskFinished += (z, x) =>
+                    {
+                        Action act = () => { ScreenVideo.Source = new Uri((string)z); };
+                        this.Dispatcher.BeginInvoke((Delegate)act);
+                    };
+
+                if (t.GetType() == typeof(CreateThumbWork) && ((CreateThumbWork)t).Source == model.Locations.FaceVideo)
+                    t.TaskFinished += (z, x) =>
+                    {
+                        Action act = () => { FaceVideo.Source = new Uri((string)z); };
+                        this.Dispatcher.BeginInvoke((Delegate)act);
+                    };
+            }
+            if (toDo.Count != 0 )
+                addTaskToQueue(toDo);
         }
 
         void Synchronize_Click(object sender, RoutedEventArgs e)
@@ -427,6 +437,12 @@ namespace Editor
             currentMode.MouseClick(time, e);
         }
         #endregion
+
+        private void Tools_Click(object sender, RoutedEventArgs e)
+        {
+            var mode = this.ToolsPanel.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
+            this.ToolsPanel.Visibility = mode;
+        }
 
 
         /*

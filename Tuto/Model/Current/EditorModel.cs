@@ -56,7 +56,7 @@ namespace Tuto.Model
             Locations = new Locations(this);
             WindowState = new WindowState();
             Global = new GlobalData();
-            Global.PreparingSettings = new PreparingSettings();
+            Global.WorkSettings = new WorkSettings();
         }
 
 
