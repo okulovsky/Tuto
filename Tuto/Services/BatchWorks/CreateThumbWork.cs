@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using Tuto.Model;
 using System.Windows.Controls;
+using System.Threading;
 
 namespace Tuto.BatchWorks
 {
@@ -19,40 +20,45 @@ namespace Tuto.BatchWorks
         }
 
         public FileInfo Source;
-        private string temp;
+        private FileInfo tempFile;
+        public FileInfo ThumbName;
+
         public override void Work()
         {
-            if (Source.Exists)
-            {
-                var codec = "-vcodec libxvid";
-                var newPath = Source.FullName.Split('\\');
-                var nameAndExt = Source.Name.Split('.');
-                nameAndExt[0] = nameAndExt[0] + "-thumb";
-                newPath[newPath.Length - 1] = string.Join(".", nameAndExt);
-                temp = string.Join("\\", newPath);
-                var args = string.Format(@"-i ""{0}"" -r 25 -q:v 15 {2} -acodec libmp3lame -ar 44100 -ab 32k ""{1}"" -y",
-                        Source.FullName, temp, codec);
-                var fullPath = Model.Locations.FFmpegExecutable;
-                RunProcess(args, fullPath.FullName);
-            }
+            var codec = "-vcodec libxvid";
+            var newPath = Source.FullName.Split('\\');
+            var nameAndExt = Source.Name.Split('.');
+            nameAndExt[0] = nameAndExt[0] + "-thumb";
+            newPath[newPath.Length - 1] = string.Join(".", nameAndExt);
+            ThumbName = new FileInfo(string.Join("\\", newPath));
+            tempFile = GetTempFile(Source);
+
+            var args = string.Format(@"-i ""{0}"" -r 25 -q:v 15 {2} -acodec libmp3lame -ar 44100 -ab 32k ""{1}"" -y",
+                    Source.FullName, tempFile.FullName, codec);
+            var fullPath = Model.Locations.FFmpegExecutable;
+            RunProcess(args, fullPath.FullName);
+            Thread.Sleep(500);
+            if (ThumbName.Exists)
+                ThumbName.Delete();
+            File.Move(tempFile.FullName, ThumbName.FullName);
             OnTaskFinished();
         }
 
         public override bool Finished()
         {
-            return File.Exists(temp);
+            return Model.Locations.GetThumbName(Source).Exists;
         }
 
         public override void Clean()
         {
             if (Process != null && !Process.HasExited)
                 Process.Kill();
-            if (File.Exists(temp))
+            if (tempFile.Exists)
             {
-                while (File.Exists(temp))
+                while (tempFile.Exists)
                     try
                     {
-                        File.Delete(temp);
+                        File.Delete(tempFile.FullName);
                     }
                     catch { }
             }

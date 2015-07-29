@@ -31,7 +31,7 @@ namespace Tuto.Model
         public FileInfo SoxExecutable { get { return new FileInfo(@"C:\sox\sox.exe"); } }
         public DirectoryInfo NoiseReductionFolder { get { return new DirectoryInfo(Directory.GetParent(model.ProgramFolder.FullName).Parent.FullName + @"\NoiseReduction"); } }
 
-        public FileInfo ClearedSound { get { return Make(model.Locations.TemporalDirectory, "cleaned.mp3"); } }
+        public FileInfo ClearedSound { get { return Make(model.Locations.FaceVideo.Directory, "cleaned.mp3"); } }
         public FileInfo PraatScriptSource { get { return Make(model.ProgramFolder, "split_pauses.praat"); } }
         public FileInfo AvsLibrary { get { return Make(model.ProgramFolder, "library.avs"); } }
         public FileInfo AutoLevelsLibrary { get { return Make(model.ProgramFolder, "autolevels.dll"); } }
