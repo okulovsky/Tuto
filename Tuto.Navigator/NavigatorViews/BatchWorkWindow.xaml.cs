@@ -75,6 +75,7 @@ namespace Tuto.Navigator
 
         public void Run(IEnumerable<BatchWork> work)
         {
+
             work = work.Where(x => !x.Finished()).ToList();
             lock (addLock)
             {
@@ -85,6 +86,7 @@ namespace Tuto.Navigator
                     this.work.AddRange(e.AfterWorks);
                 }     
             }
+
             this.DataContext = this.work.ToList();
             if (!QueueWorking)
             {
@@ -107,11 +109,16 @@ namespace Tuto.Navigator
                 }
                 queueThread.Abort();
                 QueueWorking = false;
-                bool found = false;
-                foreach (var e in this.work)
+                if (currentProcess != null && !currentProcess.HasExited)
                 {
-                    if (e.Status == BatchWorkStatus.Aborted) { found = true;}
-                    else if (found) e.Status = BatchWorkStatus.Cancelled;
+                    currentProcess.Kill();
+                }
+                for (var i = currentIndex; i < this.work.Count; i++)
+                {
+                    if (i == currentIndex)
+                    this.work[i].Status = BatchWorkStatus.Aborted;
+                    else
+                        this.work[i].Status = BatchWorkStatus.Cancelled;
                 }
                 CleanQueue();
             };
