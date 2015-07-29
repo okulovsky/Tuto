@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Tuto.BatchWorks;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 
 namespace Tuto.Navigator
 {
@@ -33,6 +34,7 @@ namespace Tuto.Navigator
         bool QueueWorking { get; set; }
         private int currentIndex { get; set; }
         Thread queueThread { get; set; }
+        private Process currentProcess;
 
         void Execute()
         {
@@ -47,6 +49,7 @@ namespace Tuto.Navigator
                 e.Status = BatchWorkStatus.Running;
                 try
                 {
+                    currentProcess = e.Process;
                     e.Work();
                     e.Status = BatchWorkStatus.Success;
                     currentIndex++;
@@ -72,6 +75,7 @@ namespace Tuto.Navigator
 
         public void Run(IEnumerable<BatchWork> work)
         {
+            work = work.Where(x => !x.Finished()).ToList();
             lock (addLock)
             {
                 foreach (var e in work)

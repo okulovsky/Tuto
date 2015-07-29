@@ -112,12 +112,7 @@ namespace Tuto.Navigator
                 {
                     works.Add(new PraatWork(e));
                 }
-                if (e.Global.WorkSettings.ThumbSettings.CurrentOption == Options.BeforeEditing)
-                    works.Add(new CreateThumbWork(e.Locations.FaceVideo, e));
-
-                if (e.Global.WorkSettings.AudioCleanSettings.CurrentOption == Options.BeforeEditing)
-                    works.Add(new CreateCleanSoundWork(e.Locations.FaceVideo, e));
-
+                works.AddRange(data.Global.WorkSettings.GetBeforeEditingWorks(e));
                 if (works.Count() != 0)
                 {
                     var t = works.Last();

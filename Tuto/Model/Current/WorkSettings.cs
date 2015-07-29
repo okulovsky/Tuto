@@ -65,5 +65,22 @@ namespace Tuto.Model
             }
             return toDo;
         }
+
+        public List<BatchWork> GetBeforeEditingWorks(EditorModel model)
+        {
+            var works = new List<BatchWork>();
+            if (model.Global.WorkSettings.ThumbSettings.CurrentOption == Options.BeforeEditing)
+                works.Add(new CreateThumbWork(model.Locations.FaceVideo, model));
+
+            if (model.Global.WorkSettings.AudioCleanSettings.CurrentOption == Options.BeforeEditing)
+                works.Add(new CreateCleanSoundWork(model.Locations.FaceVideo, model));
+
+            if (model.Global.WorkSettings.ConversionSettings.CurrentOption == Options.BeforeEditing)
+            {
+                works.Add(new ConvertDesktopVideoWork(model));
+                works.Add(new ConvertFaceVideoWork(model));
+            }
+            return works;
+        }
     }
 }
