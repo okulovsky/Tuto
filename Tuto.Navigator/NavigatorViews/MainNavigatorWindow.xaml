@@ -65,7 +65,12 @@
                                 <Label Content="Assembly"></Label>
                                 <CheckBox IsChecked="{Binding PreWorks.AssemblyNeeded}" VerticalAlignment="Center" HorizontalAlignment="Center"></CheckBox>
                             </StackPanel>
-                            
+
+                            <StackPanel>
+                                <Label Content="All"></Label>
+                                <CheckBox IsChecked="{Binding PreWorks.All}" VerticalAlignment="Center" HorizontalAlignment="Center"></CheckBox>
+                            </StackPanel>
+
                             <Rectangle Width="10"></Rectangle>
                             <Button Content="Do works" Command="{Binding AssembleSelectedWithOptionsCommand}"/>
                         </StackPanel>

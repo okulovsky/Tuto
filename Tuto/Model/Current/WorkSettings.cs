@@ -46,6 +46,7 @@ namespace Tuto.Model
     public class AudioCleanSettings : Settings
     {
         public AudioCleanSettings() { CurrentAsString = Options.DuringEditing.ToString(); }
+        public override List<Options> PossibleOptions { get { return new List<Options>() { Options.BeforeEditing, Options.DuringEditing, Options.Skip, Options.WithAssembly }; } }
     }
 
     public class WorkSettings
@@ -71,8 +72,8 @@ namespace Tuto.Model
 
             if (model.Global.WorkSettings.ConversionSettings.CurrentOption == Options.DuringEditing)
             {
-                toDo.Add(new ConvertFaceVideoWork(model));
-                toDo.Add(new ConvertDesktopVideoWork(model));
+                toDo.Add(new ConvertVideoWork(model, model.Locations.FaceVideo));
+                toDo.Add(new ConvertVideoWork(model, model.Locations.DesktopVideo));
             }
 
             if (model.Global.WorkSettings.FaceThumbSettings.CurrentOption == Options.DuringEditing)
@@ -101,8 +102,8 @@ namespace Tuto.Model
 
             if (model.Global.WorkSettings.ConversionSettings.CurrentOption == Options.BeforeEditing)
             {
-                works.Add(new ConvertDesktopVideoWork(model));
-                works.Add(new ConvertFaceVideoWork(model));
+                works.Add(new ConvertVideoWork(model, model.Locations.DesktopVideo));
+                works.Add(new ConvertVideoWork(model, model.Locations.FaceVideo));
             }
             return works;
         }

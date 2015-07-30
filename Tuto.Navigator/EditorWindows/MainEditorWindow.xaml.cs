@@ -86,10 +86,10 @@ namespace Editor
             Montage.Click += (s, a) =>
                 {
                     model.Save();
-                    var task = new ConvertDesktopVideoWork(model);
+                    var task = new ConvertVideoWork(model, model.Locations.DesktopVideo);
                     task.Forced = true;
                     addTaskToQueue(new List<BatchWork>(){task});
-                    var task2 = new ConvertFaceVideoWork(model);
+                    var task2 = new ConvertVideoWork(model, model.Locations.FaceVideo);
                     task2.Forced = true;
                     addTaskToQueue(new List<BatchWork>() { task2 });
                 };
