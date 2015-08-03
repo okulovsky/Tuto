@@ -17,6 +17,9 @@ namespace Tuto.BatchWorks
             Name = "Thumb Video: " + source;
             this.Source = source;
             this.Model = model;
+            if (!File.Exists(model.Locations.ClearedSound.FullName) &&
+                model.Global.WorkSettings.AudioCleanSettings.CurrentOption != Options.Skip)
+                this.BeforeWorks.Add(new CreateCleanSoundWork(model.Locations.FaceVideo, model));
         }
 
         public FileInfo Source;
@@ -33,13 +36,18 @@ namespace Tuto.BatchWorks
             ThumbName = new FileInfo(string.Join("\\", newPath));
             tempFile = GetTempFile(Source);
 
-            var args = string.Format(@"-i ""{0}"" -r 25 -q:v 15 {2} -acodec libmp3lame -ar 44100 -ab 32k ""{1}"" -y",
+            var argsWithoutCleaning = string.Format(@"-i ""{0}"" -r 25 -q:v 15 {2} -acodec libmp3lame -ar 44100 -ab 32k ""{1}"" -y",
                     Source.FullName, tempFile.FullName, codec);
+
+            var argsWithCleaning = string.Format(@"-i ""{0}"" -i ""{3}"" -map 0:0 -map 1 -shortest -r 25 -q:v 15 {2} -acodec libmp3lame -ar 44100 -ab 32k  ""{1}"" -y",
+                    Source.FullName, tempFile.FullName, codec, Model.Locations.ClearedSound.FullName);
+
+            var args = Model.Global.WorkSettings.AudioCleanSettings.CurrentOption != Options.Skip ? argsWithCleaning : argsWithoutCleaning;
             var fullPath = Model.Locations.FFmpegExecutable;
             RunProcess(args, fullPath.FullName);
             Thread.Sleep(500);
-            if (ThumbName.Exists)
-                ThumbName.Delete();
+            if (File.Exists(ThumbName.FullName))
+                File.Delete(ThumbName.FullName);
             File.Move(tempFile.FullName, ThumbName.FullName);
             OnTaskFinished();
         }

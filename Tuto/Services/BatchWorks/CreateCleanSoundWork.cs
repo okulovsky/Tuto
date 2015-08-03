@@ -34,7 +34,7 @@ namespace Tuto.BatchWorks
             var loc = Model.Locations.FaceVideo;
             var temp = Model.Locations.TemporalDirectory;
 
-            commands.Add(string.Format(@"""{2}"" -i ""{0}"" -y -shortest ""{1}\input.wav""", loc, temp, ffExe));
+            commands.Add(string.Format(@"""{2}"" -i ""{0}"" -y ""{1}\input.wav""", loc, temp, ffExe));
             commands.Add(string.Format(@"""{1}"" ""{0}\input.wav"" ""{0}\loud.wav"" --norm", temp, soxExe));
 
             //profile for noise creation
@@ -45,9 +45,8 @@ namespace Tuto.BatchWorks
                 commands.Add(string.Format(@"del ""{0}\sample.wav""", temp));
 
             }
-
             commands.Add(string.Format(@"""{0}\nr"" ""{1}\loud.wav"" ""{1}\noise"" ""{1}\result.wav""", progPath, temp));
-            commands.Add(string.Format(@"""{2}"" -i ""{0}\result.wav"" -qscale 0 -shortest -acodec libmp3lame ""{1}\cleaned-tmp.mp3"" -y",temp.FullName, Model.Locations.FaceVideo.Directory.FullName, ffExe));
+            commands.Add(string.Format(@"""{2}"" -i ""{0}\result.wav"" -ar 44100 -ac 2 -ab 192k -f mp3 -qscale 0 ""{1}\cleaned-tmp.mp3"" -y",temp.FullName, Model.Locations.FaceVideo.Directory.FullName, ffExe));
             commands.Add(string.Format(@"del ""{0}\result.wav""", temp));
             commands.Add(string.Format(@"del ""{0}\loud.wav""", temp));
             commands.Add(string.Format(@"del ""{0}\input.wav""", temp));
@@ -59,6 +58,7 @@ namespace Tuto.BatchWorks
             var file = Model.Locations.ClearedSound;
             if (File.Exists(file.FullName))
                 File.Delete(file.FullName);
+            Thread.Sleep(200);
             File.Move(GetTempFile(file).FullName, file.FullName);
             OnTaskFinished();
         }

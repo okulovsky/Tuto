@@ -23,6 +23,7 @@
                     <RowDefinition></RowDefinition>
                     <RowDefinition></RowDefinition>
                     <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
 
                 <Label Grid.Column="0" Grid.Row="0" Content="Max distance to silence"></Label>
@@ -41,23 +42,28 @@
                     SelectedItem="{Binding WorkSettings.ConversionSettings.CurrentAsString}">
                 </ComboBox>
 
-                <Label Grid.Column="0" Grid.Row="4" Content="Thumbs creation"></Label>
+                <Label Grid.Column="0" Grid.Row="4" Content="Thumb Face creation"></Label>
                 <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Width="130" Grid.Row="4"
-                    ItemsSource="{Binding WorkSettings.ThumbSettings.OptionsAsStrings}"
-                    SelectedItem="{Binding WorkSettings.ThumbSettings.CurrentAsString}"></ComboBox>
+                    ItemsSource="{Binding WorkSettings.FaceThumbSettings.OptionsAsStrings}"
+                    SelectedItem="{Binding WorkSettings.FaceThumbSettings.CurrentAsString}"></ComboBox>
 
-                <Label Grid.Column="0" Grid.Row="5" Content="Sound correction"></Label>
+                <Label Grid.Column="0" Grid.Row="5" Content="Thumb Desktop creation"></Label>
                 <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Width="130" Grid.Row="5"
+                    ItemsSource="{Binding WorkSettings.DesktopThumbSettings.OptionsAsStrings}"
+                    SelectedItem="{Binding WorkSettings.DesktopThumbSettings.CurrentAsString}"></ComboBox>
+
+                <Label Grid.Column="0" Grid.Row="6" Content="Sound correction"></Label>
+                <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Width="130" Grid.Row="6"
                     ItemsSource="{Binding WorkSettings.AudioCleanSettings.OptionsAsStrings}"
                     SelectedItem="{Binding WorkSettings.AudioCleanSettings.CurrentAsString}"
                           ></ComboBox>
 
-                <Label Grid.Column="0" Grid.Row="6" Content="Show processes window"></Label>
-                <CheckBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Width="130" Grid.Row="6"
+                <Label Grid.Column="0" Grid.Row="7" Content="Show processes window (for debugging purposes only)"></Label>
+                <CheckBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Width="130" Grid.Row="7"
                   IsChecked="{Binding ShowProcesses}"></CheckBox>
 
-                <Label Grid.Column="0" Grid.Row="7" Content="Cross Fades enabled"></Label>
-                <CheckBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Width="130" Grid.Row="7"
+                <Label Grid.Column="0" Grid.Row="8" Content="Cross Fades enabled"></Label>
+                <CheckBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Width="130" Grid.Row="8"
                   IsChecked="{Binding CrossFadesEnabled}"></CheckBox> 
             </Grid>
         </GroupBox>

@@ -117,13 +117,12 @@
     <Compile Include="Services\Assembler\AvsSubtitle.cs" />
     <Compile Include="Services\Assembler\AvsWatermark.cs" />
     <Compile Include="Services\BatchWorks\BatchWork.cs" />
-    <Compile Include="Services\BatchWorks\ConvertDesktopVideoWork.cs" />
+    <Compile Include="Services\BatchWorks\ConvertVideoWork.cs" />
     <Compile Include="Services\BatchWorks\AssemblyVideoWork.cs" />
     <Compile Include="Services\BatchWorks\CreateCleanSoundWork.cs" />
     <Compile Include="Services\BatchWorks\CreateThumbWork.cs" />
     <Compile Include="Services\BatchWorks\PraatWork.cs" />
     <Compile Include="Services\BatchWorks\RepairVideoWork.cs" />
-    <Compile Include="Services\BatchWorks\ConvertFaceVideoWork.cs" />
     <Compile Include="Services\ImageMaker\ImageComposer.cs" />
     <Compile Include="Services\ImageMaker\ParisComposer.cs" />
     <Compile Include="Services\MontagerService.cs" />

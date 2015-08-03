@@ -36,23 +36,25 @@ namespace Tuto.BatchWorks
             Process.StartInfo.CreateNoWindow = !Model.Global.ShowProcesses;
             Process.Start();
             Process.WaitForExit();
-            try {
-                if (Process.ExitCode != 0)
-                    throw new ArgumentException("Failed");
-            }
-            catch { throw new ArgumentException("Failed"); }
+            if (Process.ExitCode != 0)
+                throw new ArgumentException("Process' exit code not equals zero");
         }
 
-        public virtual void Work() {}
-        public virtual void Clean() {}
+        public virtual void Work() { }
+        public virtual void Clean() { }
 
-        public FileInfo GetTempFile(FileInfo info)
+        public FileInfo GetTempFile(FileInfo info, string suffix)
         {
             var newPath = info.FullName.Split('\\');
             var nameAndExt = info.Name.Split('.');
-            nameAndExt[0] = nameAndExt[0] + "-tmp";
+            nameAndExt[0] = nameAndExt[0] + suffix;
             newPath[newPath.Length - 1] = string.Join(".", nameAndExt);
             return new FileInfo(string.Join("\\", newPath));
+        }
+
+        public FileInfo GetTempFile(FileInfo info)
+        {
+            return GetTempFile(info, "-tmp");
         }
 
         public List<BatchWork> BeforeWorks = new List<BatchWork>();

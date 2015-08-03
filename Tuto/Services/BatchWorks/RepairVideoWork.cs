@@ -33,14 +33,15 @@ namespace Tuto.BatchWorks
                 nameAndExt[0] = nameAndExt[0] + "-origin";
                 newPath[newPath.Length - 1] = string.Join(".", nameAndExt);
                 var originPath = string.Join("\\", newPath);
-                tempFile = originPath;
-                File.Copy(source.FullName, originPath);
+                tempFile = GetTempFile(source).ToString();
+
                 CopyingOver = true;
                 var args = string.Format(@"-i ""{0}"" -vf scale=1280:720 -r 25 -q:v 0 {2} -acodec libmp3lame -ar 44100 -ab 32k ""{1}"" -y",
-                        originPath, source.FullName, codec);
+                        source.FullName, tempFile, codec);
                 var fullPath = Model.Locations.FFmpegExecutable;
                 RunProcess(args, fullPath.FullName);
                 ConversionOver = true;
+                File.Replace(tempFile, source.FullName, originPath);
             }
             OnTaskFinished();
         }
@@ -50,15 +51,14 @@ namespace Tuto.BatchWorks
             if (Process != null && !Process.HasExited)
                 Process.Kill();
             Thread.Sleep(1000); //this time is required for system to free recources
-            if (source.Exists && File.Exists(tempFile) && CopyingOver)
+            if (File.Exists(tempFile) && CopyingOver)
             {
                 if (source.Exists)
                     try
                     {
-                        File.Delete(source.FullName);
+                        File.Delete(tempFile);
                     }
                     catch { }
-                File.Move(tempFile, source.FullName);
             }
         }
     }

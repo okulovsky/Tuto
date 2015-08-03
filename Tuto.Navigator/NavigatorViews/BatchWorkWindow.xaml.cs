@@ -36,6 +36,8 @@ namespace Tuto.Navigator
         Thread queueThread { get; set; }
         private Process currentProcess;
 
+        private List<Task> tasks;
+
         void Execute()
         {
             while (currentIndex != this.work.Count && QueueWorking)
@@ -58,14 +60,14 @@ namespace Tuto.Navigator
                 {
                     e.Status = BatchWorkStatus.Aborted;
                     e.Clean();
-                    QueueWorking = false;
+                    currentIndex++;
                 }
                 catch(Exception ex)
                 {
                     e.Status = BatchWorkStatus.Failure;
                     e.ExceptionMessage = ex.Message;
                     e.Clean();
-                    QueueWorking = false;
+                    currentIndex++;
                 };
             }
             QueueWorking = false;
@@ -87,6 +89,7 @@ namespace Tuto.Navigator
             }
             if (this.work.Count == 0)
                 return;
+
             this.DataContext = this.work.ToList();
             if (!QueueWorking)
             {
@@ -107,6 +110,8 @@ namespace Tuto.Navigator
                         return;
                     }
                 }
+
+
                 queueThread.Abort();
                 QueueWorking = false;
                 if (currentProcess != null && !currentProcess.HasExited)
@@ -116,7 +121,9 @@ namespace Tuto.Navigator
                 for (var i = currentIndex; i < this.work.Count; i++)
                 {
                     if (i == currentIndex)
-                    this.work[i].Status = BatchWorkStatus.Aborted;
+                    {
+                        this.work[i].Status = BatchWorkStatus.Aborted;
+                    }
                     else
                         this.work[i].Status = BatchWorkStatus.Cancelled;
                 }
