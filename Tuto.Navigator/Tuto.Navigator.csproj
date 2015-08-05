@@ -85,6 +85,13 @@
       <DependentUpon>MainEditorWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="GlobalFileContainer.cs" />
+    <Compile Include="ViewModels\PatchModel.cs" />
+    <Compile Include="Patch\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Patch\RangeSlider.xaml.cs">
+      <DependentUpon>RangeSlider.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Timeline.cs" />
     <Compile Include="ViewModels\AssemblySettings.cs" />
@@ -162,6 +169,14 @@
     <Page Include="NavigatorViews\SubfoldersDataGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Patch\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Patch\RangeSlider.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>

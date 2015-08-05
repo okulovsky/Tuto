@@ -33,6 +33,7 @@ namespace Editor
     public partial class MainEditorWindow : Window
     {
         public Action<IEnumerable<BatchWork>> addTaskToQueue;
+        private double currentTime;
         EditorModel model;
 
         public MainEditorWindow()
@@ -161,6 +162,28 @@ namespace Editor
                     wnd.Show();
                 };
 
+            Patch.Click += (s, a) =>
+            {
+                //FOR DEBUGGING!
+                var patchWindow = new Tuto.Navigator.MainWindow();
+                var serv = new AssemblerService(false);
+                var episodeNumber = 0;
+                var eps = model.Montage.Information.Episodes;
+                foreach (var c in model.Montage.Chunks)
+                {             
+                    if (c.StartsNewEpisode)
+                        episodeNumber++;
+                    if (c.StartTime >= currentTime)
+                        break;
+                }
+                var videoFile = model.Locations.GetOutputFile(episodeNumber);
+                if (videoFile.Exists)
+                {
+                    patchWindow.LoadModel(new PatchModel(videoFile.FullName));
+                    patchWindow.Show();
+                }
+                else addTaskToQueue(new List<BatchWork>() { new AssemblyVideoWork(model, model.Global.CrossFadesEnabled) });
+            };
             GoTo.Click += (s, a) =>
                 {
                     var wnd = new FixWindow();
@@ -405,6 +428,7 @@ namespace Editor
         void Timeline_MouseDown(object sender, MouseButtonEventArgs e)
         {
             var time = Slider.MsAtPoint(e.GetPosition(Slider));
+            currentTime = time;
             currentMode.MouseClick(time, e);
         }
         #endregion
