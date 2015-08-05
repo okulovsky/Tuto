@@ -77,10 +77,10 @@ namespace Tuto.Navigator
             PatchWindow.Play(); //need to fire event to get duration
             PatchWindow.Pause();
 
-            prevoiusTop += 30;
-            TimeScroll.Height += trackHeight;
-            mainwindow.Height += trackHeight;
-            CurrentTime.Height += trackHeight;
+            //prevoiusTop += 30;
+            //TimeScroll.Height += trackHeight;
+            //mainwindow.Height += trackHeight;
+            //CurrentTime.Height += trackHeight;
         }
 
         private void PlayButton_Click(object sender, RoutedEventArgs e)

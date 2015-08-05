@@ -67,7 +67,7 @@
 		</Style>
 	</UserControl.Resources>
 
-	<Grid x:Name="LayoutRoot" Background="White">
+	<Grid x:Name="LayoutRoot" Background="Transparent">
 		<Border x:Name="progressBorder" Background="#FF026873" BorderThickness="1,5" />
 		<Slider x:Name="LowerSlider" 
                 Minimum="{Binding RelativeSource={RelativeSource AncestorType=local:RangeSlider}, Path=Minimum, Mode=TwoWay}"
