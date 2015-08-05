@@ -11,16 +11,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Tuto.Navigator;
 using System.IO;
 using System.Threading;
 using System.Windows.Threading;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 using Tuto.Model;
-using Tuto.BatchWorks;
 
-namespace Tuto.Navigator
+namespace Tuto.Patch
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -49,7 +47,7 @@ namespace Tuto.Navigator
         private double volume;
         private TrackInfo currentPatch;
         private bool isPlaying;
-        private bool isLoaded;
+        private bool Loaded;
 
         private void Tracks_Drop(object sender, DragEventArgs e)
         {
@@ -92,7 +90,7 @@ namespace Tuto.Navigator
                 isPlaying = false;
                 return;
             }
-            else if (!isLoaded)
+            else if (!Loaded)
             {
                 ViewTimeline.Source = new Uri(Model.SourceInfo.FullName);
                 ViewTimeline.LoadedBehavior = MediaState.Manual;
@@ -102,7 +100,7 @@ namespace Tuto.Navigator
                 timer.Tick += (s, a) => { CheckPlayTime(); };
                 ViewTimeline.MediaOpened += SetMainVideo;
                 ViewTimeline.Play();
-                isLoaded = true;
+                Loaded = true;
                 return;
             }
             else { ViewTimeline.Play(); isPlaying = true; }
@@ -112,7 +110,6 @@ namespace Tuto.Navigator
         {
             double length = 0;
             length = ViewTimeline.NaturalDuration.TimeSpan.TotalSeconds;
-            Model.Duration = length;
             mainVideoLength = length;
             mainSlider.Maximum = length;
             mainSlider.Minimum = 0;
@@ -188,11 +185,6 @@ namespace Tuto.Navigator
                 var position = seconds - shift;
                 PatchWindow.Position = TimeSpan.FromSeconds(position);
             }
-        }
-
-        private void Patch_Click(object sender, RoutedEventArgs e)
-        {
-            Program.BatchWorkQueueWindow.Run(new List<BatchWork>(){new PatchWork(Model, true)});
         }
     }
 }

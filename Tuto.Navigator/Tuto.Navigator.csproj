@@ -85,7 +85,6 @@
       <DependentUpon>MainEditorWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="GlobalFileContainer.cs" />
-    <Compile Include="ViewModels\PatchModel.cs" />
     <Compile Include="Patch\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>

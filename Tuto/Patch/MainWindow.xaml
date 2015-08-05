@@ -1,7 +1,7 @@
-﻿<Window x:Class="Tuto.Navigator.MainWindow"
+﻿<Window x:Class="Tuto.Patch.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-        xmlns:DesignInControl="clr-namespace:Tuto.Navigator"
+        xmlns:local="clr-namespace:Tuto.Patch"
         Title="Patcher" Height="570" Width="600" Name="mainwindow"> 
        
     
@@ -12,7 +12,7 @@
         </StackPanel>
         <StackPanel Orientation="Horizontal">
         <Button Margin="5 5 0 5" Height="30" Content="Play" Width="47" HorizontalAlignment="Left" Name="PlayButton" Click="PlayButton_Click"></Button>
-        <Button Margin="10 5 0 5" Height="30" Content="Patch" Width="47" HorizontalAlignment="Left" Name="Patch" Click="Patch_Click"></Button>
+        <Button Margin="10 5 0 5" Height="30" Content="Patch" Width="47" HorizontalAlignment="Left" Name="Patch" Click="PlayButton_Click"></Button>
         </StackPanel>
 
         <ScrollViewer Name="TimeScroll" Width="600" Height="95" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Disabled">
@@ -21,13 +21,13 @@
                 
                 <Canvas Name="Tracks" Width="600"  HorizontalAlignment="Left">
                     <Rectangle Name="TimeLine" Width="600" Canvas.Top="5" Height="10" Stroke="Yellow" Fill="Yellow" MouseDown="TimeLine_MouseDown"></Rectangle>
-                    <DesignInControl:RangeSlider IsEnabled="False" Canvas.Left="0" Canvas.Top="15" x:Name="mainSlider" Height="30" Width="1200" LowerValue="0" UpperValue="1200" Maximum="1200"></DesignInControl:RangeSlider>
+                    <RangeSlider IsEnabled="False" Canvas.Left="0" Canvas.Top="15" x:Name="mainSlider" Height="30" Width="1200" LowerValue="0" UpperValue="1200" Maximum="1200"></RangeSlider>
 
                     <ItemsControl ItemsSource="{Binding MediaTracks}" Canvas.Top="40" Width="1000">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Canvas>
-                                    <DesignInControl:RangeSlider Maximum="{Binding DurationInSeconds, Mode=TwoWay}" Canvas.Top="{Binding TopShift, Mode=TwoWay}"  Canvas.Left="{Binding LeftShift, Mode=TwoWay}" Height="30" Width="{Binding DurationInSeconds, Mode=TwoWay}" LowerValue="{Binding StartSecond, Mode=TwoWay}" UpperValue="{Binding EndSecond, Mode=TwoWay}"></DesignInControl:RangeSlider>
+                                    <RangeSlider Maximum="{Binding DurationInSeconds, Mode=TwoWay}" Canvas.Top="{Binding TopShift, Mode=TwoWay}"  Canvas.Left="{Binding LeftShift, Mode=TwoWay}" Height="30" Width="{Binding DurationInSeconds, Mode=TwoWay}" LowerValue="{Binding StartSecond, Mode=TwoWay}" UpperValue="{Binding EndSecond, Mode=TwoWay}"></RangeSlider>
                                 </Canvas>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>

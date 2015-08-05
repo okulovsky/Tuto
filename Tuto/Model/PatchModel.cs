@@ -7,12 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tuto.Navigator
+namespace Tuto.Model
 {
     public class PatchModel
     {
         public ObservableCollection<TrackInfo> MediaTracks { get; set; }
         public FileInfo SourceInfo { get; set; }
+        public double Duration { get; set; }
         public PatchModel(string sourcePath)
         {
             SourceInfo = new FileInfo(sourcePath);
