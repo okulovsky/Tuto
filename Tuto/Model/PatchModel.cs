@@ -29,21 +29,14 @@ namespace Tuto.Model
             MediaTracks = new ObservableCollection<TrackInfo>();
         }
 
-        public void DeleteTrackAccordingPosition(double pos, EditorModel m)
+        public void DeleteTrackAccordingPosition(int index, EditorModel m)
         {
-            for (var i = 0; i < MediaTracks.Count; )
-            {
-                var track = MediaTracks[i];
-                if (track.LeftShift + track.StartSecond <= pos && track.LeftShift + track.EndSecond >= pos)
-                {
-                    MediaTracks.RemoveAt(i);
-                    var name = System.IO.Path.Combine(m.Locations.PatchesDirectory.FullName, track.ConvertedName);
-                    if (File.Exists(name))
-                        try { File.Delete(name); }
-                        catch { }
-                    return;
-                }
-            }
+            var trackName = MediaTracks[index].ConvertedName;
+            MediaTracks.RemoveAt(index);
+            var name = System.IO.Path.Combine(m.Locations.PatchesDirectory.FullName, trackName);
+            if (File.Exists(name))
+                try { File.Delete(name); }
+                catch { }
         }
     }
 

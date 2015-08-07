@@ -214,11 +214,23 @@ namespace Tuto.Navigator
             doInitialLoad();
         }
 
-
         private void RangeSlider_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var pos = e.GetPosition(Tracks).X;
-            Model.DeleteTrackAccordingPosition(pos, EModel);
+                for (var i = 0; i < Model.MediaTracks.Count; )
+                {
+                    var track = Model.MediaTracks[i];
+                    if (track.LeftShift + track.StartSecond <= pos && track.LeftShift + track.EndSecond >= pos)
+                    {
+                        if (track.Path == PatchWindow.Source)
+                        {
+                            PatchWindow.Stop();
+                            PatchWindow.Source = null;
+                        }
+                        Model.DeleteTrackAccordingPosition(i, EModel);
+                        return;
+                    }
+                }         
         }
 
         private void mainwindow_Closing(object sender, CancelEventArgs e)
