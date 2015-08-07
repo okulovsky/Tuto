@@ -32,7 +32,7 @@ namespace Tuto.BatchWorks
 
             foreach (var ep in model.MediaTracks)
             {
-                var name = Path.Combine(Model.Locations.PatchesDirectory.FullName, ep.ConvertedName);
+                var name = Path.Combine(Model.Locations.TemporalDirectory.FullName, ep.ConvertedName);
                 if (!File.Exists(name))
                     BeforeWorks.Add(new PreparePatchWork(emodel, new FileInfo(ep.Path.LocalPath), new FileInfo(name)));
             }
@@ -61,7 +61,7 @@ namespace Tuto.BatchWorks
                     mode = "patch";
                     continue;
                 }
-                var name = Path.Combine(Model.Locations.PatchesDirectory.FullName, tracks[index].ConvertedName);
+                var name = Path.Combine(Model.Locations.TemporalDirectory.FullName, tracks[index].ConvertedName);
                 avs.Load(name, tracks[index].StartSecond, tracks[index].EndSecond);
                 chunks.Add(avs);
                 previous = tracks[index].EndSecond + tracks[index].LeftShift;

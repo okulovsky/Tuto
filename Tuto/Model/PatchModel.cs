@@ -33,7 +33,7 @@ namespace Tuto.Model
         {
             var trackName = MediaTracks[index].ConvertedName;
             MediaTracks.RemoveAt(index);
-            var name = System.IO.Path.Combine(m.Locations.PatchesDirectory.FullName, trackName);
+            var name = System.IO.Path.Combine(m.Locations.TemporalDirectory.FullName, trackName);
             if (File.Exists(name))
                 try { File.Delete(name); }
                 catch { }

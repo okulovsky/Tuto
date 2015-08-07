@@ -16,6 +16,7 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
                     <RowDefinition ></RowDefinition>
                     <RowDefinition></RowDefinition>
                     <RowDefinition></RowDefinition>
@@ -64,7 +65,11 @@
 
                 <Label Grid.Column="0" Grid.Row="8" Content="Cross Fades enabled"></Label>
                 <CheckBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Width="130" Grid.Row="8"
-                  IsChecked="{Binding CrossFadesEnabled}"></CheckBox> 
+                  IsChecked="{Binding CrossFadesEnabled}"></CheckBox>
+
+                <Label Grid.Column="0" Grid.Row="9" Content="Move patch origin instead of copying"></Label>
+                <CheckBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Width="130" Grid.Row="9"
+                  IsChecked="{Binding MovePatchOriginInsteadOfCopying}"></CheckBox>
             </Grid>
         </GroupBox>
     </StackPanel>

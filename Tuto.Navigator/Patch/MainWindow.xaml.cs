@@ -47,7 +47,6 @@ namespace Tuto.Navigator
 
         private int prevoiusTop = 5;
         private DispatcherTimer timer;
-        private int trackHeight = 30;
         private double mainVideoLength = 0;
         private double volume;
         private TrackInfo currentPatch;
@@ -60,6 +59,12 @@ namespace Tuto.Navigator
             {
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
                 addTrack(files[0]);
+                var processMode = EModel.Global.MovePatchOriginInsteadOfCopying;
+                var name = System.IO.Path.Combine(EModel.Locations.PatchesDirectory.FullName, new FileInfo(files[0]).Name);
+                if (!Directory.Exists(EModel.Locations.PatchesDirectory.FullName))
+                    Directory.CreateDirectory(EModel.Locations.PatchesDirectory.FullName);
+                if (!File.Exists(name))
+                    Program.BatchWorkQueueWindow.Run(new List<BatchWork>() { new MoveCopyWork(files[0], name, processMode) });
             }
         }
 
@@ -217,7 +222,7 @@ namespace Tuto.Navigator
         private void RangeSlider_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var pos = e.GetPosition(Tracks).X;
-                for (var i = 0; i < Model.MediaTracks.Count; )
+                for (var i = 0; i < Model.MediaTracks.Count; i++)
                 {
                     var track = Model.MediaTracks[i];
                     if (track.LeftShift + track.StartSecond <= pos && track.LeftShift + track.EndSecond >= pos)

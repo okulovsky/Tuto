@@ -2,47 +2,50 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
         xmlns:DesignInControl="clr-namespace:Tuto.Navigator"
-        Title="Patcher" Height="570" Width="600" Name="mainwindow" Loaded="mainwindow_Loaded" Closing="mainwindow_Closing"> 
-       
-    
-    <StackPanel Drop="Tracks_Drop" AllowDrop="true">
-        <StackPanel Background="LightBlue" Height="400" Width="600">
-            <MediaElement Height="400" Width="600" Name="ViewTimeline"></MediaElement>
-            <MediaElement Height="400" Width="600" Name="PatchWindow"></MediaElement>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <Button Margin="5 5 0 5" Height="30" Content="Play" Width="47" HorizontalAlignment="Left" Name="PlayButton" Click="PlayButton_Click"></Button>
-            <Button Margin="10 5 0 5" Height="30" Content="Patch" Width="47" HorizontalAlignment="Left" Name="Patch" Click="Patch_Click"></Button>
-            <Button Margin="10 5 0 5" Height="30" Content="Save" Width="47" HorizontalAlignment="Left" Name="Save" Click="Save_Click"></Button>
-        </StackPanel>
+        Title="Patcher" Height="570" Width="600" Name="mainwindow" Loaded="mainwindow_Loaded" Closing="mainwindow_Closing">
 
-        <ScrollViewer Name="TimeScroll" Width="600" Height="95" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Disabled">
-            <StackPanel>
-                
-                
-                <Canvas Name="Tracks" Width="600"  HorizontalAlignment="Left">
-                    <Rectangle Name="TimeLine" Width="600" Canvas.Top="5" Height="10" Stroke="Yellow" Fill="Yellow" MouseDown="TimeLine_MouseDown"></Rectangle>
-                    <DesignInControl:RangeSlider IsEnabled="False" Canvas.Left="0" Canvas.Top="15" x:Name="mainSlider" Height="30" Width="1200" LowerValue="0" UpperValue="1200" Maximum="1200"></DesignInControl:RangeSlider>
-
-                    <ItemsControl ItemsSource="{Binding MediaTracks}" Canvas.Top="40" Width="1000">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Canvas>
-                                    <DesignInControl:RangeSlider Maximum="{Binding DurationInSeconds, Mode=TwoWay}" Canvas.Top="{Binding TopShift, Mode=TwoWay}"  Canvas.Left="{Binding LeftShift, Mode=TwoWay}" Height="30" Width="{Binding DurationInSeconds, Mode=TwoWay}" LowerValue="{Binding StartSecond, Mode=TwoWay}" UpperValue="{Binding EndSecond, Mode=TwoWay}" MouseDoubleClick="RangeSlider_MouseDoubleClick"/>
-                                </Canvas>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                    
-                    
-                    <Rectangle Name="CurrentTime" Fill="Black" Canvas.Top="5" Width="2" Height="75"></Rectangle>
-                </Canvas>
-                
-               
-
+    <StackPanel Orientation="Horizontal">
+        <StackPanel  Width="600" HorizontalAlignment="Left" Drop="Tracks_Drop" AllowDrop="true">
+            <StackPanel HorizontalAlignment="Left" Background="LightBlue" Height="400" Width="600">
+                <MediaElement Height="400" Width="600" Name="ViewTimeline"></MediaElement>
+                <MediaElement Height="400" Width="600" Name="PatchWindow"></MediaElement>
             </StackPanel>
-        </ScrollViewer>
 
+            <StackPanel Orientation="Horizontal">
+                <Button Margin="5 5 0 5" Height="30" Content="Play" Width="47" HorizontalAlignment="Left" Name="PlayButton" Click="PlayButton_Click"></Button>
+                <Button Margin="10 5 0 5" Height="30" Content="Patch" Width="47" HorizontalAlignment="Left" Name="Patch" Click="Patch_Click"></Button>
+                <Button Margin="10 5 0 5" Height="30" Content="Save" Width="47" HorizontalAlignment="Left" Name="Save" Click="Save_Click"></Button>
+            </StackPanel>
+
+            <ScrollViewer HorizontalAlignment="Left" Name="TimeScroll" Width="600" Height="95" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Disabled">
+                <StackPanel>
+
+
+                    <Canvas Name="Tracks" Width="600"  HorizontalAlignment="Left">
+                        <Rectangle Name="TimeLine" Width="600" Canvas.Top="5" Height="10" Stroke="Yellow" Fill="Yellow" MouseDown="TimeLine_MouseDown"></Rectangle>
+                        <DesignInControl:RangeSlider IsEnabled="False" Canvas.Left="0" Canvas.Top="15" x:Name="mainSlider" Height="30" Width="1200" LowerValue="0" UpperValue="1200" Maximum="1200"></DesignInControl:RangeSlider>
+
+                        <ItemsControl ItemsSource="{Binding MediaTracks}" Canvas.Top="40" Width="1000">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Canvas>
+                                        <DesignInControl:RangeSlider Maximum="{Binding DurationInSeconds, Mode=TwoWay}" Canvas.Top="{Binding TopShift, Mode=TwoWay}"  Canvas.Left="{Binding LeftShift, Mode=TwoWay}" Height="30" Width="{Binding DurationInSeconds, Mode=TwoWay}" LowerValue="{Binding StartSecond, Mode=TwoWay}" UpperValue="{Binding EndSecond, Mode=TwoWay}" MouseDoubleClick="RangeSlider_MouseDoubleClick"/>
+                                    </Canvas>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+
+                        <Rectangle Name="CurrentTime" Fill="Black" Canvas.Top="5" Width="2" Height="75"></Rectangle>
+                    </Canvas>
+
+
+
+                </StackPanel>
+            </ScrollViewer>
+
+        </StackPanel>
+        <ListBox Height="500" VerticalAlignment="Top" Width="190" HorizontalAlignment="Right" Background="AliceBlue"></ListBox>
     </StackPanel>
 
 </Window>
