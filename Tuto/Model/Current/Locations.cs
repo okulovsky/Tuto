@@ -64,6 +64,16 @@ namespace Tuto.Model
             }
         }
 
+        public DirectoryInfo PatchesDirectory
+        {
+            get
+            {
+                var relative = model.Global.Locations.RelativeTo(model.VideoFolder.FullName, model.Global.Locations.InputFolder.FullName);
+                var name = Path.Combine(model.Global.Locations.ConvertedPatchesFolder.FullName, relative);
+                return new DirectoryInfo(name);
+            }
+        }
+
         public FileInfo PraatOutput { get { return Make(model.VideoFolder, "praat.output"); } }
 
        
@@ -80,6 +90,7 @@ namespace Tuto.Model
         public const string OutputFolderName = "Output";
         public const string InputFolderName = "Input";
         public const string AllTemporaryFilesFolder = "Temp";
+        public const string ConvertedPatchFilesFolder = "Patches";
 
         public FileInfo GetOutputFile(int episodeNumber)
         {

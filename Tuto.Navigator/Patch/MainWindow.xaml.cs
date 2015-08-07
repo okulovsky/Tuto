@@ -44,6 +44,7 @@ namespace Tuto.Navigator
             EModel = em;
         }
 
+
         private int prevoiusTop = 5;
         private DispatcherTimer timer;
         private int trackHeight = 30;
@@ -104,6 +105,7 @@ namespace Tuto.Navigator
             if (isPlaying)
             {
                 ViewTimeline.Pause();
+                PatchWindow.Pause();
                 isPlaying = false;
                 return;
             }
@@ -112,7 +114,7 @@ namespace Tuto.Navigator
                 doInitialLoad();
                 return;
             }
-            else { ViewTimeline.Play(); isPlaying = true; }
+            else { ViewTimeline.Play(); PatchWindow.Play();  isPlaying = true; }
         }
 
         private void SetMainVideo(object s, RoutedEventArgs a)
@@ -216,15 +218,12 @@ namespace Tuto.Navigator
         private void RangeSlider_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var pos = e.GetPosition(Tracks).X;
-            for (var i = 0; i < Model.MediaTracks.Count; )
-            {
-                var track = Model.MediaTracks[i];
-                if (track.LeftShift + track.StartSecond <= pos && track.LeftShift + track.EndSecond >= pos)
-                {
-                    Model.MediaTracks.RemoveAt(i);
-                    return;
-                }
-            }
+            Model.DeleteTrackAccordingPosition(pos, EModel);
+        }
+
+        private void mainwindow_Closing(object sender, CancelEventArgs e)
+        {
+            EModel.Save();
         }
     }
 }

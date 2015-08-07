@@ -28,6 +28,23 @@ namespace Tuto.Model
             SourceInfo = new FileInfo(sourcePath);
             MediaTracks = new ObservableCollection<TrackInfo>();
         }
+
+        public void DeleteTrackAccordingPosition(double pos, EditorModel m)
+        {
+            for (var i = 0; i < MediaTracks.Count; )
+            {
+                var track = MediaTracks[i];
+                if (track.LeftShift + track.StartSecond <= pos && track.LeftShift + track.EndSecond >= pos)
+                {
+                    MediaTracks.RemoveAt(i);
+                    var name = System.IO.Path.Combine(m.Locations.PatchesDirectory.FullName, track.ConvertedName);
+                    if (File.Exists(name))
+                        try { File.Delete(name); }
+                        catch { }
+                    return;
+                }
+            }
+        }
     }
 
     [DataContract]
@@ -69,6 +86,7 @@ namespace Tuto.Model
         [DataMember]
         private double PositionRelativeToMain { get { return positionRelativeToMain; } set { positionRelativeToMain = value; NotifyPropertyChanged(); } } //pixels per sec
 
+        
         public TrackInfo(string path)
         {
             Path = new Uri(path);

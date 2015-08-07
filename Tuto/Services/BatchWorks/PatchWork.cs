@@ -26,10 +26,13 @@ namespace Tuto.BatchWorks
         {
             this.model = model;
             this.Model = emodel;
-            Name = "Patching";
+            Name = "Patching: " + model.SourceInfo.Name;
+            if (!Model.Locations.PatchesDirectory.Exists)
+                Model.Locations.PatchesDirectory.Create();
+
             foreach (var ep in model.MediaTracks)
             {
-                var name = Path.Combine(Model.TempFolder.FullName, ep.ConvertedName);
+                var name = Path.Combine(Model.Locations.PatchesDirectory.FullName, ep.ConvertedName);
                 if (!File.Exists(name))
                     BeforeWorks.Add(new PreparePatchWork(emodel, new FileInfo(ep.Path.LocalPath), new FileInfo(name)));
             }
@@ -58,7 +61,7 @@ namespace Tuto.BatchWorks
                     mode = "patch";
                     continue;
                 }
-                var name = Path.Combine(Model.TempFolder.FullName, tracks[index].ConvertedName);
+                var name = Path.Combine(Model.Locations.PatchesDirectory.FullName, tracks[index].ConvertedName);
                 avs.Load(name, tracks[index].StartSecond, tracks[index].EndSecond);
                 chunks.Add(avs);
                 previous = tracks[index].EndSecond + tracks[index].LeftShift;
@@ -82,12 +85,16 @@ namespace Tuto.BatchWorks
             var serv = new AssemblerService(crossFades);
             var args = @"-i ""{0}"" -q:v 0 -vf ""scale=1280:720, fps=25"" -q:v 0 -acodec libmp3lame -ar 44100 -ab 32k ""{1}"" -y";
             var avsScript = string.Format(@"import(""{0}"")", Model.Locations.AvsLibrary.FullName) + "\r\n" + avsContext.GetContent() + "var_0";
-            File.WriteAllText(model.SourceInfo.Directory.FullName + "\\test.avs", avsScript);
+            File.WriteAllText(newName + "test.avs", avsScript);
             //var videoFile = Model.Locations.GetOutputFile(0);
             //if (videoFile.Exists) videoFile.Delete();
 
-            args = string.Format(args, model.SourceInfo.Directory.FullName + "\\test.avs", @"C:\Users\iwan954\Desktop\final.avi");
+            var dir = Model.Locations.OutputDirectory.FullName;
+            var patchedName = GetTempFile(model.SourceInfo, "-patched").FullName;
+            var path = Path.Combine(dir, patchedName);
+            args = string.Format(args, newName + "test.avs", path);
             RunProcess(args, Model.Locations.FFmpegExecutable.FullName);
+            File.Delete(newName + "test.avs");
             OnTaskFinished();
             File.Move(newName, oldName);
         }

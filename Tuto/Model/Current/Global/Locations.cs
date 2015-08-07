@@ -19,6 +19,8 @@ namespace Tuto.Model
 
         public DirectoryInfo InputFolder { get { return new DirectoryInfo(Path.Combine(data.GlobalDataFolder.FullName, Locations.InputFolderName)); } }
         public DirectoryInfo TemporalFolder { get { return new DirectoryInfo(Path.Combine(data.GlobalDataFolder.FullName, Locations.AllTemporaryFilesFolder)); } }
+        public DirectoryInfo ConvertedPatchesFolder { get { return new DirectoryInfo(Path.Combine(data.GlobalDataFolder.FullName, Locations.ConvertedPatchFilesFolder)); } }
+
 
 
         public string RelativeTo(string path, string root)
