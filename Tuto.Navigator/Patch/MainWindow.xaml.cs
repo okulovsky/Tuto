@@ -30,16 +30,18 @@ namespace Tuto.Navigator
     {
 
         public PatchModel Model;
+        public EditorModel EModel;
         public MainWindow()
         {
             InitializeComponent();
             PatchWindow.LoadedBehavior = MediaState.Manual;
         }
 
-        public void LoadModel(PatchModel model)
+        public void LoadModel(PatchModel model, EditorModel em)
         {
             this.DataContext = model;
             Model = model;
+            EModel = em;
         }
 
         private int prevoiusTop = 5;
@@ -84,6 +86,19 @@ namespace Tuto.Navigator
             //CurrentTime.Height += trackHeight;
         }
 
+        private void doInitialLoad()
+        {
+            ViewTimeline.Source = new Uri(Model.SourceInfo.FullName);
+            ViewTimeline.LoadedBehavior = MediaState.Manual;
+
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromMilliseconds(10);
+            timer.Tick += (s, a) => { CheckPlayTime(); };
+            ViewTimeline.MediaOpened += SetMainVideo;
+            ViewTimeline.Play();
+            ViewTimeline.Pause();
+            isLoaded = true;
+        }
         private void PlayButton_Click(object sender, RoutedEventArgs e)
         {
             if (isPlaying)
@@ -94,15 +109,7 @@ namespace Tuto.Navigator
             }
             else if (!isLoaded)
             {
-                ViewTimeline.Source = new Uri(Model.SourceInfo.FullName);
-                ViewTimeline.LoadedBehavior = MediaState.Manual;
-
-                timer = new DispatcherTimer();
-                timer.Interval = TimeSpan.FromMilliseconds(10);
-                timer.Tick += (s, a) => { CheckPlayTime(); };
-                ViewTimeline.MediaOpened += SetMainVideo;
-                ViewTimeline.Play();
-                isLoaded = true;
+                doInitialLoad();
                 return;
             }
             else { ViewTimeline.Play(); isPlaying = true; }
@@ -192,7 +199,32 @@ namespace Tuto.Navigator
 
         private void Patch_Click(object sender, RoutedEventArgs e)
         {
-            Program.BatchWorkQueueWindow.Run(new List<BatchWork>(){new PatchWork(Model, true)});
+            Program.BatchWorkQueueWindow.Run(new List<BatchWork>(){new PatchWork(Model, true, EModel)});
+        }
+
+        private void Save_Click(object sender, RoutedEventArgs e)
+        {
+           EModel.Save();
+        }
+
+        private void mainwindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            doInitialLoad();
+        }
+
+
+        private void RangeSlider_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var pos = e.GetPosition(Tracks).X;
+            for (var i = 0; i < Model.MediaTracks.Count; )
+            {
+                var track = Model.MediaTracks[i];
+                if (track.LeftShift + track.StartSecond <= pos && track.LeftShift + track.EndSecond >= pos)
+                {
+                    Model.MediaTracks.RemoveAt(i);
+                    return;
+                }
+            }
         }
     }
 }

@@ -15,13 +15,24 @@ namespace Tuto.BatchWorks
     {
 
         private List<string> filesToDelIfAborted { get; set; }
-        private bool crossFades {get; set;}
+        private bool crossFades { get; set; }
         private PatchModel model;
         private AvsNode result;
 
-        public PatchWork(PatchModel model, bool fadeMode)
+        private string oldName;
+        private string newName;
+
+        public PatchWork(PatchModel model, bool fadeMode, EditorModel emodel)
         {
             this.model = model;
+            this.Model = emodel;
+            Name = "Patching";
+            foreach (var ep in model.MediaTracks)
+            {
+                var name = Path.Combine(Model.TempFolder.FullName, ep.ConvertedName);
+                if (!File.Exists(name))
+                    BeforeWorks.Add(new PreparePatchWork(emodel, new FileInfo(ep.Path.LocalPath), new FileInfo(name)));
+            }
         }
 
         public override void Work()
@@ -29,28 +40,39 @@ namespace Tuto.BatchWorks
             var src = model.SourceInfo;
             List<AvsNode> chunks = new List<AvsNode>();
             var tracks = model.MediaTracks;
+            oldName = model.SourceInfo.FullName;
+            newName = Path.Combine(model.SourceInfo.Directory.FullName, Guid.NewGuid().ToString() + ".avi");
+            File.Move(oldName, newName);
             double previous = 0;
-            for (var i = 0; i < tracks.Count - 1; i++)
+            int index = 0;
+            string mode = "main";
+            while (Math.Abs(previous - model.Duration) >= 0.5 && tracks.Count != 0)
             {
                 var avs = new AvsPatchChunk();
-                if (i % 2 == 0)
+                if (mode == "main")
                 {
-                    avs.Load(model.SourceInfo.FullName, previous, tracks[i + 1].StartSecond + tracks[i + 1].LeftShift);
+                    var endTime = index >= tracks.Count ? model.Duration : tracks[index].StartSecond + tracks[index].LeftShift;
+                    avs.Load(newName, previous, endTime);
+                    previous = endTime;
                     chunks.Add(avs);
+                    mode = "patch";
                     continue;
                 }
-                else
-                {
-                    avs.Load(tracks[i].Path.AbsolutePath, tracks[i].StartSecond, tracks[i].EndSecond);
-                }
+                var name = Path.Combine(Model.TempFolder.FullName, tracks[index].ConvertedName);
+                avs.Load(name, tracks[index].StartSecond, tracks[index].EndSecond);
+                chunks.Add(avs);
+                previous = tracks[index].EndSecond + tracks[index].LeftShift;
+                index++;
+                mode = "main";
             }
 
             if (tracks.Count == 0)
             {
                 var s = new AvsPatchChunk();
-                s.Load(model.SourceInfo.FullName, 0, model.Duration);
+                s.Load(newName, 0, model.Duration);
                 chunks.Add(s);
             }
+
             var final = new AvsConcatList();
             final.Items = chunks;
             var avsContext = new AvsContext();
@@ -58,26 +80,26 @@ namespace Tuto.BatchWorks
 
 
             var serv = new AssemblerService(crossFades);
-                var args = @"-i ""{0}"" -q:v 0 ""{1}""";
-                var avsScript = avsContext.GetContent();
-                File.WriteAllText(model.SourceInfo.FullName + "test", avsScript);
-                //var videoFile = Model.Locations.GetOutputFile(episodeNumber);
-                //if (videoFile.Exists) videoFile.Delete();
+            var args = @"-i ""{0}"" -q:v 0 -vf ""scale=1280:720, fps=25"" -q:v 0 -acodec libmp3lame -ar 44100 -ab 32k ""{1}"" -y";
+            var avsScript = string.Format(@"import(""{0}"")", Model.Locations.AvsLibrary.FullName) + "\r\n" + avsContext.GetContent() + "var_0";
+            File.WriteAllText(model.SourceInfo.Directory.FullName + "\\test.avs", avsScript);
+            //var videoFile = Model.Locations.GetOutputFile(0);
+            //if (videoFile.Exists) videoFile.Delete();
 
-                //args = string.Format(args, avsFile.FullName, videoFile.FullName);
-                //RunProcess(args, Model.Locations.FFmpegExecutable.FullName);
-                //OnTaskFinished();
+            args = string.Format(args, model.SourceInfo.Directory.FullName + "\\test.avs", @"C:\Users\iwan954\Desktop\final.avi");
+            RunProcess(args, Model.Locations.FFmpegExecutable.FullName);
+            OnTaskFinished();
+            File.Move(newName, oldName);
         }
 
         public override void Clean()
         {
             if (Process != null && !Process.HasExited)
                 Process.Kill();
-            while (filesToDelIfAborted.Count > 0)
+            while (!File.Exists(oldName))
                 try
                 {
-                    File.Delete(filesToDelIfAborted[0]);
-                    filesToDelIfAborted.RemoveAt(0);
+                    File.Move(newName, oldName);
                 }
                 catch { }
         }

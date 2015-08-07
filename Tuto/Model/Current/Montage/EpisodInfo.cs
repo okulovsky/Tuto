@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Tuto.Model
 {
+    public enum OutputTypes { Patch, Output, None};
     [DataContract]
     public class EpisodInfo
     {
@@ -14,6 +15,16 @@ namespace Tuto.Model
         public Guid Guid { get; internal set; }
         [DataMember]
         public string Name { get; set; }
+
+        [DataMember]
+        public PatchModel PatchModel { get; set; }
+
+        [DataMember]
+        public OutputTypes OutputType { get; set; }
+
+        [DataMember]
+        public bool Dirty { get; set; }
+
         [DataMember]
         public TimeSpan Duration { get; set; }
 

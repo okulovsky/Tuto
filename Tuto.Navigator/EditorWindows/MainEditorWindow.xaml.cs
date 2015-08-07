@@ -179,7 +179,10 @@ namespace Editor
                 var videoFile = model.Locations.GetOutputFile(episodeNumber);
                 if (videoFile.Exists)
                 {
-                    patchWindow.LoadModel(new PatchModel(videoFile.FullName));
+                    var temp = model.Montage.Information.Episodes[episodeNumber];
+                    var m = temp.PatchModel != null ? temp.PatchModel : new PatchModel(videoFile.FullName);
+                    temp.PatchModel = m;
+                    patchWindow.LoadModel(m, model);
                     patchWindow.Show();
                 }
                 else addTaskToQueue(new List<BatchWork>() { new AssemblyVideoWork(model, model.Global.CrossFadesEnabled) });
@@ -268,7 +271,6 @@ namespace Editor
                     current += c.Length;
             }
             times.Add(current);
-
             if (model.Montage.Information.Episodes.Count == 0)
             {
                 model.Montage.Information.Episodes.AddRange(Enumerable.Range(0, times.Count).Select(z => new EpisodInfo(Guid.NewGuid())));
@@ -282,7 +284,10 @@ namespace Editor
             }
 
             for (int i = 0; i < times.Count; i++)
+            {
                 model.Montage.Information.Episodes[i].Duration = TimeSpan.FromMilliseconds(times[i]);
+            }
+
 
             var wnd = new InfoWindow();
             wnd.DataContext = model.Montage.Information;

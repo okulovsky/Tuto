@@ -36,10 +36,11 @@ namespace Tuto.TutoServices.Assembler
             get 
             { 
                 var clip = string.Format("DirectShowSource(\"{0}\")", Path);
+                var frameRate = 25;
                 var conv = "Time2Frame({0}, {1})";
                 var startTime = string.Format(conv, clip, Start);
                 var endTime = string.Format(conv, clip, End);
-                var final = string.Format("DirectShowSource(\"{0}\").Trim({1},{2})", Path, startTime, endTime);
+                var final = string.Format("AddEmptySoundIfNecessary(DirectShowSource(\"{0}\").Trim({1},{2}))", Path, (int)(Start * frameRate), (int)(End * frameRate));
                 return "{0} = " + final; 
             }
         }
