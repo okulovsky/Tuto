@@ -18,7 +18,8 @@ namespace Tuto.BatchWorks
             this.from = from;
             this.to = to;
             this.moveMode = move;
-            Name = "Process file " + from;
+            string msg = move ? "Moving file: " : "Copying file: ";
+            Name = msg + from;
         }
 
         public override void Work()

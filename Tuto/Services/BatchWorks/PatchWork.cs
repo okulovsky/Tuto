@@ -34,7 +34,10 @@ namespace Tuto.BatchWorks
             {
                 var name = Path.Combine(Model.Locations.TemporalDirectory.FullName, ep.ConvertedName);
                 if (!File.Exists(name))
-                    BeforeWorks.Add(new PreparePatchWork(emodel, new FileInfo(ep.Path.LocalPath), new FileInfo(name)));
+                {
+                    var fileInPatches = new FileInfo(Path.Combine(emodel.Locations.PatchesDirectory.FullName, new FileInfo(ep.Path.LocalPath).Name));
+                    BeforeWorks.Add(new PreparePatchWork(emodel, fileInPatches, new FileInfo(name)));
+                }
             }
         }
 
@@ -81,13 +84,10 @@ namespace Tuto.BatchWorks
             var avsContext = new AvsContext();
             final.SerializeToContext(avsContext);
 
-
             var serv = new AssemblerService(crossFades);
             var args = @"-i ""{0}"" -q:v 0 -vf ""scale=1280:720, fps=25"" -q:v 0 -acodec libmp3lame -ar 44100 -ab 32k ""{1}"" -y";
             var avsScript = string.Format(@"import(""{0}"")", Model.Locations.AvsLibrary.FullName) + "\r\n" + avsContext.GetContent() + "var_0";
             File.WriteAllText(newName + "test.avs", avsScript);
-            //var videoFile = Model.Locations.GetOutputFile(0);
-            //if (videoFile.Exists) videoFile.Delete();
 
             var dir = Model.Locations.OutputDirectory.FullName;
             var patchedName = GetTempFile(model.SourceInfo, "-patched").FullName;
