@@ -51,7 +51,7 @@ namespace Tuto.Navigator
         private double mainVideoLength = 0;
         private double volume;
         private TrackInfo currentPatch;
-        private TrackInfo currentSubtitle;
+        private Subtitle currentSubtitle;
         private bool isPlaying;
         private bool isLoaded;
         private int scale;
@@ -148,6 +148,8 @@ namespace Tuto.Navigator
                         break;
                     CurrentSubtitle.Content = e.Content;
                     currentSubtitle = e;
+                    Canvas.SetTop(CurrentSubtitle, e.Y);
+                    Canvas.SetLeft(CurrentSubtitle, e.X);
                     break;
                 }
             }
@@ -267,6 +269,8 @@ namespace Tuto.Navigator
         private void Subtitle_MouseUp(object sender, MouseButtonEventArgs e)
         {
             DragInProgress = false;
+            currentSubtitle.X = Canvas.GetLeft(CurrentSubtitle);
+            currentSubtitle.Y = Canvas.GetTop(CurrentSubtitle);
         }
 
         private void Subtitle_MouseMove(object sender, MouseEventArgs e)

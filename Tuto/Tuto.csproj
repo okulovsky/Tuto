@@ -116,6 +116,7 @@
     <Compile Include="Services\Assembler\AvsPatchChunk.cs" />
     <Compile Include="Services\Assembler\AvsResize.cs" />
     <Compile Include="Services\Assembler\AssumeSameAVLength.cs" />
+    <Compile Include="Services\Assembler\AvsSub.cs" />
     <Compile Include="Services\Assembler\AvsSubtitle.cs" />
     <Compile Include="Services\Assembler\AvsWatermark.cs" />
     <Compile Include="Services\BatchWorks\MoveCopyWork.cs" />

@@ -94,6 +94,8 @@ namespace Tuto.Model
     public class Subtitle : TrackInfo
     {
         public string Content;
+        public double X;
+        public double Y;
 
         public Subtitle(string content, int scale, double leftShift)
         {

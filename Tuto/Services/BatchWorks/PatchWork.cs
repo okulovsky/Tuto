@@ -82,10 +82,25 @@ namespace Tuto.BatchWorks
             var final = new AvsConcatList();
             final.Items = chunks;
             var avsContext = new AvsContext();
-            final.SerializeToContext(avsContext);
 
+            AvsNode payload = final;
+            var currentSub = new AvsSub();
+            foreach (var sub in pmodel.Subtitles)
+            {
+                currentSub = new AvsSub();
+                currentSub.Payload = payload;
+                currentSub.X = (int)sub.X;
+                currentSub.Y = (int)sub.Y;
+                currentSub.Content = sub.Content;
+                
+                payload = currentSub;
+            }
+            currentSub.SerializeToContext(avsContext);
             var serv = new AssemblerService(crossFades);
             var args = @"-i ""{0}"" -q:v 0 -vf ""scale=1280:720, fps=25"" -q:v 0 -acodec libmp3lame -ar 44100 -ab 32k ""{1}"" -y";
+
+
+
             var avsScript = string.Format(@"import(""{0}"")", Model.Locations.AvsLibrary.FullName) + "\r\n" + avsContext.GetContent() + "var_0";
             File.WriteAllText(newName + "test.avs", avsScript);
 
