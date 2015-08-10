@@ -21,7 +21,13 @@ namespace Tuto.Model
         public FileInfo SourceInfo { get; set; }
 
         [DataMember]
-        public double Duration { get; set; }
+        private double duration;
+
+        [DataMember]
+        public double Duration { get {return duration;} set {duration = value; NotifyPropertyChanged();}}
+
+        [DataMember]
+        public double DurationInPixels { get { return duration * Scale; } set { duration = value / Scale; NotifyPropertyChanged(); } }
 
         [DataMember]
         private int scale; //to model
@@ -32,6 +38,7 @@ namespace Tuto.Model
         {
             SourceInfo = new FileInfo(sourcePath);
             MediaTracks = new ObservableCollection<TrackInfo>();
+            Duration = 10;
             Scale = 1;
         }
 
@@ -49,11 +56,12 @@ namespace Tuto.Model
     [DataContract]
     public class TrackInfo : NotifierModel
     {
-
+        [DataMember]
         public int Scale { get; set; }
 
         [DataMember]
         public Uri Path { get; set; }
+
         [DataMember]
         public string ConvertedName { get; set; }
 
@@ -83,12 +91,6 @@ namespace Tuto.Model
 
         [DataMember]
         public double DurationInPixels { get { return DurationInSeconds * Scale; } set { DurationInSeconds = value / Scale; NotifyPropertyChanged(); } }
-
-        //not used yet
-        [DataMember]
-        private double positionRelativeToMain;
-        [DataMember]
-        private double PositionRelativeToMain { get { return positionRelativeToMain; } set { positionRelativeToMain = value; NotifyPropertyChanged(); } } //pixels per sec
 
         
         public TrackInfo(string path, int scale)

@@ -22,9 +22,9 @@
                 <StackPanel>
 
 
-                    <Canvas Name="Tracks" Width="600"  HorizontalAlignment="Left">
-                        <Rectangle Name="TimeLine" Width="600" Canvas.Top="5" Height="10" Stroke="Yellow" Fill="Yellow" MouseDown="TimeLine_MouseDown"></Rectangle>
-                        <DesignInControl:RangeSlider IsEnabled="False" Canvas.Left="0" Canvas.Top="15" x:Name="mainSlider" Height="30" Width="1200" LowerValue="0" UpperValue="1200" Maximum="1200"></DesignInControl:RangeSlider>
+                    <Canvas Name="Tracks" Width="{Binding DurationInPixels}"  HorizontalAlignment="Left">
+                        <Rectangle Name="TimeLine" Width="{Binding DurationInPixels}" Canvas.Top="5" Height="10" Stroke="Yellow" Fill="Yellow" MouseDown="TimeLine_MouseDown"></Rectangle>
+                        <DesignInControl:RangeSlider IsEnabled="False" Canvas.Left="0" Canvas.Top="15" x:Name="mainSlider" Height="30" Width="{Binding DurationInPixels}" LowerValue="0" UpperValue="{Binding DurationInPixels}" Maximum="{Binding DurationInPixels}"></DesignInControl:RangeSlider>
 
                         <ItemsControl ItemsSource="{Binding MediaTracks}" Canvas.Top="40" Width="1000">
                             <ItemsControl.ItemTemplate>

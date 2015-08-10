@@ -119,17 +119,9 @@ namespace Tuto.Navigator
         private void SetMainVideo(object s, RoutedEventArgs a)
         {
             double length = 0;
-            length = ViewTimeline.NaturalDuration.TimeSpan.TotalSeconds * Model.Scale;
-            Model.Duration = length;
-            mainVideoLength = length;
-            mainSlider.Maximum = length;
-            mainSlider.Minimum = 0;
-            mainSlider.Width = length;
-            Tracks.Width = length;
-            TimeLine.Width = length;
-            mainSlider.UpperValue = length;
-            mainSlider.Minimum = 0;
-            volume = ViewTimeline.Volume;
+            Model.Duration = ViewTimeline.NaturalDuration.TimeSpan.TotalSeconds;
+            Model.DurationInPixels = Model.DurationInPixels;
+            volume = ViewTimeline.Volume != 0 ? ViewTimeline.Volume : volume;
             timer.Start();
             ViewTimeline.MediaOpened -= SetMainVideo; //should be once
         }
@@ -151,10 +143,10 @@ namespace Tuto.Navigator
 
         private void CheckPlayTime()
         {
-            var seconds = ViewTimeline.Position.TotalSeconds * Model.Scale;
-            Canvas.SetLeft(CurrentTime, seconds);
+            var pixelsRelativeToSeconds = ViewTimeline.Position.TotalSeconds * Model.Scale;
+            Canvas.SetLeft(CurrentTime, pixelsRelativeToSeconds);
             for (var i = Model.MediaTracks.Count - 1; i >= 0; i--)
-                if (InPatchSection(Model.MediaTracks[i], seconds))
+                if (InPatchSection(Model.MediaTracks[i], pixelsRelativeToSeconds))
                 {
                     if (currentPatch == Model.MediaTracks[i])
                         return;
@@ -163,7 +155,7 @@ namespace Tuto.Navigator
                     PatchWindow.Source = Model.MediaTracks[i].Path;
 
                     var shift = currentPatch.LeftShift;
-                    var position = seconds - shift;
+                    var position = pixelsRelativeToSeconds - shift;
                     PatchWindow.Position = TimeSpan.FromSeconds(position);
                     PatchWindow.Play();
 
