@@ -65,7 +65,7 @@ namespace Tuto.Model
         {
             SourceInfo = new FileInfo(sourcePath);
             MediaTracks = new ObservableCollection<MediaTrack>();
-            Subtitles = new ObservableCollection<Subtitle>() { new Subtitle("hello",1,10) };
+            Subtitles = new ObservableCollection<Subtitle>() { new Subtitle("hello", 1, 10), new Subtitle("kitty", 1, 60) };
             Duration = 10;
             Scale = 1;
         }
@@ -98,7 +98,7 @@ namespace Tuto.Model
         public Subtitle(string content, int scale, double leftShift)
         {
             startSecond = 0;
-            endSecond = 100;
+            endSecond = 20;
             DurationInSeconds = 10000;
             LeftShift = leftShift;
             Content = content;

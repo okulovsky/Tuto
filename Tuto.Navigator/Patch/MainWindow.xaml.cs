@@ -51,6 +51,7 @@ namespace Tuto.Navigator
         private double mainVideoLength = 0;
         private double volume;
         private TrackInfo currentPatch;
+        private TrackInfo currentSubtitle;
         private bool isPlaying;
         private bool isLoaded;
         private int scale;
@@ -135,13 +136,33 @@ namespace Tuto.Navigator
             PatchWindow.MediaOpened -= SetPatchDuration; //should be once
         }
 
-
+        private void CheckSubtitle(double pixelsRelativeToSeconds)
+        {
+            var subtitleFound = false;
+            foreach (var e in Model.Subtitles)
+            {
+                if (InPatchSection(e, pixelsRelativeToSeconds))
+                {
+                    subtitleFound = true;
+                    if (currentSubtitle == e)
+                        break;
+                    CurrentSubtitle.Content = e.Content;
+                    currentSubtitle = e;
+                    break;
+                }
+            }
+            if (!subtitleFound)
+                CurrentSubtitle.Visibility = System.Windows.Visibility.Collapsed;
+            else
+                CurrentSubtitle.Visibility = System.Windows.Visibility.Visible;
+        }
 
 
         private void CheckPlayTime()
         {
             var pixelsRelativeToSeconds = ViewTimeline.Position.TotalSeconds * Model.Scale;
             Canvas.SetLeft(CurrentTime, pixelsRelativeToSeconds);
+            CheckSubtitle(pixelsRelativeToSeconds);
             for (var i = Model.MediaTracks.Count - 1; i >= 0; i--)
                 if (InPatchSection(Model.MediaTracks[i], pixelsRelativeToSeconds))
                 {
