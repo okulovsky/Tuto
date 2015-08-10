@@ -12,7 +12,7 @@ using System.Runtime.Serialization;
 namespace Tuto.Model
 {
     [DataContract]
-    public class PatchModel
+    public class PatchModel : NotifierModel
     {
         [DataMember]
         public ObservableCollection<TrackInfo> MediaTracks { get; set; }
@@ -23,10 +23,16 @@ namespace Tuto.Model
         [DataMember]
         public double Duration { get; set; }
 
+        [DataMember]
+        private int scale; //to model
+        [DataMember]
+        public int Scale { get { return scale; } set { scale = value; NotifyPropertyChanged(); } } //pixels per sec
+
         public PatchModel(string sourcePath)
         {
             SourceInfo = new FileInfo(sourcePath);
             MediaTracks = new ObservableCollection<TrackInfo>();
+            Scale = 1;
         }
 
         public void DeleteTrackAccordingPosition(int index, EditorModel m)
@@ -43,35 +49,40 @@ namespace Tuto.Model
     [DataContract]
     public class TrackInfo : NotifierModel
     {
+
+        public int Scale { get; set; }
+
         [DataMember]
         public Uri Path { get; set; }
         [DataMember]
         public string ConvertedName { get; set; }
 
         [DataMember]
-        private double startSecond;
-        [DataMember]
-        public double StartSecond { get { return startSecond; } set { startSecond = value; NotifyPropertyChanged(); } } //left border of chunk
+        public double StartSecond { get; set; } //left border of chunk
 
         [DataMember]
-        private double endSecond;
-        [DataMember]
-        public double EndSecond { get { return endSecond; } set { endSecond = value; NotifyPropertyChanged(); } } //right border of chunk
+        public double StartPixel { get { return StartSecond * Scale; } set { StartSecond = value / Scale; NotifyPropertyChanged(); } }
 
         [DataMember]
-        public double LeftShift { get; set; } //position relative to main track
+        public double EndPixel { get { return EndSecond * Scale; } set { EndSecond = value / Scale; NotifyPropertyChanged(); } }
+
+        [DataMember]
+        public double EndSecond { get; set; } //right border of chunk
+
+        [DataMember]
+        private double leftShift { get; set; }
+
+        [DataMember]
+        public double LeftShift { get { return leftShift; } set { leftShift = value; NotifyPropertyChanged(); } }//position of whole track relative to main track
+
         [DataMember]
         public double TopShift { get; set; }
 
         [DataMember]
-        private double durationInSeconds;
-        [DataMember]
-        public double DurationInSeconds { get { return durationInSeconds; } set { durationInSeconds = value; NotifyPropertyChanged(); } }
+        public double DurationInSeconds { get; set; }
 
         [DataMember]
-        private double scale; //to model
-        [DataMember]
-        public double Scale { get { return scale; } set { scale = value; NotifyPropertyChanged(); } } //pixels per sec
+        public double DurationInPixels { get { return DurationInSeconds * Scale; } set { DurationInSeconds = value / Scale; NotifyPropertyChanged(); } }
 
         //not used yet
         [DataMember]
@@ -80,11 +91,11 @@ namespace Tuto.Model
         private double PositionRelativeToMain { get { return positionRelativeToMain; } set { positionRelativeToMain = value; NotifyPropertyChanged(); } } //pixels per sec
 
         
-        public TrackInfo(string path)
+        public TrackInfo(string path, int scale)
         {
             Path = new Uri(path);
             ConvertedName = Guid.NewGuid().ToString() + ".avi";
-            Scale = 1;
+            Scale = scale;
         }
 
     }

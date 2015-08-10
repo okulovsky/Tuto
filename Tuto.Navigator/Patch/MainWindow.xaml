@@ -15,6 +15,7 @@
                 <Button Margin="5 5 0 5" Height="30" Content="Play" Width="47" HorizontalAlignment="Left" Name="PlayButton" Click="PlayButton_Click"></Button>
                 <Button Margin="10 5 0 5" Height="30" Content="Patch" Width="47" HorizontalAlignment="Left" Name="Patch" Click="Patch_Click"></Button>
                 <Button Margin="10 5 0 5" Height="30" Content="Save" Width="47" HorizontalAlignment="Left" Name="Save" Click="Save_Click"></Button>
+                <Slider Name="scaleSlider" IsSnapToTickEnabled="True" TickFrequency="1" Margin="10 8 0 5" Width="50" Minimum="1" Maximum="5" Interval="1" SmallChange="1" ValueChanged="Slider_ValueChanged" ></Slider>
             </StackPanel>
 
             <ScrollViewer HorizontalAlignment="Left" Name="TimeScroll" Width="600" Height="95" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Disabled">
@@ -29,7 +30,7 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Canvas>
-                                        <DesignInControl:RangeSlider Maximum="{Binding DurationInSeconds, Mode=TwoWay}" Canvas.Top="{Binding TopShift, Mode=TwoWay}"  Canvas.Left="{Binding LeftShift, Mode=TwoWay}" Height="30" Width="{Binding DurationInSeconds, Mode=TwoWay}" LowerValue="{Binding StartSecond, Mode=TwoWay}" UpperValue="{Binding EndSecond, Mode=TwoWay}" MouseDoubleClick="RangeSlider_MouseDoubleClick"/>
+                                        <DesignInControl:RangeSlider Maximum="{Binding DurationInPixels, Mode=TwoWay}" Canvas.Top="{Binding TopShift, Mode=TwoWay}"  Canvas.Left="{Binding LeftShift, Mode=TwoWay}" Height="30" Width="{Binding DurationInPixels, Mode=TwoWay}" LowerValue="{Binding StartPixel, Mode=TwoWay}" UpperValue="{Binding EndPixel, Mode=TwoWay}" MouseDoubleClick="RangeSlider_MouseDoubleClick"/>
                                     </Canvas>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>

@@ -42,6 +42,7 @@ namespace Tuto.Navigator
             this.DataContext = model;
             Model = model;
             EModel = em;
+            scale = model.Scale;
         }
 
 
@@ -52,6 +53,7 @@ namespace Tuto.Navigator
         private TrackInfo currentPatch;
         private bool isPlaying;
         private bool isLoaded;
+        private int scale;
 
         private void Tracks_Drop(object sender, DragEventArgs e)
         {
@@ -70,33 +72,25 @@ namespace Tuto.Navigator
 
         private void addTrack(string path)
         {
-            var seconds = ViewTimeline.Position.TotalSeconds;
+            var seconds = ViewTimeline.Position.TotalSeconds * Model.Scale;
 
-            var track = new TrackInfo(path);
+            var track = new TrackInfo(path, Model.Scale);
             track.LeftShift = seconds;
             track.TopShift = prevoiusTop;
-            track.DurationInSeconds = 10;
-
+            track.DurationInPixels = 10;
             Model.MediaTracks.Add(track);
-
             PatchWindow.MediaOpened += SetPatchDuration;
             PatchWindow.Stop();
             PatchWindow.Source = null;
             PatchWindow.Source = new Uri(path);
             PatchWindow.Play(); //need to fire event to get duration
             PatchWindow.Pause();
-
-            //prevoiusTop += 30;
-            //TimeScroll.Height += trackHeight;
-            //mainwindow.Height += trackHeight;
-            //CurrentTime.Height += trackHeight;
         }
 
         private void doInitialLoad()
         {
             ViewTimeline.Source = new Uri(Model.SourceInfo.FullName);
             ViewTimeline.LoadedBehavior = MediaState.Manual;
-
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(10);
             timer.Tick += (s, a) => { CheckPlayTime(); };
@@ -119,13 +113,13 @@ namespace Tuto.Navigator
                 doInitialLoad();
                 return;
             }
-            else { ViewTimeline.Play(); PatchWindow.Play();  isPlaying = true; }
+            else { ViewTimeline.Play(); PatchWindow.Play(); isPlaying = true; }
         }
 
         private void SetMainVideo(object s, RoutedEventArgs a)
         {
             double length = 0;
-            length = ViewTimeline.NaturalDuration.TimeSpan.TotalSeconds;
+            length = ViewTimeline.NaturalDuration.TimeSpan.TotalSeconds * Model.Scale;
             Model.Duration = length;
             mainVideoLength = length;
             mainSlider.Maximum = length;
@@ -148,14 +142,16 @@ namespace Tuto.Navigator
             track.StartSecond = 0;
             track.EndSecond = duration;
             track.DurationInSeconds = duration;
+            RefreshTracks();
             PatchWindow.MediaOpened -= SetPatchDuration; //should be once
         }
 
 
 
+
         private void CheckPlayTime()
         {
-            var seconds = ViewTimeline.Position.TotalSeconds;
+            var seconds = ViewTimeline.Position.TotalSeconds * Model.Scale;
             Canvas.SetLeft(CurrentTime, seconds);
             for (var i = Model.MediaTracks.Count - 1; i >= 0; i--)
                 if (InPatchSection(Model.MediaTracks[i], seconds))
@@ -167,7 +163,7 @@ namespace Tuto.Navigator
                     PatchWindow.Source = Model.MediaTracks[i].Path;
 
                     var shift = currentPatch.LeftShift;
-                    var position = seconds - (shift);
+                    var position = seconds - shift;
                     PatchWindow.Position = TimeSpan.FromSeconds(position);
                     PatchWindow.Play();
 
@@ -184,34 +180,34 @@ namespace Tuto.Navigator
 
         private bool InPatchSection(TrackInfo track, double seconds)
         {
-            var leftIn = seconds >= track.LeftShift + track.StartSecond;
-            var rightIn = seconds <= track.LeftShift + track.EndSecond;
+            var leftIn = seconds >= track.LeftShift + track.StartPixel;
+            var rightIn = seconds <= track.LeftShift + track.EndPixel;
             return leftIn && rightIn;
         }
 
         private void TimeLine_MouseDown(object sender, MouseButtonEventArgs e)
         {
             var pos = e.GetPosition(Tracks);
-            var span = TimeSpan.FromSeconds(pos.X);
+            var span = TimeSpan.FromSeconds(pos.X / Model.Scale);
             Canvas.SetLeft(CurrentTime, pos.X);
             ViewTimeline.Position = span;
             if (currentPatch != null)
             {
                 var shift = currentPatch.LeftShift;
-                var seconds = ViewTimeline.Position.TotalSeconds;
+                var seconds = ViewTimeline.Position.TotalSeconds * Model.Scale;
                 var position = seconds - shift;
-                PatchWindow.Position = TimeSpan.FromSeconds(position);
+                PatchWindow.Position = TimeSpan.FromSeconds(position / Model.Scale);
             }
         }
 
         private void Patch_Click(object sender, RoutedEventArgs e)
         {
-            Program.BatchWorkQueueWindow.Run(new List<BatchWork>(){new PatchWork(Model, true, EModel)});
+            Program.BatchWorkQueueWindow.Run(new List<BatchWork>() { new PatchWork(Model, true, EModel) });
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-           EModel.Save();
+            EModel.Save();
         }
 
         private void mainwindow_Loaded(object sender, RoutedEventArgs e)
@@ -222,25 +218,50 @@ namespace Tuto.Navigator
         private void RangeSlider_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var pos = e.GetPosition(Tracks).X;
-                for (var i = 0; i < Model.MediaTracks.Count; i++)
+            for (var i = 0; i < Model.MediaTracks.Count; i++)
+            {
+                var track = Model.MediaTracks[i];
+                if (track.LeftShift + track.StartPixel <= pos && track.LeftShift + track.EndPixel >= pos)
                 {
-                    var track = Model.MediaTracks[i];
-                    if (track.LeftShift + track.StartSecond <= pos && track.LeftShift + track.EndSecond >= pos)
+                    if (track.Path == PatchWindow.Source)
                     {
-                        if (track.Path == PatchWindow.Source)
-                        {
-                            PatchWindow.Stop();
-                            PatchWindow.Source = null;
-                        }
-                        Model.DeleteTrackAccordingPosition(i, EModel);
-                        return;
+                        PatchWindow.Stop();
+                        PatchWindow.Source = null;
                     }
-                }         
+                    Model.DeleteTrackAccordingPosition(i, EModel);
+                    return;
+                }
+            }
         }
 
         private void mainwindow_Closing(object sender, CancelEventArgs e)
         {
-            EModel.Save();
+            //EModel.Save();
+        }
+
+        private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            var newScale = (int)e.NewValue;
+            if (e.OldValue != 0)
+            {
+                Model.Scale = newScale;
+                RefreshTracks();
+                SetMainVideo(null, null);
+            }
+        }
+
+        private void RefreshTracks()
+        {
+            
+            foreach (var track in Model.MediaTracks)
+            {
+                var oldScale = track.Scale;
+                track.Scale = Model.Scale;
+                track.DurationInPixels = track.DurationInPixels;
+                track.StartPixel = track.StartPixel;
+                track.LeftShift = track.LeftShift / oldScale * Model.Scale;
+                track.EndPixel = track.EndPixel; //need for redrawing
+            }
         }
     }
 }
