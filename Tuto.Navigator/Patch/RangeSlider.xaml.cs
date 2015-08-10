@@ -201,11 +201,5 @@ namespace Tuto.Navigator
                 DragInProgress = true;
             }
         }
-
-        private Point GetPosition()
-        {
-            return new Point(0, 0);
-        }
-
     }
 }

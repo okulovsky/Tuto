@@ -16,7 +16,7 @@ namespace Tuto.BatchWorks
 
         private List<string> filesToDelIfAborted { get; set; }
         private bool crossFades { get; set; }
-        private PatchModel model;
+        private PatchModel pmodel;
         private AvsNode result;
 
         private string oldName;
@@ -24,7 +24,7 @@ namespace Tuto.BatchWorks
 
         public PatchWork(PatchModel model, bool fadeMode, EditorModel emodel)
         {
-            this.model = model;
+            this.pmodel = model;
             this.Model = emodel;
             Name = "Patching: " + model.SourceInfo.Name;
             if (!Model.Locations.PatchesDirectory.Exists)
@@ -43,21 +43,21 @@ namespace Tuto.BatchWorks
 
         public override void Work()
         {
-            var src = model.SourceInfo;
+            var src = pmodel.SourceInfo;
             List<AvsNode> chunks = new List<AvsNode>();
-            var tracks = model.MediaTracks;
-            oldName = model.SourceInfo.FullName;
-            newName = Path.Combine(model.SourceInfo.Directory.FullName, Guid.NewGuid().ToString() + ".avi");
+            var tracks = pmodel.MediaTracks;
+            oldName = pmodel.SourceInfo.FullName;
+            newName = Path.Combine(pmodel.SourceInfo.Directory.FullName, Guid.NewGuid().ToString() + ".avi");
             File.Move(oldName, newName);
             double previous = 0;
             int index = 0;
             string mode = "main";
-            while (Math.Abs(previous - model.Duration) >= 0.5 && tracks.Count != 0)
+            while (Math.Abs(previous - pmodel.Duration) >= 0.5 && tracks.Count != 0)
             {
                 var avs = new AvsPatchChunk();
                 if (mode == "main")
                 {
-                    var endTime = index >= tracks.Count ? model.Duration : tracks[index].StartSecond + tracks[index].LeftShift;
+                    var endTime = index >= tracks.Count ? pmodel.Duration : tracks[index].StartSecond + tracks[index].LeftShift / pmodel.Scale;
                     avs.Load(newName, previous, endTime);
                     previous = endTime;
                     chunks.Add(avs);
@@ -67,7 +67,7 @@ namespace Tuto.BatchWorks
                 var name = Path.Combine(Model.Locations.TemporalDirectory.FullName, tracks[index].ConvertedName);
                 avs.Load(name, tracks[index].StartSecond, tracks[index].EndSecond);
                 chunks.Add(avs);
-                previous = tracks[index].EndSecond + tracks[index].LeftShift;
+                previous = tracks[index].EndSecond + tracks[index].LeftShift / pmodel.Scale;
                 index++;
                 mode = "main";
             }
@@ -75,7 +75,7 @@ namespace Tuto.BatchWorks
             if (tracks.Count == 0)
             {
                 var s = new AvsPatchChunk();
-                s.Load(newName, 0, model.Duration);
+                s.Load(newName, 0, pmodel.Duration);
                 chunks.Add(s);
             }
 
@@ -90,7 +90,7 @@ namespace Tuto.BatchWorks
             File.WriteAllText(newName + "test.avs", avsScript);
 
             var dir = Model.Locations.OutputDirectory.FullName;
-            var patchedName = GetTempFile(model.SourceInfo, "-patched").FullName;
+            var patchedName = GetTempFile(pmodel.SourceInfo, "-patched").FullName;
             var path = Path.Combine(dir, patchedName);
             args = string.Format(args, newName + "test.avs", path);
             RunProcess(args, Model.Locations.FFmpegExecutable.FullName);

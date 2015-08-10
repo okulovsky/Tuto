@@ -2,23 +2,26 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
         xmlns:DesignInControl="clr-namespace:Tuto.Navigator"
-        Title="Patcher" Height="570" Width="600" Name="mainwindow" Loaded="mainwindow_Loaded" Closing="mainwindow_Closing">
+        Title="Patcher" Height="670" Width="600" Name="mainwindow" Loaded="mainwindow_Loaded" Closing="mainwindow_Closing">
 
     <StackPanel Orientation="Horizontal">
         <StackPanel  Width="600" HorizontalAlignment="Left" Drop="Tracks_Drop" AllowDrop="true">
-            <StackPanel HorizontalAlignment="Left" Background="LightBlue" Height="400" Width="600">
-                <MediaElement Height="400" Width="600" Name="ViewTimeline"></MediaElement>
-                <MediaElement Height="400" Width="600" Name="PatchWindow"></MediaElement>
+            <StackPanel Background="LightBlue" Height="400" Width="600">
+                <Canvas>
+                    <MediaElement Height="400" Width="600" Name="ViewTimeline"></MediaElement>
+                    <MediaElement Height="400" Width="600" Name="PatchWindow"></MediaElement>
+                    <Label Background="Black" FontSize="24" Foreground="White" HorizontalAlignment="Center" Name="CurrentSubtitle" Content="TEST" Canvas.Left="273" Canvas.Top="314" MouseUp="Subtitle_MouseUp" MouseMove="Subtitle_MouseMove" MouseDown="Subtitle_MouseDown"></Label>
+                </Canvas>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal">
                 <Button Margin="5 5 0 5" Height="30" Content="Play" Width="47" HorizontalAlignment="Left" Name="PlayButton" Click="PlayButton_Click"></Button>
                 <Button Margin="10 5 0 5" Height="30" Content="Patch" Width="47" HorizontalAlignment="Left" Name="Patch" Click="Patch_Click"></Button>
                 <Button Margin="10 5 0 5" Height="30" Content="Save" Width="47" HorizontalAlignment="Left" Name="Save" Click="Save_Click"></Button>
-                <Slider Name="scaleSlider" IsSnapToTickEnabled="True" TickFrequency="1" Margin="10 8 0 5" Width="50" Minimum="1" Maximum="5" Interval="1" SmallChange="1" ValueChanged="Slider_ValueChanged" ></Slider>
+                <Slider Name="scaleSlider" IsSnapToTickEnabled="True" TickFrequency="1" Margin="10 8 0 5" Width="50" Minimum="1" Maximum="10" Interval="1" SmallChange="1" ValueChanged="Slider_ValueChanged" ></Slider>
             </StackPanel>
 
-            <ScrollViewer HorizontalAlignment="Left" Name="TimeScroll" Width="600" Height="95" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Disabled">
+            <ScrollViewer HorizontalAlignment="Left" Name="TimeScroll" Width="600" Height="130" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Disabled">
                 <StackPanel>
 
 
@@ -27,6 +30,16 @@
                         <DesignInControl:RangeSlider IsEnabled="False" Canvas.Left="0" Canvas.Top="15" x:Name="mainSlider" Height="30" Width="{Binding DurationInPixels}" LowerValue="0" UpperValue="{Binding DurationInPixels}" Maximum="{Binding DurationInPixels}"></DesignInControl:RangeSlider>
 
                         <ItemsControl ItemsSource="{Binding MediaTracks}" Canvas.Top="40" Width="1000">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Canvas>
+                                        <DesignInControl:RangeSlider Maximum="{Binding DurationInPixels, Mode=TwoWay}" Canvas.Top="{Binding TopShift, Mode=TwoWay}"  Canvas.Left="{Binding LeftShift, Mode=TwoWay}" Height="30" Width="{Binding DurationInPixels, Mode=TwoWay}" LowerValue="{Binding StartPixel, Mode=TwoWay}" UpperValue="{Binding EndPixel, Mode=TwoWay}" MouseDoubleClick="RangeSlider_MouseDoubleClick"/>
+                                    </Canvas>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <ItemsControl ItemsSource="{Binding Subtitles}" Canvas.Top="70" Width="1000">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Canvas>

@@ -74,7 +74,7 @@ namespace Tuto.Navigator
         {
             var seconds = ViewTimeline.Position.TotalSeconds * Model.Scale;
 
-            var track = new TrackInfo(path, Model.Scale);
+            var track = new MediaTrack(path, Model.Scale);
             track.LeftShift = seconds;
             track.TopShift = prevoiusTop;
             track.DurationInPixels = 10;
@@ -118,9 +118,7 @@ namespace Tuto.Navigator
 
         private void SetMainVideo(object s, RoutedEventArgs a)
         {
-            double length = 0;
             Model.Duration = ViewTimeline.NaturalDuration.TimeSpan.TotalSeconds;
-            Model.DurationInPixels = Model.DurationInPixels;
             volume = ViewTimeline.Volume != 0 ? ViewTimeline.Volume : volume;
             timer.Start();
             ViewTimeline.MediaOpened -= SetMainVideo; //should be once
@@ -134,7 +132,6 @@ namespace Tuto.Navigator
             track.StartSecond = 0;
             track.EndSecond = duration;
             track.DurationInSeconds = duration;
-            RefreshTracks();
             PatchWindow.MediaOpened -= SetPatchDuration; //should be once
         }
 
@@ -161,10 +158,12 @@ namespace Tuto.Navigator
 
                     ViewTimeline.Volume = 0;
                     ViewTimeline.Visibility = System.Windows.Visibility.Collapsed;
+                    PatchWindow.Visibility = System.Windows.Visibility.Visible;
 
                     return;
                 }
             PatchWindow.Pause();
+            PatchWindow.Visibility = System.Windows.Visibility.Collapsed;
             ViewTimeline.Volume = volume;
             ViewTimeline.Visibility = System.Windows.Visibility.Visible;
             currentPatch = null;
@@ -237,23 +236,40 @@ namespace Tuto.Navigator
             if (e.OldValue != 0)
             {
                 Model.Scale = newScale;
-                RefreshTracks();
                 SetMainVideo(null, null);
             }
         }
 
-        private void RefreshTracks()
+        private bool DragInProgress;
+        private Point LastPoint;
+
+        private void Subtitle_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            
-            foreach (var track in Model.MediaTracks)
+            DragInProgress = false;
+        }
+
+        private void Subtitle_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (DragInProgress)
             {
-                var oldScale = track.Scale;
-                track.Scale = Model.Scale;
-                track.DurationInPixels = track.DurationInPixels;
-                track.StartPixel = track.StartPixel;
-                track.LeftShift = track.LeftShift / oldScale * Model.Scale;
-                track.EndPixel = track.EndPixel; //need for redrawing
+                Point point = Mouse.GetPosition((Canvas)CurrentSubtitle.Parent);
+                double offset_x = point.X - LastPoint.X;
+                double offset_y = point.Y - LastPoint.Y;
+                double new_x = Canvas.GetLeft(CurrentSubtitle);
+                double new_y = Canvas.GetTop(CurrentSubtitle);
+                new_x += offset_x;
+                new_y += offset_y;
+                Canvas.SetLeft(CurrentSubtitle, new_x);
+                Canvas.SetTop(CurrentSubtitle, new_y);
+                LastPoint = point;
             }
         }
+
+        private void Subtitle_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            LastPoint = Mouse.GetPosition((Canvas)CurrentSubtitle.Parent);
+            DragInProgress = true;
+        }
+
     }
 }
