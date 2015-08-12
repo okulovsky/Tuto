@@ -57,7 +57,7 @@ namespace Tuto.BatchWorks
                 var avs = new AvsPatchChunk();
                 if (mode == "main")
                 {
-                    var endTime = index >= tracks.Count ? pmodel.Duration : tracks[index].StartSecond + tracks[index].LeftShift / pmodel.Scale;
+                    var endTime = index >= tracks.Count ? pmodel.Duration : tracks[index].StartSecond + tracks[index].LeftShiftInSeconds / pmodel.Scale;
                     avs.Load(newName, previous, endTime);
                     previous = endTime;
                     chunks.Add(avs);
@@ -67,7 +67,7 @@ namespace Tuto.BatchWorks
                 var name = Path.Combine(Model.Locations.TemporalDirectory.FullName, tracks[index].ConvertedName);
                 avs.Load(name, tracks[index].StartSecond, tracks[index].EndSecond);
                 chunks.Add(avs);
-                previous = tracks[index].EndSecond + tracks[index].LeftShift / pmodel.Scale;
+                previous = tracks[index].EndSecond + tracks[index].LeftShiftInSeconds / pmodel.Scale;
                 index++;
                 mode = "main";
             }

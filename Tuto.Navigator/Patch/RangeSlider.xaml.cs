@@ -140,7 +140,7 @@ namespace Tuto.Navigator
 
             
 
-            const double GAP = 10;
+            const double GAP = 5;
             if (point.X - left < GAP)
             {
                 return HitType.L;

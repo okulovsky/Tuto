@@ -46,7 +46,6 @@ namespace Tuto.Model
                 {
                     var oldScale = track.Scale;
                     track.Scale = Scale;
-                    track.LeftShift = track.LeftShift / oldScale * Scale;
                 }
 
                 if (Subtitles != null)
@@ -54,7 +53,6 @@ namespace Tuto.Model
                     {
                         var oldScale = sub.Scale;
                         sub.Scale = Scale;
-                        sub.LeftShift = sub.LeftShift / oldScale * Scale;
                     }
 
                 NotifyPropertyChanged();
@@ -99,10 +97,10 @@ namespace Tuto.Model
 
         public Subtitle(string content, int scale, double leftShift)
         {
-            startSecond = 0;
-            endSecond = 20;
-            DurationInSeconds = 10000;
-            LeftShift = leftShift;
+            StartSecond = 0;
+            EndSecond = 20;
+            DurationInSeconds = 1000;
+            LeftShiftInSeconds = leftShift;
             Content = content;
             Scale = scale;
         }
@@ -124,7 +122,7 @@ namespace Tuto.Model
         public string ConvertedName { get; set; }
 
         [DataMember]
-        public double startSecond;
+        private double startSecond;
 
         [DataMember]
         public double StartSecond { get { return startSecond; } set { startSecond = value; NotifyPropertyChanged(); NotifyPropertyChanged("StartPixel"); } } //left border of chunk
@@ -133,7 +131,7 @@ namespace Tuto.Model
         public double StartPixel { get { return StartSecond * Scale; } set { StartSecond = value / Scale; NotifyPropertyChanged(); } }
 
         [DataMember]
-        public double endSecond { get; set; }
+        private double endSecond { get; set; }
 
         [DataMember]
         public double EndSecond { get { return endSecond; } set { endSecond = value; NotifyPropertyChanged(); NotifyPropertyChanged("EndPixel"); } } //right border of chunk
@@ -142,7 +140,7 @@ namespace Tuto.Model
         public double EndPixel { get { return EndSecond * Scale; } set { EndSecond = value / Scale; NotifyPropertyChanged(); } }
 
         [DataMember]
-        public double durationInSeconds { get; set; }
+        private double durationInSeconds { get; set; }
 
         [DataMember]
         public double DurationInSeconds { get { return durationInSeconds; } set { durationInSeconds = value; NotifyPropertyChanged(); NotifyPropertyChanged("DurationInPixels"); } }
@@ -151,10 +149,13 @@ namespace Tuto.Model
         public double DurationInPixels { get { return DurationInSeconds * Scale; } set { DurationInSeconds = value / Scale; NotifyPropertyChanged(); } }
 
         [DataMember]
-        private double leftShift { get; set; }
+        private double leftShiftInSeconds { get; set; }
 
         [DataMember]
-        public double LeftShift { get { return leftShift; } set { leftShift = value; NotifyPropertyChanged(); } }//position of whole track relative to main track
+        public double LeftShiftInSeconds { get { return leftShiftInSeconds; } set { leftShiftInSeconds = value; NotifyPropertyChanged(); NotifyPropertyChanged("LeftShiftInPixels"); } }//position of whole track relative to main track
+
+        [DataMember]
+        public double LeftShiftInPixels { get { return leftShiftInSeconds * Scale; } set { leftShiftInSeconds = value / Scale; NotifyPropertyChanged(); } }
 
         [DataMember]
         public double TopShift { get; set; }
@@ -162,9 +163,10 @@ namespace Tuto.Model
 
         private void NotifyScaleChanged()
         {
-            NotifyPropertyChanged("StartPixel");
-            NotifyPropertyChanged("EndPixel");
             NotifyPropertyChanged("DurationInPixels");
+            NotifyPropertyChanged("StartPixel");
+            NotifyPropertyChanged("EndPixel");          
+            NotifyPropertyChanged("LeftShiftInPixels");
         }
 
     }
