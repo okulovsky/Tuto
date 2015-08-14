@@ -9,75 +9,10 @@
 	mc:Ignorable="d"
 	x:Class="Tuto.Navigator.RangeSlider"
 	x:Name="root"
-	UseLayoutRounding="True" d:DesignWidth="400">
-	<UserControl.Resources>
-		<ControlTemplate x:Key="RepeatButtonControlTemplate" TargetType="RepeatButton">
-			<Grid/>
-		</ControlTemplate>
-		<Style x:Key="ThumbStyle" TargetType="Thumb">
-			<Setter Property="Template">
-				<Setter.Value>
-					<ControlTemplate TargetType="Thumb">
-						<Grid>
-							<VisualStateManager.VisualStateGroups>
-								<VisualStateGroup x:Name="CommonStates">
-									<VisualState x:Name="Normal"/>
-									<VisualState x:Name="MouseOver">
-										<Storyboard>
-											<DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="BackgroundOver" d:IsOptimized="True"/>
-										</Storyboard>
-									</VisualState>
-									<VisualState x:Name="Pressed">
-										<Storyboard>
-											<DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="BackgroundOver" d:IsOptimized="True"/>
-										</Storyboard>
-									</VisualState>
-									<VisualState x:Name="Disabled"/>
-								</VisualStateGroup>
-							</VisualStateManager.VisualStateGroups>
-							<Border x:Name="Background" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" />
-							<Border x:Name="BackgroundOver" Background="{TemplateBinding Foreground}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Opacity="0" />
-						</Grid>
-					</ControlTemplate>
-				</Setter.Value>
-			</Setter>
-		</Style>
-		<Style x:Key="SliderStyle" TargetType="Slider">
-			<Setter Property="Template">
-				<Setter.Value>
-					<ControlTemplate TargetType="Slider">
-						<Grid x:Name="Root">
-							<Grid x:Name="HorizontalTemplate">
-								<Track x:Name="PART_Track">
-									<Track.IncreaseRepeatButton>
-										<RepeatButton x:Name="HorizontalTrackLargeChangeIncreaseRepeatButton" Template="{StaticResource RepeatButtonControlTemplate}" />
-									</Track.IncreaseRepeatButton>
-									<Track.DecreaseRepeatButton>
-										<RepeatButton x:Name="HorizontalTrackLargeChangeDecreaseRepeatButton" Template="{StaticResource RepeatButtonControlTemplate}" />
-									</Track.DecreaseRepeatButton>
-									<Track.Thumb>
-                                        <Thumb x:Name="HorizontalThumb" Height="18" IsTabStop="True" Width="5" Style="{StaticResource ThumbStyle}" Background="#FF026873" BorderBrush="#00000000" Margin="1" />
-									</Track.Thumb>
-								</Track>
-							</Grid>
-						</Grid>
-					</ControlTemplate>
-				</Setter.Value>
-			</Setter>
-		</Style>
-	</UserControl.Resources>
-
-	<Grid x:Name="LayoutRoot" Background="Transparent">
-		<Border x:Name="progressBorder" Background="#FF026873" BorderThickness="1,5" />
-		<Slider x:Name="LowerSlider" 
-                Minimum="{Binding RelativeSource={RelativeSource AncestorType=local:RangeSlider}, Path=Minimum, Mode=TwoWay}"
-                Maximum="{Binding RelativeSource={RelativeSource AncestorType=local:RangeSlider}, Path=Maximum, Mode=TwoWay}"
-                Value="{Binding RelativeSource={RelativeSource AncestorType=local:RangeSlider}, Path=LowerValue, Mode=TwoWay}"
-                Style="{StaticResource SliderStyle}" />
-		<Slider x:Name="UpperSlider"
-                Minimum="{Binding RelativeSource={RelativeSource AncestorType=local:RangeSlider}, Path=Minimum, Mode=TwoWay}"
-                Maximum="{Binding RelativeSource={RelativeSource AncestorType=local:RangeSlider}, Path=Maximum, Mode=TwoWay}"
-                Value="{Binding RelativeSource={RelativeSource AncestorType=local:RangeSlider}, Path=UpperValue, Mode=TwoWay}"
-                Style="{StaticResource SliderStyle}" />
-	</Grid>
+	UseLayoutRounding="True" d:DesignWidth="100">
+    <Rectangle x:Name="Track"
+                Fill="Green"
+                MaxWidth="{Binding RelativeSource={RelativeSource AncestorType=local:RangeSlider}, Path=Maximum, Mode=TwoWay}"
+                MinWidth="{Binding RelativeSource={RelativeSource AncestorType=local:RangeSlider}, Path=Minimum, Mode=TwoWay}"
+    ></Rectangle>
 </UserControl>

@@ -198,6 +198,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="ClassDiagram1.cd" />
     <None Include="NoiseReduction\make.bat" />
     <None Include="NoiseReduction\noise" />
     <None Include="NoiseReduction\nr.conf" />

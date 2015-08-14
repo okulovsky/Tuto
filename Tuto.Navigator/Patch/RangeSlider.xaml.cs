@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Tuto.Model;
 
 namespace Tuto.Navigator
 {
@@ -27,28 +28,27 @@ namespace Tuto.Navigator
 
         void RangeSlider_LayoutUpdated(object sender, EventArgs e)
         {
-            SetProgressBorder();
-            SetLowerValueVisibility();
+            Track.Width = EndSecond - StartSecond;
         }
 
         private void SetProgressBorder()
         {
-            double lowerPoint = (this.ActualWidth * (LowerValue - Minimum)) / (Maximum - Minimum);
-            double upperPoint = (this.ActualWidth * (UpperValue - Minimum)) / (Maximum - Minimum);
-            upperPoint = this.ActualWidth - upperPoint;
-            progressBorder.Margin = new Thickness(lowerPoint, 0, upperPoint, 0);
+            //double lowerPoint = (this.ActualWidth * (LeftShift - Minimum)) / (Maximum - Minimum);
+            //double upperPoint = (this.ActualWidth * (EndSecond - Minimum)) / (Maximum - Minimum);
+            //upperPoint = this.ActualWidth - upperPoint;
+            //progressBorder.Margin = new Thickness(lowerPoint, 0, upperPoint, 0);
         }
 
         public void SetLowerValueVisibility()
         {
-            if (DisableLowerValue)
-            {
-                LowerSlider.Visibility = System.Windows.Visibility.Collapsed;
-            }
-            else
-            {
-                LowerSlider.Visibility = System.Windows.Visibility.Visible;
-            }
+            //if (DisableLowerValue)
+            //{
+            //    LowerSlider.Visibility = System.Windows.Visibility.Collapsed;
+            //}
+            //else
+            //{
+            //    LowerSlider.Visibility = System.Windows.Visibility.Visible;
+            //}
         }
 
         public double Minimum
@@ -63,57 +63,81 @@ namespace Tuto.Navigator
             set { SetValue(MaximumProperty, value); }
         }
 
-        public double LowerValue
+        public double LeftShift
         {
-            get { return (double)GetValue(LowerValueProperty); }
+            get { return (double)GetValue(LeftShiftValueProperty); }
+            set { SetValue(LeftShiftValueProperty, value); }
+        }
+
+        public double EndSecond
+        {
+            get { return (double)GetValue(UpperValueProperty); }
+            set { SetValue(UpperValueProperty, value);  }
+        }
+
+        public double StartSecond
+        {
+            get { 
+                return (double)GetValue(LowerValueProperty); 
+            }
             set { SetValue(LowerValueProperty, value); }
         }
 
-        public double UpperValue
+        public double Duration
         {
-            get { return (double)GetValue(UpperValueProperty); }
-            set { SetValue(UpperValueProperty, value); }
+            get { return (double)GetValue(DurationProperty); }
+            set {  SetValue(DurationProperty, value); }
         }
 
-        public bool DisableLowerValue
+        public double CurrentWidth
         {
-            get { return (bool)GetValue(DisableLowerValueProperty); }
-            set { SetValue(DisableLowerValueProperty, value); }
+            get {
+                return (double)GetValue(CurrentWidthProperty);
+            }
+            set
+            {
+                Track.Width = value; 
+                SetValue(CurrentWidthProperty, value); }
         }
+
+        public double Scale
+        {
+            get { return (double)GetValue(ScaleProperty); }
+            set { SetValue(ScaleProperty, value); }
+        }
+
+        public static readonly DependencyProperty ScaleProperty =
+            DependencyProperty.Register("Scale", typeof(double), typeof(RangeSlider), new UIPropertyMetadata(0d, new PropertyChangedCallback(PropertyChanged)));
+
+        public static readonly DependencyProperty CurrentWidthProperty =
+            DependencyProperty.Register("CurrentWidth", typeof(double), typeof(RangeSlider), new UIPropertyMetadata(0d, new PropertyChangedCallback(a)));
+
+        public static readonly DependencyProperty DurationProperty =
+            DependencyProperty.Register("Duration", typeof(double), typeof(RangeSlider), new UIPropertyMetadata(0d, new PropertyChangedCallback(PropertyChanged)));
 
         public static readonly DependencyProperty MinimumProperty =
             DependencyProperty.Register("Minimum", typeof(double), typeof(RangeSlider), new UIPropertyMetadata(0d, new PropertyChangedCallback(PropertyChanged)));
 
+        public static readonly DependencyProperty LeftShiftValueProperty =
+            DependencyProperty.Register("LeftShift", typeof(double), typeof(RangeSlider), new UIPropertyMetadata(10d, new PropertyChangedCallback(PropertyChanged)));
+
         public static readonly DependencyProperty LowerValueProperty =
-            DependencyProperty.Register("LowerValue", typeof(double), typeof(RangeSlider), new UIPropertyMetadata(10d, new PropertyChangedCallback(PropertyChanged)));
+            DependencyProperty.Register("StartSecond", typeof(double), typeof(RangeSlider), new UIPropertyMetadata(10d, new PropertyChangedCallback(PropertyChanged)));
 
         public static readonly DependencyProperty UpperValueProperty =
-            DependencyProperty.Register("UpperValue", typeof(double), typeof(RangeSlider), new UIPropertyMetadata(90d, new PropertyChangedCallback(PropertyChanged)));
+            DependencyProperty.Register("EndSecond", typeof(double), typeof(RangeSlider), new UIPropertyMetadata(90d, new PropertyChangedCallback(PropertyChanged)));
 
         public static readonly DependencyProperty MaximumProperty =
             DependencyProperty.Register("Maximum", typeof(double), typeof(RangeSlider), new UIPropertyMetadata(100d, new PropertyChangedCallback(PropertyChanged)));
 
-        public static readonly DependencyProperty DisableLowerValueProperty =
-            DependencyProperty.Register("DisableLowerValue", typeof(bool), typeof(RangeSlider), new UIPropertyMetadata(false, new PropertyChangedCallback(DisabledLowerValueChanged)));
-
-        private static void DisabledLowerValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void a(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            RangeSlider slider = (RangeSlider)d;
-            slider.SetLowerValueVisibility();
+
         }
 
         private static void PropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            RangeSlider slider = (RangeSlider)d;
-            if (e.Property == RangeSlider.LowerValueProperty)
-            {
-                slider.UpperSlider.Value = Math.Max(slider.UpperSlider.Value, slider.LowerSlider.Value);
-            }
-            else if (e.Property == RangeSlider.UpperValueProperty)
-            {
-                slider.LowerSlider.Value = Math.Min(slider.UpperSlider.Value, slider.LowerSlider.Value);
-            }
-            slider.SetProgressBorder();
+            
         }
 
         private enum HitType
@@ -129,24 +153,23 @@ namespace Tuto.Navigator
 
         private HitType SetHitType(Point point)
         {
+            var a = Track.Width;
+            double left = LeftShift;
+            double top = Canvas.GetTop(this);
+            double right = left + Track.Width;
+            double bottom = top + Track.Height;
+            if (point.X < left) return HitType.None;
+            if (point.X > right) return HitType.None;
 
-            var pixPerUnit = this.Width / Math.Abs(Maximum - Minimum);
-
-            var leftShift = (LowerSlider.Value - LowerSlider.Minimum) * pixPerUnit;
-            var rightShift = UpperSlider.Value * pixPerUnit;
-
-            double left = Canvas.GetLeft(this) + leftShift;
-            double right = Canvas.GetLeft(this) + rightShift;
-
-            
-
-            const double GAP = 5;
+            const double GAP = 10;
             if (point.X - left < GAP)
             {
+                // Left edge.
                 return HitType.L;
             }
             if (right - point.X < GAP)
             {
+                // Right edge.
                 return HitType.R;
             }
             return HitType.Body;
@@ -154,21 +177,26 @@ namespace Tuto.Navigator
 
         private void SetMouseCursor()
         {
-            //Cursor desired_cursor = Cursors.Arrow;
-            //switch (MouseHitType)
-            //{
-            //    case HitType.Body:
-            //        desired_cursor = Cursors.ScrollWE;
-            //        break;
-            //}
-            //if (Cursor != desired_cursor) Cursor = desired_cursor;
+            Cursor desired_cursor = Cursors.Arrow;
+            switch (MouseHitType)
+            {
+                case HitType.R:
+                    desired_cursor = Cursors.ScrollE;
+                    break;
+
+                case HitType.L:
+                    desired_cursor = Cursors.ScrollW;
+                    break;
+            }
+            if (Cursor != desired_cursor) Cursor = desired_cursor;
         }
 
 
         private void root_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            DragInProgress = false;
+            
             ReleaseMouseCapture();
+            DragInProgress = false;
         }
 
         private void root_MouseMove(object sender, MouseEventArgs e)
@@ -180,12 +208,50 @@ namespace Tuto.Navigator
             }
             else
             {
+                // See how much the mouse has moved.
                 Point point = Mouse.GetPosition((Canvas)this.Parent);
                 double offset_x = point.X - LastPoint.X;
-                double new_x = Canvas.GetLeft(this);
-                new_x += offset_x;
-                Canvas.SetLeft(this, new_x);
-                LastPoint = point;
+
+                // Get the rectangle's current position.
+                double new_x = LeftShift;
+                double new_width = Track.Width;
+
+                // Update the rectangle.
+                switch (MouseHitType)
+                {
+                    case HitType.Body:
+                        new_x += offset_x;
+                        break;
+                    case HitType.L:
+                        new_x += offset_x;
+                        new_width -= offset_x;
+                        break;
+                    case HitType.R:
+                        new_width += offset_x;
+                        break;
+                }
+
+                // Don't use negative width or height.
+                if ((new_width > 0))
+                {
+                    
+                    // Update the rectangle.
+
+                    CurrentWidth = new_width;
+
+                    if (MouseHitType == HitType.L)
+                    {
+                        StartSecond += offset_x;
+                    }
+
+                    
+
+                    EndSecond = StartSecond + new_width;
+                    
+                    LeftShift = new_x;
+                    LastPoint = point;
+                    // Save the mouse's new location.
+                }
             }
         }
 
@@ -193,13 +259,11 @@ namespace Tuto.Navigator
         {
             MouseHitType = SetHitType(Mouse.GetPosition((Canvas)this.Parent));
             SetMouseCursor();
+            if (MouseHitType == HitType.None) return;
             LastPoint = Mouse.GetPosition((Canvas)this.Parent);
             
-            if (MouseHitType == HitType.Body)
-            {
-                CaptureMouse();
-                DragInProgress = true;
-            }
+            DragInProgress = true;
+            CaptureMouse();
         }
     }
 }

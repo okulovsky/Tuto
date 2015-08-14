@@ -9,7 +9,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
 
-namespace Tuto.Model
+namespace Tuto.Model 
 {
     [DataContract]
     public class PatchModel : NotifierModel
@@ -63,7 +63,7 @@ namespace Tuto.Model
         {
             SourceInfo = new FileInfo(sourcePath);
             MediaTracks = new ObservableCollection<MediaTrack>();
-            Subtitles = new ObservableCollection<Subtitle>() { new Subtitle("hello", 1, 10), new Subtitle("kitty", 1, 60) };
+            Subtitles = new ObservableCollection<Subtitle>() { new Subtitle("hello", 1, 10), new Subtitle("kitty", 1, 100) };
             Duration = 10;
             Scale = 1;
         }
@@ -98,8 +98,8 @@ namespace Tuto.Model
         public Subtitle(string content, int scale, double leftShift)
         {
             StartSecond = 0;
-            EndSecond = 20;
-            DurationInSeconds = 1000;
+            EndSecond = 50;
+            DurationInSeconds = 500;
             LeftShiftInSeconds = leftShift;
             Content = content;
             Scale = scale;
@@ -137,7 +137,8 @@ namespace Tuto.Model
         public double EndSecond { get { return endSecond; } set { endSecond = value; NotifyPropertyChanged(); NotifyPropertyChanged("EndPixel"); } } //right border of chunk
 
         [DataMember]
-        public double EndPixel { get { return EndSecond * Scale; } set { EndSecond = value / Scale; NotifyPropertyChanged(); } }
+        public double EndPixel { get { return EndSecond * Scale; } 
+            set { EndSecond = value / Scale; NotifyPropertyChanged(); } }
 
         [DataMember]
         private double durationInSeconds { get; set; }
@@ -147,6 +148,12 @@ namespace Tuto.Model
 
         [DataMember]
         public double DurationInPixels { get { return DurationInSeconds * Scale; } set { DurationInSeconds = value / Scale; NotifyPropertyChanged(); } }
+
+        //[DataMember]
+        //private double currentWidthInPixels;
+
+        //[DataMember]
+        //public double CurrentWidthInPixels { get { return  currentWidthInPixels} set { currentWidthInPixels = value; NotifyPropertyChanged(); } }
 
         [DataMember]
         private double leftShiftInSeconds { get; set; }
@@ -167,6 +174,7 @@ namespace Tuto.Model
             NotifyPropertyChanged("StartPixel");
             NotifyPropertyChanged("EndPixel");          
             NotifyPropertyChanged("LeftShiftInPixels");
+            NotifyPropertyChanged("CurrentWidthInPixels");
         }
 
     }

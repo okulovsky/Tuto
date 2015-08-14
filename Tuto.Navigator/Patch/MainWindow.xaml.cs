@@ -71,7 +71,7 @@ namespace Tuto.Navigator
 
         private void addTrack(string path)
         {
-            var seconds = ViewTimeline.Position.TotalSeconds * Model.Scale;
+            var seconds = ViewTimeline.Position.TotalSeconds;
 
             var track = new MediaTrack(path, Model.Scale);
             track.LeftShiftInSeconds = seconds;
@@ -160,40 +160,40 @@ namespace Tuto.Navigator
 
         private void CheckPlayTime()
         {
-            //var pixelsRelativeToSeconds = ViewTimeline.Position.TotalSeconds * Model.Scale;
-            //Canvas.SetLeft(CurrentTime, pixelsRelativeToSeconds);
-            //CheckSubtitle(pixelsRelativeToSeconds);
-            //for (var i = Model.MediaTracks.Count - 1; i >= 0; i--)
-            //    if (InPatchSection(Model.MediaTracks[i], pixelsRelativeToSeconds))
-            //    {
-            //        if (currentPatch == Model.MediaTracks[i])
-            //            return;
+            var pixelsRelativeToSeconds = ViewTimeline.Position.TotalSeconds * Model.Scale;
+            Canvas.SetLeft(CurrentTime, pixelsRelativeToSeconds);
+            CheckSubtitle(pixelsRelativeToSeconds);
+            for (var i = Model.MediaTracks.Count - 1; i >= 0; i--)
+                if (InPatchSection(Model.MediaTracks[i], pixelsRelativeToSeconds))
+                {
+                    if (currentPatch == Model.MediaTracks[i])
+                        return;
 
-            //        currentPatch = Model.MediaTracks[i];
-            //        PatchWindow.Source = Model.MediaTracks[i].Path;
+                    currentPatch = Model.MediaTracks[i];
+                    PatchWindow.Source = Model.MediaTracks[i].Path;
 
-            //        var shift = currentPatch.LeftShiftInPixels;
-            //        var position = pixelsRelativeToSeconds - shift;
-            //        PatchWindow.Position = TimeSpan.FromSeconds(position);
-            //        PatchWindow.Play();
+                    var shift = currentPatch.LeftShiftInPixels;
+                    var position = pixelsRelativeToSeconds - shift + currentPatch.StartPixel;
+                    PatchWindow.Position = TimeSpan.FromSeconds(position / Model.Scale);
+                    PatchWindow.Play();
 
-            //        ViewTimeline.Volume = 0;
-            //        ViewTimeline.Visibility = System.Windows.Visibility.Collapsed;
-            //        PatchWindow.Visibility = System.Windows.Visibility.Visible;
+                    ViewTimeline.Volume = 0;
+                    ViewTimeline.Visibility = System.Windows.Visibility.Collapsed;
+                    PatchWindow.Visibility = System.Windows.Visibility.Visible;
 
-            //        return;
-            //    }
-            //PatchWindow.Pause();
-            //PatchWindow.Visibility = System.Windows.Visibility.Collapsed;
-            //ViewTimeline.Volume = volume;
-            //ViewTimeline.Visibility = System.Windows.Visibility.Visible;
-            //currentPatch = null;
+                    return;
+                }
+            PatchWindow.Pause();
+            PatchWindow.Visibility = System.Windows.Visibility.Collapsed;
+            ViewTimeline.Volume = volume;
+            ViewTimeline.Visibility = System.Windows.Visibility.Visible;
+            currentPatch = null;
         }
 
         private bool InPatchSection(TrackInfo track, double seconds)
         {
-            var leftIn = seconds >= track.LeftShiftInPixels + track.StartPixel;
-            var rightIn = seconds <= track.LeftShiftInPixels + track.EndPixel;
+            var leftIn = seconds >= track.LeftShiftInPixels;
+            var rightIn = seconds <= track.LeftShiftInPixels - track.StartPixel + track.EndPixel;
             return leftIn && rightIn;
         }
 
@@ -207,7 +207,7 @@ namespace Tuto.Navigator
             {
                 var shift = currentPatch.LeftShiftInPixels;
                 var seconds = ViewTimeline.Position.TotalSeconds * Model.Scale;
-                var position = seconds - shift;
+                var position = seconds - shift + currentPatch.StartPixel;
                 PatchWindow.Position = TimeSpan.FromSeconds(position / Model.Scale);
             }
         }

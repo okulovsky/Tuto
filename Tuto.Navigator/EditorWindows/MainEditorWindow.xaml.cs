@@ -19,11 +19,11 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using Editor.Windows;
 using Tuto;
-using Tuto.Model;
 using Tuto.TutoServices;
 using Tuto.Navigator;
 using Tuto.BatchWorks;
 using System.ComponentModel;
+using Tuto.Model;
 
 namespace Editor
 {
