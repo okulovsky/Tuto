@@ -42,6 +42,7 @@ namespace Tuto.Navigator
             this.DataContext = model;
             Model = model;
             EModel = em;
+            Model.RefreshReferences();
         }
 
 
@@ -73,7 +74,7 @@ namespace Tuto.Navigator
         {
             var seconds = ViewTimeline.Position.TotalSeconds;
 
-            var track = new MediaTrack(path, Model.Scale);
+            var track = new MediaTrack(path, Model.ScaleInfo);
             track.LeftShiftInSeconds = seconds;
             track.TopShift = prevoiusTop;
             track.DurationInPixels = 10;

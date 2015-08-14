@@ -31,26 +31,6 @@ namespace Tuto.Navigator
             Track.Width = EndSecond - StartSecond;
         }
 
-        private void SetProgressBorder()
-        {
-            //double lowerPoint = (this.ActualWidth * (LeftShift - Minimum)) / (Maximum - Minimum);
-            //double upperPoint = (this.ActualWidth * (EndSecond - Minimum)) / (Maximum - Minimum);
-            //upperPoint = this.ActualWidth - upperPoint;
-            //progressBorder.Margin = new Thickness(lowerPoint, 0, upperPoint, 0);
-        }
-
-        public void SetLowerValueVisibility()
-        {
-            //if (DisableLowerValue)
-            //{
-            //    LowerSlider.Visibility = System.Windows.Visibility.Collapsed;
-            //}
-            //else
-            //{
-            //    LowerSlider.Visibility = System.Windows.Visibility.Visible;
-            //}
-        }
-
         public double Minimum
         {
             get { return (double)GetValue(MinimumProperty); }
@@ -96,21 +76,21 @@ namespace Tuto.Navigator
             }
             set
             {
-                Track.Width = value; 
+                Track.Width = value;
                 SetValue(CurrentWidthProperty, value); }
         }
 
-        public double Scale
+        public double Scaling
         {
-            get { return (double)GetValue(ScaleProperty); }
-            set { SetValue(ScaleProperty, value); }
+            get { return (double)GetValue(ScalingProperty); }
+            set { SetValue(ScalingProperty, value); CurrentWidth = EndSecond - StartSecond ; }
         }
 
-        public static readonly DependencyProperty ScaleProperty =
-            DependencyProperty.Register("Scale", typeof(double), typeof(RangeSlider), new UIPropertyMetadata(0d, new PropertyChangedCallback(PropertyChanged)));
+        public static readonly DependencyProperty ScalingProperty =
+            DependencyProperty.Register("Scaling", typeof(double), typeof(RangeSlider), new UIPropertyMetadata(0d, new PropertyChangedCallback(PropertyChanged)));
 
         public static readonly DependencyProperty CurrentWidthProperty =
-            DependencyProperty.Register("CurrentWidth", typeof(double), typeof(RangeSlider), new UIPropertyMetadata(0d, new PropertyChangedCallback(a)));
+            DependencyProperty.Register("CurrentWidth", typeof(double), typeof(RangeSlider), new UIPropertyMetadata(0d, new PropertyChangedCallback(PropertyChanged)));
 
         public static readonly DependencyProperty DurationProperty =
             DependencyProperty.Register("Duration", typeof(double), typeof(RangeSlider), new UIPropertyMetadata(0d, new PropertyChangedCallback(PropertyChanged)));
@@ -130,9 +110,10 @@ namespace Tuto.Navigator
         public static readonly DependencyProperty MaximumProperty =
             DependencyProperty.Register("Maximum", typeof(double), typeof(RangeSlider), new UIPropertyMetadata(100d, new PropertyChangedCallback(PropertyChanged)));
 
-        private static void a(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void ScaleFinished(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-
+            var sl = (RangeSlider)d;
+            sl.Track.Width = sl.EndSecond - sl.StartSecond;
         }
 
         private static void PropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -153,7 +134,6 @@ namespace Tuto.Navigator
 
         private HitType SetHitType(Point point)
         {
-            var a = Track.Width;
             double left = LeftShift;
             double top = Canvas.GetTop(this);
             double right = left + Track.Width;
@@ -260,8 +240,7 @@ namespace Tuto.Navigator
             MouseHitType = SetHitType(Mouse.GetPosition((Canvas)this.Parent));
             SetMouseCursor();
             if (MouseHitType == HitType.None) return;
-            LastPoint = Mouse.GetPosition((Canvas)this.Parent);
-            
+            LastPoint = Mouse.GetPosition((Canvas)this.Parent); 
             DragInProgress = true;
             CaptureMouse();
         }

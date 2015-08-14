@@ -33,28 +33,15 @@ namespace Tuto.Model
         public double DurationInPixels { get { return duration * Scale; } set { duration = value / Scale; NotifyPropertyChanged(); } }
 
         [DataMember]
-        private int scale; //to model
+        public ScaleInfo ScaleInfo; //to model
 
-        [DataMember]
+        
         public int Scale
         {
-            get { return scale; }
+            get { return ScaleInfo.Scale; }
             set
             {
-                scale = value;
-                foreach (var track in MediaTracks)
-                {
-                    var oldScale = track.Scale;
-                    track.Scale = Scale;
-                }
-
-                if (Subtitles != null)
-                    foreach (var sub in Subtitles)
-                    {
-                        var oldScale = sub.Scale;
-                        sub.Scale = Scale;
-                    }
-
+                ScaleInfo.Scale = value;
                 NotifyPropertyChanged();
             }
         } //pixels per sec
@@ -63,9 +50,9 @@ namespace Tuto.Model
         {
             SourceInfo = new FileInfo(sourcePath);
             MediaTracks = new ObservableCollection<MediaTrack>();
-            Subtitles = new ObservableCollection<Subtitle>() { new Subtitle("hello", 1, 10), new Subtitle("kitty", 1, 100) };
+            Subtitles = new ObservableCollection<Subtitle>() { new Subtitle("hello", new ScaleInfo(1), 10), new Subtitle("kitty", new ScaleInfo(1), 100) };
             Duration = 10;
-            Scale = 1;
+            ScaleInfo = new ScaleInfo(1);
         }
 
         public void DeleteTrackAccordingPosition(int index, EditorModel m)
@@ -77,15 +64,40 @@ namespace Tuto.Model
                 try { File.Delete(name); }
                 catch { }
         }
+
+        public void RefreshReferences()
+        {
+            foreach (var e in MediaTracks)
+            {
+                e.ScaleInfo = ScaleInfo;
+                PropertyChanged += (s,a) => e.NotifyScaleChanged();
+            }
+            foreach (var e in Subtitles)
+            {
+                e.ScaleInfo = ScaleInfo;
+                PropertyChanged += (s, a) => e.NotifyScaleChanged();
+            }
+        }
+
+    }
+
+    public class ScaleInfo
+    {
+        public int Scale { get; set; }
+
+        public ScaleInfo(int scale)
+        {
+            Scale = scale;
+        }
     }
 
     public class MediaTrack : TrackInfo 
     {
-        public MediaTrack(string path, int scale)
+        public MediaTrack(string path, ScaleInfo scale)
         {
             Path = new Uri(path);
             ConvertedName = Guid.NewGuid().ToString() + ".avi";
-            Scale = scale;
+            ScaleInfo = scale;
         }
     }
 
@@ -95,14 +107,14 @@ namespace Tuto.Model
         public double X;
         public double Y;
 
-        public Subtitle(string content, int scale, double leftShift)
+        public Subtitle(string content, ScaleInfo scale, double leftShift)
         {
             StartSecond = 0;
             EndSecond = 50;
             DurationInSeconds = 500;
             LeftShiftInSeconds = leftShift;
             Content = content;
-            Scale = scale;
+            ScaleInfo = scale;
         }
     }
 
@@ -110,10 +122,12 @@ namespace Tuto.Model
     public abstract class TrackInfo : NotifierModel
     {
         [DataMember]
-        private int scale;
+        public ScaleInfo ScaleInfo;
 
         [DataMember]
-        public int Scale { get { return scale; } set { scale = value; NotifyScaleChanged(); } }
+        public int Scale { 
+            get { return ScaleInfo.Scale; } 
+            set { ScaleInfo.Scale = value; } }
 
         [DataMember]
         public Uri Path { get; set; }
@@ -149,12 +163,6 @@ namespace Tuto.Model
         [DataMember]
         public double DurationInPixels { get { return DurationInSeconds * Scale; } set { DurationInSeconds = value / Scale; NotifyPropertyChanged(); } }
 
-        //[DataMember]
-        //private double currentWidthInPixels;
-
-        //[DataMember]
-        //public double CurrentWidthInPixels { get { return  currentWidthInPixels} set { currentWidthInPixels = value; NotifyPropertyChanged(); } }
-
         [DataMember]
         private double leftShiftInSeconds { get; set; }
 
@@ -168,13 +176,13 @@ namespace Tuto.Model
         public double TopShift { get; set; }
      
 
-        private void NotifyScaleChanged()
+        public void NotifyScaleChanged()
         {
             NotifyPropertyChanged("DurationInPixels");
             NotifyPropertyChanged("StartPixel");
             NotifyPropertyChanged("EndPixel");          
             NotifyPropertyChanged("LeftShiftInPixels");
-            NotifyPropertyChanged("CurrentWidthInPixels");
+            NotifyPropertyChanged("Scale");
         }
 
     }

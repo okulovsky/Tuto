@@ -48,11 +48,11 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
 
-                        <ItemsControl ItemsSource="{Binding Subtitles}" Canvas.Top="75" Width="1000">
+                                <ItemsControl ItemsSource="{Binding Subtitles}" Canvas.Top="75" Width="1000">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Canvas>
-                                        <DesignInControl:RangeSlider 
+                                            <Canvas>
+                                                <DesignInControl:RangeSlider 
                                             Canvas.Top="{Binding TopShift, Mode=TwoWay}" 
                                             Canvas.Left="{Binding LeftShiftInPixels, Mode=TwoWay}" 
                                             LeftShift="{Binding LeftShiftInPixels, Mode=TwoWay}" 
@@ -61,15 +61,17 @@
                                             StartSecond="{Binding StartPixel, Mode=TwoWay}"
                                             EndSecond="{Binding EndPixel, Mode=TwoWay}"
                                             Height="25" 
+                                            Scaling="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.Scale, Mode=TwoWay}"
                                             MouseDoubleClick="RangeSlider_MouseDoubleClick"/>
-                                    </Canvas>
+                                            </Canvas> 
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
 
 
-                        <Rectangle Name="CurrentTime" Fill="Black" Canvas.Top="5" Width="2" Height="80"></Rectangle>
-                    </Canvas>
+                                <Rectangle Name="CurrentTime" Fill="Black" Canvas.Top="5" Width="2" Height="80"></Rectangle>
+                                <Button Content="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.Scale, Mode=TwoWay}"></Button>
+                            </Canvas>
 
 
                     </WrapPanel>
