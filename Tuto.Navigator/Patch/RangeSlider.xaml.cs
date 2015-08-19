@@ -18,6 +18,10 @@ namespace Tuto.Navigator
     /// <summary>
     /// Interaction logic for RangeSlider.xaml
     /// </summary>
+    /// 
+
+    
+
     public partial class RangeSlider : UserControl
     {
         public RangeSlider()

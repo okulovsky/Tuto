@@ -17,7 +17,7 @@ namespace Tuto.TutoServices.Assembler
         {
             base.id = context.Id;
             Payload.SerializeToContext(context);
-            var script = string.Format(@"{0} = {1}.Subtitle(""{2}"", x={3}, y={4})",Id,Payload.Id,Content, X, Y);
+            var script = string.Format(@"{0} = {1}.Subtitle(""{2}"", x={3}, y={4}, size=24)",Id,Payload.Id,Content, X, Y);
             context.AddData(script);
         }
 

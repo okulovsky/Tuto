@@ -8,6 +8,7 @@ using System.Text;
 using System.IO;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
+using System.Windows;
 
 namespace Tuto.Model 
 {
@@ -35,6 +36,11 @@ namespace Tuto.Model
         [DataMember]
         public ScaleInfo ScaleInfo; //to model
 
+        public double Width { get; set; }
+        public double Height { get; set; }
+
+        public double ActualWidth { get; set; }
+        public double ActualHeight { get; set; }
         
         public int Scale
         {
@@ -104,6 +110,8 @@ namespace Tuto.Model
     public class Subtitle : TrackInfo
     {
         public string Content;
+        public double HeightShift;
+        public Point Pos;
         public double X;
         public double Y;
 

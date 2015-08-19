@@ -26,6 +26,8 @@ namespace Tuto.Navigator
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     /// 
+
+
     public partial class MainWindow : Window
     {
 
@@ -35,6 +37,7 @@ namespace Tuto.Navigator
         {
             InitializeComponent();
             PatchWindow.LoadedBehavior = MediaState.Manual;
+            PreparePatchPicker();
         }
 
         public void LoadModel(PatchModel model, EditorModel em)
@@ -43,6 +46,54 @@ namespace Tuto.Navigator
             Model = model;
             EModel = em;
             Model.RefreshReferences();
+        }
+
+
+
+        public void PreparePatchPicker()
+        {
+            foreach (string s in Directory.GetLogicalDrives())
+            {
+                TreeViewItem item = new TreeViewItem();
+                item.Header = s;
+                item.Tag = s;
+                item.FontWeight = FontWeights.Normal;
+                item.Expanded += new RoutedEventHandler(folder_Expanded);
+                PatchPicker.Items.Add(item);
+            }
+        }
+
+        void folder_Expanded(object sender, RoutedEventArgs e)
+        {
+            TreeViewItem item = (TreeViewItem)sender;
+            if (item.Items.Count == 0)
+            {
+                item.Items.Clear();
+                try
+                {
+                    foreach (string s in Directory.GetDirectories(item.Tag.ToString()))
+                    {
+                        TreeViewItem subitem = new TreeViewItem();
+                        subitem.Header = s.Substring(s.LastIndexOf("\\") + 1);
+                        subitem.Tag = s;
+                        subitem.FontWeight = FontWeights.Normal;;
+                        subitem.Expanded += new RoutedEventHandler(folder_Expanded);
+                        item.Items.Add(subitem);
+                    }
+
+                    foreach (string s in Directory.GetFiles(item.Tag.ToString()))
+                    {
+                        TreeViewItem subitem = new TreeViewItem();
+                        subitem.Header = s.Substring(s.LastIndexOf("\\") + 1);
+                        subitem.Tag = s;
+                        subitem.FontWeight = FontWeights.Normal; ;
+                        subitem.Expanded += new RoutedEventHandler(folder_Expanded);
+                        item.Items.Add(subitem);
+                    }
+
+                }
+                catch (Exception) { }
+            }
         }
 
 
@@ -78,6 +129,7 @@ namespace Tuto.Navigator
             track.LeftShiftInSeconds = seconds;
             track.TopShift = prevoiusTop;
             track.DurationInPixels = 10;
+            Model.PropertyChanged += (s, a) => track.NotifyScaleChanged();
             Model.MediaTracks.Add(track);
             PatchWindow.MediaOpened += SetPatchDuration;
             PatchWindow.Stop();
@@ -119,7 +171,12 @@ namespace Tuto.Navigator
         private void SetMainVideo(object s, RoutedEventArgs a)
         {
             Model.Duration = ViewTimeline.NaturalDuration.TimeSpan.TotalSeconds;
+            Model.Width = ViewTimeline.NaturalVideoWidth;
+            Model.Height = ViewTimeline.NaturalVideoHeight;
             volume = ViewTimeline.Volume != 0 ? ViewTimeline.Volume : volume;
+            ViewTimeline.UpdateLayout();
+            Model.ActualHeight = ViewTimeline.ActualHeight;
+            Model.ActualWidth = ViewTimeline.ActualWidth;
             timer.Start();
             ViewTimeline.MediaOpened -= SetMainVideo; //should be once
         }
@@ -145,7 +202,7 @@ namespace Tuto.Navigator
                     subtitleFound = true;
                     if (currentSubtitle == e)
                         break;
-                    CurrentSubtitle.Content = e.Content;
+                    CurrentSubtitle.Text = e.Content;
                     currentSubtitle = e;
                     Canvas.SetTop(CurrentSubtitle, e.Y);
                     Canvas.SetLeft(CurrentSubtitle, e.X);
@@ -231,20 +288,14 @@ namespace Tuto.Navigator
         private void RangeSlider_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var pos = e.GetPosition(Tracks).X;
-            for (var i = 0; i < Model.MediaTracks.Count; i++)
-            {
-                var track = Model.MediaTracks[i];
-                if (track.LeftShiftInPixels + track.LeftShiftInPixels <= pos && track.LeftShiftInPixels + track.EndPixel >= pos)
-                {
-                    if (track.Path == PatchWindow.Source)
-                    {
-                        PatchWindow.Stop();
-                        PatchWindow.Source = null;
-                    }
-                    Model.DeleteTrackAccordingPosition(i, EModel);
-                    return;
-                }
-            }
+            var slider = (RangeSlider)sender;
+            var tr = slider.DataContext as TrackInfo;
+            if (tr is MediaTrack)
+                Model.MediaTracks.Remove((MediaTrack)tr);
+            else
+                Model.Subtitles.Remove((Subtitle)tr);
+            PatchWindow.Stop();
+            PatchWindow.Source = null;
         }
 
         private void mainwindow_Closing(object sender, CancelEventArgs e)
@@ -268,15 +319,19 @@ namespace Tuto.Navigator
         private void Subtitle_MouseUp(object sender, MouseButtonEventArgs e)
         {
             DragInProgress = false;
+            var shift = CurrentSubtitle.FontSize;
             currentSubtitle.X = Canvas.GetLeft(CurrentSubtitle);
             currentSubtitle.Y = Canvas.GetTop(CurrentSubtitle);
+            var pos = CurrentSubtitle.TranslatePoint(new Point(0, 0), ViewTimeline);
+            currentSubtitle.Pos = pos;
+            currentSubtitle.HeightShift = shift;
         }
 
         private void Subtitle_MouseMove(object sender, MouseEventArgs e)
         {
             if (DragInProgress)
             {
-                Point point = Mouse.GetPosition((Canvas)CurrentSubtitle.Parent);
+                Point point = Mouse.GetPosition(ViewTimeline);
                 double offset_x = point.X - LastPoint.X;
                 double offset_y = point.Y - LastPoint.Y;
                 double new_x = Canvas.GetLeft(CurrentSubtitle);
@@ -291,13 +346,24 @@ namespace Tuto.Navigator
 
         private void Subtitle_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            LastPoint = Mouse.GetPosition((Canvas)CurrentSubtitle.Parent);
+            LastPoint = Mouse.GetPosition(ViewTimeline);
             DragInProgress = true;
         }
 
         private void WrapPanel_RequestBringIntoView(object sender, RequestBringIntoViewEventArgs e)
         {
             e.Handled = true;
+        }
+
+        private void mainwindow_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            Model.ActualHeight = ViewTimeline.ActualHeight;
+            Model.ActualWidth = ViewTimeline.ActualWidth;
+        }
+
+        private void ViewTimeline_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            MessageBox.Show(CurrentSubtitle.TranslatePoint(new Point(0, 0), ViewTimeline).Y.ToString());
         }
 
     }

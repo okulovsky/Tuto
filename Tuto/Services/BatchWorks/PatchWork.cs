@@ -89,8 +89,8 @@ namespace Tuto.BatchWorks
             {
                 currentSub = new AvsSub();
                 currentSub.Payload = payload;
-                currentSub.X = (int)sub.X;
-                currentSub.Y = (int)sub.Y;
+                currentSub.X = (int)(sub.Pos.X * pmodel.Width / pmodel.ActualWidth);
+                currentSub.Y = (int)(sub.Pos.Y * pmodel.Height / pmodel.ActualHeight + sub.HeightShift);
                 currentSub.Content = sub.Content;
                 
                 payload = currentSub;
