@@ -91,6 +91,8 @@ namespace Tuto.BatchWorks
                 currentSub.Payload = payload;
                 currentSub.X = (int)(sub.Pos.X * pmodel.Width / pmodel.ActualWidth);
                 currentSub.Y = (int)(sub.Pos.Y * pmodel.Height / pmodel.ActualHeight + sub.HeightShift);
+                currentSub.Start = sub.LeftShiftInSeconds;
+                currentSub.End = sub.LeftShiftInSeconds + sub.EndSecond - sub.StartSecond;
                 currentSub.Content = sub.Content;
                 
                 payload = currentSub;
