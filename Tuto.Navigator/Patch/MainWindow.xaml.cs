@@ -19,6 +19,7 @@ using System.ComponentModel;
 using System.Collections.ObjectModel;
 using Tuto.Model;
 using Tuto.BatchWorks;
+using System.Windows.Forms.Integration;
 
 namespace Tuto.Navigator
 {
@@ -28,7 +29,7 @@ namespace Tuto.Navigator
     /// 
 
 
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
 
         public PatchModel Model;
@@ -49,7 +50,6 @@ namespace Tuto.Navigator
         }
 
 
-
         public void PreparePatchPicker()
         {
             foreach (string s in Directory.GetLogicalDrives())
@@ -61,6 +61,12 @@ namespace Tuto.Navigator
                 item.Expanded += new RoutedEventHandler(folder_Expanded);
                 PatchPicker.Items.Add(item);
             }
+        }
+
+        void AddTrackFromPicker(object sender, MouseButtonEventArgs e)
+        {
+            var fileName = ((TreeViewItem)sender).Tag.ToString();
+            addTrack(fileName);
         }
 
         void folder_Expanded(object sender, RoutedEventArgs e)
@@ -88,6 +94,7 @@ namespace Tuto.Navigator
                         subitem.Tag = s;
                         subitem.FontWeight = FontWeights.Normal; ;
                         subitem.Expanded += new RoutedEventHandler(folder_Expanded);
+                        subitem.MouseDoubleClick += AddTrackFromPicker;
                         item.Items.Add(subitem);
                     }
 
@@ -97,12 +104,16 @@ namespace Tuto.Navigator
         }
 
 
-        private int prevoiusTop = 5;
+        public int prevoiusTop = 5;
         private DispatcherTimer timer;
-        private double mainVideoLength = 0;
-        private double volume;
+        private double volume { get; set; }
         private TrackInfo currentPatch;
-        private Subtitle currentSubtitle;
+        private Subtitle _currentSubtitle;
+
+        public Subtitle currentSubtitle {
+            get {return _currentSubtitle;} 
+            set {_currentSubtitle = value; PropertyChanged(this, new PropertyChangedEventArgs("currentSubtitle"));}}
+
         private bool isPlaying;
         private bool isLoaded;
 
@@ -124,7 +135,6 @@ namespace Tuto.Navigator
         private void addTrack(string path)
         {
             var seconds = ViewTimeline.Position.TotalSeconds;
-
             var track = new MediaTrack(path, Model.ScaleInfo);
             track.LeftShiftInSeconds = seconds;
             track.TopShift = prevoiusTop;
@@ -168,6 +178,18 @@ namespace Tuto.Navigator
             else { ViewTimeline.Play(); PatchWindow.Play(); isPlaying = true; }
         }
 
+        private void SubtitleProcess(object sender, RoutedEventArgs e)
+        {
+            AddEmptySubtitle();
+        }
+
+        private void AddEmptySubtitle()
+        {
+            var sub = new Subtitle("Sample Text", Model.ScaleInfo, Canvas.GetLeft(CurrentTime));
+            Model.PropertyChanged += (s, a) => sub.NotifyScaleChanged();
+            Model.Subtitles.Add(sub);
+        }
+
         private void SetMainVideo(object s, RoutedEventArgs a)
         {
             Model.Duration = ViewTimeline.NaturalDuration.TimeSpan.TotalSeconds;
@@ -202,17 +224,18 @@ namespace Tuto.Navigator
                     subtitleFound = true;
                     if (currentSubtitle == e)
                         break;
-                    CurrentSubtitle.Text = e.Content;
+                    //CurrentSubtitle.Text = e.Content;
                     currentSubtitle = e;
-                    Canvas.SetTop(CurrentSubtitle, e.Y);
-                    Canvas.SetLeft(CurrentSubtitle, e.X);
+                    PropertyChanged(this, new PropertyChangedEventArgs("currentSubtitle"));
+                    Canvas.SetTop(CurrentSubtitleWraper, e.Y);
+                    Canvas.SetLeft(CurrentSubtitleWraper, e.X);
                     break;
                 }
             }
             if (!subtitleFound)
-                CurrentSubtitle.Visibility = System.Windows.Visibility.Collapsed;
+                CurrentSubtitleWraper.Visibility = System.Windows.Visibility.Collapsed;
             else
-                CurrentSubtitle.Visibility = System.Windows.Visibility.Visible;
+                CurrentSubtitleWraper.Visibility = System.Windows.Visibility.Visible;
         }
 
 
@@ -320,11 +343,25 @@ namespace Tuto.Navigator
         {
             DragInProgress = false;
             var shift = CurrentSubtitle.FontSize;
-            currentSubtitle.X = Canvas.GetLeft(CurrentSubtitle);
-            currentSubtitle.Y = Canvas.GetTop(CurrentSubtitle);
-            var pos = CurrentSubtitle.TranslatePoint(new Point(0, 0), ViewTimeline);
+            currentSubtitle.X = Canvas.GetLeft(CurrentSubtitleWraper);
+            currentSubtitle.Y = Canvas.GetTop(CurrentSubtitleWraper);
+            var pos = CurrentSubtitleWraper.TranslatePoint(new Point(0, 0), ViewTimeline);
             currentSubtitle.Pos = pos;
             currentSubtitle.HeightShift = shift;
+        }
+
+
+        private bool IsInVideoField(double offsetX, double offsetY)
+        {
+            var v = ViewTimeline;
+            var s = CurrentSubtitleWraper;
+            var posWrap = CurrentSubtitleWraper.TranslatePoint(new Point(0, 0), Clips);
+            var posClip = ViewTimeline.TranslatePoint(new Point(0, 0), Clips);
+            var VideoBoundingBox = new System.Drawing.Rectangle((int)posClip.X, (int)posClip.Y, (int)v.ActualWidth, (int)v.ActualHeight);
+            var SubBox = new System.Drawing.Rectangle((int)(posWrap.X + offsetX), (int)(posWrap.Y + offsetY), (int)s.ActualWidth, (int)s.ActualHeight);
+            return VideoBoundingBox.Contains(SubBox);
+
+
         }
 
         private void Subtitle_MouseMove(object sender, MouseEventArgs e)
@@ -334,20 +371,33 @@ namespace Tuto.Navigator
                 Point point = Mouse.GetPosition(ViewTimeline);
                 double offset_x = point.X - LastPoint.X;
                 double offset_y = point.Y - LastPoint.Y;
-                double new_x = Canvas.GetLeft(CurrentSubtitle);
-                double new_y = Canvas.GetTop(CurrentSubtitle);
+                double new_x = Canvas.GetLeft(CurrentSubtitleWraper);
+                double new_y = Canvas.GetTop(CurrentSubtitleWraper);
                 new_x += offset_x;
                 new_y += offset_y;
-                Canvas.SetLeft(CurrentSubtitle, new_x);
-                Canvas.SetTop(CurrentSubtitle, new_y);
-                LastPoint = point;
+                if (IsInVideoField(offset_x, offset_y))
+                {
+                    Canvas.SetLeft(CurrentSubtitleWraper, new_x);
+                    Canvas.SetTop(CurrentSubtitleWraper, new_y);
+                    LastPoint = point;
+                }
             }
         }
 
         private void Subtitle_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            LastPoint = Mouse.GetPosition(ViewTimeline);
-            DragInProgress = true;
+            if (e.ClickCount < 2)
+            {
+                LastPoint = Mouse.GetPosition(ViewTimeline);
+                DragInProgress = true;
+            }
+
+            else
+            {
+                var m = new SubtitleEditor();
+                m.DataContext = currentSubtitle;
+                m.ShowDialog();
+            }
         }
 
         private void WrapPanel_RequestBringIntoView(object sender, RequestBringIntoViewEventArgs e)
@@ -361,10 +411,7 @@ namespace Tuto.Navigator
             Model.ActualWidth = ViewTimeline.ActualWidth;
         }
 
-        private void ViewTimeline_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            MessageBox.Show(CurrentSubtitle.TranslatePoint(new Point(0, 0), ViewTimeline).Y.ToString());
-        }
 
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

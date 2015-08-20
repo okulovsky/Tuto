@@ -24,10 +24,15 @@
                     
 
                     <StackPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Name="Views" Background="LightBlue" Height="400">
-                        <Canvas>
-                            <MediaElement Height="400" Width="600" Name="ViewTimeline" MouseDown="ViewTimeline_MouseDown"></MediaElement>
+                        <Canvas Name="Clips">
+                            <MediaElement Canvas.Top="0" Canvas.Left="0" Height="400" Width="600" Name="ViewTimeline"></MediaElement>
                             <MediaElement Height="400" Width="600" Name="PatchWindow"></MediaElement>
-                            <TextBlock FontSize="24" Foreground="Black" HorizontalAlignment="Center" Name="CurrentSubtitle" Text="TEST" Canvas.Left="267" Canvas.Top="323" MouseUp="Subtitle_MouseUp" MouseMove="Subtitle_MouseMove" MouseDown="Subtitle_MouseDown" Height="42" Width="60"></TextBlock>
+                            <StackPanel Background="Transparent" x:Name="CurrentSubtitleWraper" MouseUp="Subtitle_MouseUp" MouseMove="Subtitle_MouseMove" MouseDown="Subtitle_MouseDown">
+                                <DesignInControl:OutlinedTextBlock Height="Auto" x:Name="CurrentSubtitle" Fill="White" Stroke="Black" HorizontalAlignment="Center"  
+                                                                   Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=currentSubtitle.Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                                   FontSize="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=currentSubtitle.FontSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                                   ></DesignInControl:OutlinedTextBlock>
+                            </StackPanel>
                         </Canvas>
                     </StackPanel>
 
@@ -38,6 +43,7 @@
                         <Button Margin="5 5 0 5" Height="30" Content="Play" Width="47" HorizontalAlignment="Left" Name="PlayButton" Click="PlayButton_Click"></Button>
                         <Button Margin="10 5 0 5" Height="30" Content="Patch" Width="47" HorizontalAlignment="Left" Name="Patch" Click="Patch_Click"></Button>
                         <Button Margin="10 5 0 5" Height="30" Content="Save" Width="47" HorizontalAlignment="Left" Name="Save" Click="Save_Click"></Button>
+                        <Button Margin="10 5 0 5" Height="30" Content="Subtitle" Width="50" Click="SubtitleProcess" HorizontalAlignment="Left" Name="Subtitle"></Button>
                         <Slider Name="scaleSlider" IsSnapToTickEnabled="True" TickFrequency="1" Margin="10 8 0 5" Width="50" Minimum="1" Maximum="10" Interval="1" SmallChange="1" ValueChanged="Slider_ValueChanged" ></Slider>
                     </StackPanel>
 

@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Tuto.Navigator.BatchWorkWindow" Collapsed="true">
+    <Position X="8.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAYAAAAAASAABAAAAAAgAAAAACAAAIAAAAAAAM=</HashCode>
+      <FileName>NavigatorViews\BatchWorkWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Tuto.Navigator.PublishPanel" Collapsed="true">
+    <Position X="5.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAgAgAAAAAAkAAgACAAAAAAAAAAABAAAAgAAAAA=</HashCode>
+      <FileName>NavigatorViews\CatalogPanel.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Tuto.Navigator.FilePickerControl" Collapsed="true">
+    <Position X="10.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAIAAAAAAAAAAAAEAAAgAAAABEAAAAAAA=</HashCode>
+      <FileName>NavigatorViews\FilePickerControl.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Tuto.Navigator.FinishedVideoPanel" Collapsed="true">
+    <Position X="12.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>NavigatorViews\FinishedVideoPanel.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Tuto.Navigator.GlobalSettingsPanel" Collapsed="true">
+    <Position X="5.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>NavigatorViews\GlobalSettingsPanel.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Tuto.Navigator.MainNavigatorWindow" Collapsed="true">
+    <Position X="8.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>NavigatorViews\MainNavigatorWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Tuto.Navigator.SubfoldersDataGrid" Collapsed="true">
+    <Position X="8.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>NavigatorViews\SubfoldersDataGrid.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Tuto.Navigator.MainWindow" Collapsed="true">
+    <Position X="10.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAUAACkAAIIBggAwAGgJCBAQBACEBAAEAAgUAAAGAAA=</HashCode>
+      <FileName>Patch\MainWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Tuto.Navigator.RangeSlider" Collapsed="true">
+    <Position X="8.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>kAAAAgCAAAQCQIAghBIgAAAAxEEQAAGgCAgAEgAEABA=</HashCode>
+      <FileName>Patch\RangeSlider.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Tuto.Navigator.Program" Collapsed="true">
+    <Position X="12.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAABAAAAAAAAAgAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Tuto.Navigator.RelayCommand" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEACAAQAAECAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>RelayCommand.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Tuto.Navigator.RelayCommand&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEACAAQAAECAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>RelayCommand.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Tuto.Navigator.PublishViewModel" Collapsed="true">
+    <Position X="7" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAEAAAAAABCUCAAAABAAgAAEAAAABABBEAAAAAAE=</HashCode>
+      <FileName>ViewModels\CatalogViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Tuto.Navigator.Wrap" Collapsed="true">
+    <Position X="1.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAAAAQAAAAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\CatalogWraps.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Tuto.Navigator.TopicWrap" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAA=</HashCode>
+      <FileName>ViewModels\CatalogWraps.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Tuto.Navigator.VideoWrap" Collapsed="true">
+    <Position X="2.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>ViewModels\CatalogWraps.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Tuto.Navigator.GlobalViewModel" Collapsed="true">
+    <Position X="7" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgoIAAAAAUQUIikAAAAAAABAAMAQSQBAEAAGMEAI=</HashCode>
+      <FileName>ViewModels\GlobalViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Tuto.Navigator.SubfolderViewModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAgAAAAgAAAAIAAAIEEAAQQAgCAAAAAIAAABAAAYSAI=</HashCode>
+      <FileName>ViewModels\SubfolderViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Tuto.Navigator.Properties.Resources" Collapsed="true">
+    <Position X="5.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Tuto.Navigator.Properties.Settings" Collapsed="true">
+    <Position X="7" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Tuto.Navigator.ViewModels.AssemblySettings" Collapsed="true">
+    <Position X="5.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQQAAAAEAAAAAAAATAAAAAABIAAABAAAIA=</HashCode>
+      <FileName>ViewModels\AssemblySettings.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Tuto.Navigator.ViewModels.Backup" Collapsed="true">
+    <Position X="7" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Backup.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="Tuto.Navigator.MoveDestination" Collapsed="true">
+    <Position X="5.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEQAQAA=</HashCode>
+      <FileName>ViewModels\CatalogViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

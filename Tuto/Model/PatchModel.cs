@@ -109,11 +109,14 @@ namespace Tuto.Model
 
     public class Subtitle : TrackInfo
     {
-        public string Content;
-        public double HeightShift;
-        public Point Pos;
-        public double X;
-        public double Y;
+        private string _content;
+        public string Content { get { return _content; } set { _content = value; NotifyPropertyChanged(); } }
+        public double HeightShift { get; set; }
+        private int fontsize { get; set; }
+        public int FontSize { get { return fontsize; } set { fontsize = value; NotifyPropertyChanged(); } }
+        public Point Pos { get; set; }
+        public double X { get; set; }
+        public double Y { get; set; }
 
         public Subtitle(string content, ScaleInfo scale, double leftShift)
         {
@@ -123,6 +126,9 @@ namespace Tuto.Model
             LeftShiftInSeconds = leftShift;
             Content = content;
             ScaleInfo = scale;
+            FontSize = 32;
+            X = 100;
+            Y = 100;
         }
     }
 
