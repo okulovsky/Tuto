@@ -1,18 +1,18 @@
 ﻿<Window x:Class="Tuto.Navigator.SubtitleEditor"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="SubtitleEditor" Height="259" Width="261">
-    <Grid Margin="0,0,2,7">
+        Title="SubtitleEditor" Height="205" Width="261">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.8*"></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="40"></RowDefinition>
+            <RowDefinition Height="40"></RowDefinition>
+            <RowDefinition Height="40"></RowDefinition>
+            <RowDefinition Height="40"></RowDefinition>
 
         </Grid.RowDefinitions>
         <Label Content="Size" VerticalAlignment="Center"></Label>

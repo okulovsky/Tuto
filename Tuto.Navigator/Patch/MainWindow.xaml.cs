@@ -28,7 +28,7 @@ namespace Tuto.Navigator
     /// </summary>
     /// 
 
-
+    
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
 
@@ -38,7 +38,7 @@ namespace Tuto.Navigator
         {
             InitializeComponent();
             PatchWindow.LoadedBehavior = MediaState.Manual;
-            PreparePatchPicker();
+            PreparePatchPicker(); 
         }
 
         public void LoadModel(PatchModel model, EditorModel em)
@@ -104,19 +104,6 @@ namespace Tuto.Navigator
         }
 
 
-        public int prevoiusTop = 5;
-        private DispatcherTimer timer;
-        private double volume { get; set; }
-        private TrackInfo currentPatch;
-        private Subtitle _currentSubtitle;
-
-        public Subtitle currentSubtitle {
-            get {return _currentSubtitle;} 
-            set {_currentSubtitle = value; PropertyChanged(this, new PropertyChangedEventArgs("currentSubtitle"));}}
-
-        private bool isPlaying;
-        private bool isLoaded;
-
         private void Tracks_Drop(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
@@ -137,7 +124,7 @@ namespace Tuto.Navigator
             var seconds = ViewTimeline.Position.TotalSeconds;
             var track = new MediaTrack(path, Model.ScaleInfo);
             track.LeftShiftInSeconds = seconds;
-            track.TopShift = prevoiusTop;
+            track.TopShift = Top;
             track.DurationInPixels = 10;
             Model.PropertyChanged += (s, a) => track.NotifyScaleChanged();
             Model.MediaTracks.Add(track);
@@ -149,6 +136,8 @@ namespace Tuto.Navigator
             PatchWindow.Pause();
         }
 
+        DispatcherTimer timer { get; set; }
+
         private void doInitialLoad()
         {
             ViewTimeline.Source = new Uri(Model.SourceInfo.FullName);
@@ -159,23 +148,24 @@ namespace Tuto.Navigator
             ViewTimeline.MediaOpened += SetMainVideo;
             ViewTimeline.Play();
             ViewTimeline.Pause();
-            isLoaded = true;
+            Model.WindowState.isLoaded = true;
         }
+
         private void PlayButton_Click(object sender, RoutedEventArgs e)
         {
-            if (isPlaying)
+            if (Model.WindowState.isPlaying)
             {
                 ViewTimeline.Pause();
                 PatchWindow.Pause();
-                isPlaying = false;
+                Model.WindowState.isPlaying = false;
                 return;
             }
-            else if (!isLoaded)
+            else if (!Model.WindowState.isLoaded)
             {
                 doInitialLoad();
                 return;
             }
-            else { ViewTimeline.Play(); PatchWindow.Play(); isPlaying = true; }
+            else { ViewTimeline.Play(); PatchWindow.Play(); Model.WindowState.isPlaying = true; }
         }
 
         private void SubtitleProcess(object sender, RoutedEventArgs e)
@@ -185,7 +175,7 @@ namespace Tuto.Navigator
 
         private void AddEmptySubtitle()
         {
-            var sub = new Subtitle("Sample Text", Model.ScaleInfo, Canvas.GetLeft(CurrentTime));
+            var sub = new Subtitle("Sample Text", Model.ScaleInfo, Canvas.GetLeft(CurrentTime) / Model.Scale);
             Model.PropertyChanged += (s, a) => sub.NotifyScaleChanged();
             Model.Subtitles.Add(sub);
         }
@@ -195,7 +185,7 @@ namespace Tuto.Navigator
             Model.Duration = ViewTimeline.NaturalDuration.TimeSpan.TotalSeconds;
             Model.Width = ViewTimeline.NaturalVideoWidth;
             Model.Height = ViewTimeline.NaturalVideoHeight;
-            volume = ViewTimeline.Volume != 0 ? ViewTimeline.Volume : volume;
+            Model.WindowState.volume = ViewTimeline.Volume != 0 ? ViewTimeline.Volume : Model.WindowState.volume;
             ViewTimeline.UpdateLayout();
             Model.ActualHeight = ViewTimeline.ActualHeight;
             Model.ActualWidth = ViewTimeline.ActualWidth;
@@ -216,17 +206,16 @@ namespace Tuto.Navigator
 
         private void CheckSubtitle(double pixelsRelativeToSeconds)
         {
+            
             var subtitleFound = false;
             foreach (var e in Model.Subtitles)
             {
                 if (InPatchSection(e, pixelsRelativeToSeconds))
                 {
                     subtitleFound = true;
-                    if (currentSubtitle == e)
+                    if (Model.WindowState.currentSubtitle == e)
                         break;
-                    //CurrentSubtitle.Text = e.Content;
-                    currentSubtitle = e;
-                    PropertyChanged(this, new PropertyChangedEventArgs("currentSubtitle"));
+                    Model.WindowState.currentSubtitle = e;
                     Canvas.SetTop(CurrentSubtitleWraper, e.Y);
                     Canvas.SetLeft(CurrentSubtitleWraper, e.X);
                     break;
@@ -247,28 +236,28 @@ namespace Tuto.Navigator
             for (var i = Model.MediaTracks.Count - 1; i >= 0; i--)
                 if (InPatchSection(Model.MediaTracks[i], pixelsRelativeToSeconds))
                 {
-                    if (currentPatch == Model.MediaTracks[i])
+                    if (Model.WindowState.currentPatch == Model.MediaTracks[i])
                         return;
 
-                    currentPatch = Model.MediaTracks[i];
+                    Model.WindowState.currentPatch = Model.MediaTracks[i];
                     PatchWindow.Source = Model.MediaTracks[i].Path;
 
-                    var shift = currentPatch.LeftShiftInPixels;
-                    var position = pixelsRelativeToSeconds - shift + currentPatch.StartPixel;
+                    var shift = Model.WindowState.currentPatch.LeftShiftInPixels;
+                    var position = pixelsRelativeToSeconds - shift + Model.WindowState.currentPatch.StartPixel;
                     PatchWindow.Position = TimeSpan.FromSeconds(position / Model.Scale);
                     PatchWindow.Play();
 
                     ViewTimeline.Volume = 0;
-                    ViewTimeline.Visibility = System.Windows.Visibility.Collapsed;
+                    ViewTimeline.Visibility = System.Windows.Visibility.Hidden;
                     PatchWindow.Visibility = System.Windows.Visibility.Visible;
 
                     return;
                 }
             PatchWindow.Pause();
             PatchWindow.Visibility = System.Windows.Visibility.Collapsed;
-            ViewTimeline.Volume = volume;
+            ViewTimeline.Volume = Model.WindowState.volume;
             ViewTimeline.Visibility = System.Windows.Visibility.Visible;
-            currentPatch = null;
+            Model.WindowState.currentPatch = null;
         }
 
         private bool InPatchSection(TrackInfo track, double seconds)
@@ -284,11 +273,11 @@ namespace Tuto.Navigator
             var span = TimeSpan.FromSeconds(pos.X / Model.Scale);
             Canvas.SetLeft(CurrentTime, pos.X);
             ViewTimeline.Position = span;
-            if (currentPatch != null)
+            if (Model.WindowState.currentPatch != null)
             {
-                var shift = currentPatch.LeftShiftInPixels;
+                var shift = Model.WindowState.currentPatch.LeftShiftInPixels;
                 var seconds = ViewTimeline.Position.TotalSeconds * Model.Scale;
-                var position = seconds - shift + currentPatch.StartPixel;
+                var position = seconds - shift + Model.WindowState.currentPatch.StartPixel;
                 PatchWindow.Position = TimeSpan.FromSeconds(position / Model.Scale);
             }
         }
@@ -336,18 +325,16 @@ namespace Tuto.Navigator
             }
         }
 
-        private bool DragInProgress;
-        private Point LastPoint;
 
         private void Subtitle_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            DragInProgress = false;
+            Model.WindowState.DragInProgress = false;
             var shift = CurrentSubtitle.FontSize;
-            currentSubtitle.X = Canvas.GetLeft(CurrentSubtitleWraper);
-            currentSubtitle.Y = Canvas.GetTop(CurrentSubtitleWraper);
+            Model.WindowState.currentSubtitle.X = Canvas.GetLeft(CurrentSubtitleWraper);
+            Model.WindowState.currentSubtitle.Y = Canvas.GetTop(CurrentSubtitleWraper);
             var pos = CurrentSubtitleWraper.TranslatePoint(new Point(0, 0), ViewTimeline);
-            currentSubtitle.Pos = pos;
-            currentSubtitle.HeightShift = shift;
+            Model.WindowState.currentSubtitle.Pos = pos;
+            Model.WindowState.currentSubtitle.HeightShift = shift;
         }
 
 
@@ -366,11 +353,11 @@ namespace Tuto.Navigator
 
         private void Subtitle_MouseMove(object sender, MouseEventArgs e)
         {
-            if (DragInProgress)
+            if (Model.WindowState.DragInProgress)
             {
                 Point point = Mouse.GetPosition(ViewTimeline);
-                double offset_x = point.X - LastPoint.X;
-                double offset_y = point.Y - LastPoint.Y;
+                double offset_x = point.X - Model.WindowState.LastPoint.X;
+                double offset_y = point.Y - Model.WindowState.LastPoint.Y;
                 double new_x = Canvas.GetLeft(CurrentSubtitleWraper);
                 double new_y = Canvas.GetTop(CurrentSubtitleWraper);
                 new_x += offset_x;
@@ -379,7 +366,7 @@ namespace Tuto.Navigator
                 {
                     Canvas.SetLeft(CurrentSubtitleWraper, new_x);
                     Canvas.SetTop(CurrentSubtitleWraper, new_y);
-                    LastPoint = point;
+                    Model.WindowState.LastPoint = point;
                 }
             }
         }
@@ -388,14 +375,14 @@ namespace Tuto.Navigator
         {
             if (e.ClickCount < 2)
             {
-                LastPoint = Mouse.GetPosition(ViewTimeline);
-                DragInProgress = true;
+                Model.WindowState.LastPoint = Mouse.GetPosition(ViewTimeline);
+                Model.WindowState.DragInProgress = true;
             }
 
             else
             {
                 var m = new SubtitleEditor();
-                m.DataContext = currentSubtitle;
+                m.DataContext = Model.WindowState.currentSubtitle;
                 m.ShowDialog();
             }
         }

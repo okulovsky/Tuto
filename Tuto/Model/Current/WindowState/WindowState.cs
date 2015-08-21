@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Tuto.Model
 {
     [DataContract]
-    public class WindowState
+    public class   WindowState
     {
         [DataMember]
         EditorModes currentMode;
