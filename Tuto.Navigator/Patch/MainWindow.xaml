@@ -28,9 +28,11 @@
                             <MediaElement Canvas.Top="0" Canvas.Left="0" Height="400" Width="600" Name="ViewTimeline"></MediaElement>
                             <MediaElement Height="400" Width="600" Name="PatchWindow"></MediaElement>
                             <StackPanel Background="Transparent" x:Name="CurrentSubtitleWraper" MouseUp="Subtitle_MouseUp" MouseMove="Subtitle_MouseMove" MouseDown="Subtitle_MouseDown">
-                                <DesignInControl:OutlinedTextBlock Height="Auto" x:Name="CurrentSubtitle" Fill="White" Stroke="Black" HorizontalAlignment="Center"  
+                                <DesignInControl:OutlinedTextBlock Height="Auto" x:Name="CurrentSubtitle" HorizontalAlignment="Center"  
                                                                    Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=currentSubtitle.Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                                                    FontSize="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=currentSubtitle.FontSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                                   Fill="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=currentSubtitle.Foreground, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                                   Stroke="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=currentSubtitle.Stroke, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                                                    ></DesignInControl:OutlinedTextBlock>
                             </StackPanel>
                         </Canvas>

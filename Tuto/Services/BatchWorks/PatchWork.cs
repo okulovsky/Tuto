@@ -89,12 +89,15 @@ namespace Tuto.BatchWorks
             {
                 currentSub = new AvsSub();
                 currentSub.Payload = payload;
+                var fontCoefficent = (pmodel.Width / pmodel.ActualWidth + pmodel.Height / pmodel.ActualHeight) / 2;
                 currentSub.X = (int)(sub.Pos.X * pmodel.Width / pmodel.ActualWidth);
                 currentSub.Y = (int)(sub.Pos.Y * pmodel.Height / pmodel.ActualHeight + sub.HeightShift);
                 currentSub.Start = sub.LeftShiftInSeconds;
                 currentSub.End = sub.LeftShiftInSeconds + sub.EndSecond - sub.StartSecond;
                 currentSub.Content = sub.Content;
-                
+                currentSub.FontSize = (sub.FontSize * fontCoefficent).ToString();
+                currentSub.Stroke = sub.Stroke;
+                currentSub.Foreground = sub.Foreground;
                 payload = currentSub;
             }
             currentSub.SerializeToContext(avsContext);
@@ -104,7 +107,7 @@ namespace Tuto.BatchWorks
 
 
             var avsScript = string.Format(@"import(""{0}"")", Model.Locations.AvsLibrary.FullName) + "\r\n" + avsContext.GetContent() + "var_0";
-            File.WriteAllText(newName + "test.avs", avsScript);
+            File.WriteAllText(newName + "test.avs", avsScript, Encoding.GetEncoding("Windows-1251"));
 
             var dir = Model.Locations.OutputDirectory.FullName;
             var patchedName = GetTempFile(pmodel.SourceInfo, "-patched").FullName;

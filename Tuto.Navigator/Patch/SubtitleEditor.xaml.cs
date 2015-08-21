@@ -22,6 +22,9 @@ namespace Tuto.Navigator
         public SubtitleEditor()
         {
             InitializeComponent();
+            var aviableColors = new string[] { "Black", "White", "Yellow", "Red", "Green" };
+            ForegroundPicker.ItemsSource = aviableColors;
+            StrokePicker.ItemsSource = aviableColors;
         }
     }
 }

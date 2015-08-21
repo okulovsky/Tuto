@@ -23,8 +23,12 @@
         <TextBox Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="40"
                  Text="{Binding FontSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                  ></TextBox>
-        <ComboBox Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100"></ComboBox>
-        <ComboBox Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100"></ComboBox>
+        <ComboBox Name="ForegroundPicker" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100"
+                  SelectedItem="{Binding Foreground, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  ></ComboBox>
+        <ComboBox Name="StrokePicker" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100"
+                  SelectedItem="{Binding Stroke, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  ></ComboBox>
         <TextBox Grid.Column="1" Grid.Row="3" Focusable="True" 
                  Text="{Binding Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                  HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Height="30"></TextBox>

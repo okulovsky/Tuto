@@ -118,6 +118,12 @@ namespace Tuto.Model
         public double X { get; set; }
         public double Y { get; set; }
 
+        private string foreground;
+        public string Foreground { get { return foreground; } set { foreground = value; NotifyPropertyChanged(); } }
+
+        private string stroke;
+        public string Stroke { get { return stroke; } set { stroke = value; NotifyPropertyChanged(); } }
+
         public Subtitle(string content, ScaleInfo scale, double leftShift)
         {
             StartSecond = 0;
@@ -129,6 +135,8 @@ namespace Tuto.Model
             FontSize = 32;
             X = 100;
             Y = 100;
+            Foreground = "White";
+            Stroke = "Black";
         }
     }
 
