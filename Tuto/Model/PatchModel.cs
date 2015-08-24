@@ -15,6 +15,24 @@ namespace Tuto.Model
     [DataContract]
     public class PatchWindowState : NotifierModel
     {
+
+        public event EventHandler PausedChanged;
+        [DataMember]
+        bool paused;
+        public bool Paused
+        {
+            get { return paused; }
+            set
+            {
+                if (paused != value)
+                {
+                    paused = value;
+                    NotifyPropertyChanged();
+                    if (PausedChanged != null) PausedChanged(this, EventArgs.Empty);
+                }
+            }
+        }
+
         [DataMember]
         public bool DragInProgress;
 
@@ -67,6 +85,7 @@ namespace Tuto.Model
         
         public double DurationInPixels { get { return duration * Scale; } set { duration = value / Scale; NotifyPropertyChanged(); } }
 
+        
 
         [DataMember]
         public ScaleInfo ScaleInfo; //to model

@@ -38,7 +38,12 @@ namespace Tuto.Navigator
         {
             InitializeComponent();
             PatchWindow.LoadedBehavior = MediaState.Manual;
-            PreparePatchPicker(); 
+            PreparePatchPicker();
+        }
+
+        void WindowState_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "Paused") PausedChanged();
         }
 
         public void LoadModel(PatchModel model, EditorModel em)
@@ -47,6 +52,7 @@ namespace Tuto.Navigator
             Model = model;
             EModel = em;
             Model.RefreshReferences();
+            Model.WindowState.PropertyChanged += WindowState_PropertyChanged;
         }
 
 
@@ -151,7 +157,7 @@ namespace Tuto.Navigator
             Model.WindowState.isLoaded = true;
         }
 
-        private void PlayButton_Click(object sender, RoutedEventArgs e)
+        private void PausedChanged()
         {
             if (Model.WindowState.isPlaying)
             {

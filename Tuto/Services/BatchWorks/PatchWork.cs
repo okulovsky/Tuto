@@ -84,27 +84,30 @@ namespace Tuto.BatchWorks
             var avsContext = new AvsContext();
 
             AvsNode payload = final;
-            var currentSub = new AvsSub();
-            foreach (var sub in pmodel.Subtitles)
+            if (pmodel.Subtitles.Count > 0)
             {
-                currentSub = new AvsSub();
-                currentSub.Payload = payload;
-                var fontCoefficent = (pmodel.Width / pmodel.ActualWidth + pmodel.Height / pmodel.ActualHeight) / 2;
-                currentSub.X = (int)(sub.Pos.X * pmodel.Width / pmodel.ActualWidth);
-                currentSub.Y = (int)(sub.Pos.Y * pmodel.Height / pmodel.ActualHeight + sub.HeightShift);
-                currentSub.Start = sub.LeftShiftInSeconds;
-                currentSub.End = sub.LeftShiftInSeconds + sub.EndSecond - sub.StartSecond;
-                currentSub.Content = sub.Content;
-                currentSub.FontSize = (sub.FontSize * fontCoefficent).ToString();
-                currentSub.Stroke = sub.Stroke;
-                currentSub.Foreground = sub.Foreground;
-                payload = currentSub;
+                var currentSub = new AvsSub();
+                foreach (var sub in pmodel.Subtitles)
+                {
+                    currentSub = new AvsSub();
+                    currentSub.Payload = payload;
+                    var fontCoefficent = (pmodel.Width / pmodel.ActualWidth + pmodel.Height / pmodel.ActualHeight) / 2;
+                    currentSub.X = (int)(sub.Pos.X * pmodel.Width / pmodel.ActualWidth);
+                    currentSub.Y = (int)(sub.Pos.Y * pmodel.Height / pmodel.ActualHeight + sub.HeightShift);
+                    currentSub.Start = sub.LeftShiftInSeconds;
+                    currentSub.End = sub.LeftShiftInSeconds + sub.EndSecond - sub.StartSecond;
+                    currentSub.Content = sub.Content;
+                    currentSub.FontSize = (sub.FontSize * fontCoefficent).ToString();
+                    currentSub.Stroke = sub.Stroke;
+                    currentSub.Foreground = sub.Foreground;
+                    payload = currentSub;
+                }
+                currentSub.SerializeToContext(avsContext);
             }
-            currentSub.SerializeToContext(avsContext);
+            else final.SerializeToContext(avsContext);
+
             var serv = new AssemblerService(crossFades);
             var args = @"-i ""{0}"" -q:v 0 -vf ""scale=1280:720, fps=25"" -q:v 0 -acodec libmp3lame -ar 44100 -ab 32k ""{1}"" -y";
-
-
 
             var avsScript = string.Format(@"import(""{0}"")", Model.Locations.AvsLibrary.FullName) + "\r\n" + avsContext.GetContent() + "var_0";
             File.WriteAllText(newName + "test.avs", avsScript, Encoding.GetEncoding("Windows-1251"));
