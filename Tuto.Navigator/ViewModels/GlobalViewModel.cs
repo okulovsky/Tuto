@@ -64,7 +64,7 @@ namespace Tuto.Navigator
                 Select(x => x.EpisodesNames).
                 SelectMany(x => x).
                 Where(x => x.Checked).
-                Select(x => new YoutubeWork(x, models)).
+                Select(x => new YoutubeWork(x)).
                 ToList();
             queueWindow.Run(work);
         }

@@ -13,18 +13,16 @@ namespace Tuto.BatchWorks
     public class YoutubeWork : BatchWork
     {
         EpisodeBindingInfo info;
-        List<EditorModel> models;
-        public YoutubeWork(EpisodeBindingInfo info, List<EditorModel> models)
+        public YoutubeWork(EpisodeBindingInfo info)
         {
             this.info = info;
-            this.models = models;
             Name = "Uploading: " + info.Title;
         }
 
 
         public override void Work()
         {
-            var w = new UploadVideo(info, models);
+            var w = new UploadVideo(info);
             w.Proceed();
         }
 

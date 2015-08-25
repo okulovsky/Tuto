@@ -13,6 +13,7 @@ using System.ComponentModel;
 namespace Tuto.Navigator
 {
 
+
     public class SubfolderViewModel : INotifyPropertyChanged
     {
         public Action<IEnumerable<BatchWork>> addTaskToQueue;
@@ -44,13 +45,9 @@ namespace Tuto.Navigator
                     {
                         var info = new EpisodeBindingInfo();
                         info.Title = z.Name;
-                        info.FullName = Path.Combine(
-                    model.Locations.OutputDirectory.FullName,
-                    string.Format("{0}-{1} {2}.avi",
-                        model.VideoFolder.Name,
-                        index++,
-                        z.Name));
+                        info.FullName = model.Locations.GetOutputFile(index++).FullName;
                         info.Guid = z.Guid;
+                        info.Model = model;
                         return info;
                     }).ToList();
             }

@@ -21,12 +21,10 @@ namespace Tuto.Publishing
 
         private string clientSecretsPath { get; set; }
         private EpisodeBindingInfo info { get; set; }
-        List<EditorModel> models;
 
-        public UploadVideo(EpisodeBindingInfo info, List<EditorModel> models)
+        public UploadVideo(EpisodeBindingInfo info)
         {
             this.info = info;
-            this.models = models;
         }
 
         [STAThread]
@@ -37,7 +35,7 @@ namespace Tuto.Publishing
 
             try
             {
-                new UploadVideo(info, models).Run().Wait();
+                new UploadVideo(info).Run().Wait();
             }
             catch (AggregateException ex)
             {
@@ -55,27 +53,26 @@ namespace Tuto.Publishing
 
         private async Task Run()
         {
-            UserCredential credential;
+            UserCredential uploadCredential;
             using (var stream = new FileStream("client_secrets.json", FileMode.Open, FileAccess.Read))
             {
-                credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
+                uploadCredential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
                     GoogleClientSecrets.Load(stream).Secrets,
                     // This OAuth 2.0 access scope allows an application to upload files to the
                     // authenticated user's YouTube channel, but doesn't allow other types of access.
-                    new[] {YouTubeService.Scope.YoutubeReadonly, YouTubeService.Scope.YoutubeUpload},
+                    new[] {YouTubeService.Scope.YoutubeUpload, YouTubeService.Scope.YoutubeReadonly},
                     "user",
-                    CancellationToken.None,
-                    new FileDataStore(this.GetType().ToString())
+                    CancellationToken.None, 
+                    new FileDataStore("temp.json")
                 );
-                var a = 5;
             }
 
-
-            var youtubeService = new YouTubeService(new BaseClientService.Initializer()
+            var uploadService = new YouTubeService(new BaseClientService.Initializer()
             {
-                HttpClientInitializer = credential,
+                HttpClientInitializer = uploadCredential,
                 ApplicationName = Assembly.GetExecutingAssembly().GetName().Name
             });
+
 
             var video = new Video();
             video.Snippet = new VideoSnippet();
@@ -87,16 +84,15 @@ namespace Tuto.Publishing
             video.Status.PrivacyStatus = "public"; // or "private" or "unlisted"
             var filePath = info.FullName; // Replace with path to actual movie file.
 
-            var channelsListRequest = youtubeService.Channels.List("id");
+            var channelsListRequest = uploadService.Channels.List("id");
             channelsListRequest.Mine = true;
             var channelsListResponse = await channelsListRequest.ExecuteAsync();
 
-            var m = models;
             ///youtubeService.Videos.Delete
 
             using (var fileStream = new FileStream(filePath, FileMode.Open))
             {
-                var videosInsertRequest = youtubeService.Videos.Insert(video, "snippet,status", fileStream, "video/*");
+                var videosInsertRequest = uploadService.Videos.Insert(video, "snippet,status", fileStream, "video/*");
                 videosInsertRequest.ProgressChanged += videosInsertRequest_ProgressChanged;
                 videosInsertRequest.ResponseReceived += videosInsertRequest_ResponseReceived;
 

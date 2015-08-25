@@ -18,6 +18,7 @@ namespace Tuto.Model
         public string Title { get; set; }
         public string FullName { get; set; }
         public Guid Guid { get; set; }
+        public EditorModel Model { get; set; }
     }
 
     [DataContract]
