@@ -18,6 +18,9 @@ namespace Tuto.Model
         public string Name { get; set; }
 
         [DataMember]
+        public string YoutubeId { get; set; }
+
+        [DataMember]
         public PatchModel PatchModel { get; set; }
 
         [DataMember]

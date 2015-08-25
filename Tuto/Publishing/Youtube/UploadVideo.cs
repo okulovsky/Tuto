@@ -59,11 +59,11 @@ namespace Tuto.Publishing
                 uploadCredential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
                     GoogleClientSecrets.Load(stream).Secrets,
                     // This OAuth 2.0 access scope allows an application to upload files to the
-                    // authenticated user's YouTube channel, but doesn't allow other types of access.
-                    new[] {YouTubeService.Scope.YoutubeUpload, YouTubeService.Scope.YoutubeReadonly},
+                    // authenticated user's YouTube channel, but doesn't allow other types of access. YouTubeService.Scope.YoutubeUpload, YouTubeService.Scope.YoutubeReadonly, 
+                    new[] { YouTubeService.Scope.Youtube, YouTubeService.Scope.YoutubeUpload, YouTubeService.Scope.YoutubeReadonly },
                     "user",
-                    CancellationToken.None, 
-                    new FileDataStore("temp.json")
+                    CancellationToken.None
+                    ,new FileDataStore("temp.json")
                 );
             }
 
@@ -84,39 +84,34 @@ namespace Tuto.Publishing
             video.Status.PrivacyStatus = "public"; // or "private" or "unlisted"
             var filePath = info.FullName; // Replace with path to actual movie file.
 
-            var channelsListRequest = uploadService.Channels.List("id");
-            channelsListRequest.Mine = true;
-            var channelsListResponse = await channelsListRequest.ExecuteAsync();
-
-            ///youtubeService.Videos.Delete
-
+            var currentId = info.Model.Montage.Information.Episodes.Where(x => x.Guid == info.Guid).FirstOrDefault();
+            if (currentId != null)
+            {
+                var request = uploadService.Videos.Delete(currentId.YoutubeId);
+                await request.ExecuteAsync();
+            }
             using (var fileStream = new FileStream(filePath, FileMode.Open))
             {
                 var videosInsertRequest = uploadService.Videos.Insert(video, "snippet,status", fileStream, "video/*");
-                videosInsertRequest.ProgressChanged += videosInsertRequest_ProgressChanged;
                 videosInsertRequest.ResponseReceived += videosInsertRequest_ResponseReceived;
-
                 await videosInsertRequest.UploadAsync();
             }
         }
 
-        void videosInsertRequest_ProgressChanged(Google.Apis.Upload.IUploadProgress progress)
-        {
-            switch (progress.Status)
-            {
-                case UploadStatus.Uploading:
-                    Console.WriteLine("{0} bytes sent.", progress.BytesSent);
-                    break;
-
-                case UploadStatus.Failed:
-                    Console.WriteLine("An error prevented the upload from completing.\n{0}", progress.Exception);
-                    break;
-            }
-        }
 
         void videosInsertRequest_ResponseReceived(Video video)
         {
             Console.WriteLine("Video id '{0}' was successfully uploaded.", video.Id);
+            var model = info.Model;
+            foreach (var ep in model.Montage.Information.Episodes)
+            {
+                if (ep.Guid == info.Guid)
+                {
+                    ep.YoutubeId = video.Id;
+                    model.Save();
+                    return;
+                }
+            }
         }
     }
 }
