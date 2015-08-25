@@ -52,14 +52,15 @@
   <Class Name="Tuto.Navigator.MainWindow" Collapsed="true">
     <Position X="10.5" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAUAACkAAIIBggAwAGgJCBAQBACEBAAEAAgUAAAGAAA=</HashCode>
+      <HashCode>AAUAACkAAYAAgiAYAigJAJAQhACERBAAEAgEQAAEAAA=</HashCode>
       <FileName>Patch\MainWindow.xaml.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="Tuto.Navigator.RangeSlider" Collapsed="true">
     <Position X="8.75" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>kAAAAgCAAAQCQIAghBIgAAAAxEEQAAGgCAgAEgAEABA=</HashCode>
+      <HashCode>gAAAAgiAAAUCQAAghBAgAAAAhEEQAAGACAgAEgAEABA=</HashCode>
       <FileName>Patch\RangeSlider.xaml.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -117,7 +118,7 @@
   <Class Name="Tuto.Navigator.GlobalViewModel" Collapsed="true">
     <Position X="7" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAgoIAAAAAUQUIikAAAAAAABAAMAQSQBAEAAGMEAI=</HashCode>
+      <HashCode>AAAAgoIAAAAAUQUKikAAAAAAABAIMAQSQBAEAAGMEAI=</HashCode>
       <FileName>ViewModels\GlobalViewModel.cs</FileName>
     </TypeIdentifier>
   </Class>

@@ -10,14 +10,14 @@
     
             <Grid Drop="Tracks_Drop" AllowDrop="true" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition></RowDefinition>
                         <RowDefinition Height="40"></RowDefinition>
                         <RowDefinition Height="130"></RowDefinition>
                     </Grid.RowDefinitions>
                     <!-- Устанавливаем три столбца -->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition Width="0.1*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
 
         <Viewbox  Grid.Column="0" Grid.Row="0">
@@ -35,7 +35,7 @@
                         </Canvas>
                     </Viewbox>
 
-                    <TreeView ScrollViewer.VerticalScrollBarVisibility="Visible" Grid.Row="0" Grid.Column="2" Name="PatchPicker"></TreeView>
+                    <TreeView VerticalAlignment="Stretch" HorizontalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Visible" Grid.Row="0" Grid.Column="2" Name="PatchPicker"></TreeView>
                     
 
                     <StackPanel MaxHeight="40" Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="1" Orientation="Horizontal">

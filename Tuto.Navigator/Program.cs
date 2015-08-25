@@ -40,5 +40,8 @@ namespace Tuto.Navigator
         public static string TimesFile="times.txt";
         public static BatchWorkWindow BatchWorkQueueWindow {get; set;}
 
+
+        
+
     }
 }

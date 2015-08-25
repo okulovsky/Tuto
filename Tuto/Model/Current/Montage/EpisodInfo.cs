@@ -13,6 +13,7 @@ namespace Tuto.Model
     {
         [DataMember]
         public Guid Guid { get; internal set; }
+
         [DataMember]
         public string Name { get; set; }
 

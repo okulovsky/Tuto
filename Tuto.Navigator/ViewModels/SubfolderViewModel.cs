@@ -38,9 +38,21 @@ namespace Tuto.Navigator
             if (model.Montage.Information != null && model.Montage.Information.Episodes.Count>0)
             {
                 TotalDuration = model.Montage.Information.Episodes.Sum(z => z.Duration.TotalMinutes);
+                int index = 0;
                 EpisodesNames = model.Montage.Information.Episodes
-                    .Select(z=>z.Name)
-                    .Aggregate((a, b) => a + "\r\n" + b);
+                    .Select(z => 
+                    {
+                        var info = new EpisodeBindingInfo();
+                        info.Title = z.Name;
+                        info.FullName = Path.Combine(
+                    model.Locations.OutputDirectory.FullName,
+                    string.Format("{0}-{1} {2}.avi",
+                        model.VideoFolder.Name,
+                        index++,
+                        z.Name));
+                        info.Guid = z.Guid;
+                        return info;
+                    }).ToList();
             }
         }
         public bool Selected { get; set; }
@@ -58,7 +70,7 @@ namespace Tuto.Navigator
 
         public string Name {get { return Path.GetFileName(FullPath); }}
 
-        public string EpisodesNames { get; private set; }
+        public List<EpisodeBindingInfo> EpisodesNames { get; private set; }
 
         public double? TotalDuration { get; private set; }
 
