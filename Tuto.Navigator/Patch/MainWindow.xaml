@@ -2,32 +2,28 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
         xmlns:DesignInControl="clr-namespace:Tuto.Navigator"
-        Title="Patcher" SizeToContent="WidthAndHeight" Name="mainwindow" Loaded="mainwindow_Loaded" Closing="mainwindow_Closing" SizeChanged="mainwindow_SizeChanged"
+        Title="Patcher"  Name="mainwindow" Loaded="mainwindow_Loaded" Closing="mainwindow_Closing" SizeChanged="mainwindow_SizeChanged"
         xmlns:ed="clr-namespace:Editor">
     <Window.Resources>
         <ed:PausedToStringConverter x:Key="PausedCnv"/>
     </Window.Resources>
     
-    <Viewbox Stretch="None" HorizontalAlignment="Left">
-    <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-        <StackPanel HorizontalAlignment="Left" Drop="Tracks_Drop" AllowDrop="true">
-                <Grid Width="730">
+            <Grid Drop="Tracks_Drop" AllowDrop="true" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <Grid.RowDefinitions>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="40"></RowDefinition>
+                        <RowDefinition Height="130"></RowDefinition>
                     </Grid.RowDefinitions>
                     <!-- Устанавливаем три столбца -->
-                    <Grid.ColumnDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition Width="0.5*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    
 
-                        <Canvas Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Name="Clips">
-                            <MediaElement Canvas.Top="0" Canvas.Left="0" Height="400" Width="600" Name="ViewTimeline"></MediaElement>
-                            <MediaElement Height="400" Width="600" Name="PatchWindow"></MediaElement>
+        <Viewbox  Grid.Column="0" Grid.Row="0">
+                    <Canvas Height="400" Width="585"  Name="Clips">
+                            <MediaElement Canvas.Top="0" Canvas.Left="0" Height="400" Width="585" Name="ViewTimeline"></MediaElement>
+                            <MediaElement Height="400" Width="585" Name="PatchWindow"></MediaElement>
                             <StackPanel Background="Transparent" x:Name="CurrentSubtitleWraper" MouseUp="Subtitle_MouseUp" MouseMove="Subtitle_MouseMove" MouseDown="Subtitle_MouseDown">
                                 <DesignInControl:OutlinedTextBlock Height="Auto" x:Name="CurrentSubtitle" HorizontalAlignment="Center"  FontFamily="Arial" FontWeight="Bold"
                                                                    Text="{Binding WindowState.currentSubtitle.Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
@@ -37,12 +33,12 @@
                                                                    ></DesignInControl:OutlinedTextBlock>
                             </StackPanel>
                         </Canvas>
+                    </Viewbox>
 
-
-                    <TreeView Height="400" ScrollViewer.VerticalScrollBarVisibility="Visible" Grid.IsSharedSizeScope="False" Grid.Row="0" Grid.Column="3" Name="PatchPicker"></TreeView>
+                    <TreeView ScrollViewer.VerticalScrollBarVisibility="Visible" Grid.Row="0" Grid.Column="2" Name="PatchPicker"></TreeView>
                     
 
-                    <StackPanel Grid.ColumnSpan="3" Grid.Column="0" Grid.Row="1" Orientation="Horizontal">
+                    <StackPanel MaxHeight="40" Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="1" Orientation="Horizontal">
                         <ToggleButton
                             Margin="5 5 0 5" Height="30" 
                             Width="47" 
@@ -57,19 +53,17 @@
                         <Slider Name="scaleSlider" IsSnapToTickEnabled="True" TickFrequency="1" Margin="10 8 0 5" Width="50" Minimum="1" Maximum="10" Interval="1" SmallChange="1" ValueChanged="Slider_ValueChanged" ></Slider>
                     </StackPanel>
 
-                    <ScrollViewer Grid.ColumnSpan="3" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left" Name="TimeScroll" Height="130" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Disabled">
-                <StackPanel>
+        <ScrollViewer Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Stretch" Name="TimeScroll" Height="130" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Disabled">
 
-                    <WrapPanel RequestBringIntoView="WrapPanel_RequestBringIntoView">
-                        <Canvas Name="Tracks" Width="{Binding DurationInPixels}"  HorizontalAlignment="Left">
-                            <Rectangle Name="TimeLine" Width="{Binding DurationInPixels}" Canvas.Top="5" Height="10" Stroke="Yellow" Fill="Yellow" MouseDown="TimeLine_MouseDown"></Rectangle>
-                            <DesignInControl:RangeSlider IsEnabled="False" Canvas.Left="0" Canvas.Top="15" x:Name="mainSlider" Height="25" Duration="{Binding DurationInPixels}" LeftShift="0" EndSecond="{Binding DurationInPixels}" Maximum="{Binding DurationInPixels}"></DesignInControl:RangeSlider>
-
-                            <ItemsControl ItemsSource="{Binding MediaTracks}" Canvas.Top="45" Width="1000">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Canvas>
-                                            <DesignInControl:RangeSlider 
+            <WrapPanel RequestBringIntoView="WrapPanel_RequestBringIntoView">
+                    <Canvas Name="Tracks" Width="{Binding DurationInPixels}"  HorizontalAlignment="Left">
+                        <Rectangle Name="TimeLine" Width="{Binding DurationInPixels}" Canvas.Top="5" Height="10" Stroke="Yellow" Fill="Yellow" MouseDown="TimeLine_MouseDown"></Rectangle>
+                    <DesignInControl:RangeSlider IsEnabled="False" Canvas.Left="0" Canvas.Top="15" x:Name="mainSlider" Height="25" Duration="{Binding DurationInPixels}" LeftShift="0" EndSecond="{Binding DurationInPixels}" Maximum="{Binding DurationInPixels}"></DesignInControl:RangeSlider>
+                    <ItemsControl ItemsSource="{Binding MediaTracks}" Canvas.Top="45">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Canvas>
+                                        <DesignInControl:RangeSlider 
                                             Canvas.Left="{Binding LeftShiftInPixels, Mode=TwoWay}" 
                                             LeftShift="{Binding LeftShiftInPixels, Mode=TwoWay}" 
                                             Duration="{Binding DurationInPixels, Mode=TwoWay}" 
@@ -78,16 +72,16 @@
                                             EndSecond="{Binding EndPixel, Mode=TwoWay}"
                                             Height="25"
                                             MouseDoubleClick="RangeSlider_MouseDoubleClick"/>
-                                        </Canvas>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
+                                    </Canvas>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
 
-                            <ItemsControl ItemsSource="{Binding Subtitles}" Canvas.Top="75" Width="1000">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Canvas>
-                                            <DesignInControl:RangeSlider 
+                        <ItemsControl ItemsSource="{Binding Subtitles}" Canvas.Top="75">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Canvas>
+                                        <DesignInControl:RangeSlider 
                                             Canvas.Top="{Binding TopShift, Mode=TwoWay}" 
                                             Canvas.Left="{Binding LeftShiftInPixels, Mode=TwoWay}" 
                                             LeftShift="{Binding LeftShiftInPixels, Mode=TwoWay}" 
@@ -98,24 +92,20 @@
                                             Height="25" 
                                             Scaling="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.Scale, Mode=TwoWay}"
                                             MouseDoubleClick="RangeSlider_MouseDoubleClick"/>
-                                        </Canvas>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
+                                    </Canvas>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
 
 
-                            <Rectangle Name="CurrentTime" Fill="Black" Canvas.Top="5" Width="2" Height="80"></Rectangle>
-                        </Canvas>
+                        <Rectangle Name="CurrentTime" Fill="Black" Canvas.Top="5" Width="2" Height="80"></Rectangle>
+                    </Canvas>
 
 
-                    </WrapPanel>
-                </StackPanel>
+                </WrapPanel>
 
-            </ScrollViewer>
+        </ScrollViewer>
                 </Grid>
-            </StackPanel>
-    </StackPanel>
-        
-    </Viewbox>
+
    
 </Window>
