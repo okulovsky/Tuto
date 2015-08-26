@@ -44,9 +44,8 @@ namespace Tuto.Navigator
                     .Select(z => 
                     {
                         var info = new EpisodeBindingInfo();
-                        info.Title = z.Name;
+                        info.EpisodeInfo = z;
                         info.FullName = model.Locations.GetOutputFile(index++).FullName;
-                        info.Guid = z.Guid;
                         info.Model = model;
                         return info;
                     }).ToList();

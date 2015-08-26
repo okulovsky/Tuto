@@ -15,9 +15,8 @@ namespace Tuto.Model
     public class EpisodeBindingInfo
     {
         public bool Checked { get; set; }
-        public string Title { get; set; }
+        public EpisodInfo EpisodeInfo { get; set; }
         public string FullName { get; set; }
-        public Guid Guid { get; set; }
         public EditorModel Model { get; set; }
     }
 

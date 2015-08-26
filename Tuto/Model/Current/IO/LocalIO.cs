@@ -69,11 +69,6 @@ namespace Tuto.Model
 			return new EditorModel(localDirectory, rootDirectory, programFolder);
         }
 
-
-
-
-
-
         static bool TryReadObsolete(EditorModel model)
         {
             

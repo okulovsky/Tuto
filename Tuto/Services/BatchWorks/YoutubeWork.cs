@@ -16,7 +16,7 @@ namespace Tuto.BatchWorks
         public YoutubeWork(EpisodeBindingInfo info)
         {
             this.info = info;
-            Name = "Uploading: " + info.Title;
+            Name = "Uploading: " + info.EpisodeInfo.Name;
         }
 
 

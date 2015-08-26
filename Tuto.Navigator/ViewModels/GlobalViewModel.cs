@@ -59,7 +59,6 @@ namespace Tuto.Navigator
 
         public void UploadClips()
         {
-
             var work = Subdirectories.
                 Select(x => x.EpisodesNames).
                 SelectMany(x => x).

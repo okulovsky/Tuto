@@ -14,7 +14,7 @@
                     <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                <Label Content="{Binding Title}"></Label>
+                                    <Label Content="{Binding EpisodeInfo.Name}"></Label>
                                     <CheckBox VerticalAlignment="Center" IsChecked="{Binding Checked}"></CheckBox>
                                 </StackPanel>
                             </DataTemplate>
