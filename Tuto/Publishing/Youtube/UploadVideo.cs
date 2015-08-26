@@ -61,8 +61,6 @@ namespace Tuto.Publishing
             {
                 uploadCredential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
                     GoogleClientSecrets.Load(stream).Secrets,
-                    // This OAuth 2.0 access scope allows an application to upload files to the
-                    // authenticated user's YouTube channel, but doesn't allow other types of access. YouTubeService.Scope.YoutubeUpload, YouTubeService.Scope.YoutubeReadonly, 
                     new[] { YouTubeService.Scope.Youtube, YouTubeService.Scope.YoutubeUpload, YouTubeService.Scope.YoutubeReadonly },
                     "user",
                     CancellationToken.None
@@ -82,12 +80,13 @@ namespace Tuto.Publishing
             video.Snippet.Title = info.EpisodeInfo.Name;
             video.Snippet.Description = info.EpisodeInfo.Guid.ToString();
             video.Snippet.Tags = new string[] { "tag1", "tag2" };
-            video.Snippet.CategoryId = "22"; // See https://developers.google.com/youtube/v3/docs/videoCategories/list
+            video.Snippet.CategoryId = "22"; 
             video.Status = new VideoStatus();
-            video.Status.PrivacyStatus = "public"; // or "private" or "unlisted"
+            video.Status.PrivacyStatus = "public";
+            var patched = info.Model.Locations.GetSuffixedName(new FileInfo(info.FullName), "-patched");
             var filePath = info.FullName;
-
-
+            if (File.Exists(patched.FullName))
+                filePath = patched.FullName;
             try
             {
                 if (info.EpisodeInfo.YoutubeId != null)

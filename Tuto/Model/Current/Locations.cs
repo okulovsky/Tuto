@@ -17,13 +17,18 @@ namespace Tuto.Model
             return new FileInfo(Path.Combine(info.FullName, fname));
         }
 
-        internal FileInfo GetThumbName(FileInfo source)
+        internal FileInfo GetSuffixedName(FileInfo source, string suffix)
         {
             var newPath = source.FullName.Split('\\');
             var nameAndExt = source.Name.Split('.');
-            nameAndExt[0] = nameAndExt[0] + "-thumb";
+            nameAndExt[0] = nameAndExt[0] + suffix;
             newPath[newPath.Length - 1] = string.Join(".", nameAndExt);
             return new FileInfo(string.Join("\\", newPath));
+        }
+
+        internal FileInfo GetThumbName(FileInfo source)
+        {
+            return GetSuffixedName(source, "-thumb");
         }
 
         public FileInfo PraatExecutable { get { return Make(model.ProgramFolder, "praatcon.exe"); } }
