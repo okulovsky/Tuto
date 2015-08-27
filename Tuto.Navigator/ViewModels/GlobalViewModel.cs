@@ -59,13 +59,7 @@ namespace Tuto.Navigator
 
         public void UploadClips()
         {
-            var work = Subdirectories.
-                Select(x => x.EpisodesNames).
-                SelectMany(x => x).
-                Where(x => x.Checked).
-                Select(x => new YoutubeWork(x)).
-                ToList();
-            queueWindow.Run(work);
+
         }
 
         public void Load(FileInfo file)
@@ -107,7 +101,7 @@ namespace Tuto.Navigator
                 m.addTaskToQueue = queueWindow.Run;
                 Subdirectories.Add(m);
             }
-            Publish = new PublishViewModel(globalData);
+            Publish = new PublishViewModel(globalData, models);
             FillQueue(data);
         }
 

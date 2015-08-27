@@ -27,7 +27,7 @@
                         <Button Content="Refresh list" Command="{Binding RefreshCommand}"></Button>
                         <Button Content="Batch assembly" Command="{Binding AssembleSelectedCommand}"/>
                         <Button Content="Batch repair face" Command="{Binding RepairFaceSelectedCommand}"/>
-                        <Button Content="Upload" Command="{Binding UploadSelectedClipsCommand}"></Button>
+                        <!--<Button Content="Upload" Command="{Binding UploadSelectedClipsCommand}"></Button>-->
                         <Button Content="Tasks" Click="Tasks_Click" Width="51" Height="43"/>
 
                         <StackPanel Orientation="Horizontal" Name="BatchWithOptions" Visibility="Collapsed">

@@ -12,11 +12,11 @@ namespace Tuto.BatchWorks
 {
     public class YoutubeWork : BatchWork
     {
-        EpisodeBindingInfo info;
-        public YoutubeWork(EpisodeBindingInfo info)
+        FinishedVideo info;
+        public YoutubeWork(FinishedVideo info)
         {
             this.info = info;
-            Name = "Uploading: " + info.EpisodeInfo.Name;
+            Name = "Uploading: " + info.Name;
         }
 
 

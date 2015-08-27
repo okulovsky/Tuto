@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tuto.BatchWorks;
 using Tuto.Model;
 
 namespace Tuto.Navigator
@@ -23,10 +24,12 @@ namespace Tuto.Navigator
         public GlobalData GlobalData { get; private set; }
         public Wrap SelectedItem { get; set; }
         public VideoWrap SelectedItemInUnassignedList { get; set; }
+        private List<EditorModel> Models { get; set; }
 
-        public PublishViewModel(GlobalData globalData)
+        public PublishViewModel(GlobalData globalData, List<EditorModel> models)
         {
             Levels = new ObservableCollection<TopicLevel>();
+            Models = models;
             this.GlobalData = globalData;
             Root = new TopicWrap[] { new TopicWrap(globalData.TopicsRoot) };
             UnassignedVideos = new ObservableCollection<VideoWrap>();
@@ -45,11 +48,31 @@ namespace Tuto.Navigator
             AddCommand = new RelayCommand(Add, () => SelectedItem != null && SelectedItem is TopicWrap);
             RemoveCommand = new RelayCommand(Remove, () => SelectedItem != null && SelectedItem != Root[0]);
             DeleteCommand = new RelayCommand(DeleteFromList, () => SelectedItemInUnassignedList != null);
+            UploadCommand = new RelayCommand(Upload);//() => Program.BatchWorkQueueWindow.Run(new List<BatchWork>()));
+        }
+
+        public void Upload()
+        {
+            List<FinishedVideo> selected = new List<FinishedVideo>();
+            foreach (var topic in Root)
+                foreach (var wrap in topic.Items)
+                {
+                    var vid = (VideoWrap)wrap;
+                    vid.Video.PlaylistId = topic.Topic.PlaylistId;
+                    if (vid.Checked)
+                        selected.Add(vid.Video);
+                }
+            var work = selected.Select( x => 
+                {
+                    return new YoutubeWork(x);
+                }).ToList();
+            Program.BatchWorkQueueWindow.Run(work);
         }
 
         public RelayCommand AddCommand { get; private set; }
         public RelayCommand RemoveCommand { get; private set; }
         public RelayCommand DeleteCommand { get; private set; }
+        public RelayCommand UploadCommand { get; private set; }
 
         //void MoveTopic(TopicViewModel what, TopicViewModel where, int index)
         //{

@@ -20,9 +20,9 @@ namespace Tuto.Publishing
     {
 
         private string clientSecretsPath { get; set; }
-        private EpisodeBindingInfo info { get; set; }
+        private FinishedVideo info { get; set; }
 
-        public UploadVideo(EpisodeBindingInfo info)
+        public UploadVideo(FinishedVideo info)
         {
             this.info = info;
         }
@@ -32,8 +32,6 @@ namespace Tuto.Publishing
         {
             Console.WriteLine("YouTube Data API: Upload Video");
             Console.WriteLine("==============================");
-            this.info.Model = EditorModelIO.Load(info.Model.VideoFolder.FullName);
-            this.info.EpisodeInfo = GetNewEpisodeInfo();
 
             try
             {
@@ -77,28 +75,28 @@ namespace Tuto.Publishing
 
             var video = new Video();
             video.Snippet = new VideoSnippet();
-            video.Snippet.Title = info.EpisodeInfo.Name;
-            video.Snippet.Description = info.EpisodeInfo.Guid.ToString();
-            video.Snippet.Tags = new string[] { "tag1", "tag2" };
+            video.Snippet.Title = info.Name;
+            video.Snippet.Description = info.Guid.ToString(); //maybe description will be
+            video.Snippet.Tags = new string[] { "tag1", "tag2" }; //maybe tags will be
             video.Snippet.CategoryId = "22"; 
             video.Status = new VideoStatus();
             video.Status.PrivacyStatus = "public";
-            var patched = info.Model.Locations.GetSuffixedName(new FileInfo(info.FullName), "-patched");
+            var patched = info.PatchedName;
             var filePath = info.FullName;
-            if (File.Exists(patched.FullName))
-                filePath = patched.FullName;
+            if (File.Exists(patched))
+                filePath = patched;
             try
             {
-                if (info.EpisodeInfo.YoutubeId != null)
+                if (info.YoutubeId != null)
                 {
-                    var request = uploadService.Videos.Delete(info.EpisodeInfo.YoutubeId);
+                    var request = uploadService.Videos.Delete(info.YoutubeId);
                     await request.ExecuteAsync();
 
-                    if (info.EpisodeInfo.ItemPlaylistId != null)
+                    if (info.ItemPlaylistId != null)
                     {
-                        var playlistItemsListRequest = uploadService.PlaylistItems.Delete(info.EpisodeInfo.ItemPlaylistId);
+                        var playlistItemsListRequest = uploadService.PlaylistItems.Delete(info.ItemPlaylistId);
                         var playlistItemsListResponse = await playlistItemsListRequest.ExecuteAsync();
-                        info.EpisodeInfo.ItemPlaylistId = null;
+                        info.ItemPlaylistId = null;
                     }
                 }
             }
@@ -119,36 +117,23 @@ namespace Tuto.Publishing
         void videosInsertRequest_ResponseReceived(Video video)
         {
             Console.WriteLine("Video id '{0}' was successfully uploaded.", video.Id);
-            info.EpisodeInfo.YoutubeId = video.Id;
+            info.YoutubeId = video.Id;
             AddToPlaylist(video.Id);
-        }
-
-        private EpisodInfo GetNewEpisodeInfo()
-        {
-            foreach (var ep in this.info.Model.Montage.Information.Episodes)
-            {
-                if (ep.Guid == info.EpisodeInfo.Guid)
-                {
-                    return ep;
-                }
-            }
-            return null;
         }
 
         private async void AddToPlaylist(string id)
         {
             //move to playlist
-            if (info.EpisodeInfo.PlaylistId != null)
+            if (info.PlaylistId != null)
             {
                 var newPlaylistItem = new PlaylistItem();
                 newPlaylistItem.Snippet = new PlaylistItemSnippet();
-                newPlaylistItem.Snippet.PlaylistId = info.EpisodeInfo.PlaylistId;
+                newPlaylistItem.Snippet.PlaylistId = info.PlaylistId;
                 newPlaylistItem.Snippet.ResourceId = new ResourceId();
                 newPlaylistItem.Snippet.ResourceId.Kind = "youtube#video";
                 newPlaylistItem.Snippet.ResourceId.VideoId = id;
                 newPlaylistItem = await uploadService.PlaylistItems.Insert(newPlaylistItem, "snippet").ExecuteAsync();
-                info.EpisodeInfo.ItemPlaylistId = newPlaylistItem.Id;
-                info.Model.Save();
+                info.ItemPlaylistId = newPlaylistItem.Id;
             }
         }
     }
