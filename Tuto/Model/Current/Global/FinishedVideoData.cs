@@ -48,6 +48,9 @@ namespace Tuto.Model
         public string ItemPlaylistId { get; set; }
 
         [DataMember]
+        public string PlaylistPosition { get; set; }
+
+        [DataMember]
         public string PlaylistId { get; set; }
 
         internal void Load(EditorModel model, int episodeNumber)

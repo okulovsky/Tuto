@@ -113,12 +113,14 @@ namespace Tuto.Publishing
             }
         }
 
-
+        public event EventHandler Uploaded;
         void videosInsertRequest_ResponseReceived(Video video)
         {
             Console.WriteLine("Video id '{0}' was successfully uploaded.", video.Id);
             info.YoutubeId = video.Id;
             AddToPlaylist(video.Id);
+            if (Uploaded != null)
+                Uploaded("", new EventArgs());
         }
 
         private async void AddToPlaylist(string id)
@@ -126,14 +128,26 @@ namespace Tuto.Publishing
             //move to playlist
             if (info.PlaylistId != null)
             {
+                
                 var newPlaylistItem = new PlaylistItem();
                 newPlaylistItem.Snippet = new PlaylistItemSnippet();
                 newPlaylistItem.Snippet.PlaylistId = info.PlaylistId;
                 newPlaylistItem.Snippet.ResourceId = new ResourceId();
+                if (info.PlaylistPosition != null) //just added
+                    newPlaylistItem.Snippet.Position = int.Parse(info.PlaylistPosition); //because inserting after
+                newPlaylistItem.Kind = "youtube#playlistItem";
                 newPlaylistItem.Snippet.ResourceId.Kind = "youtube#video";
                 newPlaylistItem.Snippet.ResourceId.VideoId = id;
                 newPlaylistItem = await uploadService.PlaylistItems.Insert(newPlaylistItem, "snippet").ExecuteAsync();
+
+                //got null, so reload to get position
+                var a = uploadService.PlaylistItems.List("snippet");
+                a.Id = newPlaylistItem.Id;
+                var ans = await a.ExecuteAsync();
+                
+
                 info.ItemPlaylistId = newPlaylistItem.Id;
+                info.PlaylistPosition = ans.Items[0].Snippet.Position.ToString();
             }
         }
     }

@@ -23,9 +23,11 @@ namespace Tuto.BatchWorks
         public override void Work()
         {
             var w = new UploadVideo(info);
+            w.Uploaded += (s, a) => { OnTaskFinished(); };
             w.Proceed();
         }
 
+        
         public override void Clean()
         {
             if (Process != null && !Process.HasExited)

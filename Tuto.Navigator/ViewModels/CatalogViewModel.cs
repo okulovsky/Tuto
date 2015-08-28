@@ -25,8 +25,9 @@ namespace Tuto.Navigator
         public Wrap SelectedItem { get; set; }
         public VideoWrap SelectedItemInUnassignedList { get; set; }
         private List<EditorModel> Models { get; set; }
+        private Action Save { get; set; }
 
-        public PublishViewModel(GlobalData globalData, List<EditorModel> models)
+        public PublishViewModel(GlobalData globalData, List<EditorModel> models, Action save)
         {
             Levels = new ObservableCollection<TopicLevel>();
             Models = models;
@@ -49,6 +50,7 @@ namespace Tuto.Navigator
             RemoveCommand = new RelayCommand(Remove, () => SelectedItem != null && SelectedItem != Root[0]);
             DeleteCommand = new RelayCommand(DeleteFromList, () => SelectedItemInUnassignedList != null);
             UploadCommand = new RelayCommand(Upload);//() => Program.BatchWorkQueueWindow.Run(new List<BatchWork>()));
+            Save = save;
         }
 
         public void Upload()
@@ -64,7 +66,9 @@ namespace Tuto.Navigator
                 }
             var work = selected.Select( x => 
                 {
-                    return new YoutubeWork(x);
+                    var upload = new YoutubeWork(x);
+                    upload.TaskFinished += (s, a) => { Save(); };
+                    return upload;
                 }).ToList();
             Program.BatchWorkQueueWindow.Run(work);
         }

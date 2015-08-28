@@ -101,7 +101,7 @@ namespace Tuto.Navigator
                 m.addTaskToQueue = queueWindow.Run;
                 Subdirectories.Add(m);
             }
-            Publish = new PublishViewModel(globalData, models);
+            Publish = new PublishViewModel(globalData, models, () => { EditorModelIO.Save(GlobalData); });
             FillQueue(data);
         }
 
