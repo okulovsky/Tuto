@@ -41,6 +41,7 @@ namespace Tuto.Navigator
             RemontageSelectedCommand = new RelayCommand(MontageSelected, somethingSelected);
 			RepairFaceSelectedCommand = new RelayCommand(RepairFaceSelected, somethingSelected);				 
             CreateBackupCommand = new RelayCommand(CreateBackup);
+            UploadSelectedClipsCommand = new RelayCommand(UploadClips);
         }
 
         public void AssembleWithOptions()
@@ -56,6 +57,11 @@ namespace Tuto.Navigator
                 queueWindow.Run(tasks);
         }
 
+        public void UploadClips()
+        {
+
+        }
+
         public void Load(FileInfo file)
         {
             if (IsLoaded)
@@ -69,7 +75,7 @@ namespace Tuto.Navigator
             ReadSubdirectories();
         }
 
-        List<EditorModel> models;
+        List<EditorModel> models { get; set; }
         public BatchWorkWindow queueWindow = new BatchWorkWindow();
 
         public void ReadSubdirectories()
@@ -92,10 +98,9 @@ namespace Tuto.Navigator
             foreach (var e in data.Models)
             {
                 var m = new SubfolderViewModel(e);
-                m.addTaskToQueue = queueWindow.Run;
                 Subdirectories.Add(m);
             }
-            Publish = new PublishViewModel(globalData);
+            Publish = new PublishViewModel(globalData, models, () => { EditorModelIO.Save(GlobalData); });
             FillQueue(data);
         }
 
@@ -203,6 +208,7 @@ namespace Tuto.Navigator
         public RelayCommand AssembleSelectedWithOptionsCommand { get; private set; }
         public RelayCommand RemontageSelectedCommand { get; private set; }
 		public RelayCommand RepairFaceSelectedCommand { get; private set; }
+        public RelayCommand UploadSelectedClipsCommand { get; private set; }
         public RelayCommand CreateBackupCommand { get; private set; }
         #endregion
 

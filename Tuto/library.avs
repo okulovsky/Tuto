@@ -5,6 +5,11 @@ function AddWatermarkPNG(clip c, string filename, int x, int y) {
 	return overlay(c, logo, x, y, mask=mask)
 }
 
+function AddEmptySoundIfNecessary(clip c) {
+	ans = c.HasAudio() ? c : eval("""audio = BlankClip(c, audio_rate=48000) AudioDub(c, audio)""")
+	return ans
+}
+
 function Intro(clip reference, string image, float ms) {
 	length = Time2Frame(reference, ms)
 	fps = reference.frameRate

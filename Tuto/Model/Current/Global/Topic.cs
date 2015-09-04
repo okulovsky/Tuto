@@ -16,6 +16,8 @@ namespace Tuto.Model
         [DataMember]
         public string Caption { get; set; }
         [DataMember]
+        public string PlaylistId { get; set; }
+        [DataMember]
         public List<Topic> Items { get; private set; }
 
 
@@ -23,6 +25,7 @@ namespace Tuto.Model
         {
             Guid = Guid.NewGuid();
             Caption = "[Новый раздел]";
+            PlaylistId = "[Enter PlaylistIdHere]";
             Items = new List<Topic>();
         }
     }

@@ -11,7 +11,7 @@ using Editor;
 
 namespace Tuto.Navigator
 {
-    public class Program
+    public static class Program
     {
         [STAThread]
         public static void Main(string[] args)
@@ -19,6 +19,7 @@ namespace Tuto.Navigator
             TutoProgram.SetSilentMode();
             var mainWindow = new MainNavigatorWindow();
             var globalModel = new GlobalViewModel();
+            BatchWorkQueueWindow = globalModel.queueWindow;
             mainWindow.DataContext = globalModel;
             mainWindow.WindowState = System.Windows.WindowState.Maximized;
 
@@ -37,6 +38,10 @@ namespace Tuto.Navigator
 
         public static string MontageFile="montage.editor";
         public static string TimesFile="times.txt";
+        public static BatchWorkWindow BatchWorkQueueWindow {get; set;}
+
+
+        
 
     }
 }

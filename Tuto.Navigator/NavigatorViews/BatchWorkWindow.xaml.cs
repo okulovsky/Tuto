@@ -36,8 +36,6 @@ namespace Tuto.Navigator
         Thread queueThread { get; set; }
         private Process currentProcess;
 
-        private List<Task> tasks;
-
         void Execute()
         {
             while (currentIndex != this.work.Count && QueueWorking)

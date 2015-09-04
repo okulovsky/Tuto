@@ -1,0 +1,36 @@
+﻿<Window x:Class="Tuto.Navigator.SubtitleEditor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="SubtitleEditor" Height="205" Width="261">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.8*"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"></RowDefinition>
+            <RowDefinition Height="40"></RowDefinition>
+            <RowDefinition Height="40"></RowDefinition>
+            <RowDefinition Height="40"></RowDefinition>
+
+        </Grid.RowDefinitions>
+        <Label Content="Size" VerticalAlignment="Center"></Label>
+        <Label Grid.Row="1" VerticalAlignment="Center" Content="Foreground color"></Label>
+        <Label Grid.Row="2" VerticalAlignment="Center" Content="Outline color"></Label>
+        <Label Grid.Row="3" VerticalAlignment="Center" Content="Text"></Label>
+        
+        <TextBox Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="40"
+                 Text="{Binding FontSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                 ></TextBox>
+        <ComboBox Name="ForegroundPicker" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100"
+                  SelectedItem="{Binding Foreground, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  ></ComboBox>
+        <ComboBox Name="StrokePicker" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100"
+                  SelectedItem="{Binding Stroke, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  ></ComboBox>
+        <TextBox Grid.Column="1" Grid.Row="3" Focusable="True" 
+                 Text="{Binding Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                 HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Height="30"></TextBox>
+    </Grid>
+</Window>

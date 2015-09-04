@@ -47,6 +47,7 @@ namespace Tuto.Navigator
     public class VideoWrap : Wrap
     {
         public FinishedVideo Video { get; private set; }
+        public bool Checked { get; set;}
         public VideoWrap(FinishedVideo data)
         {
             Video = data;

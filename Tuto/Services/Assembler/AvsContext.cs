@@ -35,6 +35,11 @@ namespace Tuto.TutoServices.Assembler
                 model.Locations.ConvertedDesktopVideo.FullName);  // root of the tree has id 0
         }
 
+       public string GetContent()
+        {
+            return internalData.ToString();
+        }
+
         public int Id { get { id++;
             return id;
         } }

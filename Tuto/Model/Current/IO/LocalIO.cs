@@ -30,7 +30,7 @@ namespace Tuto.Model
 
             var file = model.VideoFolder.GetFiles(Locations.LocalFileName).FirstOrDefault();
             if (file == null) return false;
-            var container = HeadedJsonFormat.Read<FileContainer>(file, localFileHeader, CurrentLocalVersion, null, UpdateLocalV1, UpdateLocalV2);
+            var container = HeadedJsonFormat.Read<FileContainer>(file, localFileHeader, CurrentLocalVersion, null, UpdateLocalV1, UpdateLocalV2, UpdateLocalV3);
 
             model.Montage = container.MontageModel;
             model.WindowState = container.WindowState;
@@ -68,11 +68,6 @@ namespace Tuto.Model
             var programFolder = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory;
 			return new EditorModel(localDirectory, rootDirectory, programFolder);
         }
-
-
-
-
-
 
         static bool TryReadObsolete(EditorModel model)
         {

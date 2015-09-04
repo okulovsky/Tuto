@@ -13,9 +13,9 @@ using System.ComponentModel;
 namespace Tuto.Navigator
 {
 
+
     public class SubfolderViewModel : INotifyPropertyChanged
     {
-        public Action<IEnumerable<BatchWork>> addTaskToQueue;
         private EditorModel model { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -38,9 +38,16 @@ namespace Tuto.Navigator
             if (model.Montage.Information != null && model.Montage.Information.Episodes.Count>0)
             {
                 TotalDuration = model.Montage.Information.Episodes.Sum(z => z.Duration.TotalMinutes);
+                int index = 0;
                 EpisodesNames = model.Montage.Information.Episodes
-                    .Select(z=>z.Name)
-                    .Aggregate((a, b) => a + "\r\n" + b);
+                    .Select(z => 
+                    {
+                        var info = new EpisodeBindingInfo();
+                        info.EpisodeInfo = z;
+                        info.FullName = model.Locations.GetOutputFile(index++).FullName;
+                        info.Model = model;
+                        return info;
+                    }).ToList();
             }
         }
         public bool Selected { get; set; }
@@ -58,7 +65,7 @@ namespace Tuto.Navigator
 
         public string Name {get { return Path.GetFileName(FullPath); }}
 
-        public string EpisodesNames { get; private set; }
+        public List<EpisodeBindingInfo> EpisodesNames { get; private set; }
 
         public double? TotalDuration { get; private set; }
 
@@ -67,7 +74,6 @@ namespace Tuto.Navigator
 
             var model = EditorModelIO.Load(EditorModelIO.SubstituteDebugDirectories(FullPath));
             var window = new MainEditorWindow();
-            window.addTaskToQueue = addTaskToQueue;
             window.DataContext = model;
             window.Show();
         }

@@ -39,7 +39,7 @@ namespace Tuto.BatchWorks
 
             foreach (var episode in episodes)
             {
-                var args = @"-i ""{0}"" -q:v 0 ""{1}""";
+                var args = @"-i ""{0}"" -q:v 0 -vf ""scale=1280:720, fps=25"" -q:v 0 -acodec libmp3lame -ac 2 -ar 44100 -ab 32k ""{1}""";
                 var avsContext = new AvsContext();
                 episode.SerializeToContext(avsContext);
                 var avsScript = avsContext.Serialize(Model);
