@@ -54,7 +54,7 @@ namespace Tuto.Model
         public double volume { get; set; }
 
         [DataMember]
-        public TrackInfo currentPatch;
+        public MediaTrack currentPatch;
 
         [DataMember]
         private Subtitle _currentSubtitle;
