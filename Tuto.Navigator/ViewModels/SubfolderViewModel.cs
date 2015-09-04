@@ -16,7 +16,6 @@ namespace Tuto.Navigator
 
     public class SubfolderViewModel : INotifyPropertyChanged
     {
-        public Action<IEnumerable<BatchWork>> addTaskToQueue;
         private EditorModel model { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -75,7 +74,6 @@ namespace Tuto.Navigator
 
             var model = EditorModelIO.Load(EditorModelIO.SubstituteDebugDirectories(FullPath));
             var window = new MainEditorWindow();
-            window.addTaskToQueue = addTaskToQueue;
             window.DataContext = model;
             window.Show();
         }

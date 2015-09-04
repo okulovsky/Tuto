@@ -32,7 +32,6 @@ namespace Editor
     /// </summary>
     public partial class MainEditorWindow : Window
     {
-        public Action<IEnumerable<BatchWork>> addTaskToQueue;
         private double currentTime;
         EditorModel model;
 
@@ -89,10 +88,10 @@ namespace Editor
                     model.Save();
                     var task = new ConvertVideoWork(model, model.Locations.DesktopVideo);
                     task.Forced = true;
-                    addTaskToQueue(new List<BatchWork>(){task});
+                    Program.BatchWorkQueueWindow.Run(new List<BatchWork>(){task});
                     var task2 = new ConvertVideoWork(model, model.Locations.FaceVideo);
                     task2.Forced = true;
-                    addTaskToQueue(new List<BatchWork>() { task2 });
+                    Program.BatchWorkQueueWindow.Run(new List<BatchWork>() { task2 });
                 };
 
             Assembly.Click += (s, a) =>
@@ -100,7 +99,7 @@ namespace Editor
                     model.Save();
                     var tasks = new List<BatchWork>();
                     tasks.Add(new AssemblyVideoWork(model, model.Global.CrossFadesEnabled));
-                    addTaskToQueue(tasks);
+                    Program.BatchWorkQueueWindow.Run(tasks);
                 };
 
             RepairFace.Click += (s, a) =>
@@ -108,7 +107,7 @@ namespace Editor
                     model.Save();
                     var task = new RepairVideoWork(model, model.Locations.FaceVideo);
                     task.Forced = true;
-                    addTaskToQueue(new List<BatchWork>{task});
+                    Program.BatchWorkQueueWindow.Run(new List<BatchWork> { task });
                 };
 
             RepairDesktop.Click += (s, a) =>
@@ -116,7 +115,7 @@ namespace Editor
                 model.Save();
                 var task = new RepairVideoWork(model, model.Locations.DesktopVideo);
                 task.Forced = true;
-                addTaskToQueue(new List<BatchWork> { task });
+                Program.BatchWorkQueueWindow.Run(new List<BatchWork> { task });
             };
 
             NoiseReduction.Click += (s, a) =>
@@ -124,7 +123,7 @@ namespace Editor
                 model.Save();
                 var task = new CreateCleanSoundWork(model.Locations.FaceVideo, model);
                 task.Forced = true;
-                addTaskToQueue(new List<BatchWork> { task });
+                Program.BatchWorkQueueWindow.Run(new List<BatchWork> { task });
             };
 
             ThumbFace.Click += (s, a) =>
@@ -132,7 +131,7 @@ namespace Editor
                     model.Save();
                         var task = new CreateThumbWork(model.Locations.FaceVideo, model);
                         task.Forced = true;
-                        addTaskToQueue(new List<BatchWork> { task });
+                        Program.BatchWorkQueueWindow.Run(new List<BatchWork> { task });
                         task.TaskFinished += (z, x) =>
                         {
                             Action t = () => { FaceVideo.Source = new Uri(((CreateThumbWork)z).ThumbName.FullName); };
@@ -146,7 +145,7 @@ namespace Editor
                     model.Save();
                         var task = new CreateThumbWork(model.Locations.DesktopVideo, model);
                         task.Forced = true;
-                        addTaskToQueue(new List<BatchWork> { task });
+                        Program.BatchWorkQueueWindow.Run(new List<BatchWork> { task });
                         task.TaskFinished += (z, x) =>
                             {
                                 Action t = () => { ScreenVideo.Source = new Uri(((CreateThumbWork)z).ThumbName.FullName); };
@@ -185,7 +184,7 @@ namespace Editor
                     patchWindow.LoadModel(m, model);
                     patchWindow.Show();
                 }
-                else addTaskToQueue(new List<BatchWork>() { new AssemblyVideoWork(model, model.Global.CrossFadesEnabled) });
+                else Program.BatchWorkQueueWindow.Run(new List<BatchWork>() { new AssemblyVideoWork(model, model.Global.CrossFadesEnabled) });
             };
             GoTo.Click += (s, a) =>
                 {
@@ -240,7 +239,7 @@ namespace Editor
                     };
             }
             if (toDo.Count != 0 )
-                addTaskToQueue(toDo);
+                Program.BatchWorkQueueWindow.Run(toDo);
         }
 
         void Synchronize_Click(object sender, RoutedEventArgs e)

@@ -20,7 +20,7 @@
             <ColumnDefinition Width="0.3*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <Viewbox  Grid.Column="0" Grid.Row="0">
+        <Viewbox Grid.Column="0" Grid.Row="0">
             <Canvas Height="400" Width="585"  Name="Clips">
                 <MediaElement Canvas.Top="0" Canvas.Left="0" Height="400" Width="585" Name="ViewTimeline"></MediaElement>
                 <MediaElement Height="400" Width="585" Name="PatchWindow"></MediaElement>

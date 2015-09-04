@@ -98,7 +98,6 @@ namespace Tuto.Navigator
             foreach (var e in data.Models)
             {
                 var m = new SubfolderViewModel(e);
-                m.addTaskToQueue = queueWindow.Run;
                 Subdirectories.Add(m);
             }
             Publish = new PublishViewModel(globalData, models, () => { EditorModelIO.Save(GlobalData); });
