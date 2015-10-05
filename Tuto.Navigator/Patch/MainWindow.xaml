@@ -57,8 +57,8 @@
 
             <WrapPanel RequestBringIntoView="WrapPanel_RequestBringIntoView">
                 <Canvas Name="Tracks" Width="{Binding DurationInPixels}"  HorizontalAlignment="Left">
-                    <Rectangle Name="TimeLine" Width="{Binding DurationInPixels}" Canvas.Top="5" Height="10" Stroke="Yellow" Fill="Yellow" MouseDown="TimeLine_MouseDown"></Rectangle>
-                    <DesignInControl:RangeSlider IsEnabled="False" Canvas.Left="0" Canvas.Top="15" x:Name="mainSlider" Height="25" Duration="{Binding DurationInPixels}" LeftShift="0" EndSecond="{Binding DurationInPixels}" Maximum="{Binding DurationInPixels}"></DesignInControl:RangeSlider>
+                    <Rectangle Name="TimeLine" Width="9000" Canvas.Top="5" Height="10" Stroke="Yellow" Fill="Yellow" MouseDown="TimeLine_MouseDown"></Rectangle>
+                    <DesignInControl:RangeSlider Canvas.Left="0" Canvas.Top="15" x:Name="mainSlider" Height="25" Duration="{Binding DurationInPixels}" LeftShift="0" EndSecond="{Binding DurationInPixels}" Maximum="{Binding DurationInPixels}"></DesignInControl:RangeSlider>
                     <ItemsControl ItemsSource="{Binding MediaTracks}" Canvas.Top="45">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>

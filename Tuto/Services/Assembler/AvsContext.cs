@@ -47,8 +47,6 @@ namespace Tuto.TutoServices.Assembler
         private int id = -1;
         private const string Format =
 @"import(""{0}"")
-loadplugin(""{1}"")
-loadplugin(""{2}"")
 {5}
 desktop = DirectShowSource(""{6}"").ChangeFPS(25)
 {3}

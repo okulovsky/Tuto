@@ -149,7 +149,7 @@ namespace Tuto.Navigator
             ViewTimeline.Source = new Uri(Model.SourceInfo.FullName);
             ViewTimeline.LoadedBehavior = MediaState.Manual;
             timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromMilliseconds(10);
+            timer.Interval = TimeSpan.FromMilliseconds(100);
             timer.Tick += (s, a) => { CheckPlayTime(); };
             ViewTimeline.MediaOpened += SetMainVideo;
             ViewTimeline.Play();
@@ -236,12 +236,15 @@ namespace Tuto.Navigator
 
         private void CheckPlayTime()
         {
-            var pixelsRelativeToSeconds = ViewTimeline.Position.TotalSeconds * Model.Scale;
-            Canvas.SetLeft(CurrentTime, pixelsRelativeToSeconds);
+            if (Model.WindowState.isPlaying)
+                Model.WindowState.TimeSet += 0.1;
+            var pixelsRelativeToSeconds = Model.WindowState.TimeSet * Model.Scale;
             CheckSubtitle(pixelsRelativeToSeconds);
             for (var i = Model.MediaTracks.Count - 1; i >= 0; i--)
                 if (InPatchSection(Model.MediaTracks[i], pixelsRelativeToSeconds))
                 {
+                    ViewTimeline.Pause();
+                    Canvas.SetLeft(CurrentTime, Model.WindowState.TimeSet * Model.Scale);
                     if (Model.WindowState.currentPatch == Model.MediaTracks[i])
                         return;
 
@@ -251,19 +254,23 @@ namespace Tuto.Navigator
                     var shift = Model.WindowState.currentPatch.LeftShiftInPixels;
                     var position = pixelsRelativeToSeconds - shift + Model.WindowState.currentPatch.StartPixel;
                     PatchWindow.Position = TimeSpan.FromSeconds(position / Model.Scale);
-                    PatchWindow.Play();
+                    if (Model.WindowState.isPlaying)
+                        PatchWindow.Play();
 
                     ViewTimeline.Volume = 0;
                     ViewTimeline.Visibility = System.Windows.Visibility.Hidden;
                     PatchWindow.Visibility = System.Windows.Visibility.Visible;
-
+                    Canvas.SetLeft(CurrentTime, Model.WindowState.TimeSet * Model.Scale);
                     return;
                 }
             PatchWindow.Pause();
+            if (Model.WindowState.isPlaying)
+                ViewTimeline.Play();
             PatchWindow.Visibility = System.Windows.Visibility.Collapsed;
             ViewTimeline.Volume = Model.WindowState.volume;
             ViewTimeline.Visibility = System.Windows.Visibility.Visible;
             Model.WindowState.currentPatch = null;
+            Canvas.SetLeft(CurrentTime, Model.WindowState.TimeSet * Model.Scale);
         }
 
         private bool InPatchSection(TrackInfo track, double seconds)
@@ -277,12 +284,12 @@ namespace Tuto.Navigator
         {
             var pos = e.GetPosition(Tracks);
             var span = TimeSpan.FromSeconds(pos.X / Model.Scale);
-            Canvas.SetLeft(CurrentTime, pos.X);
+            Model.WindowState.TimeSet = span.TotalSeconds;
             ViewTimeline.Position = span;
             if (Model.WindowState.currentPatch != null)
             {
                 var shift = Model.WindowState.currentPatch.LeftShiftInPixels;
-                var seconds = ViewTimeline.Position.TotalSeconds * Model.Scale;
+                var seconds = Model.WindowState.TimeSet * Model.Scale;
                 var position = seconds - shift + Model.WindowState.currentPatch.StartPixel;
                 PatchWindow.Position = TimeSpan.FromSeconds(position / Model.Scale);
             }
@@ -403,7 +410,6 @@ namespace Tuto.Navigator
             Model.ActualHeight = ViewTimeline.ActualHeight;
             Model.ActualWidth = ViewTimeline.ActualWidth;
         }
-
 
         public event PropertyChangedEventHandler PropertyChanged;
     }

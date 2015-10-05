@@ -49,6 +49,7 @@ namespace Tuto.BatchWorks
             oldName = pmodel.SourceInfo.FullName;
             newName = Path.Combine(pmodel.SourceInfo.Directory.FullName, Guid.NewGuid().ToString() + ".avi");
             File.Move(oldName, newName);
+
             double previous = 0;
             int index = 0;
             string mode = "main";
