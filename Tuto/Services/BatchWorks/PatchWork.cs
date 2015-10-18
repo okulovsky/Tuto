@@ -8,6 +8,7 @@ using Tuto.Model;
 using Tuto.TutoServices;
 using Tuto.TutoServices.Montager;
 using Tuto.TutoServices.Assembler;
+using System.Threading;
 
 namespace Tuto.BatchWorks
 {
@@ -125,12 +126,14 @@ namespace Tuto.BatchWorks
 
         public override void Clean()
         {
-            if (Process != null && !Process.HasExited)
-                Process.Kill();
-            while (!File.Exists(oldName))
+            FinishProcess();
+            var tries = 0;
+            while (!File.Exists(oldName) && tries < 5)
                 try
                 {
+                    tries++;
                     File.Move(newName, oldName);
+                    Thread.Sleep(200);
                 }
                 catch { }
         }

@@ -73,6 +73,31 @@ namespace Tuto.BatchWorks
             set { status = value; NotifyPropertyChanged(); }
         }
 
+        public void TryToDelete(FileInfo info)
+        {
+            TryToDelete(info.FullName);
+        }
+
+        public void TryToDelete(string fileName)
+        {
+            var tries = 0;
+            while (tries < 5)
+            {
+                try
+                {
+                    tries++;
+                    File.Delete(fileName);
+                    Thread.Sleep(200);
+                }
+                catch { }
+            }
+        }
+
+        public void FinishProcess()
+        {
+            if (Process != null && !Process.HasExited)
+                Process.Kill();
+        }
 
         string exceptionMessage;
         public string ExceptionMessage

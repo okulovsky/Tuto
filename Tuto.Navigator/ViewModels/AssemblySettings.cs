@@ -45,6 +45,8 @@ namespace Tuto.Navigator.ViewModels
 
                 if (AssemblyNeeded)
                     tasks.Add(new AssemblyVideoWork(m, m.Global.CrossFadesEnabled));
+                foreach (var e in tasks)
+                    e.Forced = true;
             }
             else tasks = GetOptionsAccordingAllOption(m);
             return tasks;

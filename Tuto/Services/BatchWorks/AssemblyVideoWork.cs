@@ -60,15 +60,9 @@ namespace Tuto.BatchWorks
 
         public override void Clean()
         {
-            if (Process != null && !Process.HasExited)
-                Process.Kill();
-            while (filesToDelIfAborted.Count > 0)
-                try
-                {
-                    File.Delete(filesToDelIfAborted[0]);
-                    filesToDelIfAborted.RemoveAt(0);
-                }
-                catch { }
+            FinishProcess();
+            foreach (var e in filesToDelIfAborted)
+                TryToDelete(e);
         }
     }
 }

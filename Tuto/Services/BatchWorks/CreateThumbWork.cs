@@ -59,17 +59,8 @@ namespace Tuto.BatchWorks
 
         public override void Clean()
         {
-            if (Process != null && !Process.HasExited)
-                Process.Kill();
-            if (tempFile.Exists)
-            {
-                while (tempFile.Exists)
-                    try
-                    {
-                        File.Delete(tempFile.FullName);
-                    }
-                    catch { }
-            }
+            FinishProcess();
+            TryToDelete(tempFile.FullName);
         }
     }
 }

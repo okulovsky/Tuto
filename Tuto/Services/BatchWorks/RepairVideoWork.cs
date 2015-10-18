@@ -48,17 +48,12 @@ namespace Tuto.BatchWorks
 
         public override void Clean()
         {
-            if (Process != null && !Process.HasExited)
-                Process.Kill();
+            FinishProcess();
             Thread.Sleep(1000); //this time is required for system to free recources
             if (File.Exists(tempFile) && CopyingOver)
             {
                 if (source.Exists)
-                    try
-                    {
-                        File.Delete(tempFile);
-                    }
-                    catch { }
+                    TryToDelete(tempFile);
             }
         }
     }

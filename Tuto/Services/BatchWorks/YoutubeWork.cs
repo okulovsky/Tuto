@@ -30,8 +30,7 @@ namespace Tuto.BatchWorks
         
         public override void Clean()
         {
-            if (Process != null && !Process.HasExited)
-                Process.Kill();
+            FinishProcess();
         }
     }
 }
