@@ -10,7 +10,6 @@ namespace Tuto.Navigator.ViewModels
     public class AssemblySettings
     {
         //Refactoring!
-        public bool CleanSound { get; set; }
 
         public bool FaceThumb { get; set; }
         public bool DesktopThumb { get; set; }
@@ -40,8 +39,6 @@ namespace Tuto.Navigator.ViewModels
                     tasks.Add(new ConvertVideoWork(m, m.Locations.DesktopVideo));
                     tasks.Add(new ConvertVideoWork(m, m.Locations.FaceVideo));
                 }
-                if (CleanSound)
-                    tasks.Add(new CreateCleanSoundWork(m.Locations.FaceVideo, m));
 
                 if (AssemblyNeeded)
                     tasks.Add(new AssemblyVideoWork(m, m.Global.CrossFadesEnabled));

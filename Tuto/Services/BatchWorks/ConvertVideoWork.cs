@@ -16,9 +16,7 @@ namespace Tuto.BatchWorks
             Model = model;
             Name = "Converting Video: " + src;
             source = src;
-            var nameAndExtension = source.Name.Split('.');
-            nameAndExtension[1] = "avi";
-            nonConvertedFile = new FileInfo(Path.Combine(Model.Locations.TemporalDirectory.FullName, string.Join(".", nameAndExtension)));
+            nonConvertedFile = new FileInfo(Path.Combine(Model.Locations.TemporalDirectory.FullName, Path.ChangeExtension(src.Name, ".avi")));
             tempFile = GetTempFile(nonConvertedFile);
             convertedFile = GetTempFile(nonConvertedFile, "-converted");
         }

@@ -183,7 +183,6 @@
     <Compile Include="Services\Assembler\AvsSubtitle.cs" />
     <Compile Include="Services\Assembler\AvsWatermark.cs" />
     <Compile Include="Services\BatchWorks\YoutubeWork.cs" />
-    <Compile Include="Services\BatchWorks\MoveCopyWork.cs" />
     <Compile Include="Services\BatchWorks\PreparePatchWork.cs" />
     <Compile Include="Services\BatchWorks\PatchWork.cs" />
     <Compile Include="Services\BatchWorks\BatchWork.cs" />

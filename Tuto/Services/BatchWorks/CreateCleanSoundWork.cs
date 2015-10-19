@@ -30,10 +30,9 @@ namespace Tuto.BatchWorks
             var ffExe = Model.Locations.FFmpegExecutable;
             var soxExe = Model.Locations.SoxExecutable;
             var printMode = false;
-            var loc = Model.Locations.FaceVideo;
             var temp = Model.Locations.TemporalDirectory;
 
-            Shell.Exec(printMode, ffExe, string.Format(@"-i ""{0}"" -y ""{1}\input.wav""", loc, temp));
+            Shell.Exec(printMode, ffExe, string.Format(@"-i ""{0}"" -y ""{1}\input.wav""", source.FullName, temp));
             Shell.Exec(printMode, soxExe, string.Format(@"""{0}\input.wav"" ""{0}\loud.wav"" --norm", temp));
 
             //profile for noise creation
@@ -52,10 +51,23 @@ namespace Tuto.BatchWorks
 
             Thread.Sleep(500);
             var file = Model.Locations.ClearedSound;
+            var mp3Path = Path.GetFileNameWithoutExtension(source.Name) + ".mp3";
+            var output = Path.Combine(file.Directory.FullName, mp3Path);
             if (File.Exists(file.FullName))
                 File.Delete(file.FullName);
             Thread.Sleep(200);
-            File.Move(GetTempFile(file).FullName, file.FullName);
+            //File.Move(GetTempFile(file).FullName, output);
+
+            var tempAudioFile = GetTempFile(source); 
+            var args = string.Format(
+                @"-i ""{0}"" -i ""{1}"" -map 0:0 -map 1 -vcodec copy -acodec copy ""{2}"" -y",
+                source.FullName,
+                Path.Combine(Model.Locations.FaceVideo.Directory.FullName,mp3Path),
+                tempAudioFile.FullName
+                );
+            Shell.Exec(printMode, ffExe, args);
+            Thread.Sleep(200);
+            File.Delete(tempAudioFile.FullName);
             OnTaskFinished();
             
         }
@@ -68,8 +80,6 @@ namespace Tuto.BatchWorks
 
         public override void Clean()
         {
-            if (Process != null && !Process.HasExited)
-                Process.Kill();
             foreach (var temp in filesToDel)
                 if (File.Exists(Model.Locations.TemporalDirectory.FullName + temp))
                 {

@@ -45,8 +45,8 @@ namespace Tuto.Model
 
     public class AudioCleanSettings : Settings
     {
-        public AudioCleanSettings() { CurrentAsString = Options.DuringEditing.ToString(); }
-        public override List<Options> PossibleOptions { get { return new List<Options>() { Options.BeforeEditing, Options.DuringEditing, Options.Skip, Options.WithAssembly }; } }
+        public AudioCleanSettings() { CurrentAsString = Options.WithAssembly.ToString(); }
+        public override List<Options> PossibleOptions { get { return new List<Options>() { Options.Skip, Options.WithAssembly }; } }
     }
 
     public class WorkSettings

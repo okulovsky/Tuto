@@ -8,7 +8,7 @@
         <ed:PausedToStringConverter x:Key="PausedCnv"/>
     </Window.Resources>
 
-    <Grid Drop="Tracks_Drop" AllowDrop="true" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <Grid AllowDrop="true" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
             <RowDefinition Height="40"></RowDefinition>
@@ -35,7 +35,7 @@
             </Canvas>
         </Viewbox>
 
-        <TreeView VerticalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Visible" Grid.Row="0" Grid.Column="1" Name="PatchPicker" Grid.ColumnSpan="2"></TreeView>
+        <ListView VerticalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Visible" Grid.Row="0" Grid.Column="1" Name="PatchPicker" Grid.ColumnSpan="2"></ListView>
 
 
         <StackPanel MaxHeight="40" Grid.ColumnSpan="3" Grid.Column="0" Grid.Row="1" Orientation="Horizontal">
@@ -50,6 +50,7 @@
             <Button Margin="10 5 0 5" Height="30" Content="Patch" Width="47" HorizontalAlignment="Left" Name="Patch" Click="Patch_Click"></Button>
             <Button Margin="10 5 0 5" Height="30" Content="Save" Width="47" HorizontalAlignment="Left" Name="Save" Click="Save_Click"></Button>
             <Button Margin="10 5 0 5" Height="30" Content="Subtitle" Width="50" Click="SubtitleProcess" HorizontalAlignment="Left" Name="Subtitle"></Button>
+            <Button Margin="10 5 0 5" Height="30" Content="Refresh" Width="50" HorizontalAlignment="Left" Name="Refresh"></Button>
             <Slider Name="scaleSlider" IsSnapToTickEnabled="True" TickFrequency="1" Margin="10 8 0 5" Width="50" Minimum="1" Maximum="10" Interval="1" SmallChange="1" ValueChanged="Slider_ValueChanged" ></Slider>
         </StackPanel>
 

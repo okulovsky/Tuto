@@ -21,13 +21,22 @@ namespace Tuto.BatchWorks
             Model = model;
             Name = "Assembly video: " + model.Locations.FaceVideo.Directory.Name;
             filesToDelIfAborted = new List<string>();
-            if (model.Global.WorkSettings.AudioCleanSettings.CurrentOption == Options.WithAssembly && !File.Exists(model.Locations.ClearedSound.FullName))
-                BeforeWorks.Add(new CreateCleanSoundWork(model.Locations.FaceVideo, model));
             if (!model.Locations.ConvertedDesktopVideo.Exists)
                 BeforeWorks.Add(new ConvertVideoWork(model, model.Locations.DesktopVideo));
             if (!model.Locations.ConvertedFaceVideo.Exists)
                 BeforeWorks.Add(new ConvertVideoWork(model, model.Locations.FaceVideo));
             this.crossFades = fadeMode;
+            if (Model.Global.WorkSettings.AudioCleanSettings.CurrentOption != Options.Skip)
+            {
+                var index = 0;
+                var serv = new AssemblerService(crossFades);
+                foreach (var e in serv.GetEpisodesNodes(Model))
+                {
+                    var name = Model.Locations.GetOutputFile(index);
+                    AfterWorks.Add(new CreateCleanSoundWork(name, Model));
+                    index++;
+                }
+            }
         }
 
         public override void Work()

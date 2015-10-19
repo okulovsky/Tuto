@@ -28,15 +28,12 @@ namespace Tuto.BatchWorks
             this.pmodel = model;
             this.Model = emodel;
             Name = "Patching: " + model.SourceInfo.Name;
-            if (!Model.Locations.PatchesDirectory.Exists)
-                Model.Locations.PatchesDirectory.Create();
-
             foreach (var ep in model.MediaTracks)
             {
                 var name = Path.Combine(Model.Locations.TemporalDirectory.FullName, ep.ConvertedName);
                 if (!File.Exists(name))
                 {
-                    var fileInPatches = new FileInfo(Path.Combine(emodel.Locations.PatchesDirectory.FullName, new FileInfo(ep.Path.LocalPath).Name));
+                    var fileInPatches = new FileInfo(Path.Combine(emodel.Global.Locations.PatchesFolder.FullName, new FileInfo(ep.Path.LocalPath).Name));
                     BeforeWorks.Add(new PreparePatchWork(emodel, fileInPatches, new FileInfo(name)));
                 }
             }

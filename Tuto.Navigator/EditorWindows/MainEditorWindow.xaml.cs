@@ -118,13 +118,6 @@ namespace Editor
                 Program.BatchWorkQueueWindow.Run(new List<BatchWork> { task });
             };
 
-            NoiseReduction.Click += (s, a) =>
-            {
-                model.Save();
-                var task = new CreateCleanSoundWork(model.Locations.FaceVideo, model);
-                task.Forced = true;
-                Program.BatchWorkQueueWindow.Run(new List<BatchWork> { task });
-            };
 
             ThumbFace.Click += (s, a) =>
                 {

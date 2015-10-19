@@ -74,7 +74,7 @@ namespace Tuto.Model
             get
             {
                 var relative = model.Global.Locations.RelativeTo(model.VideoFolder.FullName, model.Global.Locations.InputFolder.FullName);
-                var name = Path.Combine(model.Global.Locations.ConvertedPatchesFolder.FullName, relative);
+                var name = Path.Combine(model.Global.Locations.PatchesFolder.FullName, relative);
                 return new DirectoryInfo(name);
             }
         }

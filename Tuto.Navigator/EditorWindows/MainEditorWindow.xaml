@@ -49,7 +49,6 @@
                 <Button Focusable="False" x:Name="RepairFace" Content="Repair Face" Width="49"/>
                 <Button Focusable="False" x:Name="RepairDesktop" Width="51">Repair Desktop</Button>
                 <Button Focusable="False" x:Name="Help" Content="Help"/>
-                <Button Focusable="False" x:Name="NoiseReduction" Content="-Noise"/>
                 <Button Focusable="False" Content="ThumbF" x:Name="ThumbFace" Width="58"/>
                 <Button Focusable="False" Content="ThumbD" x:Name="ThumbDesktop" Width="58"/>
                 <Button Focusable="False" x:Name="Montage" Content="Convert"/>

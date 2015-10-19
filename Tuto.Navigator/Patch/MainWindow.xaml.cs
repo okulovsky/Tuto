@@ -38,7 +38,6 @@ namespace Tuto.Navigator
         {
             InitializeComponent();
             PatchWindow.LoadedBehavior = MediaState.Manual;
-            PreparePatchPicker();
         }
 
         void WindowState_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -53,75 +52,30 @@ namespace Tuto.Navigator
             EModel = em;
             Model.RefreshReferences();
             Model.WindowState.PropertyChanged += WindowState_PropertyChanged;
+            Refresh.Click += (s, a) => { PreparePatchPicker(); };
+            PreparePatchPicker();
         }
 
 
         public void PreparePatchPicker()
         {
-            foreach (string s in Directory.GetLogicalDrives())
+            PatchPicker.Items.Clear();
+            foreach (var f in EModel.Global.Locations.PatchesFolder.GetFiles())
             {
-                TreeViewItem item = new TreeViewItem();
-                item.Header = s;
-                item.Tag = s;
-                item.FontWeight = FontWeights.Normal;
-                item.Expanded += new RoutedEventHandler(folder_Expanded);
+                var item = new ListViewItem();
+                item.Content = f.Name;
+                item.Tag = f.FullName;
+                item.MouseDoubleClick += item_MouseDoubleClick;
                 PatchPicker.Items.Add(item);
             }
         }
 
-        void AddTrackFromPicker(object sender, MouseButtonEventArgs e)
+        void item_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            var fileName = ((TreeViewItem)sender).Tag.ToString();
-            addTrack(fileName);
-        }
-
-        void folder_Expanded(object sender, RoutedEventArgs e)
-        {
-            TreeViewItem item = (TreeViewItem)sender;
-            if (item.Items.Count == 0)
+            var item = sender as ListViewItem;
+            if (item != null)
             {
-                item.Items.Clear();
-                try
-                {
-                    foreach (string s in Directory.GetDirectories(item.Tag.ToString()))
-                    {
-                        TreeViewItem subitem = new TreeViewItem();
-                        subitem.Header = s.Substring(s.LastIndexOf("\\") + 1);
-                        subitem.Tag = s;
-                        subitem.FontWeight = FontWeights.Normal;;
-                        subitem.Expanded += new RoutedEventHandler(folder_Expanded);
-                        item.Items.Add(subitem);
-                    }
-
-                    foreach (string s in Directory.GetFiles(item.Tag.ToString()))
-                    {
-                        TreeViewItem subitem = new TreeViewItem();
-                        subitem.Header = s.Substring(s.LastIndexOf("\\") + 1);
-                        subitem.Tag = s;
-                        subitem.FontWeight = FontWeights.Normal; ;
-                        subitem.Expanded += new RoutedEventHandler(folder_Expanded);
-                        subitem.MouseDoubleClick += AddTrackFromPicker;
-                        item.Items.Add(subitem);
-                    }
-
-                }
-                catch (Exception) { }
-            }
-        }
-
-
-        private void Tracks_Drop(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-            {
-                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-                addTrack(files[0]);
-                var processMode = EModel.Global.MovePatchOriginInsteadOfCopying;
-                var name = System.IO.Path.Combine(EModel.Locations.PatchesDirectory.FullName, new FileInfo(files[0]).Name);
-                if (!Directory.Exists(EModel.Locations.PatchesDirectory.FullName))
-                    Directory.CreateDirectory(EModel.Locations.PatchesDirectory.FullName);
-                if (!File.Exists(name))
-                    Program.BatchWorkQueueWindow.Run(new List<BatchWork>() { new MoveCopyWork(files[0], name, processMode) });
+                addTrack(item.Tag.ToString());
             }
         }
 
