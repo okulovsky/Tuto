@@ -182,6 +182,8 @@
     <Compile Include="Services\Assembler\AvsSub.cs" />
     <Compile Include="Services\Assembler\AvsSubtitle.cs" />
     <Compile Include="Services\Assembler\AvsWatermark.cs" />
+    <Compile Include="Services\BatchWorks\ConvertDesktopWork.cs" />
+    <Compile Include="Services\BatchWorks\ConvertFaceWork.cs" />
     <Compile Include="Services\BatchWorks\YoutubeWork.cs" />
     <Compile Include="Services\BatchWorks\PreparePatchWork.cs" />
     <Compile Include="Services\BatchWorks\PatchWork.cs" />

@@ -17,14 +17,7 @@ namespace Tuto.TutoServices.Assembler
         {
             var faceFormat = "";
             var withoutReduction = string.Format(@"face = DirectShowSource(""{0}"").ChangeFPS(25)", model.Locations.ConvertedFaceVideo.FullName) ;
-            var withReduction = string.Format(
-                @"face = audiodub(DirectShowSource(""{0}"").ChangeFPS(25).KillAudio(),  DirectShowSource(""{1}""))",
-                model.Locations.ConvertedFaceVideo.FullName,
-                model.Locations.ClearedSound);
-            if (model.Locations.ClearedSound.Exists)
-                faceFormat = withReduction;
-            else
-                faceFormat = withoutReduction;
+            faceFormat = withoutReduction;
             return string.Format(Format,
                 model.Locations.AvsLibrary.FullName,
                 model.Locations.AutoLevelsLibrary.FullName,

@@ -19,6 +19,8 @@ namespace Tuto.Navigator.ViewModels
         public bool RepairDesktop { get; set; }
 
         public bool AssemblyNeeded { get; set; }
+        public bool CleanSound { get; set; }
+        
         public bool All { get; set; }
 
         public List<BatchWork> GetWorksAccordingSettings(EditorModel m)
@@ -36,10 +38,12 @@ namespace Tuto.Navigator.ViewModels
                     tasks.Add(new CreateThumbWork(m.Locations.DesktopVideo, m));
                 if (ConvertNeeded)
                 {
-                    tasks.Add(new ConvertVideoWork(m, m.Locations.DesktopVideo));
-                    tasks.Add(new ConvertVideoWork(m, m.Locations.FaceVideo));
+                    tasks.Add(new ConvertDesktopWork(m));
+                    tasks.Add(new ConvertFaceWork(m));
                 }
 
+                if (CleanSound)
+                    tasks.Add(new CreateCleanSoundWork(m.Locations.FaceVideo, m));
                 if (AssemblyNeeded)
                     tasks.Add(new AssemblyVideoWork(m, m.Global.CrossFadesEnabled));
                 foreach (var e in tasks)

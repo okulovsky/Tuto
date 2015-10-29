@@ -42,6 +42,11 @@
                             </StackPanel>
 
                             <StackPanel>
+                                <Label VerticalAlignment="Top" Content="Clean audio"></Label>
+                                <CheckBox IsChecked="{Binding PreWorks.CleanSound}" VerticalAlignment="Top" HorizontalAlignment="Center"></CheckBox>
+                            </StackPanel>
+
+                            <StackPanel>
                                 <Label Content="Conversion"></Label>
                                 <CheckBox IsChecked="{Binding PreWorks.ConvertNeeded}" VerticalAlignment="Center" HorizontalAlignment="Center"></CheckBox>
                             </StackPanel>

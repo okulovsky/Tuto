@@ -11,23 +11,18 @@ namespace Tuto.BatchWorks
 {
     public class ConvertVideoWork : BatchWork
     {
-        public ConvertVideoWork(EditorModel model, FileInfo src)
+        public ConvertVideoWork()
         {
-            Model = model;
-            Name = "Converting Video: " + src;
-            source = src;
-            nonConvertedFile = new FileInfo(Path.Combine(Model.Locations.TemporalDirectory.FullName, Path.ChangeExtension(src.Name, ".avi")));
-            tempFile = GetTempFile(nonConvertedFile);
-            convertedFile = GetTempFile(nonConvertedFile, "-converted");
+
         }
 
-        private FileInfo source;
+        public FileInfo source;
 
-        private FileInfo tempFile;
+        public FileInfo tempFile;
 
-        private FileInfo convertedFile;
+        public FileInfo convertedFile;
 
-        private FileInfo nonConvertedFile;
+        public FileInfo nonConvertedFile;
 
         public override void Work()
         {

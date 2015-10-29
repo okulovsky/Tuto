@@ -86,10 +86,10 @@ namespace Editor
             Montage.Click += (s, a) =>
                 {
                     model.Save();
-                    var task = new ConvertVideoWork(model, model.Locations.DesktopVideo);
+                    var task = new ConvertDesktopWork(model);
                     task.Forced = true;
                     Program.BatchWorkQueueWindow.Run(new List<BatchWork>(){task});
-                    var task2 = new ConvertVideoWork(model, model.Locations.FaceVideo);
+                    var task2 = new ConvertFaceWork(model);
                     task2.Forced = true;
                     Program.BatchWorkQueueWindow.Run(new List<BatchWork>() { task2 });
                 };
@@ -109,6 +109,14 @@ namespace Editor
                     task.Forced = true;
                     Program.BatchWorkQueueWindow.Run(new List<BatchWork> { task });
                 };
+
+            NoiseReduction.Click += (s, a) =>
+            {
+               model.Save();
+                var task = new CreateCleanSoundWork(model.Locations.FaceVideo, model);
+                task.Forced = true;
+                Program.BatchWorkQueueWindow.Run(new List<BatchWork> { task });
+            };
 
             RepairDesktop.Click += (s, a) =>
             {

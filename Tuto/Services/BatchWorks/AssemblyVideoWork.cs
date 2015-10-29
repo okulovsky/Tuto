@@ -22,21 +22,10 @@ namespace Tuto.BatchWorks
             Name = "Assembly video: " + model.Locations.FaceVideo.Directory.Name;
             filesToDelIfAborted = new List<string>();
             if (!model.Locations.ConvertedDesktopVideo.Exists)
-                BeforeWorks.Add(new ConvertVideoWork(model, model.Locations.DesktopVideo));
+                BeforeWorks.Add(new ConvertDesktopWork(model));
             if (!model.Locations.ConvertedFaceVideo.Exists)
-                BeforeWorks.Add(new ConvertVideoWork(model, model.Locations.FaceVideo));
+                BeforeWorks.Add(new ConvertFaceWork(model));
             this.crossFades = fadeMode;
-            if (Model.Global.WorkSettings.AudioCleanSettings.CurrentOption != Options.Skip)
-            {
-                var index = 0;
-                var serv = new AssemblerService(crossFades);
-                foreach (var e in serv.GetEpisodesNodes(Model))
-                {
-                    var name = Model.Locations.GetOutputFile(index);
-                    AfterWorks.Add(new CreateCleanSoundWork(name, Model));
-                    index++;
-                }
-            }
         }
 
         public override void Work()
@@ -63,6 +52,31 @@ namespace Tuto.BatchWorks
                 filesToDelIfAborted.Add(videoFile.FullName);
                 episodeNumber++;
                 RunProcess(args, Model.Locations.FFmpegExecutable.FullName);
+
+                if (Model.Locations.ClearedSound.Exists && Model.Global.WorkSettings.AudioCleanSettings.CurrentOption != Options.Skip)
+                {
+                    var soxExe = Model.Locations.SoxExecutable;
+                    var sound = Model.Locations.ClearedSound;
+                    var ffmpeg = Model.Locations.FFmpegExecutable;
+                    var tempSound = Path.Combine(Model.Locations.TemporalDirectory.FullName, "temp.wav");
+                    var normSound = Path.Combine(Model.Locations.TemporalDirectory.FullName, "norm.wav");
+                    Shell.Exec(false, ffmpeg, string.Format(@" -i ""{0}"" ""{1}"" -y", Model.Locations.ClearedSound.FullName, tempSound));
+                    Shell.Exec(false, soxExe, string.Format(@"""{0}"" ""{1}"" --norm", tempSound, normSound));
+                    Shell.Exec(false, ffmpeg, string.Format(@"-i ""{0}"" -ar 44100 -ac 2 -ab 192k -f mp3 -qscale 0 ""{1}"" -y", normSound, Model.Locations.ClearedSound));
+                    var tempVideo =  GetTempFile(videoFile).FullName;
+                    var arguments = string.Format(
+                        @"-i ""{0}"" -i ""{1}"" -map 0:0 -map 1 -vcodec copy -acodec copy ""{2}"" -y",
+                        videoFile.FullName,
+                        Model.Locations.ClearedSound.FullName,
+                        tempVideo
+                        );
+                    Shell.Exec(false, ffmpeg, arguments);
+                    File.Delete(tempSound);
+                    File.Delete(videoFile.FullName);
+                    File.Delete(normSound);
+                    File.Move(tempVideo, videoFile.FullName);
+                    File.Delete(tempVideo);
+                }
                 OnTaskFinished();
             }
         }
