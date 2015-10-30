@@ -16,9 +16,6 @@ namespace Tuto.BatchWorks
             Model = model;
             Name = "Converting Face: " + Model.Locations.FaceVideo.FullName;
             source = Model.Locations.FaceVideo;
-            nonConvertedFile = new FileInfo(Path.Combine(Model.Locations.TemporalDirectory.FullName, Path.ChangeExtension(Model.Locations.FaceVideo.Name, ".avi")));
-            tempFile = GetTempFile(nonConvertedFile);
-            convertedFile = GetTempFile(nonConvertedFile, "-converted");
         }
 
         public override bool Finished()

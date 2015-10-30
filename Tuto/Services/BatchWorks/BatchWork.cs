@@ -39,7 +39,7 @@ namespace Tuto.BatchWorks
             Process.WaitForExit();
             if (Process.ExitCode != 0)
                 throw new ArgumentException(
-                    string.Format("Process' exit code not equals zero. \n Exe:{0} \n Args:{1}", path, args));
+                    string.Format("Process' exit code not equals zero. \n Exe: \"{0}\" \n Args: {1} \n Full: \"{0}\" {1}", path, args));
         }
 
         public virtual void Work() { }

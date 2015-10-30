@@ -19,8 +19,7 @@
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
             <Button Command="{Binding AddCommand}">Add</Button>
             <Button Command="{Binding RemoveCommand}">Remove</Button>
-            <Button Command="{Binding DeleteCommand}">Delete</Button>
-                <Button Command="{Binding UploadCommand}">Upload</Button>
+                <Button Command="{Binding DeleteCommand}">Delete</Button>
             </StackPanel>
         <TreeView x:Name="Tree" ItemsSource="{Binding Root}" >
             <TreeView.Resources>
@@ -31,7 +30,6 @@
                     <StackPanel>
                         <Rectangle Height="5" Fill="LightGray" Stroke="LightGray" Name="Before"/>
                             <StackPanel Orientation="Horizontal">
-                                <TextBox Text="{Binding Topic.PlaylistId}" Background="LightGray"></TextBox>
                             <Rectangle Width="20" Fill="LightGray" Stroke="LightGray" Name="Into"/>
                                 <TextBox Text="{Binding Topic.Caption}"/>
                             </StackPanel>
@@ -43,7 +41,6 @@
                             <Rectangle Height="5" Fill="LightGray" Stroke="LightGray" Name="Before"/>
                             <StackPanel Orientation="Horizontal">
 
-                                <CheckBox Background="LightGray" VerticalAlignment="Center" IsChecked="{Binding Checked}"></CheckBox>
                                 <Rectangle Width="20" Fill="LightGray" Stroke="LightGray" Name="Into"/>
                                 
                                 <navigator:FinishedVideoPanel DataContext="{Binding Video}"/>

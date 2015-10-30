@@ -11,10 +11,7 @@ namespace Tuto.BatchWorks
 {
     public class ConvertVideoWork : BatchWork
     {
-        public ConvertVideoWork()
-        {
-
-        }
+        public ConvertVideoWork() { }
 
         public FileInfo source;
 
@@ -26,6 +23,10 @@ namespace Tuto.BatchWorks
 
         public override void Work()
         {
+            nonConvertedFile = new FileInfo(Path.Combine(Model.Locations.TemporalDirectory.FullName, Path.ChangeExtension(source.Name, ".avi")));
+            tempFile = GetTempFile(nonConvertedFile);
+            convertedFile = GetTempFile(nonConvertedFile, "-converted");
+
             if (!File.Exists(source.FullName))
                 throw new ArgumentException(source.FullName + " not found");      
             var args = string.Format(@"-i ""{0}"" -vf ""scale=1280:720, fps=25"" -q:v 0 -acodec libmp3lame -ar 44100 -ab 32k ""{1}"" -y",

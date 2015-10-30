@@ -16,9 +16,6 @@ namespace Tuto.BatchWorks
             Model = model;
             Name = "Converting Desktop: " + Model.Locations.DesktopVideo.FullName;
             source = Model.Locations.DesktopVideo;
-            nonConvertedFile = new FileInfo(Path.Combine(Model.Locations.TemporalDirectory.FullName, Path.ChangeExtension(source.Name, ".avi")));
-            tempFile = GetTempFile(nonConvertedFile);
-            convertedFile = GetTempFile(nonConvertedFile, "-converted");
         }
 
         public override bool Finished()

@@ -22,7 +22,7 @@ namespace Tuto.BatchWorks
         }
 
         private FileInfo source;
-        private List<string> filesToDel = new List<string>() { "\\result.wav", "\\input.wav", "\\res.wav", "\\temp.wav" };
+        private List<string> filesToDel = new List<string>() { "\\result.wav", "\\input.wav", "\\res.wav", "\\temp.wav", "\\sample.wav" };
 
         public override void Work()
         {
@@ -33,20 +33,20 @@ namespace Tuto.BatchWorks
             var loc = Model.Locations.FaceVideo;
             var temp = Model.Locations.TemporalDirectory;
 
-            Shell.Exec(printMode, ffExe, string.Format(@"-i ""{0}"" -y ""{1}\input.wav""", loc, temp));
-            Shell.Exec(printMode, soxExe, string.Format(@"""{0}\input.wav"" ""{0}\temp.wav""", temp));
+            RunProcess(string.Format(@"-i ""{0}"" -y ""{1}\input.wav""", loc, temp), ffExe.FullName);
+            RunProcess(string.Format(@"""{0}\input.wav"" ""{0}\temp.wav""", temp), soxExe.FullName);
 
             //profile for noise creation
             if (!File.Exists(string.Format("{0}\\noise", temp)))
             {
-                Shell.Exec(printMode, ffExe, string.Format(@"-i ""{0}\temp.wav"" -y -ss 0 -t 3 -shortest ""{0}\res.wav"" -y", temp));
-                Shell.Exec(printMode, soxExe, string.Format(@"""{0}\res.wav"" ""{0}\sample.wav"" --norm", temp));
-                Shell.Exec(printMode, new FileInfo(Path.Combine(progPath.FullName, "gnp")), string.Format(@"""{0}\sample.wav"" ""{0}\noise""", temp));
+                RunProcess(string.Format(@"-i ""{0}\temp.wav"" -y -ss 0 -t 3 -shortest ""{0}\res.wav"" -y", temp), ffExe.FullName);
+                RunProcess(string.Format(@"""{0}\res.wav"" ""{0}\sample.wav"" --norm", temp), soxExe.FullName);
+                RunProcess(string.Format(@"""{0}\sample.wav"" ""{0}\noise""", temp), new FileInfo(Path.Combine(progPath.FullName, "gnp")).FullName);
                 File.Delete(Path.Combine(temp.FullName, "sample.wav"));
 
             }
-            Shell.Exec(printMode, new FileInfo(Path.Combine(progPath.FullName, "nr")), string.Format(@"""{0}\temp.wav"" ""{0}\noise"" ""{0}\result.wav""", temp));
-            Shell.Exec(printMode, ffExe, string.Format(@"-i ""{0}\result.wav"" -ar 44100 -ac 2 -ab 192k -f mp3 -qscale 0 ""{1}\cleaned-tmp.mp3"" -y", temp.FullName, Model.Locations.FaceVideo.Directory.FullName));
+            RunProcess(string.Format(@"""{0}\temp.wav"" ""{0}\noise"" ""{0}\result.wav""", temp), Path.Combine(progPath.FullName, "nr"));
+            RunProcess(string.Format(@"-i ""{0}\result.wav"" -ar 44100 -ac 2 -ab 192k -f mp3 -qscale 0 ""{1}\cleaned-tmp.mp3"" -y", temp.FullName, Model.Locations.FaceVideo.Directory.FullName), ffExe.FullName);
             Thread.Sleep(500);
             var file = Model.Locations.ClearedSound;
             if (File.Exists(file.FullName))
