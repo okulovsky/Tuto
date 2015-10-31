@@ -22,9 +22,9 @@ namespace Tuto.BatchWorks
             Name = "Assembly video: " + model.Locations.FaceVideo.Directory.Name;
             filesToDelIfAborted = new List<string>();
             if (!model.Locations.ConvertedDesktopVideo.Exists)
-                BeforeWorks.Add(new ConvertDesktopWork(model));
+                BeforeWorks.Add(new ConvertDesktopWork(model, false));
             if (!model.Locations.ConvertedFaceVideo.Exists)
-                BeforeWorks.Add(new ConvertFaceWork(model));
+                BeforeWorks.Add(new ConvertFaceWork(model, false));
             this.crossFades = fadeMode;
         }
 
@@ -60,17 +60,17 @@ namespace Tuto.BatchWorks
                     var ffmpeg = Model.Locations.FFmpegExecutable;
                     var tempSound = Path.Combine(Model.Locations.TemporalDirectory.FullName, "temp.wav");
                     var normSound = Path.Combine(Model.Locations.TemporalDirectory.FullName, "norm.wav");
-                    Shell.Exec(false, ffmpeg, string.Format(@" -i ""{0}"" ""{1}"" -y", Model.Locations.ClearedSound.FullName, tempSound));
-                    Shell.Exec(false, soxExe, string.Format(@"""{0}"" ""{1}"" --norm", tempSound, normSound));
-                    Shell.Exec(false, ffmpeg, string.Format(@"-i ""{0}"" -ar 44100 -ac 2 -ab 192k -f mp3 -qscale 0 ""{1}"" -y", normSound, Model.Locations.ClearedSound));
-                    var tempVideo =  GetTempFile(videoFile).FullName;
+                    RunProcess(string.Format(@" -i ""{0}"" ""{1}"" -y", Model.Locations.ClearedSound.FullName, tempSound), ffmpeg.FullName);
+                    RunProcess(string.Format(@"""{0}"" ""{1}"" --norm", tempSound, normSound), soxExe.FullName);
+                    RunProcess(string.Format(@"-i ""{0}"" -ar 44100 -ac 2 -ab 192k -f mp3 -qscale 0 ""{1}"" -y", normSound, Model.Locations.ClearedSound), ffmpeg.FullName);
+                    var tempVideo = GetTempFile(videoFile).FullName;
                     var arguments = string.Format(
                         @"-i ""{0}"" -i ""{1}"" -map 0:0 -map 1 -vcodec copy -acodec copy ""{2}"" -y",
                         videoFile.FullName,
                         Model.Locations.ClearedSound.FullName,
                         tempVideo
                         );
-                    Shell.Exec(false, ffmpeg, arguments);
+                    RunProcess(arguments, ffmpeg.FullName);
                     File.Delete(tempSound);
                     File.Delete(videoFile.FullName);
                     File.Delete(normSound);

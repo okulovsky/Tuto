@@ -23,10 +23,11 @@ namespace Tuto.BatchWorks
         private string oldName;
         private string newName;
 
-        public PatchWork(PatchModel model, bool fadeMode, EditorModel emodel)
+        public PatchWork(PatchModel model, bool fadeMode, EditorModel emodel, bool forced)
         {
             this.pmodel = model;
             this.Model = emodel;
+            Forced = forced;
             Name = "Patching: " + model.SourceInfo.Name;
             foreach (var ep in model.MediaTracks)
             {
@@ -34,7 +35,7 @@ namespace Tuto.BatchWorks
                 if (!File.Exists(name))
                 {
                     var fileInPatches = new FileInfo(Path.Combine(emodel.Global.Locations.PatchesFolder.FullName, new FileInfo(ep.Path.LocalPath).Name));
-                    BeforeWorks.Add(new PreparePatchWork(emodel, fileInPatches, new FileInfo(name)));
+                    BeforeWorks.Add(new PreparePatchWork(emodel, fileInPatches, new FileInfo(name), false));
                 }
             }
         }

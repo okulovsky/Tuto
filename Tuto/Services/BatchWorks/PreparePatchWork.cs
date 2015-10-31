@@ -11,10 +11,11 @@ namespace Tuto.BatchWorks
 {
     public class PreparePatchWork : BatchWork
     {
-        public PreparePatchWork(EditorModel model, FileInfo source, FileInfo to)
+        public PreparePatchWork(EditorModel model, FileInfo source, FileInfo to, bool forced)
         {
             Model = model;
             Name = "Converting Video: " + source;
+            Forced = forced;
             this.source = source;
             this.to = to;
         }

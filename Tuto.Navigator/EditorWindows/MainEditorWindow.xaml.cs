@@ -86,11 +86,9 @@ namespace Editor
             Montage.Click += (s, a) =>
                 {
                     model.Save();
-                    var task = new ConvertDesktopWork(model);
-                    task.Forced = true;
+                    var task = new ConvertDesktopWork(model, true);
                     Program.BatchWorkQueueWindow.Run(new List<BatchWork>(){task});
-                    var task2 = new ConvertFaceWork(model);
-                    task2.Forced = true;
+                    var task2 = new ConvertFaceWork(model, true);
                     Program.BatchWorkQueueWindow.Run(new List<BatchWork>() { task2 });
                 };
 
@@ -105,24 +103,21 @@ namespace Editor
             RepairFace.Click += (s, a) =>
                 {
                     model.Save();
-                    var task = new RepairVideoWork(model, model.Locations.FaceVideo);
-                    task.Forced = true;
+                    var task = new RepairVideoWork(model, model.Locations.FaceVideo, true);
                     Program.BatchWorkQueueWindow.Run(new List<BatchWork> { task });
                 };
 
             NoiseReduction.Click += (s, a) =>
             {
                model.Save();
-                var task = new CreateCleanSoundWork(model.Locations.FaceVideo, model);
-                task.Forced = true;
+                var task = new CreateCleanSoundWork(model.Locations.FaceVideo, model, true);
                 Program.BatchWorkQueueWindow.Run(new List<BatchWork> { task });
             };
 
             RepairDesktop.Click += (s, a) =>
             {
                 model.Save();
-                var task = new RepairVideoWork(model, model.Locations.DesktopVideo);
-                task.Forced = true;
+                var task = new RepairVideoWork(model, model.Locations.DesktopVideo, true);
                 Program.BatchWorkQueueWindow.Run(new List<BatchWork> { task });
             };
 
@@ -130,8 +125,7 @@ namespace Editor
             ThumbFace.Click += (s, a) =>
                 {
                     model.Save();
-                        var task = new CreateThumbWork(model.Locations.FaceVideo, model);
-                        task.Forced = true;
+                        var task = new CreateThumbWork(model.Locations.FaceVideo, model, true);
                         Program.BatchWorkQueueWindow.Run(new List<BatchWork> { task });
                         task.TaskFinished += (z, x) =>
                         {
@@ -144,8 +138,7 @@ namespace Editor
             ThumbDesktop.Click += (s, a) =>
                 {
                     model.Save();
-                        var task = new CreateThumbWork(model.Locations.DesktopVideo, model);
-                        task.Forced = true;
+                        var task = new CreateThumbWork(model.Locations.DesktopVideo, model, true);
                         Program.BatchWorkQueueWindow.Run(new List<BatchWork> { task });
                         task.TaskFinished += (z, x) =>
                             {

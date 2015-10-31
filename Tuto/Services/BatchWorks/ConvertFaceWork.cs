@@ -11,11 +11,12 @@ namespace Tuto.BatchWorks
 {
     public class ConvertFaceWork : ConvertVideoWork
     {
-        public ConvertFaceWork(EditorModel model)
+        public ConvertFaceWork(EditorModel model, bool forced)
         {
             Model = model;
             Name = "Converting Face: " + Model.Locations.FaceVideo.FullName;
             source = Model.Locations.FaceVideo;
+            Forced = forced;
         }
 
         public override bool Finished()

@@ -68,22 +68,22 @@ namespace Tuto.Model
         {
             var toDo = new List<BatchWork>();
             if (model.Global.WorkSettings.AudioCleanSettings.CurrentOption == Options.DuringEditing)
-                toDo.Add(new CreateCleanSoundWork(model.Locations.FaceVideo, model));
+                toDo.Add(new CreateCleanSoundWork(model.Locations.FaceVideo, model, false));
 
             if (model.Global.WorkSettings.ConversionSettings.CurrentOption == Options.DuringEditing)
             {
-                toDo.Add(new ConvertFaceWork(model));
-                toDo.Add(new ConvertDesktopWork(model));
+                toDo.Add(new ConvertFaceWork(model, false));
+                toDo.Add(new ConvertDesktopWork(model, false));
             }
 
             if (model.Global.WorkSettings.FaceThumbSettings.CurrentOption == Options.DuringEditing)
             {
-                toDo.Add(new CreateThumbWork(model.Locations.FaceVideo, model));
+                toDo.Add(new CreateThumbWork(model.Locations.FaceVideo, model, false));
             }
 
             if (model.Global.WorkSettings.DesktopThumbSettings.CurrentOption == Options.DuringEditing)
             {
-                toDo.Add(new CreateThumbWork(model.Locations.DesktopVideo, model));
+                toDo.Add(new CreateThumbWork(model.Locations.DesktopVideo, model, false));
             }            
             return toDo;
         }
@@ -92,18 +92,18 @@ namespace Tuto.Model
         {
             var works = new List<BatchWork>();
             if (model.Global.WorkSettings.FaceThumbSettings.CurrentOption == Options.BeforeEditing)
-                works.Add(new CreateThumbWork(model.Locations.FaceVideo, model));
+                works.Add(new CreateThumbWork(model.Locations.FaceVideo, model, false));
 
             if (model.Global.WorkSettings.DesktopThumbSettings.CurrentOption == Options.BeforeEditing)
-                works.Add(new CreateThumbWork(model.Locations.DesktopVideo, model));
+                works.Add(new CreateThumbWork(model.Locations.DesktopVideo, model, false));
 
             if (model.Global.WorkSettings.AudioCleanSettings.CurrentOption == Options.BeforeEditing)
-                works.Add(new CreateCleanSoundWork(model.Locations.FaceVideo, model));
+                works.Add(new CreateCleanSoundWork(model.Locations.FaceVideo, model, false));
 
             if (model.Global.WorkSettings.ConversionSettings.CurrentOption == Options.BeforeEditing)
             {
-                works.Add(new ConvertDesktopWork(model));
-                works.Add(new ConvertFaceWork(model));
+                works.Add(new ConvertDesktopWork(model, false));
+                works.Add(new ConvertFaceWork(model, false));
             }
             return works;
         }

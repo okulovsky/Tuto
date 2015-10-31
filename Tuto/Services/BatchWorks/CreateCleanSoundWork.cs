@@ -14,11 +14,12 @@ namespace Tuto.BatchWorks
     public class CreateCleanSoundWork : BatchWork
     {
 
-        public CreateCleanSoundWork(FileInfo source, EditorModel model)
+        public CreateCleanSoundWork(FileInfo source, EditorModel model, bool forced)
         {
             Name = "Make clean sound: " + source;
             Model = model;
             this.source = source;
+            this.Forced = forced;
         }
 
         private FileInfo source;

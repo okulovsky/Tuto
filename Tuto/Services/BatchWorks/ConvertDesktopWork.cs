@@ -11,11 +11,12 @@ namespace Tuto.BatchWorks
 {
     public class ConvertDesktopWork : ConvertVideoWork
     {
-        public ConvertDesktopWork(EditorModel model)
+        public ConvertDesktopWork(EditorModel model, bool forced)
         {
             Model = model;
             Name = "Converting Desktop: " + Model.Locations.DesktopVideo.FullName;
             source = Model.Locations.DesktopVideo;
+            Forced = forced;
         }
 
         public override bool Finished()

@@ -11,11 +11,12 @@ namespace Tuto.BatchWorks
 {
     public class RepairVideoWork : BatchWork
     {
-        public RepairVideoWork(EditorModel model, FileInfo source)
+        public RepairVideoWork(EditorModel model, FileInfo source, bool forced)
         {
             Model = model;
             Name = "Repair Video: " + source;
             this.source = source;
+            Forced = forced;
         }
 
         private string tempFile = "none";

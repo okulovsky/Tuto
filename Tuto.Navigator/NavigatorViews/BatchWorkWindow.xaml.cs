@@ -76,13 +76,17 @@ namespace Tuto.Navigator
         public void Run(IEnumerable<BatchWork> work)
         {
             work = work.Where(x => !x.Finished() || x.Forced).ToList();
+            var currentTasks = this.work.Select(x => x.Name).ToList();
             lock (addLock)
             {
                 foreach (var e in work)
                 {
-                    this.work.AddRange(e.BeforeWorks);
-                    this.work.Add(e);
-                    this.work.AddRange(e.AfterWorks);
+                    if (!currentTasks.Contains(e.Name))
+                    {
+                        this.work.AddRange(e.BeforeWorks);
+                        this.work.Add(e);
+                        this.work.AddRange(e.AfterWorks);
+                    }
                 }     
             }
             if (this.work.Count == 0)

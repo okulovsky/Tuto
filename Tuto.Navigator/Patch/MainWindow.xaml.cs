@@ -251,7 +251,7 @@ namespace Tuto.Navigator
 
         private void Patch_Click(object sender, RoutedEventArgs e)
         {
-            Program.BatchWorkQueueWindow.Run(new List<BatchWork>() { new PatchWork(Model, true, EModel) });
+            Program.BatchWorkQueueWindow.Run(new List<BatchWork>() { new PatchWork(Model, true, EModel,true) });
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)

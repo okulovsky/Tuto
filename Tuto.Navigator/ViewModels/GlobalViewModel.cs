@@ -196,7 +196,7 @@ namespace Tuto.Navigator
             var work = Subdirectories.Where(z => z.Selected);
             var models = work.Select(x => EditorModelIO.Load(x.FullPath));
             var tasks = models.Select(x =>
-                new RepairVideoWork(x, x.Locations.FaceVideo)).ToList();
+                new RepairVideoWork(x, x.Locations.FaceVideo, true)).ToList();
             queueWindow.Run(tasks);
 		}
 
