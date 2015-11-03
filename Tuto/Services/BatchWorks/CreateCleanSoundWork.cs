@@ -23,7 +23,7 @@ namespace Tuto.BatchWorks
         }
 
         private FileInfo source;
-        private List<string> filesToDel = new List<string>() { "\\result.wav", "\\input.wav", "\\res.wav", "\\temp.wav", "\\sample.wav" };
+        private List<string> filesToDel = new List<string>() { "\\result.wav", "\\input.wav", "\\temp.wav", "\\sample.wav" };
 
         public override void Work()
         {
@@ -35,13 +35,12 @@ namespace Tuto.BatchWorks
             var temp = Model.Locations.TemporalDirectory;
 
             RunProcess(string.Format(@"-i ""{0}"" -y ""{1}\input.wav""", loc, temp), ffExe.FullName);
-            RunProcess(string.Format(@"""{0}\input.wav"" ""{0}\temp.wav""", temp), soxExe.FullName);
+            RunProcess(string.Format(@"""{0}\input.wav"" ""{0}\temp.wav"" --norm", temp), soxExe.FullName);
 
             //profile for noise creation
             if (!File.Exists(string.Format("{0}\\noise", temp)))
             {
-                RunProcess(string.Format(@"-i ""{0}\temp.wav"" -y -ss 0 -t 3 -shortest ""{0}\res.wav"" -y", temp), ffExe.FullName);
-                RunProcess(string.Format(@"""{0}\res.wav"" ""{0}\sample.wav"" --norm", temp), soxExe.FullName);
+                RunProcess(string.Format(@"-i ""{0}\temp.wav"" -y -ss 0 -t 3 -shortest ""{0}\sample.wav"" -y", temp), ffExe.FullName);
                 RunProcess(string.Format(@"""{0}\sample.wav"" ""{0}\noise""", temp), new FileInfo(Path.Combine(progPath.FullName, "gnp")).FullName);
                 File.Delete(Path.Combine(temp.FullName, "sample.wav"));
 
@@ -63,7 +62,6 @@ namespace Tuto.BatchWorks
         {
             File.Delete(Path.Combine(temp.FullName, "result.wav"));
             File.Delete(Path.Combine(temp.FullName, "input.wav"));
-            File.Delete(Path.Combine(temp.FullName, "res.wav"));
             File.Delete(Path.Combine(temp.FullName, "temp.wav"));
         }
 
