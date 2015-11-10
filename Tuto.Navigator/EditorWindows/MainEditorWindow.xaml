@@ -46,13 +46,15 @@
             <Rectangle Width="10"/>
 
             <StackPanel Orientation="Horizontal" Visibility="Collapsed" Name="ToolsPanel">
+                <Button Focusable="False" x:Name="RestartPRAAT" Content="Restart PRAAT" Width="49"/>
                 <Button Focusable="False" x:Name="RepairFace" Content="Repair Face" Width="49"/>
                 <Button Focusable="False" x:Name="RepairDesktop" Width="51">Repair Desktop</Button>
                 <Button Focusable="False" x:Name="Help" Content="Help"/>
                 <Button Focusable="False" x:Name="NoiseReduction" Content="-Noise"/>
                 <Button Focusable="False" Content="ThumbF" x:Name="ThumbFace" Width="58"/>
                 <Button Focusable="False" Content="ThumbD" x:Name="ThumbDesktop" Width="58"/>
-                <Button Focusable="False" x:Name="Montage" Content="Convert"/>
+                <Button Focusable="False" x:Name="ConvertFace" Content="Cnv Face"/>
+                <Button Focusable="False" x:Name="ConvertDesktop" Content="Cnv Desktop"/>
                 <Button Focusable="False" Width="120" x:Name="Patch" Content="Patch((Debug)"/>
             </StackPanel>
             <Button Content="Tools" x:Name="Tools" Height="50" Width="50" Click="Tools_Click"/>

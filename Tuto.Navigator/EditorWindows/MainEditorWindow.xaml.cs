@@ -83,16 +83,22 @@ namespace Editor
             };
 
 
-            Montage.Click += (s, a) =>
+            ConvertFace.Click += (s, a) =>
                 {
                     model.Save();
-                    var task = new ConvertVideoWork(model, model.Locations.DesktopVideo);
-                    task.Forced = true;
-                    Program.BatchWorkQueueWindow.Run(new List<BatchWork>(){task});
-                    var task2 = new ConvertVideoWork(model, model.Locations.FaceVideo);
+                    var task2 = new ConvertVideoWork(model, model.Locations.FaceVideo, true);
                     task2.Forced = true;
                     Program.BatchWorkQueueWindow.Run(new List<BatchWork>() { task2 });
                 };
+
+
+			ConvertDesktop.Click += (s, a) =>
+			{
+				model.Save();
+				var task = new ConvertVideoWork(model, model.Locations.DesktopVideo, false);
+				task.Forced = true;
+				Program.BatchWorkQueueWindow.Run(new List<BatchWork>() { task });
+			};
 
             Assembly.Click += (s, a) =>
                 {
@@ -101,6 +107,15 @@ namespace Editor
                     tasks.Add(new AssemblyVideoWork(model, model.Global.CrossFadesEnabled));
                     Program.BatchWorkQueueWindow.Run(tasks);
                 };
+			RestartPRAAT.Click += (s, a) =>
+				{
+					model.Save();
+					var task = new PraatWork(model);
+					task.Forced = true;
+					Action after = new Action(() => model.OnMontageModelChanged());
+					task.TaskFinished += (s1,a1) => Dispatcher.BeginInvoke(after);
+					Program.BatchWorkQueueWindow.Run(new List<BatchWork> { task });
+				};
 
             RepairFace.Click += (s, a) =>
                 {

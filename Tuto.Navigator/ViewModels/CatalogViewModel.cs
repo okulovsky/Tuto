@@ -43,7 +43,7 @@ namespace Tuto.Navigator
                     e.Items.Add(vw);
                     vw.Parent = e;
                 }
-            foreach (var level in globalData.TopicLevels)
+			 foreach (var level in globalData.TopicLevels)
                 Levels.Add(level);
 
             AddCommand = new RelayCommand(Add, () => SelectedItem != null && SelectedItem is TopicWrap);

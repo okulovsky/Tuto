@@ -11,11 +11,13 @@ namespace Tuto.BatchWorks
 {
     public class ConvertVideoWork : BatchWork
     {
-        public ConvertVideoWork(EditorModel model, FileInfo src)
+		readonly bool isFace;
+        public ConvertVideoWork(EditorModel model, FileInfo src, bool isFace)
         {
             Model = model;
             Name = "Converting Video: " + src;
             source = src;
+			this.isFace = isFace;
         }
 
         private FileInfo source;
@@ -44,8 +46,11 @@ namespace Tuto.BatchWorks
 
         public override bool Finished()
         {
-            return Model.Locations.ConvertedDesktopVideo.Exists;
-        }
+			if (!isFace)
+				return Model.Locations.ConvertedDesktopVideo.Exists;
+			else
+				return Model.Locations.ConvertedFaceVideo.Exists;
+		}
 
         public override void Clean()
         {

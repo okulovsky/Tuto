@@ -24,9 +24,9 @@ namespace Tuto.BatchWorks
             if (model.Global.WorkSettings.AudioCleanSettings.CurrentOption == Options.WithAssembly && !File.Exists(model.Locations.ClearedSound.FullName))
                 BeforeWorks.Add(new CreateCleanSoundWork(model.Locations.FaceVideo, model));
             if (!model.Locations.ConvertedDesktopVideo.Exists)
-                BeforeWorks.Add(new ConvertVideoWork(model, model.Locations.DesktopVideo));
+                BeforeWorks.Add(new ConvertVideoWork(model, model.Locations.DesktopVideo, false));
             if (!model.Locations.ConvertedFaceVideo.Exists)
-                BeforeWorks.Add(new ConvertVideoWork(model, model.Locations.FaceVideo));
+                BeforeWorks.Add(new ConvertVideoWork(model, model.Locations.FaceVideo, true));
             this.crossFades = fadeMode;
         }
 

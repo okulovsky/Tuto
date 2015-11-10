@@ -35,8 +35,8 @@ namespace Tuto.BatchWorks
             Model.Locations.PraatOutput.Delete();
 
             var convert = "";
-            if (!Model.Locations.PraatVoice.Exists)
-                 convert = string.Format("\"{2}\" -i \"{0}\" -vn -q:a 0 \"{1}\"", Model.Locations.FaceVideo, Model.Locations.PraatVoice, Model.Locations.FFmpegExecutable);
+            if (!Model.Locations.PraatVoice.Exists || Forced)
+                 convert = string.Format("\"{2}\" -i \"{0}\" -vn -q:a 0 -y \"{1}\"", Model.Locations.FaceVideo, Model.Locations.PraatVoice, Model.Locations.FFmpegExecutable);
 
 
             var work = 

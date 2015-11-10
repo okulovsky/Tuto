@@ -39,41 +39,42 @@ namespace Tuto
 
         public static void Main(params string[] args)
         {
-            var services = new List<Service>
-            {
-                new PraatService(),
-                new MontagerService(),
-                new AssemblerService(true)
-            };
+			return;
+			//var services = new List<Service>
+			//{
+			//  //  new PraatService(),
+			//	new MontagerService(),
+			//	new AssemblerService(true)
+			//};
 
-            if (args.Length < 1)
-            {
-                var serviceDescriptions = String.Join("\n", services.Select(s => String.Format("{0}\t{1}", s.Name, s.Description)));
-                Console.WriteLine(Help, serviceDescriptions);
-                return;
-            }
+			//if (args.Length < 1)
+			//{
+			//	var serviceDescriptions = String.Join("\n", services.Select(s => String.Format("{0}\t{1}", s.Name, s.Description)));
+			//	Console.WriteLine(Help, serviceDescriptions);
+			//	return;
+			//}
             
-            AppDomain.CurrentDomain.UnhandledException += (sender, a) =>
-                {
-                    Console.Error.WriteLine((a.ExceptionObject as Exception).Message);
-                 //   Environment.Exit(1); //TODO: раскомментить эту строчку для релиза
-                };
+			//AppDomain.CurrentDomain.UnhandledException += (sender, a) =>
+			//	{
+			//		Console.Error.WriteLine((a.ExceptionObject as Exception).Message);
+			//	 //   Environment.Exit(1); //TODO: раскомментить эту строчку для релиза
+			//	};
 
-            //args[1] = ModelIO.DebugSubdir(args[1]);
+			////args[1] = ModelIO.DebugSubdir(args[1]);
 
-            var service = services.Find(s => s.Name.ToLower() == args[0].ToLower());
-            if(service == null)
-                throw new Exception("Service " + args[0] + " is not recognized");
-            if (args.Length == 1)
-            {
-                Console.WriteLine(
-                    "{0} service usage: {1}",
-                    service.Name,
-                    service.Help
-                    );
-                return;
-            }
-            service.DoWork(args);
+			//var service = services.Find(s => s.Name.ToLower() == args[0].ToLower());
+			//if(service == null)
+			//	throw new Exception("Service " + args[0] + " is not recognized");
+			//if (args.Length == 1)
+			//{
+			//	Console.WriteLine(
+			//		"{0} service usage: {1}",
+			//		service.Name,
+			//		service.Help
+			//		);
+			//	return;
+			//}
+			//service.DoWork(args);
         }
 
 

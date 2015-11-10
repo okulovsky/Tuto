@@ -37,8 +37,8 @@ namespace Tuto.Navigator.ViewModels
                     tasks.Add(new CreateThumbWork(m.Locations.DesktopVideo, m));
                 if (ConvertNeeded)
                 {
-                    tasks.Add(new ConvertVideoWork(m, m.Locations.DesktopVideo));
-                    tasks.Add(new ConvertVideoWork(m, m.Locations.FaceVideo));
+                    tasks.Add(new ConvertVideoWork(m, m.Locations.DesktopVideo, false));
+                    tasks.Add(new ConvertVideoWork(m, m.Locations.FaceVideo, true));
                 }
                 if (CleanSound)
                     tasks.Add(new CreateCleanSoundWork(m.Locations.FaceVideo, m));

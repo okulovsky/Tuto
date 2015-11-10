@@ -22,6 +22,8 @@ namespace Tuto.Model
             if (data.VideoData == null) data.VideoData = new List<FinishedVideo>();
             if (data.TopicsRoot == null) data.TopicsRoot = new Topic();
             if (data.WorkSettings == null) data.WorkSettings = new WorkSettings();
+			if (data.TopicLevels == null) data.TopicLevels = new List<TopicLevel>();
+			if (data.VoiceSettings == null) data.VoiceSettings = new VoiceSettings();
             data.AfterLoad(rootFolder);
             return data;
         }

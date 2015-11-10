@@ -72,8 +72,8 @@ namespace Tuto.Model
 
             if (model.Global.WorkSettings.ConversionSettings.CurrentOption == Options.DuringEditing)
             {
-                toDo.Add(new ConvertVideoWork(model, model.Locations.FaceVideo));
-                toDo.Add(new ConvertVideoWork(model, model.Locations.DesktopVideo));
+                toDo.Add(new ConvertVideoWork(model, model.Locations.FaceVideo, true));
+                toDo.Add(new ConvertVideoWork(model, model.Locations.DesktopVideo, false));
             }
 
             if (model.Global.WorkSettings.FaceThumbSettings.CurrentOption == Options.DuringEditing)
@@ -102,8 +102,8 @@ namespace Tuto.Model
 
             if (model.Global.WorkSettings.ConversionSettings.CurrentOption == Options.BeforeEditing)
             {
-                works.Add(new ConvertVideoWork(model, model.Locations.DesktopVideo));
-                works.Add(new ConvertVideoWork(model, model.Locations.FaceVideo));
+                works.Add(new ConvertVideoWork(model, model.Locations.DesktopVideo, true));
+                works.Add(new ConvertVideoWork(model, model.Locations.FaceVideo, false));
             }
             return works;
         }
