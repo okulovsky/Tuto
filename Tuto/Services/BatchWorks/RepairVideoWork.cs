@@ -11,11 +11,12 @@ namespace Tuto.BatchWorks
 {
     public class RepairVideoWork : BatchWork
     {
-        public RepairVideoWork(EditorModel model, FileInfo source)
+        public RepairVideoWork(EditorModel model, FileInfo source, bool forced)
         {
             Model = model;
             Name = "Repair Video: " + source;
             this.source = source;
+            Forced = forced;
         }
 
         private string tempFile = "none";
@@ -48,17 +49,12 @@ namespace Tuto.BatchWorks
 
         public override void Clean()
         {
-            if (Process != null && !Process.HasExited)
-                Process.Kill();
+            FinishProcess();
             Thread.Sleep(1000); //this time is required for system to free recources
             if (File.Exists(tempFile) && CopyingOver)
             {
                 if (source.Exists)
-                    try
-                    {
-                        File.Delete(tempFile);
-                    }
-                    catch { }
+                    TryToDelete(tempFile);
             }
         }
     }

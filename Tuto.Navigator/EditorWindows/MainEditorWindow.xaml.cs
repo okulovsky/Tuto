@@ -19,11 +19,11 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using Editor.Windows;
 using Tuto;
-using Tuto.Model;
 using Tuto.TutoServices;
 using Tuto.Navigator;
 using Tuto.BatchWorks;
 using System.ComponentModel;
+using Tuto.Model;
 
 namespace Editor
 {
@@ -32,7 +32,7 @@ namespace Editor
     /// </summary>
     public partial class MainEditorWindow : Window
     {
-        public Action<IEnumerable<BatchWork>> addTaskToQueue;
+        private double currentTime;
         EditorModel model;
 
         public MainEditorWindow()
@@ -86,12 +86,10 @@ namespace Editor
             Montage.Click += (s, a) =>
                 {
                     model.Save();
-                    var task = new ConvertVideoWork(model, model.Locations.DesktopVideo);
-                    task.Forced = true;
-                    addTaskToQueue(new List<BatchWork>(){task});
-                    var task2 = new ConvertVideoWork(model, model.Locations.FaceVideo);
-                    task2.Forced = true;
-                    addTaskToQueue(new List<BatchWork>() { task2 });
+                    var task = new ConvertDesktopWork(model, true);
+                    Program.BatchWorkQueueWindow.Run(new List<BatchWork>(){task});
+                    var task2 = new ConvertFaceWork(model, true);
+                    Program.BatchWorkQueueWindow.Run(new List<BatchWork>() { task2 });
                 };
 
             Assembly.Click += (s, a) =>
@@ -99,39 +97,36 @@ namespace Editor
                     model.Save();
                     var tasks = new List<BatchWork>();
                     tasks.Add(new AssemblyVideoWork(model, model.Global.CrossFadesEnabled));
-                    addTaskToQueue(tasks);
+                    Program.BatchWorkQueueWindow.Run(tasks);
                 };
 
             RepairFace.Click += (s, a) =>
                 {
                     model.Save();
-                    var task = new RepairVideoWork(model, model.Locations.FaceVideo);
-                    task.Forced = true;
-                    addTaskToQueue(new List<BatchWork>{task});
+                    var task = new RepairVideoWork(model, model.Locations.FaceVideo, true);
+                    Program.BatchWorkQueueWindow.Run(new List<BatchWork> { task });
                 };
+
+            NoiseReduction.Click += (s, a) =>
+            {
+               model.Save();
+                var task = new CreateCleanSoundWork(model.Locations.FaceVideo, model, true);
+                Program.BatchWorkQueueWindow.Run(new List<BatchWork> { task });
+            };
 
             RepairDesktop.Click += (s, a) =>
             {
                 model.Save();
-                var task = new RepairVideoWork(model, model.Locations.DesktopVideo);
-                task.Forced = true;
-                addTaskToQueue(new List<BatchWork> { task });
+                var task = new RepairVideoWork(model, model.Locations.DesktopVideo, true);
+                Program.BatchWorkQueueWindow.Run(new List<BatchWork> { task });
             };
 
-            NoiseReduction.Click += (s, a) =>
-            {
-                model.Save();
-                var task = new CreateCleanSoundWork(model.Locations.FaceVideo, model);
-                task.Forced = true;
-                addTaskToQueue(new List<BatchWork> { task });
-            };
 
             ThumbFace.Click += (s, a) =>
                 {
                     model.Save();
-                        var task = new CreateThumbWork(model.Locations.FaceVideo, model);
-                        task.Forced = true;
-                        addTaskToQueue(new List<BatchWork> { task });
+                        var task = new CreateThumbWork(model.Locations.FaceVideo, model, true);
+                        Program.BatchWorkQueueWindow.Run(new List<BatchWork> { task });
                         task.TaskFinished += (z, x) =>
                         {
                             Action t = () => { FaceVideo.Source = new Uri(((CreateThumbWork)z).ThumbName.FullName); };
@@ -143,9 +138,8 @@ namespace Editor
             ThumbDesktop.Click += (s, a) =>
                 {
                     model.Save();
-                        var task = new CreateThumbWork(model.Locations.DesktopVideo, model);
-                        task.Forced = true;
-                        addTaskToQueue(new List<BatchWork> { task });
+                        var task = new CreateThumbWork(model.Locations.DesktopVideo, model, true);
+                        Program.BatchWorkQueueWindow.Run(new List<BatchWork> { task });
                         task.TaskFinished += (z, x) =>
                             {
                                 Action t = () => { ScreenVideo.Source = new Uri(((CreateThumbWork)z).ThumbName.FullName); };
@@ -161,6 +155,31 @@ namespace Editor
                     wnd.Show();
                 };
 
+            Patch.Click += (s, a) =>
+            {
+                //FOR DEBUGGING!
+                var patchWindow = new Tuto.Navigator.MainWindow();
+                var serv = new AssemblerService(false);
+                var episodeNumber = 0;
+                var eps = model.Montage.Information.Episodes;
+                foreach (var c in model.Montage.Chunks)
+                {             
+                    if (c.StartsNewEpisode)
+                        episodeNumber++;
+                    if (c.StartTime >= currentTime)
+                        break;
+                }
+                var videoFile = model.Locations.GetOutputFile(episodeNumber);
+                if (videoFile.Exists)
+                {
+                    var temp = model.Montage.Information.Episodes[episodeNumber];
+                    var m = temp.PatchModel != null ? temp.PatchModel : new PatchModel(videoFile.FullName);
+                    temp.PatchModel = m;
+                    patchWindow.LoadModel(m, model);
+                    patchWindow.Show();
+                }
+                else Program.BatchWorkQueueWindow.Run(new List<BatchWork>() { new AssemblyVideoWork(model, model.Global.CrossFadesEnabled) });
+            };
             GoTo.Click += (s, a) =>
                 {
                     var wnd = new FixWindow();
@@ -199,14 +218,14 @@ namespace Editor
             var toDo = model.Global.WorkSettings.GetDuringWorks(model);
             foreach (var t in toDo)
             {
-                if (t.GetType() == typeof(CreateThumbWork) && ((CreateThumbWork)t).Source == model.Locations.DesktopVideo)
+                if (t is CreateThumbWork && ((CreateThumbWork)t).Source == model.Locations.DesktopVideo)
                     t.TaskFinished += (z, x) =>
                     {
                         Action act = () => { ScreenVideo.Source = new Uri((string)z); };
                         this.Dispatcher.BeginInvoke((Delegate)act);
                     };
 
-                if (t.GetType() == typeof(CreateThumbWork) && ((CreateThumbWork)t).Source == model.Locations.FaceVideo)
+                if (t is CreateThumbWork && ((CreateThumbWork)t).Source == model.Locations.FaceVideo)
                     t.TaskFinished += (z, x) =>
                     {
                         Action act = () => { FaceVideo.Source = new Uri((string)z); };
@@ -214,7 +233,7 @@ namespace Editor
                     };
             }
             if (toDo.Count != 0 )
-                addTaskToQueue(toDo);
+                Program.BatchWorkQueueWindow.Run(toDo);
         }
 
         void Synchronize_Click(object sender, RoutedEventArgs e)
@@ -245,7 +264,6 @@ namespace Editor
                     current += c.Length;
             }
             times.Add(current);
-
             if (model.Montage.Information.Episodes.Count == 0)
             {
                 model.Montage.Information.Episodes.AddRange(Enumerable.Range(0, times.Count).Select(z => new EpisodInfo(Guid.NewGuid())));
@@ -259,7 +277,10 @@ namespace Editor
             }
 
             for (int i = 0; i < times.Count; i++)
+            {
                 model.Montage.Information.Episodes[i].Duration = TimeSpan.FromMilliseconds(times[i]);
+            }
+
 
             var wnd = new InfoWindow();
             wnd.DataContext = model.Montage.Information;
@@ -405,6 +426,7 @@ namespace Editor
         void Timeline_MouseDown(object sender, MouseButtonEventArgs e)
         {
             var time = Slider.MsAtPoint(e.GetPosition(Slider));
+            currentTime = time;
             currentMode.MouseClick(time, e);
         }
         #endregion
@@ -414,255 +436,5 @@ namespace Editor
             var mode = this.ToolsPanel.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
             this.ToolsPanel.Visibility = mode;
         }
-
-
-        /*
-
-
-
-        EditorModel editorModel;
-
-        MontageModel model { get { return editorModel.Montage; } }
-        
-        void SetMode(EditorModes mode)
-        {
-            editorModel.WindowState.CurrentMode = mode;
-            switch (mode)
-            {
-                case EditorModes.Border: currentMode = new BorderMode(editorModel); break;
-                case EditorModes.General: currentMode = new GeneralMode(editorModel); break;
-            }
-            Timeline.InvalidateVisual();
-        }
-
-        internal void Initialize(EditorModel edModel)
-        {
-            this.editorModel = edModel;
-
-
-            FaceVideo.LoadedBehavior = MediaState.Manual;
-            ScreenVideo.LoadedBehavior = MediaState.Manual;
-
-            MouseDown += Timeline_MouseDown;
-            PreviewKeyDown += MainWindow_KeyDown;
-            Pause.Click += (a, b) => CmPause();
-
-            var binding = new CommandBinding(Commands.Save);
-            binding.Executed += Save;
-            CommandBindings.Add(binding);
-
-
-            Statistics.Click += ShowStatistics;
-
-
-            SetMode(editorModel.WindowState.CurrentMode);
-            switch (editorModel.WindowState.CurrentMode)
-            {
-                case EditorModes.Border: BordersMode.IsChecked = true; break;
-                case EditorModes.General: GeneralMode.IsChecked = true; break;
-            }
-
-            BordersMode.Checked += (s, a) => { SetMode(EditorModes.Border); };
-            GeneralMode.Checked += (s, a) => { SetMode(EditorModes.General); };
-
-            Synchronizer.Click += (s, a) =>
-                {
-                    if (model.Shift != 0)
-                    {
-                        var response = MessageBox.Show("Вы уже синхронизировали это видео. Точно хотите пересинхронизировать?", "", MessageBoxButton.YesNoCancel);
-                        if (response != MessageBoxResult.Yes) return;
-                    }
-                    model.Shift = editorModel.WindowState.CurrentPosition;
-                    SetPosition(editorModel.WindowState.CurrentPosition);
-                };
-
-            Infos.Click += (s, a) =>
-                {
-                    if (model.Information.Episodes.Count == 0)
-                        for (int i = 0; i < model.Chunks.Count(z => z.StartsNewEpisode); i++)
-                            model.Information.Episodes.Add(new EpisodInfo());
-                    var wnd = new InfoWindow();
-                    wnd.DataContext = model.Information;
-                    wnd.ShowDialog();
-                };
-
-            var facePath = editorModel.VideoFolder.FullName+"\\face.mp4";
-            videoAvailable = File.Exists(facePath);
-
-            FaceVideo.Source = new Uri(facePath, UriKind.Absolute);
-            FaceVideo.SpeedRatio = 1;
-            FaceVideo.Volume = 0.1;
-
-            ScreenVideo.Source = new Uri(editorModel.VideoFolder.FullName + "\\desktop.avi", UriKind.Absolute);
-            ScreenVideo.SpeedRatio = 1;
-            ScreenVideo.Volume = 0.0001;
-            
-            SetPosition(editorModel.WindowState.CurrentPosition);
-
-            Timeline.DataContext = editorModel;
-
-            System.Windows.Forms.Timer t = new System.Windows.Forms.Timer();
-            t.Interval = timerInterval;
-            t.Tick += (s, a) => { CheckPlayTime(); };
-            t.Start();
-        }
-
-        public MainWindow()
-        {
-            InitializeComponent();
-          
-        }
-
-     
-        void Save(object sender, ExecutedRoutedEventArgs e)
-        {
-            ModelIO.Save(editorModel);
-        }
-
-        void ShowStatistics(object sender, EventArgs e)
-        {
-            var times = new List<int>();
-            var current = 0;
-            foreach (var c in model.Chunks)
-            {
-                if (c.StartsNewEpisode)
-                {
-                    times.Add(current);
-                    current = 0;
-                }
-                if (c.Mode == Mode.Face || c.Mode == Mode.Screen)
-                    current += c.Length;
-            }
-            times.Add(current);
-            times.Add(times.Sum());
-            var text = times
-                .Select(z => TimeSpan.FromMilliseconds(z))
-                .Select(z => z.Minutes.ToString() + ":" + z.Seconds.ToString()+"\n")
-                .Aggregate((a, b) => a + b);
-            System.Windows.MessageBox.Show(text);
-        }
-
-        #region Keydown и все, что с ним связано
-
-        void MainWindow_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
-        {
-            var response = currentMode.ProcessKey(e);
-            if (response.RequestProcessed)
-            {
-                ProcessResponse(response);
-                e.Handled = true;
-                return;
-            }
- 
-            switch (e.Key)
-            {
-                case Key.Up:
-                    ChangeRatio(1.25);
-                    e.Handled = true;
-                    break;
-                case Key.Down:
-                    ChangeRatio(0.8);
-                    e.Handled = true;
-                    break;
-                case Key.Space:
-                    CmPause();
-                    e.Handled = true;
-                    break;
-            }
-        }
-
-        #endregion 
-
-        #region Навигация
-
-        double SpeedRatio = 1;
-        bool videoAvailable;
-        int timerInterval = 10;
-        bool paused = true;
-        bool requestPause = false;
-
-
-        void CmPause()
-        {
-            ProcessResponse(new WindowCommand { Pause = !paused });
-        }
-
-        void MakePause()
-        {
-            ProcessResponse(new WindowCommand { Pause = true });
-        }
-        void MakePlay()
-        {
-            ProcessResponse(new WindowCommand { Pause = false });
-        }
-
-
-
-        IEditorMode currentMode;// = new BorderMode();
-
-
-
-
-
-        void ProcessResponse(WindowCommand r)
-        {
-            if (r.JumpToLocation.HasValue)
-            {
-                SetPosition(r.JumpToLocation.Value);
-                Timeline.InvalidateVisual();
-            }
-            if (r.Invalidate)            
-                Timeline.InvalidateVisual();
-            if (r.Pause.HasValue)
-            {
-                paused = r.Pause.Value;
-                if (!paused)
-                {
-                    FaceVideo.Play();
-                    ScreenVideo.Play();
-                    Pause.Content = "Pause";
-                }
-                else
-                {
-                    FaceVideo.Pause();
-                    ScreenVideo.Pause();
-                    Pause.Content = "Play";
-                }
-            }
-
-        }
-        void SetPosition(double ms)
-        {
-            editorModel.WindowState.CurrentPosition = (int)ms;
-
-            if (!paused)
-            {
-                FaceVideo.Position = TimeSpan.FromMilliseconds(ms);
-                ScreenVideo.Position = TimeSpan.FromMilliseconds(ms - model.Shift);
-            }
-            else
-            {
-                FaceVideo.Position = TimeSpan.FromMilliseconds(ms);
-                ScreenVideo.Position = TimeSpan.FromMilliseconds(ms - model.Shift);
-                MakePlay();
-                requestPause = true;
-            }
-        }
-
-        void ChangeRatio(double ratio)
-        {
-            SpeedRatio *= ratio;
-            FaceVideo.SpeedRatio=SpeedRatio;
-            ScreenVideo.SpeedRatio = FaceVideo.SpeedRatio;
-
-        }
-
-        void Timeline_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            var time = Timeline.MsAtPoint(e.GetPosition(Timeline));
-            ProcessResponse(currentMode.MouseClick(time, e));
-        }
-        #endregion 
-         * */
     }
 }

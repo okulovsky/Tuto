@@ -45,8 +45,8 @@ namespace Tuto.Model
 
     public class AudioCleanSettings : Settings
     {
-        public AudioCleanSettings() { CurrentAsString = Options.DuringEditing.ToString(); }
-        public override List<Options> PossibleOptions { get { return new List<Options>() { Options.BeforeEditing, Options.DuringEditing, Options.Skip, Options.WithAssembly }; } }
+        public AudioCleanSettings() { CurrentAsString = Options.WithAssembly.ToString(); }
+        public override List<Options> PossibleOptions { get { return new List<Options>() { Options.Skip, Options.WithAssembly, Options.DuringEditing }; } }
     }
 
     public class WorkSettings
@@ -68,23 +68,23 @@ namespace Tuto.Model
         {
             var toDo = new List<BatchWork>();
             if (model.Global.WorkSettings.AudioCleanSettings.CurrentOption == Options.DuringEditing)
-                toDo.Add(new CreateCleanSoundWork(model.Locations.FaceVideo, model));
+                toDo.Add(new CreateCleanSoundWork(model.Locations.FaceVideo, model, false));
 
             if (model.Global.WorkSettings.ConversionSettings.CurrentOption == Options.DuringEditing)
             {
-                toDo.Add(new ConvertVideoWork(model, model.Locations.FaceVideo));
-                toDo.Add(new ConvertVideoWork(model, model.Locations.DesktopVideo));
+                toDo.Add(new ConvertFaceWork(model, false));
+                toDo.Add(new ConvertDesktopWork(model, false));
             }
 
             if (model.Global.WorkSettings.FaceThumbSettings.CurrentOption == Options.DuringEditing)
             {
-                toDo.Add(new CreateThumbWork(model.Locations.FaceVideo, model));
+                toDo.Add(new CreateThumbWork(model.Locations.FaceVideo, model, false));
             }
 
             if (model.Global.WorkSettings.DesktopThumbSettings.CurrentOption == Options.DuringEditing)
             {
-                toDo.Add(new CreateThumbWork(model.Locations.DesktopVideo, model));
-            }
+                toDo.Add(new CreateThumbWork(model.Locations.DesktopVideo, model, false));
+            }            
             return toDo;
         }
 
@@ -92,18 +92,18 @@ namespace Tuto.Model
         {
             var works = new List<BatchWork>();
             if (model.Global.WorkSettings.FaceThumbSettings.CurrentOption == Options.BeforeEditing)
-                works.Add(new CreateThumbWork(model.Locations.FaceVideo, model));
+                works.Add(new CreateThumbWork(model.Locations.FaceVideo, model, false));
 
             if (model.Global.WorkSettings.DesktopThumbSettings.CurrentOption == Options.BeforeEditing)
-                works.Add(new CreateThumbWork(model.Locations.DesktopVideo, model));
+                works.Add(new CreateThumbWork(model.Locations.DesktopVideo, model, false));
 
             if (model.Global.WorkSettings.AudioCleanSettings.CurrentOption == Options.BeforeEditing)
-                works.Add(new CreateCleanSoundWork(model.Locations.FaceVideo, model));
+                works.Add(new CreateCleanSoundWork(model.Locations.FaceVideo, model, false));
 
             if (model.Global.WorkSettings.ConversionSettings.CurrentOption == Options.BeforeEditing)
             {
-                works.Add(new ConvertVideoWork(model, model.Locations.DesktopVideo));
-                works.Add(new ConvertVideoWork(model, model.Locations.FaceVideo));
+                works.Add(new ConvertDesktopWork(model, false));
+                works.Add(new ConvertFaceWork(model, false));
             }
             return works;
         }

@@ -22,12 +22,13 @@ namespace Tuto.BatchWorks
         Cancelled
     }
 
-    public abstract class BatchWork : INotifyPropertyChanged
+    public abstract class BatchWork : NotifierModel
     {
         public virtual Process Process { get; set; }
         public virtual EditorModel Model { get; set; }
         public bool NeedToRewrite { get; set; }
-        public void RunProcess(string args, string path)
+
+        protected void RunProcess(string args, string path)
         {
             Process = new Process();
             Process.StartInfo.FileName = path;
@@ -37,11 +38,13 @@ namespace Tuto.BatchWorks
             Process.Start();
             Process.WaitForExit();
             if (Process.ExitCode != 0)
-                throw new ArgumentException("Process' exit code not equals zero");
+                throw new ArgumentException(
+                    string.Format("Process' exit code not equals zero. \n Exe: \"{0}\" \n Args: {1} \n Full: \"{0}\" {1}", path, args));
         }
 
         public virtual void Work() { }
         public virtual void Clean() { }
+        public virtual bool WorkIsRequired() { return true; }
 
         public FileInfo GetTempFile(FileInfo info, string suffix)
         {
@@ -68,15 +71,40 @@ namespace Tuto.BatchWorks
         public BatchWorkStatus Status
         {
             get { return status; }
-            set { status = value; OnPropertyChanged("Status"); }
+            set { status = value; NotifyPropertyChanged(); }
         }
 
+        public void TryToDelete(FileInfo info)
+        {
+            TryToDelete(info.FullName);
+        }
+
+        public void TryToDelete(string fileName)
+        {
+            var tries = 0;
+            while (tries < 5)
+            {
+                try
+                {
+                    tries++;
+                    File.Delete(fileName);
+                    Thread.Sleep(200);
+                }
+                catch { }
+            }
+        }
+
+        public void FinishProcess()
+        {
+            if (Process != null && !Process.HasExited)
+                Process.Kill();
+        }
 
         string exceptionMessage;
         public string ExceptionMessage
         {
             get { return exceptionMessage; }
-            set { exceptionMessage = value; OnPropertyChanged("ExceptionMessage"); }
+            set { exceptionMessage = value; NotifyPropertyChanged(); }
         }
 
 
@@ -85,13 +113,6 @@ namespace Tuto.BatchWorks
         {
             if (TaskFinished != null)
                 TaskFinished(this, EventArgs.Empty);
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

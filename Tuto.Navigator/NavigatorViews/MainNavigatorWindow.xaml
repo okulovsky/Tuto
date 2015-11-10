@@ -25,17 +25,12 @@
                 <DockPanel>
                     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
                         <Button Content="Refresh list" Command="{Binding RefreshCommand}"></Button>
-                        <Button Content="Batch assembly" Command="{Binding AssembleSelectedCommand}"/>
-                        <Button Content="Batch repair face" Command="{Binding RepairFaceSelectedCommand}"/>
+                        <!--<Button Content="Batch assembly" Command="{Binding AssembleSelectedCommand}"/>
+                        <Button Content="Batch repair face" Command="{Binding RepairFaceSelectedCommand}"/>-->
+                        <!--<Button Content="Upload" Command="{Binding UploadSelectedClipsCommand}"></Button>-->
                         <Button Content="Tasks" Click="Tasks_Click" Width="51" Height="43"/>
 
                         <StackPanel Orientation="Horizontal" Name="BatchWithOptions" Visibility="Collapsed">
-
-                            <StackPanel>
-                                <Label VerticalAlignment="Top" Content="Clean audio"></Label>
-                                <CheckBox IsChecked="{Binding PreWorks.CleanSound}" VerticalAlignment="Top" HorizontalAlignment="Center"></CheckBox>
-                            </StackPanel>
-
                             <StackPanel>
                                 <Label Content="FaceThumb"></Label>
                                 <CheckBox IsChecked="{Binding PreWorks.FaceThumb}" VerticalAlignment="Center" HorizontalAlignment="Center"></CheckBox>
@@ -44,6 +39,11 @@
                             <StackPanel>
                                 <Label Content="DesktopThumb"></Label>
                                 <CheckBox IsChecked="{Binding PreWorks.DesktopThumb}" VerticalAlignment="Center" HorizontalAlignment="Center"></CheckBox>
+                            </StackPanel>
+
+                            <StackPanel>
+                                <Label VerticalAlignment="Top" Content="Clean audio"></Label>
+                                <CheckBox IsChecked="{Binding PreWorks.CleanSound}" VerticalAlignment="Top" HorizontalAlignment="Center"></CheckBox>
                             </StackPanel>
 
                             <StackPanel>

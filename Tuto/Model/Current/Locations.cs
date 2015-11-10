@@ -17,13 +17,18 @@ namespace Tuto.Model
             return new FileInfo(Path.Combine(info.FullName, fname));
         }
 
-        internal FileInfo GetThumbName(FileInfo source)
+        internal FileInfo GetSuffixedName(FileInfo source, string suffix)
         {
             var newPath = source.FullName.Split('\\');
             var nameAndExt = source.Name.Split('.');
-            nameAndExt[0] = nameAndExt[0] + "-thumb";
+            nameAndExt[0] = nameAndExt[0] + suffix;
             newPath[newPath.Length - 1] = string.Join(".", nameAndExt);
             return new FileInfo(string.Join("\\", newPath));
+        }
+
+        internal FileInfo GetThumbName(FileInfo source)
+        {
+            return GetSuffixedName(source, "-thumb");
         }
 
         public FileInfo PraatExecutable { get { return Make(model.ProgramFolder, "praatcon.exe"); } }
@@ -64,6 +69,16 @@ namespace Tuto.Model
             }
         }
 
+        public DirectoryInfo PatchesDirectory
+        {
+            get
+            {
+                var relative = model.Global.Locations.RelativeTo(model.VideoFolder.FullName, model.Global.Locations.InputFolder.FullName);
+                var name = Path.Combine(model.Global.Locations.PatchesFolder.FullName, relative);
+                return new DirectoryInfo(name);
+            }
+        }
+
         public FileInfo PraatOutput { get { return Make(model.VideoFolder, "praat.output"); } }
 
        
@@ -80,6 +95,7 @@ namespace Tuto.Model
         public const string OutputFolderName = "Output";
         public const string InputFolderName = "Input";
         public const string AllTemporaryFilesFolder = "Temp";
+        public const string ConvertedPatchFilesFolder = "Patches";
 
         public FileInfo GetOutputFile(int episodeNumber)
         {

@@ -65,6 +65,9 @@ namespace Tuto.Model
         [DataMember]
         public bool ShowProcesses { get; set; }
 
+        [DataMember]
+        public bool MovePatchOriginInsteadOfCopying { get; set; }
+
         public DirectoryInfo GlobalDataFolder { get; internal set; }
 
         public GlobalLocations Locations { get; private set; }

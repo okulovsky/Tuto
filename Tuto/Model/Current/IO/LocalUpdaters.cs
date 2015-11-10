@@ -34,5 +34,17 @@ namespace Tuto.Model
             container.MontageModel.SubtitleFixes = new List<SubtitleFix>();
             return container;
         }
+
+        static FileContainer UpdateLocalV3(FileInfo file, string text)
+        {
+            var container = ReadFileContainer(text);
+            var episodes = container.MontageModel.Information.Episodes;
+            foreach (var e in episodes)
+            {
+                if (e.PatchModel == null)
+                    e.PatchModel = new PatchModel(e.Name);
+            }
+            return container;
+        }
     }
 }

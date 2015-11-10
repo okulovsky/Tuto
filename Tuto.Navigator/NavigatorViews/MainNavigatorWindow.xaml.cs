@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using Microsoft.Win32;
 using Path = System.IO.Path;
 
+
 namespace Tuto.Navigator
 {
     /// <summary>
@@ -33,5 +34,6 @@ namespace Tuto.Navigator
             var mode = BatchWithOptions.Visibility == System.Windows.Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
             BatchWithOptions.Visibility = mode;
         }
+
     }
 }

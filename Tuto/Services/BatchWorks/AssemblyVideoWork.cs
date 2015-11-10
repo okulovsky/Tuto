@@ -21,12 +21,10 @@ namespace Tuto.BatchWorks
             Model = model;
             Name = "Assembly video: " + model.Locations.FaceVideo.Directory.Name;
             filesToDelIfAborted = new List<string>();
-            if (model.Global.WorkSettings.AudioCleanSettings.CurrentOption == Options.WithAssembly && !File.Exists(model.Locations.ClearedSound.FullName))
-                BeforeWorks.Add(new CreateCleanSoundWork(model.Locations.FaceVideo, model));
             if (!model.Locations.ConvertedDesktopVideo.Exists)
-                BeforeWorks.Add(new ConvertVideoWork(model, model.Locations.DesktopVideo));
+                BeforeWorks.Add(new ConvertDesktopWork(model, false));
             if (!model.Locations.ConvertedFaceVideo.Exists)
-                BeforeWorks.Add(new ConvertVideoWork(model, model.Locations.FaceVideo));
+                BeforeWorks.Add(new ConvertFaceWork(model, false));
             this.crossFades = fadeMode;
         }
 
@@ -39,7 +37,7 @@ namespace Tuto.BatchWorks
 
             foreach (var episode in episodes)
             {
-                var args = @"-i ""{0}"" -q:v 0 ""{1}""";
+                var args = @"-i ""{0}"" -q:v 0 -vf ""scale=1280:720, fps=25"" -q:v 0 -acodec libmp3lame -ac 2 -ar 44100 -ab 32k ""{1}""";
                 var avsContext = new AvsContext();
                 episode.SerializeToContext(avsContext);
                 var avsScript = avsContext.Serialize(Model);
@@ -54,21 +52,40 @@ namespace Tuto.BatchWorks
                 filesToDelIfAborted.Add(videoFile.FullName);
                 episodeNumber++;
                 RunProcess(args, Model.Locations.FFmpegExecutable.FullName);
+
+                if (Model.Locations.ClearedSound.Exists && Model.Global.WorkSettings.AudioCleanSettings.CurrentOption != Options.Skip)
+                {
+                    var soxExe = Model.Locations.SoxExecutable;
+                    var sound = Model.Locations.ClearedSound;
+                    var ffmpeg = Model.Locations.FFmpegExecutable;
+                    var tempSound = Path.Combine(Model.Locations.TemporalDirectory.FullName, "temp.wav");
+                    var normSound = Path.Combine(Model.Locations.TemporalDirectory.FullName, "norm.wav");
+                    RunProcess(string.Format(@" -i ""{0}"" ""{1}"" -y", videoFile.FullName, tempSound), ffmpeg.FullName);
+                    RunProcess(string.Format(@"""{0}"" ""{1}"" --norm", tempSound, normSound), soxExe.FullName);
+                    RunProcess(string.Format(@"-i ""{0}"" -ar 44100 -ac 2 -ab 192k -f mp3 -qscale 0 ""{1}"" -y", normSound, tempSound), ffmpeg.FullName);
+                    var tempVideo = GetTempFile(videoFile).FullName;
+                    var arguments = string.Format(
+                        @"-i ""{0}"" -i ""{1}"" -map 0:0 -map 1 -vcodec copy -acodec copy ""{2}"" -y",
+                        videoFile.FullName,
+                        tempSound,
+                        tempVideo
+                        );
+                    RunProcess(arguments, ffmpeg.FullName);
+                    File.Delete(tempSound);
+                    File.Delete(videoFile.FullName);
+                    File.Delete(normSound);
+                    File.Move(tempVideo, videoFile.FullName);
+                    File.Delete(tempVideo);
+                }
                 OnTaskFinished();
             }
         }
 
         public override void Clean()
         {
-            if (Process != null && !Process.HasExited)
-                Process.Kill();
-            while (filesToDelIfAborted.Count > 0)
-                try
-                {
-                    File.Delete(filesToDelIfAborted[0]);
-                    filesToDelIfAborted.RemoveAt(0);
-                }
-                catch { }
+            FinishProcess();
+            foreach (var e in filesToDelIfAborted)
+                TryToDelete(e);
         }
     }
 }

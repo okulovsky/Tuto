@@ -12,14 +12,15 @@ namespace Tuto.BatchWorks
 {
     public class CreateThumbWork : BatchWork
     {
-        public CreateThumbWork(FileInfo source, EditorModel model)
+        public CreateThumbWork(FileInfo source, EditorModel model, bool forced)
         {
             Name = "Thumb Video: " + source;
             this.Source = source;
             this.Model = model;
+            Forced = forced;
             if (!File.Exists(model.Locations.ClearedSound.FullName) &&
                 model.Global.WorkSettings.AudioCleanSettings.CurrentOption != Options.Skip)
-                this.BeforeWorks.Add(new CreateCleanSoundWork(model.Locations.FaceVideo, model));
+                this.BeforeWorks.Add(new CreateCleanSoundWork(model.Locations.FaceVideo, model, true));
         }
 
         public FileInfo Source;
@@ -59,17 +60,8 @@ namespace Tuto.BatchWorks
 
         public override void Clean()
         {
-            if (Process != null && !Process.HasExited)
-                Process.Kill();
-            if (tempFile.Exists)
-            {
-                while (tempFile.Exists)
-                    try
-                    {
-                        File.Delete(tempFile.FullName);
-                    }
-                    catch { }
-            }
+            FinishProcess();
+            TryToDelete(tempFile.FullName);
         }
     }
 }

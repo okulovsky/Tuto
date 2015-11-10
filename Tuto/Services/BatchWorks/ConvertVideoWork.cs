@@ -11,31 +11,29 @@ namespace Tuto.BatchWorks
 {
     public class ConvertVideoWork : BatchWork
     {
-        public ConvertVideoWork(EditorModel model, FileInfo src)
-        {
-            Model = model;
-            Name = "Converting Video: " + src;
-            source = src;
-        }
+        public ConvertVideoWork() { }
 
-        private FileInfo source;
+        public FileInfo source;
 
-        private FileInfo tempFile;
+        public FileInfo tempFile;
+
+        public FileInfo convertedFile;
+
+        public FileInfo nonConvertedFile;
 
         public override void Work()
         {
+            nonConvertedFile = new FileInfo(Path.Combine(Model.Locations.TemporalDirectory.FullName, Path.ChangeExtension(source.Name, ".avi")));
+            tempFile = GetTempFile(nonConvertedFile);
+            convertedFile = GetTempFile(nonConvertedFile, "-converted");
+
             if (!File.Exists(source.FullName))
-                throw new ArgumentException(source.FullName + " not found");
-            var nameAndExtension = source.Name.Split('.');
-            nameAndExtension[1] = "avi";
-            var nonConverted = new FileInfo(Path.Combine(Model.Locations.TemporalDirectory.FullName, string.Join(".", nameAndExtension)));
-            tempFile = GetTempFile(nonConverted);        
+                throw new ArgumentException(source.FullName + " not found");      
             var args = string.Format(@"-i ""{0}"" -vf ""scale=1280:720, fps=25"" -q:v 0 -acodec libmp3lame -ar 44100 -ab 32k ""{1}"" -y",
                    source.FullName, tempFile.FullName);
             var fullPath = Model.Locations.FFmpegExecutable;
             RunProcess(args, fullPath.FullName);
             Thread.Sleep(500);
-            var convertedFile = GetTempFile(nonConverted, "-converted");
             if (convertedFile.Exists)
                 convertedFile.Delete();
             File.Move(tempFile.FullName, convertedFile.FullName);
@@ -44,19 +42,13 @@ namespace Tuto.BatchWorks
 
         public override bool Finished()
         {
-            return Model.Locations.ConvertedDesktopVideo.Exists;
+            return convertedFile.Exists;
         }
 
         public override void Clean()
         {
-            if (Process != null && !Process.HasExited)
-                Process.Kill();
-            while (tempFile != null && tempFile.Exists)
-                try
-                {
-                    File.Delete(tempFile.FullName);
-                }
-                catch { }
+            FinishProcess();
+            TryToDelete(tempFile.FullName);
         }
     }
 }

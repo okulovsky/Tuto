@@ -10,7 +10,6 @@ namespace Tuto.Navigator.ViewModels
     public class AssemblySettings
     {
         //Refactoring!
-        public bool CleanSound { get; set; }
 
         public bool FaceThumb { get; set; }
         public bool DesktopThumb { get; set; }
@@ -20,6 +19,8 @@ namespace Tuto.Navigator.ViewModels
         public bool RepairDesktop { get; set; }
 
         public bool AssemblyNeeded { get; set; }
+        public bool CleanSound { get; set; }
+        
         public bool All { get; set; }
 
         public List<BatchWork> GetWorksAccordingSettings(EditorModel m)
@@ -28,23 +29,25 @@ namespace Tuto.Navigator.ViewModels
             if (!All)
             {
                 if (RepairDesktop)
-                    tasks.Add(new RepairVideoWork(m, m.Locations.DesktopVideo));
+                    tasks.Add(new RepairVideoWork(m, m.Locations.DesktopVideo, true));
                 if (RepairFace)
-                    tasks.Add(new RepairVideoWork(m, m.Locations.FaceVideo));
+                    tasks.Add(new RepairVideoWork(m, m.Locations.FaceVideo, true));
                 if (FaceThumb)
-                    tasks.Add(new CreateThumbWork(m.Locations.FaceVideo, m));
+                    tasks.Add(new CreateThumbWork(m.Locations.FaceVideo, m, true));
                 if (DesktopThumb)
-                    tasks.Add(new CreateThumbWork(m.Locations.DesktopVideo, m));
+                    tasks.Add(new CreateThumbWork(m.Locations.DesktopVideo, m, true));
                 if (ConvertNeeded)
                 {
-                    tasks.Add(new ConvertVideoWork(m, m.Locations.DesktopVideo));
-                    tasks.Add(new ConvertVideoWork(m, m.Locations.FaceVideo));
+                    tasks.Add(new ConvertDesktopWork(m, true));
+                    tasks.Add(new ConvertFaceWork(m, true));
                 }
-                if (CleanSound)
-                    tasks.Add(new CreateCleanSoundWork(m.Locations.FaceVideo, m));
 
+                if (CleanSound)
+                    tasks.Add(new CreateCleanSoundWork(m.Locations.FaceVideo, m, true));
                 if (AssemblyNeeded)
                     tasks.Add(new AssemblyVideoWork(m, m.Global.CrossFadesEnabled));
+                foreach (var e in tasks)
+                    e.Forced = true;
             }
             else tasks = GetOptionsAccordingAllOption(m);
             return tasks;
@@ -54,9 +57,9 @@ namespace Tuto.Navigator.ViewModels
         {
             var tasks = new List<BatchWork>();
             if (m.Global.WorkSettings.DesktopThumbSettings.CurrentOption != Options.Skip)
-                tasks.Add(new CreateThumbWork(m.Locations.DesktopVideo, m));
+                tasks.Add(new CreateThumbWork(m.Locations.DesktopVideo, m, true));
             if (m.Global.WorkSettings.FaceThumbSettings.CurrentOption != Options.Skip)
-                tasks.Add(new CreateThumbWork(m.Locations.FaceVideo, m));
+                tasks.Add(new CreateThumbWork(m.Locations.FaceVideo, m, true));
             tasks.Add(new AssemblyVideoWork(m, m.Global.CrossFadesEnabled));
             return tasks;
         }

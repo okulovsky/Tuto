@@ -10,7 +10,7 @@
                 <DataGridTemplateColumn Header="Exception">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock TextWrapping="Wrap" Text="{Binding ExceptionMessage}"/>
+                            <TextBox TextWrapping="Wrap" Text="{Binding ExceptionMessage}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
