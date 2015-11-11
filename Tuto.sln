@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "Utilities\Util
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoMontageTester", "VideoMontageTester\VideoMontageTester.csproj", "{127864A0-F3F5-4374-8DE1-2E0149D2F903}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tuto.Publishing", "Tuto.Publishing.Youtube\Tuto.Publishing.csproj", "{7983CF24-AEF3-4301-B7FB-C378A03F7654}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,16 @@ Global
 		{127864A0-F3F5-4374-8DE1-2E0149D2F903}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{127864A0-F3F5-4374-8DE1-2E0149D2F903}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{127864A0-F3F5-4374-8DE1-2E0149D2F903}.Release|x86.ActiveCfg = Release|Any CPU
+		{7983CF24-AEF3-4301-B7FB-C378A03F7654}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7983CF24-AEF3-4301-B7FB-C378A03F7654}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7983CF24-AEF3-4301-B7FB-C378A03F7654}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7983CF24-AEF3-4301-B7FB-C378A03F7654}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7983CF24-AEF3-4301-B7FB-C378A03F7654}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7983CF24-AEF3-4301-B7FB-C378A03F7654}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7983CF24-AEF3-4301-B7FB-C378A03F7654}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7983CF24-AEF3-4301-B7FB-C378A03F7654}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{7983CF24-AEF3-4301-B7FB-C378A03F7654}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{7983CF24-AEF3-4301-B7FB-C378A03F7654}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
