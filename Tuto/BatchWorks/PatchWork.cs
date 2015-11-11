@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.IO;
 using Tuto.Model;
 using Tuto.TutoServices;
-using Tuto.TutoServices.Montager;
 using Tuto.TutoServices.Assembler;
 using System.Threading;
 
@@ -106,7 +105,6 @@ namespace Tuto.BatchWorks
             }
             else final.SerializeToContext(avsContext);
 
-            var serv = new AssemblerService(crossFades);
             var args = @"-i ""{0}"" -q:v 0 -vf ""scale=1280:720, fps=25"" -q:v 0 -acodec libmp3lame -ar 44100 -ab 32k ""{1}"" -y";
 
             var avsScript = string.Format(@"import(""{0}"")", Model.Locations.AvsLibrary.FullName) + "\r\n" + avsContext.GetContent() + "var_0";

@@ -366,15 +366,7 @@ namespace Editor
 
 
 
-        void RunProcess(Services service, DirectoryInfo directory)
-        {
-            this.IsEnabled = false;
-            Tuto.TutoProgram.Run(service, directory, ExecMode.Run);
-            this.IsEnabled = true;
-            MessageBox.Show("The action is complete");
-            return;
-
-        }
+       
 
 
 
