@@ -114,6 +114,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblerService.cs" />
+    <Compile Include="Model2\EditorModel\EditorModel.cs" />
+    <Compile Include="Model2\EditorModel\Locations.cs" />
     <Compile Include="Model2\Videotheque\IVideuthequeLoadingUI.cs" />
     <Compile Include="Model2\Videotheque\VideothequeLoadingRequestItem.cs" />
     <Compile Include="Model\Current\IO\GlobalUpdaters.cs" />

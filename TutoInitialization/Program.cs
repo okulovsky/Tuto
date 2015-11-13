@@ -14,7 +14,7 @@ namespace Tuto.Init
 		[STAThread]
 		public static void Main()
 		{
-			File.Delete("startup.json");
+			//File.Delete("startup.json");
 			var wnd = new MainWindow();
 			Func<Videotheque> start = () => Videotheque.Load(null, wnd);
 			start.BeginInvoke(null, null);

@@ -25,11 +25,16 @@ namespace Tuto.Model
 		public FileInfo VideothequeSettingsFile { get; private set;  }
 		public VideothequeLocations Locations { get; private set; }
 
+		Dictionary<DirectoryInfo, string> binaryHashes;
+		List<FileContainer> loadedContainer;
 
 		const string DefaultRawFolder = "Raw";
 		const string DefaultModelFolder = "Models";
 		const string DefaultOutputFolder = "Output";
 		const string DefaultTempFolder = "Temp";
+		const string FaceFileName = "face.mp4";
+		const string HashFileName = "hash";
+		const string ModelExtension = "mm";
 
 		private Videotheque()
 		{
@@ -50,6 +55,10 @@ namespace Tuto.Model
 				v.LoadExternalReferences(ui);
 				v.LoadVideotheque(videothequeFileName, ui);
 				v.CheckSubdirectories(ui);
+
+				v.LoadBinaryHashes(ui);
+				v.LoadModels(ui);
+
 				ui.ExitSuccessfully();
 				return v;
 			}
@@ -274,6 +283,62 @@ namespace Tuto.Model
 
 		}
 		#endregion
+		#region Loading files
 
+		public static string ComputeHash(FileInfo file)
+		{
+			using (var md5 = MD5.Create())
+			using (var stream = new BinaryReader(File.OpenRead(file.FullName)))
+			{
+				var bytes = stream.ReadBytes(10000);
+				return BitConverter.ToString(md5.ComputeHash(bytes));
+			}
+		}
+
+		public static void ComputeHashesInRawSubdirectories(DirectoryInfo directory, string targetFileName, string hashFileName, bool recomputeAll, Dictionary<DirectoryInfo, string> hashes)
+		{
+			var files = directory.GetFiles();
+			if (files.Any(z => z.Name == targetFileName))
+			{
+				if (!recomputeAll)
+					if (files.Any(z => z.Name == hashFileName))
+					{
+						hashes[directory] = File.ReadAllText(Path.Combine(directory.FullName, hashFileName));
+						return;
+					}
+				var hash = ComputeHash(new FileInfo(Path.Combine(directory.FullName, targetFileName)));
+				File.WriteAllText(Path.Combine(directory.FullName, hashFileName), hash);
+				hashes[directory] = hash;
+			}
+			else foreach (var d in directory.GetDirectories())
+					ComputeHashesInRawSubdirectories(d, targetFileName, hashFileName, recomputeAll, hashes);
+		}
+
+		void LoadBinaryHashes(IVideuthequeLoadingUI ui)
+		{
+			ui.StartPOSTWork("Indexing videofiles in " + RawFolder.FullName);
+			binaryHashes = new Dictionary<DirectoryInfo, string>();
+			ComputeHashesInRawSubdirectories(RawFolder, FaceFileName, HashFileName, false, binaryHashes);
+			ui.CompletePOSTWork(true);
+		}
+
+		static void LoadModelsInSubdirectories(DirectoryInfo dir, List<FileContainer> list)
+		{
+			foreach (var e in dir.GetFiles("*." + ModelExtension))
+				list.Add(HeadedJsonFormat.Read<FileContainer>(e));
+			foreach (var e in dir.GetDirectories())
+				LoadModelsInSubdirectories(e, list);
+		}
+
+		void LoadModels(IVideuthequeLoadingUI ui)
+		{
+			ui.StartPOSTWork("Loading models");
+			loadedContainer = new List<FileContainer>();
+			LoadModelsInSubdirectories(ModelsFolder, loadedContainer);
+			ui.CompletePOSTWork(true);
+		}
+
+
+		#endregion
 	}
 }
