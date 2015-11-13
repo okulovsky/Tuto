@@ -77,10 +77,10 @@ namespace Tuto.Model
             }
         }
 
-		public static void Write<T>(FileInfo file, T Data)
+		public static void Write<T>(FileInfo file, T Data, int version = 1)
 		{
 			var header = typeof(T).Name + " Tuto file";
-			Write(file, header, 1, Data);
+			Write(file, header, version, Data);
 		}
 
         public static void Write<T>(DirectoryInfo directory, T Data)

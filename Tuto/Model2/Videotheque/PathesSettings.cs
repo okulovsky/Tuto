@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Tuto.Model
 {
     [DataContract]
-    public class PathesSettings
+    public class PathsSettings
     {
         [DataMember]
-        public string InputPath { get; set; }
+        public string RawPath { get; set; }
         [DataMember]
         public string OutputPath { get; set; }
         [DataMember]

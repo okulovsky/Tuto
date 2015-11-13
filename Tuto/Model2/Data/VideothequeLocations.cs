@@ -25,10 +25,11 @@ namespace Tuto.Model
 
 
         public FileInfo PraatExecutable { get { return Make(videotheque.ProgramFolder, "praatcon.exe"); } }
-        public FileInfo GNP { get { return Make(videotheque.ProgramFolder, "NoiseReduction", "gnp"); } }
-        public FileInfo NR { get { return Make(videotheque.ProgramFolder, "NoiseReduction", "nr"); } }
-
+        public FileInfo GNP { get { return Make(videotheque.ProgramFolder, "NoiseReduction", "gnp.exe"); } }
+        public FileInfo NR { get { return Make(videotheque.ProgramFolder, "NoiseReduction", "nr.exe"); } }
+		public FileInfo StartupSettings { get { return Make(videotheque.ProgramFolder, "startup.json"); } }
         
+
         public FileInfo FFmpegExecutable { get { return new FileInfo(videotheque.EnvironmentSettings.FFMPEGPath); } }
         public FileInfo SoxExecutable { get { return new FileInfo(videotheque.EnvironmentSettings.SoxPath); } }
         

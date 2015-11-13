@@ -114,6 +114,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblerService.cs" />
+    <Compile Include="Model2\Videotheque\IVideuthequeLoadingUI.cs" />
+    <Compile Include="Model2\Videotheque\VideothequeLoadingRequestItem.cs" />
     <Compile Include="Model\Current\IO\GlobalUpdaters.cs" />
     <Compile Include="Model\Current\IO\LocalUpdaters.cs" />
     <Compile Include="Model\Current\IO\Miscellanous.cs" />
@@ -195,6 +197,14 @@
     <Compile Include="BatchWorks\CreateThumbWork.cs" />
     <Compile Include="BatchWorks\PraatWork.cs" />
     <Compile Include="BatchWorks\RepairVideoWork.cs" />
+    <Compile Include="Model2\Videotheque\PathesSettings.cs" />
+    <Compile Include="Model2\Videotheque\Videotheque.cs" />
+    <Compile Include="Model2\Data\VideothequeEnvironmentSettings.cs" />
+    <Compile Include="Model2\Data\VideothequeLocations.cs" />
+    <Compile Include="Model2\Data\VideothequeSettings.cs" />
+    <Compile Include="Model2\RecoveryPrompt.cs" />
+    <Compile Include="Model2\SelfTestJob.cs" />
+    <Compile Include="Model2\VideothequeInitializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

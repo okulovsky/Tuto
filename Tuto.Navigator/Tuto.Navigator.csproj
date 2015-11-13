@@ -167,14 +167,6 @@
       <DependentUpon>MainEditorWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="GlobalFileContainer.cs" />
-    <Compile Include="Initialization\Data\VideothequeEnvironmentSettings.cs" />
-    <Compile Include="Initialization\Data\PathesSettings.cs" />
-    <Compile Include="Initialization\Data\Videotheque.cs" />
-    <Compile Include="Initialization\Data\VideothequeLocations.cs" />
-    <Compile Include="Initialization\Data\VideothequeSettings.cs" />
-    <Compile Include="Initialization\RecoveryPrompt.cs" />
-    <Compile Include="Initialization\SelfTestJob.cs" />
-    <Compile Include="Initialization\VideothequeInitializer.cs" />
     <Compile Include="Patch\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
