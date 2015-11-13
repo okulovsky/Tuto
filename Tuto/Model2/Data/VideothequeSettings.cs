@@ -18,5 +18,12 @@ namespace Tuto.Model
 		//public VideoSettings VideoSettings { get; set;} 
         [DataMember]
         public PathsSettings PathsSettings { get; set; }
+
+		public VideothequeSettings()
+		{
+			VoiceSettings = new VoiceSettings();
+			WorkSettings = new WorkSettings();
+			PathsSettings = new PathsSettings();
+		}
     }
 }

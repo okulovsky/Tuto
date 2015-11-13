@@ -16,7 +16,7 @@ namespace Tuto.Model
 
 	}
 
-	public class VideothequeLoadingRequestItem
+	public class VideothequeLoadingRequestItem 
 	{
 		public string Prompt { get; set; }
 		public VideothequeLoadingRequestItemType Type { get; set; }

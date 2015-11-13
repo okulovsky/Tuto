@@ -11,5 +11,6 @@ namespace Tuto.Model
 		void StartPOSTWork(string name);
 		void CompletePOSTWork(bool result);
 		VideothequeLoadingRequestItem Request(string prompt, VideothequeLoadingRequestItem[] items);
+		void ExitSuccessfully();
 	}
 }

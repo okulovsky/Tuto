@@ -31,14 +31,32 @@ namespace Tuto.Model
 		const string DefaultOutputFolder = "Output";
 		const string DefaultTempFolder = "Temp";
 
-
-		public static void Load(string videothequeFileName, IVideuthequeLoadingUI ui)
+		private Videotheque()
 		{
+
+		}
+
+
+
+
+		public static Videotheque Load(string videothequeFileName, IVideuthequeLoadingUI ui)
+		{
+			
 			Videotheque v = new Videotheque();
-			v.LoadBuiltInSoftware(ui);
-			v.LoadExternalReferences(ui);
-			v.LoadVideotheque(videothequeFileName, ui);
-			v.CheckSubdirectories(ui);
+			v.Locations = new VideothequeLocations(v);
+			try
+			{
+				v.LoadBuiltInSoftware(ui);
+				v.LoadExternalReferences(ui);
+				v.LoadVideotheque(videothequeFileName, ui);
+				v.CheckSubdirectories(ui);
+				ui.ExitSuccessfully();
+				return v;
+			}
+			catch (LoadingException)
+			{
+				return null;
+			}
 		}
 
 		#region Checking procedures 
@@ -69,7 +87,7 @@ namespace Tuto.Model
 
 		static FileInfo CheckFile(FileInfo file, IVideuthequeLoadingUI ui, string prompt, params VideothequeLoadingRequestItem[] requestItems)
 		{
-			return Check(file, ui, f => f.FullName, f => file.Exists,
+			return Check(file, ui, f => f.FullName, f => f!=null && File.Exists(f.FullName),
 				() =>
 				{
 					var option = ui.Request(prompt, requestItems);
@@ -77,10 +95,10 @@ namespace Tuto.Model
 					return option.InitFile(option.SuggestedPath);
 				});
 		}
-
+		
 		DirectoryInfo CheckFolder(DirectoryInfo dir, IVideuthequeLoadingUI ui, string prompt, params VideothequeLoadingRequestItem[] requestItems)
 		{
-			return Check(dir, ui, d => d.FullName, d => d.Exists,
+			return Check(dir, ui, d => d.FullName, d => d!=null && Directory.Exists(d.FullName),
 				() =>
 				{
 					var option = ui.Request(prompt, requestItems);
@@ -119,7 +137,7 @@ namespace Tuto.Model
 		#region Basic loading procedures
 		void LoadBuiltInSoftware(IVideuthequeLoadingUI ui)
         {
-            ProgramFolder = new DirectoryInfo(System.Reflection.Assembly.GetExecutingAssembly().Location);
+			ProgramFolder = new FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).Directory;
 
 			//initialize built-in components
 			CheckFile(Locations.GNP, ui,  "GNP is not found in program's folder. Please reinstall Tuto");

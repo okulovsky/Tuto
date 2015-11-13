@@ -1,8 +1,38 @@
-﻿<Window x:Class="TutoInitialization.MainWindow"
+﻿<Window x:Class="Tuto.Init.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525">
+        xmlns:i ="clr-namespace:Tuto.Init"
+        Title="Tuto Initialization" Height="350" Width="525">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="40*"/>
+            <ColumnDefinition Width="60*"/>
+        </Grid.ColumnDefinitions>
+        <TextBox x:Name="Report" IsReadOnly="true" Width="200" Grid.Column="0" TextWrapping="Wrap"/>
+        <StackPanel Grid.Column="1" x:Name="RequestPanel">
+            <TextBlock Text="{Binding Prompt}" TextWrapping="Wrap"/>
+            <ListBox ItemsSource="{Binding Items}" x:Name="Options">
+                <ListBox.Template>
+                    <ControlTemplate>
+                        <StackPanel Orientation="Vertical" IsItemsHost="True"/>
+                    </ControlTemplate>
+                </ListBox.Template>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        
+                            <i:RequestItemControl/>
+                        
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <DockPanel>
+                <Button x:Name="Cancel" DockPanel.Dock="Right">Cancel</Button>
+                <Button x:Name="OK" DockPanel.Dock="Right" IsEnabled="{Binding OkIsEnabled}">OK</Button>
+                <Rectangle/>
+            </DockPanel>
+        </StackPanel>
     </Grid>
 </Window>

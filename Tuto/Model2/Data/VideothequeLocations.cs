@@ -22,7 +22,11 @@ namespace Tuto.Model
             return new FileInfo(Path.Combine(fname));
         }
 
-
+		FileInfo FileOrNull(string path)
+		{
+			if (path == null) return null;
+			return new FileInfo(path);
+		}
 
         public FileInfo PraatExecutable { get { return Make(videotheque.ProgramFolder, "praatcon.exe"); } }
         public FileInfo GNP { get { return Make(videotheque.ProgramFolder, "NoiseReduction", "gnp.exe"); } }
@@ -30,8 +34,8 @@ namespace Tuto.Model
 		public FileInfo StartupSettings { get { return Make(videotheque.ProgramFolder, "startup.json"); } }
         
 
-        public FileInfo FFmpegExecutable { get { return new FileInfo(videotheque.EnvironmentSettings.FFMPEGPath); } }
-        public FileInfo SoxExecutable { get { return new FileInfo(videotheque.EnvironmentSettings.SoxPath); } }
+        public FileInfo FFmpegExecutable { get { return FileOrNull(videotheque.EnvironmentSettings.FFMPEGPath); } }
+        public FileInfo SoxExecutable { get { return FileOrNull(videotheque.EnvironmentSettings.SoxPath); } }
         
     }
 }

@@ -23,7 +23,10 @@ namespace Tuto
         public static void NotifyByExpression<T>(this T obj, Expression<Func<T, object>> field)
             where T : NotifierModel
         {
-            obj.NotifyPropertyChanged((field.Body as MemberExpression).Member.Name);
+			var expression = field.Body;
+			if (expression.NodeType == ExpressionType.Convert)
+				expression = ((UnaryExpression)expression).Operand;
+            obj.NotifyPropertyChanged((expression as MemberExpression).Member.Name);
         }
     }
 }
