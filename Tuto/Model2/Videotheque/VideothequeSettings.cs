@@ -20,7 +20,15 @@ namespace Tuto.Model2
         [DataMember]
         public PathsSettings PathsSettings { get; set; }
 
-		public VideothequeSettings()
+        #region other settings. This code should be placed to some subclass
+
+        [Obsolete]
+        [DataMember]
+        public bool ShowProcesses { get; set; }
+
+        #endregion
+
+        public VideothequeSettings()
 		{
 			VoiceSettings = new VoiceSettings();
 			WorkSettings = new WorkSettings();

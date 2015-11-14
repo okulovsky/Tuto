@@ -83,8 +83,8 @@ namespace Tuto.Model2
         [Obsolete]
         public FileInfo PraatOutput { get { return Make(model.TempFolder, "praat.output"); } }
 
-       
 
+        public DirectoryInfo TemporalDirectory { get { return model.TempFolder; } }
 
         public FileInfo GetOutputFile(int episodeNumber)
         {
