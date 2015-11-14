@@ -54,7 +54,7 @@ namespace Tuto.Navigator
                     e.Status = BatchWorkStatus.Success;
                     currentIndex++;
                 }
-                catch (ThreadAbortException ex)
+                catch (ThreadAbortException)
                 {
                     e.Status = BatchWorkStatus.Aborted;
                     e.Clean();

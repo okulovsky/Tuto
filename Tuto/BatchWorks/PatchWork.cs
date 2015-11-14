@@ -17,8 +17,7 @@ namespace Tuto.BatchWorks
         private List<string> filesToDelIfAborted { get; set; }
         private bool crossFades { get; set; }
         private PatchModel pmodel;
-        private AvsNode result;
-
+     
         private string oldName;
         private string newName;
 
@@ -33,7 +32,7 @@ namespace Tuto.BatchWorks
                 var name = Path.Combine(Model.Locations.TemporalDirectory.FullName, ep.ConvertedName);
                 if (!File.Exists(name))
                 {
-                    var fileInPatches = new FileInfo(Path.Combine(emodel.Global.Locations.PatchesFolder.FullName, new FileInfo(ep.Path.LocalPath).Name));
+                    var fileInPatches = new FileInfo(Path.Combine(emodel.Videotheque.Locations.PatchesFolder.FullName, new FileInfo(ep.Path.LocalPath).Name));
                     BeforeWorks.Add(new PreparePatchWork(emodel, fileInPatches, new FileInfo(name), false));
                 }
             }

@@ -96,7 +96,7 @@ namespace Editor
                 {
                     model.Save();
                     var tasks = new List<BatchWork>();
-                    tasks.Add(new AssemblyVideoWork(model, model.Global.CrossFadesEnabled));
+                    tasks.Add(new AssemblyVideoWork(model, model.Videotheque.CrossFadesEnabled));
                     Program.BatchWorkQueueWindow.Run(tasks);
                 };
 
@@ -178,7 +178,7 @@ namespace Editor
                     patchWindow.LoadModel(m, model);
                     patchWindow.Show();
                 }
-                else Program.BatchWorkQueueWindow.Run(new List<BatchWork>() { new AssemblyVideoWork(model, model.Global.CrossFadesEnabled) });
+                else Program.BatchWorkQueueWindow.Run(new List<BatchWork>() { new AssemblyVideoWork(model, model.Videotheque.CrossFadesEnabled) });
             };
             GoTo.Click += (s, a) =>
                 {
@@ -215,7 +215,7 @@ namespace Editor
 
         void AddDuringTasks()
         {
-            var toDo = model.Global.WorkSettings.GetDuringWorks(model);
+            var toDo = model.Videotheque.WorkSettings.GetDuringWorks(model);
             foreach (var t in toDo)
             {
                 if (t is CreateThumbWork && ((CreateThumbWork)t).Source == model.Locations.DesktopVideo)

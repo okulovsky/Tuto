@@ -28,7 +28,7 @@ namespace Tuto.Model
         public DirectoryInfo TempFolder { get { return Locations.TemporalDirectory; } }
 
         public Locations Locations { get; private set; }
-        public Videotheque Global { get; set; }
+        public Videotheque Videotheque { get; set; }
         public MontageModel Montage { get; set; }
         public WindowState WindowState { get; set; }
 
@@ -55,8 +55,8 @@ namespace Tuto.Model
             Montage = new MontageModel(360000);
             Locations = new Locations(this);
             WindowState = new WindowState();
-            Global = new Videotheque();
-            Global.WorkSettings = new WorkSettings();
+            Videotheque = new Videotheque();
+            Videotheque.WorkSettings = new WorkSettings();
         }
 
 
@@ -156,15 +156,15 @@ namespace Tuto.Model
             if (leftChunk.Mode== Mode.Undefined || rightChunk.Mode == Mode.Undefined) return;
 
             var interval = Montage.SoundIntervals
-                .Where(z => !z.HasVoice && z.DistanceTo(rightChunk.StartTime) < Global.VoiceSettings.MaxDistanceToSilence)
+                .Where(z => !z.HasVoice && z.DistanceTo(rightChunk.StartTime) < Videotheque.VoiceSettings.MaxDistanceToSilence)
                 .FirstOrDefault();
             if (interval == null) return;
 
             var leftDistance = Math.Abs(interval.StartTime - rightChunk.StartTime);
             var rightDistance = Math.Abs(interval.EndTime - rightChunk.StartTime);
             var distance = interval.DistanceTo(rightChunk.StartTime);
-            bool LeftIn = leftDistance < Global.VoiceSettings.MaxDistanceToSilence;
-            bool RightIn = rightDistance < Global.VoiceSettings.MaxDistanceToSilence;
+            bool LeftIn = leftDistance < Videotheque.VoiceSettings.MaxDistanceToSilence;
+            bool RightIn = rightDistance < Videotheque.VoiceSettings.MaxDistanceToSilence;
 
             if (!LeftIn && !RightIn) return;
 
@@ -177,11 +177,11 @@ namespace Tuto.Model
             else if (LeftIn && !RightIn)
             {
                 //значит, только левая граница где-то недалеко. 
-                NewStart = interval.StartTime + Global.VoiceSettings.SilenceMargin;
+                NewStart = interval.StartTime + Videotheque.VoiceSettings.SilenceMargin;
             }
             else if (!LeftIn && RightIn)
             {
-                NewStart = interval.EndTime - Global.VoiceSettings.SilenceMargin;
+                NewStart = interval.EndTime - Videotheque.VoiceSettings.SilenceMargin;
             }
 
             //не вылезли за границы интервала при перемещении

@@ -45,7 +45,7 @@ namespace Tuto.Navigator.ViewModels
                 if (CleanSound)
                     tasks.Add(new CreateCleanSoundWork(m.Locations.FaceVideo, m, true));
                 if (AssemblyNeeded)
-                    tasks.Add(new AssemblyVideoWork(m, m.Global.CrossFadesEnabled));
+                    tasks.Add(new AssemblyVideoWork(m, m.Videotheque.CrossFadesEnabled));
                 foreach (var e in tasks)
                     e.Forced = true;
             }
@@ -56,11 +56,11 @@ namespace Tuto.Navigator.ViewModels
         private List<BatchWork> GetOptionsAccordingAllOption(EditorModel m)
         {
             var tasks = new List<BatchWork>();
-            if (m.Global.WorkSettings.DesktopThumbSettings.CurrentOption != Options.Skip)
+            if (m.Videotheque.WorkSettings.DesktopThumbSettings.CurrentOption != Options.Skip)
                 tasks.Add(new CreateThumbWork(m.Locations.DesktopVideo, m, true));
-            if (m.Global.WorkSettings.FaceThumbSettings.CurrentOption != Options.Skip)
+            if (m.Videotheque.WorkSettings.FaceThumbSettings.CurrentOption != Options.Skip)
                 tasks.Add(new CreateThumbWork(m.Locations.FaceVideo, m, true));
-            tasks.Add(new AssemblyVideoWork(m, m.Global.CrossFadesEnabled));
+            tasks.Add(new AssemblyVideoWork(m, m.Videotheque.CrossFadesEnabled));
             return tasks;
         }
     }

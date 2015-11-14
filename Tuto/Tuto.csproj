@@ -127,7 +127,7 @@
     <Compile Include="Model\Current\AllProjectData.cs" />
     <Compile Include="ToDelete\GlobalData.cs" />
     <Compile Include="Model\Current\Global\FinishedVideoData.cs" />
-    <Compile Include="Model\Current\Global\Locations.cs" />
+    <Compile Include="ToDelete\GLocations.cs" />
     <Compile Include="Model\Current\Global\Topic.cs" />
     <Compile Include="Model\Current\Global\TopicLevel.cs" />
     <Compile Include="Model\Current\Global\VoiceSettings.cs" />

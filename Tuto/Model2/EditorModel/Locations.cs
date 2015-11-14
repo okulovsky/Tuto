@@ -44,13 +44,31 @@ namespace Tuto.Model2
         public FileInfo FaceVideoThumb { get { return GetThumbName(FaceVideo); } }
         public FileInfo DesktopVideoThumb { get { return GetThumbName(DesktopVideo); } }
         
-        public FileInfo ConvertedFaceVideo { get { return Make(model.TempFolder, "face-converted.avi"); } }
-        public FileInfo ConvertedDesktopVideo { get { return Make(model.TempFolder, "desktop-converted.avi"); } }
+        public FileInfo ConvertedFaceVideo { get { return Make(model.TempFolder, Names.ConvertedFaceName); } }
+        public FileInfo ConvertedDesktopVideo { get { return Make(model.TempFolder, Names.ConvertedDesktopName); } }
         
         public FileInfo PraatVoice { get { return Make(model.RawLocation, "voice.mp3"); } }
         public FileInfo LocalFilePath { get { return model.ModelFileLocation; } }
 
- 
+        public FileInfo PraatScriptSource { get { return Make(model.Videotheque.ProgramFolder, "split_pauses.praat"); } }
+
+        public FileInfo AvsLibrary { get { return Make(model.Videotheque.ProgramFolder, "library.avs"); } }
+        public FileInfo AutoLevelsLibrary { get { return Make(model.Videotheque.ProgramFolder, "autolevels.dll"); } }
+     
+
+        [Obsolete]
+        public FileInfo PraatExecutable { get { return model.Videotheque.Locations.PraatExecutable; } }
+        [Obsolete]
+        public FileInfo FFmpegExecutable { get { return model.Videotheque.Locations.FFmpegExecutable; } }
+        [Obsolete]
+        public FileInfo SoxExecutable { get { return model.Videotheque.Locations.SoxExecutable; } }
+        [Obsolete]
+        public FileInfo VSFilterLibrary { get { return new FileInfo(@"C:\Program Files\VSFilter\VSFilter.dll"); } }
+
+        [Obsolete]
+        public FileInfo TutoExecutable { get { return Make(model.Videotheque.ProgramFolder, "Tuto.exe"); } }
+
+   
         public DirectoryInfo PatchesDirectory
         {
             get
@@ -70,12 +88,12 @@ namespace Tuto.Model2
 
         public FileInfo GetOutputFile(int episodeNumber)
         {
-            var fname = MyPath.RelativeTo(model.RawLocation.FullName, model.Global.RawFolder.FullName);
+            var fname = MyPath.RelativeTo(model.RawLocation.FullName, model.Videotheque.RawFolder.FullName);
             fname = MyPath.CreateHierarchicalName(fname);
             fname += episodeNumber + " " + model.Montage.Information.Episodes[episodeNumber].Name+".avi";
             var file = new FileInfo(
             Path.Combine(
-                   model.Global.OutputFolder.FullName,
+                   model.Videotheque.OutputFolder.FullName,
                    fname));
             return file;
         }

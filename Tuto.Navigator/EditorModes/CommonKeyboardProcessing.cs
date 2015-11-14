@@ -38,10 +38,7 @@ namespace Editor
         {
             if (NavigationKeysProcessing(model, key)) return true;
 
-            var delta = 1000;
-            if (key.Shift) delta = 200;
-            if (key.Ctrl) delta = 50;
-
+        
             switch (key.Command)
             {
                

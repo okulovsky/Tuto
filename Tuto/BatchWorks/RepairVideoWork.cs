@@ -22,7 +22,6 @@ namespace Tuto.BatchWorks
         private string tempFile = "none";
         private bool CopyingOver;
         private bool ConversionOver;
-        private bool FileDeleted;
         private FileInfo source;
         public override void Work()
         {

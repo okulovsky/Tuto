@@ -22,7 +22,7 @@ namespace Tuto.Publishing
         public List<TItem> UnmatchedTreeItems { get; private set; }
         List<TData> initialDataItems;
         Func<TItem, TData, double> distance;
-        Func<TData, TData, bool> Equals;
+        new Func<TData, TData, bool> Equals;
 
         public Matcher(IEnumerable<TData> allExternal, Func<TItem,TData, double> distance, Func<TData,TData,bool> equals)
         {

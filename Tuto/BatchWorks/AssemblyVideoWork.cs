@@ -52,7 +52,7 @@ namespace Tuto.BatchWorks
                 episodeNumber++;
                 RunProcess(args, Model.Locations.FFmpegExecutable.FullName);
 
-                if (Model.Locations.ClearedSound.Exists && Model.Global.WorkSettings.AudioCleanSettings.CurrentOption != Options.Skip)
+                if (Model.Locations.ClearedSound.Exists && Model.Videotheque.WorkSettings.AudioCleanSettings.CurrentOption != Options.Skip)
                 {
                     var soxExe = Model.Locations.SoxExecutable;
                     var sound = Model.Locations.ClearedSound;

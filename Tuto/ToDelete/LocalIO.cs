@@ -90,7 +90,7 @@ namespace Tuto.Model
                 if (!TryReadObsolete(model))
                     InitializeEmptyModel(model);
             }
-            model.Global = ReadGlobalData(model.RootFolder);
+            model.Videotheque = ReadGlobalData(model.RootFolder);
             if (!model.Locations.TemporalDirectory.Exists)
                 model.Locations.TemporalDirectory.Create();
             return model;

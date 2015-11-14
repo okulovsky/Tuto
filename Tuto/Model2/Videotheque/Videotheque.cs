@@ -25,10 +25,16 @@ namespace Tuto.Model2
 		public FileInfo VideothequeSettingsFile { get; private set;  }
 		public VideothequeLocations Locations { get; private set; }
 
-		Dictionary<string,DirectoryInfo> binaryHashes;
+
+        [Obsolete]
+        public VoiceSettings VoiceSettings { get { return Settings.VoiceSettings; } }
+        [Obsolete]
+        public WorkSettings WorkSettings { get { return Settings.WorkSettings; } }
+
+        Dictionary<string,DirectoryInfo> binaryHashes;
 		List<Tuple<FileContainer,FileInfo>> loadedContainer;
         List<EditorModel> models;
-
+        public IEnumerable<EditorModel> EditorModels { get { return models; } }
 		
 
 		private Videotheque()
@@ -341,6 +347,7 @@ namespace Tuto.Model2
         void CreateModels(IVideothequeLoadingUI ui)
         {
             ui.StartPOSTWork("Creating models");
+            models = new List<EditorModel>();
             foreach(var e in loadedContainer)
             {
                 var hash = e.Item1.MontageModel.RawVideoHash; 

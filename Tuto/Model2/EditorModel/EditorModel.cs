@@ -16,7 +16,7 @@ namespace Tuto.Model2
     public class EditorModel
     {
 		public readonly Locations Locations;
-        public readonly Videotheque Global;
+        public readonly Videotheque Videotheque;
 		public readonly MontageModel Montage;
 		public readonly WindowState WindowState;
 		public readonly FileInfo ModelFileLocation;
@@ -25,8 +25,8 @@ namespace Tuto.Model2
 		{
 			get
 			{
-				var relative = MyPath.RelativeTo(RawLocation.FullName, Global.RawFolder.FullName);
-				var temp = Path.Combine(Global.TempFolder.FullName, relative);
+				var relative = MyPath.RelativeTo(RawLocation.FullName, Videotheque.RawFolder.FullName);
+				var temp = Path.Combine(Videotheque.TempFolder.FullName, relative);
 				var directory = new DirectoryInfo(temp);
 				if (!directory.Exists) directory.Create();
 				return directory;
@@ -57,7 +57,7 @@ namespace Tuto.Model2
         {
 			Montage = montage;
 			WindowState = windowState;
-			Global = videotheque;
+			Videotheque = videotheque;
 			RawLocation = raw;
 			ModelFileLocation = model;
 			Locations = new Locations(this);
@@ -160,15 +160,15 @@ namespace Tuto.Model2
             if (leftChunk.Mode== Mode.Undefined || rightChunk.Mode == Mode.Undefined) return;
 
             var interval = Montage.SoundIntervals
-                .Where(z => !z.HasVoice && z.DistanceTo(rightChunk.StartTime) < Global.Settings.VoiceSettings.MaxDistanceToSilence)
+                .Where(z => !z.HasVoice && z.DistanceTo(rightChunk.StartTime) < Videotheque.Settings.VoiceSettings.MaxDistanceToSilence)
                 .FirstOrDefault();
             if (interval == null) return;
 
             var leftDistance = Math.Abs(interval.StartTime - rightChunk.StartTime);
             var rightDistance = Math.Abs(interval.EndTime - rightChunk.StartTime);
             var distance = interval.DistanceTo(rightChunk.StartTime);
-            bool LeftIn = leftDistance < Global.Settings.VoiceSettings.MaxDistanceToSilence;
-            bool RightIn = rightDistance < Global.Settings.VoiceSettings.MaxDistanceToSilence;
+            bool LeftIn = leftDistance < Videotheque.Settings.VoiceSettings.MaxDistanceToSilence;
+            bool RightIn = rightDistance < Videotheque.Settings.VoiceSettings.MaxDistanceToSilence;
 
             if (!LeftIn && !RightIn) return;
 
@@ -181,11 +181,11 @@ namespace Tuto.Model2
             else if (LeftIn && !RightIn)
             {
                 //значит, только левая граница где-то недалеко. 
-                NewStart = interval.StartTime + Global.Settings.VoiceSettings.SilenceMargin;
+                NewStart = interval.StartTime + Videotheque.Settings.VoiceSettings.SilenceMargin;
             }
             else if (!LeftIn && RightIn)
             {
-                NewStart = interval.EndTime - Global.Settings.VoiceSettings.SilenceMargin;
+                NewStart = interval.EndTime - Videotheque.Settings.VoiceSettings.SilenceMargin;
             }
 
             //не вылезли за границы интервала при перемещении

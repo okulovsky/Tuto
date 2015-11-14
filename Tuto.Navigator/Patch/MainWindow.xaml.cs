@@ -60,7 +60,7 @@ namespace Tuto.Navigator
         public void PreparePatchPicker()
         {
             PatchPicker.Items.Clear();
-            foreach (var f in EModel.Global.Locations.PatchesFolder.GetFiles())
+            foreach (var f in EModel.Videotheque.Locations.PatchesFolder.GetFiles())
             {
                 var item = new ListViewItem();
                 item.Content = f.Name;

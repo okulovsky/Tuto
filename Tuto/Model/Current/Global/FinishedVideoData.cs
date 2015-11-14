@@ -57,8 +57,8 @@ namespace Tuto.Model
         {
             Name = model.Montage.Information.Episodes[episodeNumber].Name;
             Duration = model.Montage.Information.Episodes[episodeNumber].Duration;
-            RelativeFileLocation = model.Global.Locations.RelativeToGlobal(model.Locations.GetOutputFile(episodeNumber).FullName);
-            RelativeSourceFolderLocation = model.Global.Locations.RelativeToGlobal(model.Locations.LocalFilePath.Directory.FullName);
+            RelativeFileLocation = model.Videotheque.Locations.RelativeToGlobal(model.Locations.GetOutputFile(episodeNumber).FullName);
+            RelativeSourceFolderLocation = model.Videotheque.Locations.RelativeToGlobal(model.Locations.LocalFilePath.Directory.FullName);
             EpisodeNumber = episodeNumber;
             FullName = model.Locations.GetOutputFile(episodeNumber).FullName;
             PatchedName = model.Locations.GetSuffixedName(new FileInfo(FullName), "-patched").FullName;

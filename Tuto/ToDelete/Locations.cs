@@ -63,8 +63,8 @@ namespace Tuto.Model
         {
             get
             {
-                var relative=model.Global.Locations.RelativeTo(model.VideoFolder.FullName, model.Global.Locations.InputFolder.FullName);
-                var name = Path.Combine(model.Global.Locations.TemporalFolder.FullName,relative);
+                var relative=model.Videotheque.Locations.RelativeTo(model.VideoFolder.FullName, model.Videotheque.Locations.InputFolder.FullName);
+                var name = Path.Combine(model.Videotheque.Locations.TemporalFolder.FullName,relative);
                 return new DirectoryInfo(name);
             }
         }
@@ -73,8 +73,8 @@ namespace Tuto.Model
         {
             get
             {
-                var relative = model.Global.Locations.RelativeTo(model.VideoFolder.FullName, model.Global.Locations.InputFolder.FullName);
-                var name = Path.Combine(model.Global.Locations.PatchesFolder.FullName, relative);
+                var relative = model.Videotheque.Locations.RelativeTo(model.VideoFolder.FullName, model.Videotheque.Locations.InputFolder.FullName);
+                var name = Path.Combine(model.Videotheque.Locations.PatchesFolder.FullName, relative);
                 return new DirectoryInfo(name);
             }
         }

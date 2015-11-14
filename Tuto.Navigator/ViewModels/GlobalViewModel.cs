@@ -176,7 +176,7 @@ namespace Tuto.Navigator
             var work = Subdirectories.Where(z => z.Selected);
             var models = work.Select(x => EditorModelIO.Load(x.FullPath));
             var tasks = models.Select(x =>
-                new AssemblyVideoWork(x, x.Global.CrossFadesEnabled)).ToList();
+                new AssemblyVideoWork(x, x.Videotheque.CrossFadesEnabled)).ToList();
             queueWindow.Run(tasks);
 
         }

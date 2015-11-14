@@ -30,7 +30,6 @@ namespace Tuto.BatchWorks
             var progPath = Model.Locations.NoiseReductionFolder; //get program's folder for noicereduction utility.
             var ffExe = Model.Locations.FFmpegExecutable;
             var soxExe = Model.Locations.SoxExecutable;
-            var printMode = false;
             var loc = Model.Locations.FaceVideo;
             var temp = Model.Locations.TemporalDirectory;
 
