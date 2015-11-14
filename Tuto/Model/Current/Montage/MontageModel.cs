@@ -15,6 +15,11 @@ namespace Tuto.Model
     [DataContract]
     public partial class MontageModel
     {
+        [DataMember]
+        public string RawVideoHash { get; private set; }
+
+        public DateTime ModificationTime { get; set; }
+
         /// <summary>
         /// Tokens of the episode
         /// </summary>
@@ -59,8 +64,9 @@ namespace Tuto.Model
         [DataMember]
         public bool ReadyToEdit { get; set; }
 
-        public MontageModel(int totalLength)
+        public MontageModel(int totalLength, string filesHash = null)
         {
+            RawVideoHash = filesHash;
             Chunks = new StreamChunksArray(totalLength);
             Borders = new List<Border>();
             Information = new VideoInformation();

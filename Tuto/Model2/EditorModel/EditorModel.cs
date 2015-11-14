@@ -25,7 +25,7 @@ namespace Tuto.Model
 		{
 			get
 			{
-				var relative = Global.Locations.RelativeTo(RawLocation.FullName, Global.RawFolder.FullName);
+				var relative = MyPath.RelativeTo(RawLocation.FullName, Global.RawFolder.FullName);
 				var temp = Path.Combine(Global.TempFolder.FullName, relative);
 				var directory = new DirectoryInfo(temp);
 				if (!directory.Exists) directory.Create();
@@ -160,15 +160,15 @@ namespace Tuto.Model
             if (leftChunk.Mode== Mode.Undefined || rightChunk.Mode == Mode.Undefined) return;
 
             var interval = Montage.SoundIntervals
-                .Where(z => !z.HasVoice && z.DistanceTo(rightChunk.StartTime) < Global.VoiceSettings.MaxDistanceToSilence)
+                .Where(z => !z.HasVoice && z.DistanceTo(rightChunk.StartTime) < Global.Settings.VoiceSettings.MaxDistanceToSilence)
                 .FirstOrDefault();
             if (interval == null) return;
 
             var leftDistance = Math.Abs(interval.StartTime - rightChunk.StartTime);
             var rightDistance = Math.Abs(interval.EndTime - rightChunk.StartTime);
             var distance = interval.DistanceTo(rightChunk.StartTime);
-            bool LeftIn = leftDistance < Global.VoiceSettings.MaxDistanceToSilence;
-            bool RightIn = rightDistance < Global.VoiceSettings.MaxDistanceToSilence;
+            bool LeftIn = leftDistance < Global.Settings.VoiceSettings.MaxDistanceToSilence;
+            bool RightIn = rightDistance < Global.Settings.VoiceSettings.MaxDistanceToSilence;
 
             if (!LeftIn && !RightIn) return;
 
@@ -181,11 +181,11 @@ namespace Tuto.Model
             else if (LeftIn && !RightIn)
             {
                 //значит, только левая граница где-то недалеко. 
-                NewStart = interval.StartTime + Global.VoiceSettings.SilenceMargin;
+                NewStart = interval.StartTime + Global.Settings.VoiceSettings.SilenceMargin;
             }
             else if (!LeftIn && RightIn)
             {
-                NewStart = interval.EndTime - Global.VoiceSettings.SilenceMargin;
+                NewStart = interval.EndTime - Global.Settings.VoiceSettings.SilenceMargin;
             }
 
             //не вылезли за границы интервала при перемещении

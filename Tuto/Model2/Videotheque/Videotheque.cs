@@ -25,16 +25,11 @@ namespace Tuto.Model
 		public FileInfo VideothequeSettingsFile { get; private set;  }
 		public VideothequeLocations Locations { get; private set; }
 
-		Dictionary<DirectoryInfo, string> binaryHashes;
-		List<FileContainer> loadedContainer;
+		Dictionary<string,DirectoryInfo> binaryHashes;
+		List<Tuple<FileContainer,FileInfo>> loadedContainer;
+        List<NewEditorModel> models;
 
-		const string DefaultRawFolder = "Raw";
-		const string DefaultModelFolder = "Models";
-		const string DefaultOutputFolder = "Output";
-		const string DefaultTempFolder = "Temp";
-		const string FaceFileName = "face.mp4";
-		const string HashFileName = "hash";
-		const string ModelExtension = "mm";
+		
 
 		private Videotheque()
 		{
@@ -44,7 +39,7 @@ namespace Tuto.Model
 
 
 
-		public static Videotheque Load(string videothequeFileName, IVideuthequeLoadingUI ui)
+		public static Videotheque Load(string videothequeFileName, IVideothequeLoadingUI ui)
 		{
 			
 			Videotheque v = new Videotheque();
@@ -57,7 +52,8 @@ namespace Tuto.Model
 				v.CheckSubdirectories(ui);
 
 				v.LoadBinaryHashes(ui);
-				v.LoadModels(ui);
+				v.LoadContainers(ui);
+                v.CreateModels(ui);
 
 				ui.ExitSuccessfully();
 				return v;
@@ -71,7 +67,7 @@ namespace Tuto.Model
 		#region Checking procedures 
 		static T Check<T>(
 			T path, 
-			IVideuthequeLoadingUI ui,
+			IVideothequeLoadingUI ui,
 			Func<T,string> name, 
 			Func<T,bool> isOk,
 			Func<T> requestNew
@@ -94,7 +90,7 @@ namespace Tuto.Model
 			throw new LoadingException();
 		}
 
-		static FileInfo CheckFile(FileInfo file, IVideuthequeLoadingUI ui, string prompt, params VideothequeLoadingRequestItem[] requestItems)
+		static FileInfo CheckFile(FileInfo file, IVideothequeLoadingUI ui, string prompt, params VideothequeLoadingRequestItem[] requestItems)
 		{
 			return Check(file, ui, f => f.FullName, f => f!=null && File.Exists(f.FullName),
 				() =>
@@ -105,7 +101,7 @@ namespace Tuto.Model
 				});
 		}
 		
-		DirectoryInfo CheckFolder(DirectoryInfo dir, IVideuthequeLoadingUI ui, string prompt, params VideothequeLoadingRequestItem[] requestItems)
+		DirectoryInfo CheckFolder(DirectoryInfo dir, IVideothequeLoadingUI ui, string prompt, params VideothequeLoadingRequestItem[] requestItems)
 		{
 			return Check(dir, ui, d => d.FullName, d => d!=null && Directory.Exists(d.FullName),
 				() =>
@@ -117,7 +113,7 @@ namespace Tuto.Model
 		}
 
 
-		DirectoryInfo CheckVideothequeSubdirectory(string relativeLocation, string defaultName, IVideuthequeLoadingUI ui, string prompt)
+		DirectoryInfo CheckVideothequeSubdirectory(string relativeLocation, string defaultName, IVideothequeLoadingUI ui, string prompt)
 		{
 			DirectoryInfo dir = null;
 			if (relativeLocation != null)
@@ -144,7 +140,7 @@ namespace Tuto.Model
 		#endregion
 
 		#region Basic loading procedures
-		void LoadBuiltInSoftware(IVideuthequeLoadingUI ui)
+		void LoadBuiltInSoftware(IVideothequeLoadingUI ui)
         {
 			ProgramFolder = new FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).Directory;
 
@@ -164,7 +160,7 @@ namespace Tuto.Model
 			return finfo;
 		}
 		
-		void LoadExternalReferences(IVideuthequeLoadingUI ui)
+		void LoadExternalReferences(IVideothequeLoadingUI ui)
 		{
             //loading startup settings
 			CheckFile(Locations.StartupSettings, ui,
@@ -204,10 +200,10 @@ namespace Tuto.Model
 		{
 			var data = new VideothequeSettings();
 			var finfo = new FileInfo(location);
-			data.PathsSettings.RawPath = CreateDefaultFolder(finfo, DefaultRawFolder);
-			data.PathsSettings.ModelPath = CreateDefaultFolder(finfo, DefaultModelFolder);
-			data.PathsSettings.OutputPath = CreateDefaultFolder(finfo, DefaultOutputFolder);
-			data.PathsSettings.TempPath = CreateDefaultFolder(finfo, DefaultTempFolder);
+            data.PathsSettings.RawPath = CreateDefaultFolder(finfo, Names.DefaultRawFolder);
+            data.PathsSettings.ModelPath = CreateDefaultFolder(finfo, Names.DefaultModelFolder);
+            data.PathsSettings.OutputPath = CreateDefaultFolder(finfo, Names.DefaultOutputFolder);
+            data.PathsSettings.TempPath = CreateDefaultFolder(finfo, Names.DefaultTempFolder);
 
 			HeadedJsonFormat.Write(
 				finfo,
@@ -225,7 +221,7 @@ namespace Tuto.Model
 		{
 			var finfo = new FileInfo(location);
 			var data = new VideothequeSettings();
-			data.PathsSettings.TempPath = CreateDefaultFolder(finfo, DefaultTempFolder);
+            data.PathsSettings.TempPath = CreateDefaultFolder(finfo, Names.DefaultTempFolder);
 
 			HeadedJsonFormat.Write(
 				finfo,
@@ -233,7 +229,7 @@ namespace Tuto.Model
 			return finfo;
 		}
 
-		void LoadVideotheque(string videothequeFileName, IVideuthequeLoadingUI ui)
+		void LoadVideotheque(string videothequeFileName, IVideothequeLoadingUI ui)
 		{
 			var options = new List<VideothequeLoadingRequestItem>();
 			options.Add(new VideothequeLoadingRequestItem
@@ -272,14 +268,14 @@ namespace Tuto.Model
 			Settings = HeadedJsonFormat.Read<VideothequeSettings>(VideothequeSettingsFile);
 		}
 
-		void CheckSubdirectories(IVideuthequeLoadingUI ui)
+		void CheckSubdirectories(IVideothequeLoadingUI ui)
 		{
 			//hooray! videotheque is loaded! Checking Input, Output and other directories
 
-			RawFolder = CheckVideothequeSubdirectory(Settings.PathsSettings.RawPath, DefaultRawFolder, ui, "Can't locate the folder with the raw video files (ones you get from camera)");
-			ModelsFolder = CheckVideothequeSubdirectory(Settings.PathsSettings.ModelPath, DefaultModelFolder, ui, "Can't locate the folder where the markup (the result of your work) is stored)");
-			OutputFolder = CheckVideothequeSubdirectory(Settings.PathsSettings.OutputPath, DefaultOutputFolder, ui,  "Can't locate the folder with the output video will be stored");
-			RawFolder = CheckVideothequeSubdirectory(Settings.PathsSettings.TempPath, DefaultTempFolder, ui, "Can't locate the folder with the temporary files");
+            RawFolder = CheckVideothequeSubdirectory(Settings.PathsSettings.RawPath, Names.DefaultRawFolder, ui, "Can't locate the folder with the raw video files (ones you get from camera)");
+            ModelsFolder = CheckVideothequeSubdirectory(Settings.PathsSettings.ModelPath, Names.DefaultModelFolder, ui, "Can't locate the folder where the markup (the result of your work) is stored)");
+            OutputFolder = CheckVideothequeSubdirectory(Settings.PathsSettings.OutputPath, Names.DefaultOutputFolder, ui, "Can't locate the folder with the output video will be stored");
+            RawFolder = CheckVideothequeSubdirectory(Settings.PathsSettings.TempPath, Names.DefaultTempFolder, ui, "Can't locate the folder with the temporary files");
 
 		}
 		#endregion
@@ -295,7 +291,7 @@ namespace Tuto.Model
 			}
 		}
 
-		public static void ComputeHashesInRawSubdirectories(DirectoryInfo directory, string targetFileName, string hashFileName, bool recomputeAll, Dictionary<DirectoryInfo, string> hashes)
+		public static void ComputeHashesInRawSubdirectories(DirectoryInfo directory, string targetFileName, string hashFileName, bool recomputeAll, Dictionary<string, DirectoryInfo> hashes)
 		{
 			var files = directory.GetFiles();
 			if (files.Any(z => z.Name == targetFileName))
@@ -303,40 +299,70 @@ namespace Tuto.Model
 				if (!recomputeAll)
 					if (files.Any(z => z.Name == hashFileName))
 					{
-						hashes[directory] = File.ReadAllText(Path.Combine(directory.FullName, hashFileName));
+                        hashes[File.ReadAllText(Path.Combine(directory.FullName, hashFileName))] = directory;
 						return;
 					}
 				var hash = ComputeHash(new FileInfo(Path.Combine(directory.FullName, targetFileName)));
 				File.WriteAllText(Path.Combine(directory.FullName, hashFileName), hash);
-				hashes[directory] = hash;
+                hashes[hash] = directory;
 			}
 			else foreach (var d in directory.GetDirectories())
 					ComputeHashesInRawSubdirectories(d, targetFileName, hashFileName, recomputeAll, hashes);
 		}
 
-		void LoadBinaryHashes(IVideuthequeLoadingUI ui)
+		void LoadBinaryHashes(IVideothequeLoadingUI ui)
 		{
 			ui.StartPOSTWork("Indexing videofiles in " + RawFolder.FullName);
-			binaryHashes = new Dictionary<DirectoryInfo, string>();
-			ComputeHashesInRawSubdirectories(RawFolder, FaceFileName, HashFileName, false, binaryHashes);
+			binaryHashes = new Dictionary<string,DirectoryInfo>();
+            ComputeHashesInRawSubdirectories(RawFolder, Names.FaceFileName, Names.HashFileName, false, binaryHashes);
 			ui.CompletePOSTWork(true);
 		}
 
-		static void LoadModelsInSubdirectories(DirectoryInfo dir, List<FileContainer> list)
+		static void LoadContainers(DirectoryInfo dir, List<Tuple<FileContainer,FileInfo>> list)
 		{
-			foreach (var e in dir.GetFiles("*." + ModelExtension))
-				list.Add(HeadedJsonFormat.Read<FileContainer>(e));
+			foreach (var e in dir.GetFiles("*." + Names.ModelExtension))
+            {
+                var container = HeadedJsonFormat.Read<FileContainer>(e);
+                list.Add(Tuple.Create(container, e));
+            }
+				
 			foreach (var e in dir.GetDirectories())
-				LoadModelsInSubdirectories(e, list);
+				LoadContainers(e, list);
 		}
 
-		void LoadModels(IVideuthequeLoadingUI ui)
+		void LoadContainers(IVideothequeLoadingUI ui)
 		{
 			ui.StartPOSTWork("Loading models");
-			loadedContainer = new List<FileContainer>();
-			LoadModelsInSubdirectories(ModelsFolder, loadedContainer);
+            loadedContainer = new List<Tuple<FileContainer, FileInfo>>();
+			LoadContainers(ModelsFolder, loadedContainer);
 			ui.CompletePOSTWork(true);
 		}
+
+        void CreateModels(IVideothequeLoadingUI ui)
+        {
+            ui.StartPOSTWork("Creating models");
+            foreach(var e in loadedContainer)
+            {
+                var hash = e.Item1.MontageModel.RawVideoHash; 
+                if (hash == null) throw new Exception("No reference to video is specified in the model");
+                if (!binaryHashes.ContainsKey(hash)) throw new Exception("Wrong reference to video is specified in the model");
+                e.Item1.MontageModel.ModificationTime = e.Item2.LastWriteTime;
+                var model = new NewEditorModel(e.Item2, binaryHashes[hash], this, e.Item1.MontageModel, e.Item1.WindowState);
+                binaryHashes.Remove(hash);
+                models.Add(model);
+            }
+            foreach(var e in binaryHashes)
+            {
+                var path = MyPath.RelativeTo(e.Value.FullName,RawFolder.FullName);
+                path = MyPath.CreateHierarchicalName(path);
+                var finfo=new FileInfo(Path.Combine(ModelsFolder.FullName,path+"."+Names.ModelExtension));
+                var model = new NewEditorModel(finfo, e.Value, this, new MontageModel(360000, e.Key), new WindowState());
+                model.Montage.ModificationTime = DateTime.Now;
+                models.Add(model);
+            }
+            ui.CompletePOSTWork(true);
+        }
+
 
 
 		#endregion

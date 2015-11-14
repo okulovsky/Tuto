@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tuto.Model
 {
-	public interface IVideuthequeLoadingUI
+	public interface IVideothequeLoadingUI
 	{
 		void StartPOSTWork(string name);
 		void CompletePOSTWork(bool result);

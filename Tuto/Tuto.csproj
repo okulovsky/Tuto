@@ -116,7 +116,9 @@
     <Compile Include="AssemblerService.cs" />
     <Compile Include="Model2\EditorModel\EditorModel.cs" />
     <Compile Include="Model2\EditorModel\Locations.cs" />
-    <Compile Include="Model2\Videotheque\IVideuthequeLoadingUI.cs" />
+    <Compile Include="Model2\MyPath.cs" />
+    <Compile Include="Model2\Names.cs" />
+    <Compile Include="Model2\Videotheque\IVideothequeLoadingUI.cs" />
     <Compile Include="Model2\Videotheque\VideothequeLoadingRequestItem.cs" />
     <Compile Include="Model\Current\IO\GlobalUpdaters.cs" />
     <Compile Include="Model\Current\IO\LocalUpdaters.cs" />
@@ -201,9 +203,9 @@
     <Compile Include="BatchWorks\RepairVideoWork.cs" />
     <Compile Include="Model2\Videotheque\PathesSettings.cs" />
     <Compile Include="Model2\Videotheque\Videotheque.cs" />
-    <Compile Include="Model2\Data\VideothequeEnvironmentSettings.cs" />
-    <Compile Include="Model2\Data\VideothequeLocations.cs" />
-    <Compile Include="Model2\Data\VideothequeSettings.cs" />
+    <Compile Include="Model2\Videotheque\VideothequeEnvironmentSettings.cs" />
+    <Compile Include="Model2\Videotheque\VideothequeLocations.cs" />
+    <Compile Include="Model2\Videotheque\VideothequeSettings.cs" />
     <Compile Include="Model2\RecoveryPrompt.cs" />
     <Compile Include="Model2\SelfTestJob.cs" />
     <Compile Include="Model2\VideothequeInitializer.cs" />
@@ -226,7 +228,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Model2\Data\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

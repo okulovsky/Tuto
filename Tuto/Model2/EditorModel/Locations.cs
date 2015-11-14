@@ -37,8 +37,8 @@ namespace Tuto.Model
         
         
 
-        public FileInfo FaceVideo { get { return Make(model.RawLocation, FaceVideoFileName); } }
-        public FileInfo DesktopVideo { get { return Make(model.RawLocation, DesktopVideoFileName ); } }
+        public FileInfo FaceVideo { get { return Make(model.RawLocation, Names.FaceFileName); } }
+        public FileInfo DesktopVideo { get { return Make(model.RawLocation, Names.DesktopVideoFileName); } }
 
         public FileInfo FaceVideoThumb { get { return GetThumbName(FaceVideo); } }
         public FileInfo DesktopVideoThumb { get { return GetThumbName(DesktopVideo); } }
@@ -47,48 +47,35 @@ namespace Tuto.Model
         public FileInfo ConvertedDesktopVideo { get { return Make(model.TempFolder, "desktop-converted.avi"); } }
         
         public FileInfo PraatVoice { get { return Make(model.RawLocation, "voice.mp3"); } }
-        public FileInfo LocalFilePath { get { return Make(model.RawLocation, LocalFileName); } }
+        public FileInfo LocalFilePath { get { return model.ModelFileLocation; } }
 
  
         public DirectoryInfo PatchesDirectory
         {
             get
             {
-                var relative = model.Global.Locations.RelativeTo(model.RawLocation.FullName, model.Global.Locations.InputFolder.FullName);
-                var name = Path.Combine(model.Global.Locations.PatchesFolder.FullName, relative);
-                return new DirectoryInfo(name);
+                throw new NotImplementedException();
+                //var relative = model.Global.Locations.RelativeTo(model.RawLocation.FullName, model.Global.Locations.InputFolder.FullName);
+                //var name = Path.Combine(model.Global.Locations.PatchesFolder.FullName, relative);
+                //return new DirectoryInfo(name);
             }
         }
 
-        public FileInfo PraatOutput { get { return Make(model.VideoFolder, "praat.output"); } }
+        [Obsolete]
+        public FileInfo PraatOutput { get { return Make(model.TempFolder, "praat.output"); } }
 
        
 
-        public FileInfo IntroImage { get { return Make(model.VideoFolder, "intro.png"); } }
-        public FileInfo WatermarkImage { get { return Make(model.VideoFolder, "watermark.png"); } }
-
-        public const string LocalFileName = "local.tuto";
-        public const string GlobalFileName = "project.tuto";
-        public const string PublishingFileName = "publishing.tuto";
-        public const string FaceVideoFileName = "face.mp4";
-        public const string DesktopVideoFileName = "desktop.avi";
-        public const string TemporalFolderName = "chunks";
-        public const string OutputFolderName = "Output";
-        public const string InputFolderName = "Input";
-        public const string AllTemporaryFilesFolder = "Temp";
-        public const string ConvertedPatchFilesFolder = "Patches";
 
         public FileInfo GetOutputFile(int episodeNumber)
         {
-            if (!model.Locations.OutputDirectory.Exists)
-                model.Locations.OutputDirectory.Create();
+            var fname = MyPath.RelativeTo(model.RawLocation.FullName, model.Global.RawFolder.FullName);
+            fname = MyPath.CreateHierarchicalName(fname);
+            fname += episodeNumber + " " + model.Montage.Information.Episodes[episodeNumber].Name+".avi";
             var file = new FileInfo(
             Path.Combine(
-                    model.Locations.OutputDirectory.FullName,
-                    string.Format("{0}-{1} {2}.avi",
-                        model.VideoFolder.Name,
-                        episodeNumber,
-                        model.Montage.Information.Episodes[episodeNumber].Name)));
+                   model.Global.OutputFolder.FullName,
+                   fname));
             return file;
         }
 

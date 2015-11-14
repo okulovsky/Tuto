@@ -20,7 +20,7 @@ namespace Tuto.Init
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
 	/// </summary>
-	public partial class MainWindow : Window, IVideuthequeLoadingUI
+	public partial class MainWindow : Window, IVideothequeLoadingUI
 	{
 		public MainWindow()
 		{
