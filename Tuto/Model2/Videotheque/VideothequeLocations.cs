@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace Tuto.Model
+namespace Tuto.Model2
 {
     public class VideothequeLocations
     {

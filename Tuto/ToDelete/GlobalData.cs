@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Tuto.Model
 {
     [DataContract]
-    public class GlobalData
+    public class Videotheque
     {
 		public const string VideoListName = "VideoSummaries.txt";
 
@@ -78,7 +78,7 @@ namespace Tuto.Model
             Locations = new GlobalLocations(this);
         }
 
-        public GlobalData()
+        public Videotheque()
         {
             VoiceSettings = new VoiceSettings();
             TopicsRoot = new Topic();

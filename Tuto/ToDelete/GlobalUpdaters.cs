@@ -9,9 +9,9 @@ namespace Tuto.Model
 {
     public static partial class EditorModelIO
     {
-        static GlobalData UpdateGlobalV0(FileInfo file, string text)
+        static Videotheque UpdateGlobalV0(FileInfo file, string text)
         {
-            var globalData = HeadedJsonFormat.ReadWithoutHeader<GlobalData>(text);
+            var globalData = HeadedJsonFormat.ReadWithoutHeader<Videotheque>(text);
             globalData.TopicsRoot = new Topic();
             globalData.TopicLevels = new List<TopicLevel>();
             globalData.VideoData = new List<FinishedVideo>();

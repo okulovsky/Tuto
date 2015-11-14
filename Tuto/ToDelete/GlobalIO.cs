@@ -13,12 +13,12 @@ namespace Tuto.Model
         const string GlobalHeader = "Tuto project file";
         const int GlobalVersion = 1;
 
-        public static GlobalData ReadGlobalData(DirectoryInfo rootFolder)
+        public static Videotheque ReadGlobalData(DirectoryInfo rootFolder)
         {
             var file = rootFolder.GetFiles(Locations.GlobalFileName).FirstOrDefault();
             if (file == null)
-                return new GlobalData { GlobalDataFolder = rootFolder };
-            var data = HeadedJsonFormat.Read<GlobalData>(file, GlobalHeader,GlobalVersion, UpdateGlobalV0 );
+                return new Videotheque { GlobalDataFolder = rootFolder };
+            var data = HeadedJsonFormat.Read<Videotheque>(file, GlobalHeader,GlobalVersion, UpdateGlobalV0 );
             if (data.VideoData == null) data.VideoData = new List<FinishedVideo>();
             if (data.TopicsRoot == null) data.TopicsRoot = new Topic();
             if (data.WorkSettings == null) data.WorkSettings = new WorkSettings();
@@ -26,9 +26,9 @@ namespace Tuto.Model
             return data;
         }
 
-        public static void Save(GlobalData data)
+        public static void Save(Videotheque data)
         {
-            HeadedJsonFormat.Write<GlobalData>(data.Locations.ProjectFile, "Tuto project file", GlobalVersion, data);
+            HeadedJsonFormat.Write<Videotheque>(data.Locations.ProjectFile, "Tuto project file", GlobalVersion, data);
         }
 
         public static IEnumerable<DirectoryInfo> GetAllSubdirectoriesIncludingRoot(DirectoryInfo root)

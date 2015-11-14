@@ -8,10 +8,10 @@ namespace Tuto.Model
 {
     public class AllProjectData
     {
-        public GlobalData Global { get; private set; }
+        public Videotheque Global { get; private set; }
         public List<EditorModel> Models { get; private set; }
 
-        public AllProjectData(GlobalData global)
+        public AllProjectData(Videotheque global)
         {
             Global = global;
             Models = new List<EditorModel>();

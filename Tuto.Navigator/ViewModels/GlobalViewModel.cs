@@ -151,7 +151,7 @@ namespace Tuto.Navigator
 				var file = new FileInfo(Path.Combine(
 					GlobalData.GlobalDataFolder.FullName,
 					GlobalData.RelativeVideoListPath,
-					Tuto.Model.GlobalData.VideoListName));
+					Tuto.Model.Videotheque.VideoListName));
 				List<VideoPublishSummary> currentList = new List<VideoPublishSummary>();
 				if (file.Exists)
 					currentList = HeadedJsonFormat.Read<List<VideoPublishSummary>>(file);
@@ -226,7 +226,7 @@ namespace Tuto.Navigator
             }
         }
 
-        public GlobalData GlobalData {
+        public Videotheque GlobalData {
             get { return globalData; }
             private set
             {
@@ -267,7 +267,7 @@ namespace Tuto.Navigator
         #endregion
 
         private FileInfo loadedFile;
-        private GlobalData globalData;
+        private Videotheque globalData;
         private ObservableCollection<SubfolderViewModel> subdirectories;
         private PublishViewModel publish;
         //private FileSystemWatcher watcher;

@@ -21,13 +21,13 @@ namespace Tuto.Navigator
         public TopicWrap[] Root { get; private set; }
         public ObservableCollection<VideoWrap> UnassignedVideos { get; private set; }
         public ObservableCollection<TopicLevel> Levels { get; private set; }
-        public GlobalData GlobalData { get; private set; }
+        public Videotheque GlobalData { get; private set; }
         public Wrap SelectedItem { get; set; }
         public VideoWrap SelectedItemInUnassignedList { get; set; }
         private List<EditorModel> Models { get; set; }
         private Action Save { get; set; }
 
-        public PublishViewModel(GlobalData globalData, List<EditorModel> models, Action save)
+        public PublishViewModel(Videotheque globalData, List<EditorModel> models, Action save)
         {
             Levels = new ObservableCollection<TopicLevel>();
             Models = models;

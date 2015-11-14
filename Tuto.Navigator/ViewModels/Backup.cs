@@ -9,7 +9,7 @@ namespace Tuto.Navigator.ViewModels
 {
     class Backup
     {
-        public static string CreateBackup(GlobalData global, List<EditorModel> models)
+        public static string CreateBackup(Videotheque global, List<EditorModel> models)
         {
             var glob=global.GlobalDataFolder.FullName;
             var builder = new StringBuilder();

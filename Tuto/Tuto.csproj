@@ -120,19 +120,19 @@
     <Compile Include="Model2\Names.cs" />
     <Compile Include="Model2\Videotheque\IVideothequeLoadingUI.cs" />
     <Compile Include="Model2\Videotheque\VideothequeLoadingRequestItem.cs" />
-    <Compile Include="Model\Current\IO\GlobalUpdaters.cs" />
-    <Compile Include="Model\Current\IO\LocalUpdaters.cs" />
-    <Compile Include="Model\Current\IO\Miscellanous.cs" />
+    <Compile Include="ToDelete\GlobalUpdaters.cs" />
+    <Compile Include="ToDelete\LocalUpdaters.cs" />
+    <Compile Include="ToDelete\Miscellanous.cs" />
     <Compile Include="Model\Current\FileContainer.cs" />
     <Compile Include="Model\Current\AllProjectData.cs" />
-    <Compile Include="Model\Current\Global\GlobalData.cs" />
+    <Compile Include="ToDelete\GlobalData.cs" />
     <Compile Include="Model\Current\Global\FinishedVideoData.cs" />
     <Compile Include="Model\Current\Global\Locations.cs" />
     <Compile Include="Model\Current\Global\Topic.cs" />
     <Compile Include="Model\Current\Global\TopicLevel.cs" />
     <Compile Include="Model\Current\Global\VoiceSettings.cs" />
-    <Compile Include="Model\Current\IO\GlobalIO.cs" />
-    <Compile Include="Model\Current\IO\LocalIO.cs" />
+    <Compile Include="ToDelete\GlobalIO.cs" />
+    <Compile Include="ToDelete\LocalIO.cs" />
     <Compile Include="Model\Current\Montage\BorderListExtensions.cs" />
     <Compile Include="Model\Current\Montage\SubtitleFix.cs" />
     <Compile Include="Model\Current\WorkSettings.cs" />
@@ -141,8 +141,8 @@
     <Compile Include="Model\Current\WindowState\WindowState.cs" />
     <Compile Include="Model\HeadedJsonFormat.cs" />
     <Compile Include="Model\NotifierModel.cs" />
-    <Compile Include="Model\Current\Locations.cs" />
-    <Compile Include="Model\Current\EditorModel.cs" />
+    <Compile Include="ToDelete\Locations.cs" />
+    <Compile Include="ToDelete\EditorModel.cs" />
     <Compile Include="Model\Current\Montage\EpisodInfo.cs" />
     <Compile Include="Model\Current\Montage\MontageModel.cs" />
     <Compile Include="Model\Current\Montage\Further Refactoring\StreamChunk.cs" />
@@ -206,9 +206,6 @@
     <Compile Include="Model2\Videotheque\VideothequeEnvironmentSettings.cs" />
     <Compile Include="Model2\Videotheque\VideothequeLocations.cs" />
     <Compile Include="Model2\Videotheque\VideothequeSettings.cs" />
-    <Compile Include="Model2\RecoveryPrompt.cs" />
-    <Compile Include="Model2\SelfTestJob.cs" />
-    <Compile Include="Model2\VideothequeInitializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

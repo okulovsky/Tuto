@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tuto.Model;
+using Tuto.Model2;
 
 namespace Tuto.Init
 {

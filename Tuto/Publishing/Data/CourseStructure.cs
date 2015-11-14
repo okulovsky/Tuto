@@ -52,7 +52,7 @@ namespace Tuto.Publishing
 		{
 			var result = new CourseTreeData();
 			result.Videos = HeadedJsonFormat.Read<List<VideoPublishSummary>>(
-				new FileInfo(Path.Combine(directory.FullName, GlobalData.VideoListName)));
+				new FileInfo(Path.Combine(directory.FullName, Videotheque.VideoListName)));
 			result.Structure = HeadedJsonFormat.Read<CourseStructure>(directory);
 			result.Directory=directory;
 			return result;
@@ -61,7 +61,7 @@ namespace Tuto.Publishing
 		public void Save()
 		{
 			HeadedJsonFormat.Write(
-				new FileInfo(Path.Combine(Directory.FullName, GlobalData.VideoListName)),
+				new FileInfo(Path.Combine(Directory.FullName, Videotheque.VideoListName)),
 				Videos);
 			HeadedJsonFormat.Write(Directory, Structure);
 

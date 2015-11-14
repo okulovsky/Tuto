@@ -9,8 +9,8 @@ namespace Tuto.Model
 {
     public class GlobalLocations
     {
-        GlobalData data;
-        public GlobalLocations(GlobalData data)
+        Videotheque data;
+        public GlobalLocations(Videotheque data)
         {
             this.data = data;
         }

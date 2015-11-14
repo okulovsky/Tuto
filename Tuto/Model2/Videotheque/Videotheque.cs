@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Tuto.Model;
 
-namespace Tuto.Model
+namespace Tuto.Model2
 {
 
 	public class LoadingException : Exception { }
@@ -27,7 +27,7 @@ namespace Tuto.Model
 
 		Dictionary<string,DirectoryInfo> binaryHashes;
 		List<Tuple<FileContainer,FileInfo>> loadedContainer;
-        List<NewEditorModel> models;
+        List<EditorModel> models;
 
 		
 
@@ -347,7 +347,7 @@ namespace Tuto.Model
                 if (hash == null) throw new Exception("No reference to video is specified in the model");
                 if (!binaryHashes.ContainsKey(hash)) throw new Exception("Wrong reference to video is specified in the model");
                 e.Item1.MontageModel.ModificationTime = e.Item2.LastWriteTime;
-                var model = new NewEditorModel(e.Item2, binaryHashes[hash], this, e.Item1.MontageModel, e.Item1.WindowState);
+                var model = new EditorModel(e.Item2, binaryHashes[hash], this, e.Item1.MontageModel, e.Item1.WindowState);
                 binaryHashes.Remove(hash);
                 models.Add(model);
             }
@@ -356,7 +356,7 @@ namespace Tuto.Model
                 var path = MyPath.RelativeTo(e.Value.FullName,RawFolder.FullName);
                 path = MyPath.CreateHierarchicalName(path);
                 var finfo=new FileInfo(Path.Combine(ModelsFolder.FullName,path+"."+Names.ModelExtension));
-                var model = new NewEditorModel(finfo, e.Value, this, new MontageModel(360000, e.Key), new WindowState());
+                var model = new EditorModel(finfo, e.Value, this, new MontageModel(360000, e.Key), new WindowState());
                 model.Montage.ModificationTime = DateTime.Now;
                 models.Add(model);
             }

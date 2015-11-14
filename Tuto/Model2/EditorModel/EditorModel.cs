@@ -9,13 +9,13 @@ using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
 using Tuto.TutoServices.Assembler;
+using Tuto.Model;
 
-
-namespace Tuto.Model
+namespace Tuto.Model2
 {
-    public class NewEditorModel
+    public class EditorModel
     {
-		public readonly NewLocations Locations;
+		public readonly Locations Locations;
         public readonly Videotheque Global;
 		public readonly MontageModel Montage;
 		public readonly WindowState WindowState;
@@ -48,7 +48,7 @@ namespace Tuto.Model
         }
 
 
-		public NewEditorModel(
+		public EditorModel(
 			FileInfo model,
 			DirectoryInfo raw, 
 			Videotheque videotheque,
@@ -60,7 +60,7 @@ namespace Tuto.Model
 			Global = videotheque;
 			RawLocation = raw;
 			ModelFileLocation = model;
-			Locations = new NewLocations(this);
+			Locations = new Locations(this);
         }
 
 

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tuto.Model
+namespace Tuto.Model2
 {
 	public enum VideothequeLoadingRequestItemType
 	{

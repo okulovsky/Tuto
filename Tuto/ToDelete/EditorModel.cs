@@ -28,7 +28,7 @@ namespace Tuto.Model
         public DirectoryInfo TempFolder { get { return Locations.TemporalDirectory; } }
 
         public Locations Locations { get; private set; }
-        public GlobalData Global { get; set; }
+        public Videotheque Global { get; set; }
         public MontageModel Montage { get; set; }
         public WindowState WindowState { get; set; }
 
@@ -55,7 +55,7 @@ namespace Tuto.Model
             Montage = new MontageModel(360000);
             Locations = new Locations(this);
             WindowState = new WindowState();
-            Global = new GlobalData();
+            Global = new Videotheque();
             Global.WorkSettings = new WorkSettings();
         }
 

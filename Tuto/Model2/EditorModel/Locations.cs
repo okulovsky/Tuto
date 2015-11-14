@@ -4,13 +4,14 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tuto.Model;
 
-namespace Tuto.Model
+namespace Tuto.Model2
 {
-    public class NewLocations
+    public class Locations
     {
-        readonly NewEditorModel model;
-		internal NewLocations(NewEditorModel model) { this.model = model; }
+        readonly EditorModel model;
+		internal Locations(EditorModel model) { this.model = model; }
 
         internal FileInfo Make(DirectoryInfo info, string fname)
         {

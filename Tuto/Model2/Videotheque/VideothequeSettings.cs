@@ -4,8 +4,9 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using Tuto.Model;
 
-namespace Tuto.Model
+namespace Tuto.Model2
 {
     [DataContract]
     public class VideothequeSettings
