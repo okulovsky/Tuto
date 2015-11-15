@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using Tuto.TutoServices.Assembler;
 using Tuto.Model;
 
-namespace Tuto.Model2
+namespace Tuto.Model
 {
     public class EditorModel
     {

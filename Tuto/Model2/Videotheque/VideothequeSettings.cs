@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Tuto.Model;
 
-namespace Tuto.Model2
+namespace Tuto.Model
 {
     [DataContract]
     public class VideothequeSettings

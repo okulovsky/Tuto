@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tuto.Model2
+namespace Tuto.Model
 {
 	public interface IVideothequeLoadingUI
 	{

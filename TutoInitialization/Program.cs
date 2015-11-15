@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using Tuto.Model2;
+using Tuto.Model;
 
 namespace Tuto.Init
 {

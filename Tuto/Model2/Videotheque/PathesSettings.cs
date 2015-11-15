@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tuto.Model2
+namespace Tuto.Model
 {
     [DataContract]
     public class PathsSettings
