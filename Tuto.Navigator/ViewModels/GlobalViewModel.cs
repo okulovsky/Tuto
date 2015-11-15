@@ -20,16 +20,19 @@ namespace Tuto.Navigator
 {
     public class GlobalViewModel: NotifierModel
     {
-        public GlobalViewModel()
+       
+        public GlobalViewModel(Videotheque videotheque)
         {
 
+            this.globalData = videotheque;
+            UpdateSubdirectories();
             //NewCommand = new RelayCommand(New);
             //OpenCommand = new RelayCommand(Open);
             //CloseCommand = new RelayCommand(Close, () => IsLoaded);
 
             PreWorks = new AssemblySettings();
             SaveCommand = new RelayCommand(Save, () => IsLoaded);
-            RefreshCommand = new RelayCommand(ReadSubdirectories, () => IsLoaded);
+            RefreshCommand = new RelayCommand(() => { globalData.Reload(); UpdateSubdirectories(); }, () => IsLoaded);
 
 
             Func<bool> somethingSelected=() => 
@@ -40,14 +43,26 @@ namespace Tuto.Navigator
             AssembleSelectedWithOptionsCommand = new RelayCommand(AssembleWithOptions, somethingSelected);
             RemontageSelectedCommand = new RelayCommand(MontageSelected, somethingSelected);
 			RepairFaceSelectedCommand = new RelayCommand(RepairFaceSelected, somethingSelected);				 
-            CreateBackupCommand = new RelayCommand(CreateBackup);
+            
             UploadSelectedClipsCommand = new RelayCommand(UploadClips);
+        }
+
+        void UpdateSubdirectories()
+        {
+            Subdirectories = new ObservableCollection<SubfolderViewModel>();
+            foreach (var e in globalData.EditorModels)
+            {
+                var m = new SubfolderViewModel(e);
+                Subdirectories.Add(m);
+            }
+            Publish = new PublishViewModel(globalData, models, () => { globalData.Save(); });
+            FillQueue();
         }
 
         public void AssembleWithOptions()
         {
             var work = Subdirectories.Where(z => z.Selected);
-            var models = work.Select(x => EditorModelIO.Load(x.FullPath));
+            var models = work.Select(x => x.Model);
             var tasks = new List<BatchWork>();
             foreach (var m in models)
             {
@@ -62,62 +77,24 @@ namespace Tuto.Navigator
 
         }
 
-        public void Load(FileInfo file)
-        {
-            if (IsLoaded)
-            {
-                // save and close current
-                //SaveCommand.Execute(null);
-                //CloseCommand.Execute(null);
-            }
-
-            LoadedFile = file;
-            ReadSubdirectories();
-        }
 
         List<EditorModel> models { get; set; }
         public BatchWorkWindow queueWindow = new BatchWorkWindow();
 
-        public void ReadSubdirectories()
-        {
-            var data=EditorModelIO.ReadAllProjectData(LoadedFile.Directory);
-
-            //for older version
-            if (data.Global.WorkSettings == null)
-            {
-                data.Global.WorkSettings = new WorkSettings();
-            }
-
-            this.globalData=data.Global;
-            models = new List<EditorModel>();
-            foreach (var m in data.Models)
-            {
-                models.Add(m);
-            }
-            Subdirectories = new ObservableCollection<SubfolderViewModel>();
-            foreach (var e in data.Models)
-            {
-                var m = new SubfolderViewModel(e);
-                Subdirectories.Add(m);
-            }
-            Publish = new PublishViewModel(globalData, models, () => { EditorModelIO.Save(GlobalData); });
-            FillQueue(data);
-        }
 
         
-        void FillQueue(AllProjectData data)
+        void FillQueue()
         {
             var tasks = new List<BatchWork>();
-            for (var i = 0; i < data.Models.Count; i++)
+            foreach(var m in Subdirectories)
             {
                 var works = new List<BatchWork>();
-                var e = data.Models[i];
-                var m = Subdirectories[i];
+                var e = m.Model;
                 if (!e.Locations.PraatVoice.Exists)
                 {
                     works.Add(new PraatWork(e));
                 }
-                works.AddRange(data.Global.WorkSettings.GetBeforeEditingWorks(e));
+                works.AddRange(globalData.Settings.WorkSettings.GetBeforeEditingWorks(e));
                 if (works.Count() != 0)
                 {
                     var t = works.Last();
@@ -135,46 +112,43 @@ namespace Tuto.Navigator
 
         }
 
-        void CreateBackup()
-        {
-            File.WriteAllText(
-                Path.Combine(globalData.GlobalDataFolder.FullName, "backup.bat"),
-                Backup.CreateBackup(globalData, models));
-        }
+
 
         public void Save()
         {
-            Publish.Commit();
-            EditorModelIO.Save(GlobalData);
-			if (GlobalData.RelativeVideoListPath!=null)
-			{
-				var file = new FileInfo(Path.Combine(
-					GlobalData.GlobalDataFolder.FullName,
-					GlobalData.RelativeVideoListPath,
-					Tuto.Model.Videotheque.VideoListName));
-				List<VideoPublishSummary> currentList = new List<VideoPublishSummary>();
-				if (file.Exists)
-					currentList = HeadedJsonFormat.Read<List<VideoPublishSummary>>(file);
+            GlobalData.Save();
 
-				foreach (var e in models)
-					for (int i = 0; i < e.Montage.Information.Episodes.Count; i++)
-					{
-						var alreadySaved = currentList.Where(z => z.Guid == e.Montage.Information.Episodes[i].Guid).FirstOrDefault();
-						if (alreadySaved != null) currentList.Remove(alreadySaved);
-						var fv = new FinishedVideo(e, i);
-						var pv = new VideoPublishSummary { Guid = fv.Guid, Name = fv.Name, Duration = fv.Duration };
-						pv.OrdinalSuffix = fv.RelativeSourceFolderLocation + "-" + fv.EpisodeNumber;
-						currentList.Add(pv);
-					}
+            //Publish.Commit();
+            //GlobalData.Save();
+            //if (GlobalData.RelativeVideoListPath!=null)
+            //{
+            //    var file = new FileInfo(Path.Combine(
+            //        GlobalData.GlobalDataFolder.FullName,
+            //        GlobalData.RelativeVideoListPath,
+            //        Tuto.Model.Videotheque.VideoListName));
+            //    List<VideoPublishSummary> currentList = new List<VideoPublishSummary>();
+            //    if (file.Exists)
+            //        currentList = HeadedJsonFormat.Read<List<VideoPublishSummary>>(file);
 
-				HeadedJsonFormat.Write(file, currentList);
-			}
+            //    foreach (var e in models)
+            //        for (int i = 0; i < e.Montage.Information.Episodes.Count; i++)
+            //        {
+            //            var alreadySaved = currentList.Where(z => z.Guid == e.Montage.Information.Episodes[i].Guid).FirstOrDefault();
+            //            if (alreadySaved != null) currentList.Remove(alreadySaved);
+            //            var fv = new FinishedVideo(e, i);
+            //            var pv = new VideoPublishSummary { Guid = fv.Guid, Name = fv.Name, Duration = fv.Duration };
+            //            pv.OrdinalSuffix = fv.RelativeSourceFolderLocation + "-" + fv.EpisodeNumber;
+            //            currentList.Add(pv);
+            //        }
+
+            //    HeadedJsonFormat.Write(file, currentList);
+            //}
         }
 
         void Run(bool forceMontage)
         {
             var work = Subdirectories.Where(z => z.Selected);
-            var models = work.Select(x => EditorModelIO.Load(x.FullPath));
+            var models = work.Select(x => x.Model);
             var tasks = models.Select(x =>
                 new AssemblyVideoWork(x, x.Videotheque.CrossFadesEnabled)).ToList();
             queueWindow.Run(tasks);
@@ -194,7 +168,7 @@ namespace Tuto.Navigator
 		public void RepairFaceSelected()
 		{
             var work = Subdirectories.Where(z => z.Selected);
-            var models = work.Select(x => EditorModelIO.Load(x.FullPath));
+            var models = work.Select(x => x.Model);
             var tasks = models.Select(x =>
                 new RepairVideoWork(x, x.Locations.FaceVideo, true)).ToList();
             queueWindow.Run(tasks);

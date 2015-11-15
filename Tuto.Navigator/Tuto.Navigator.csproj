@@ -167,6 +167,13 @@
       <DependentUpon>MainEditorWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="GlobalFileContainer.cs" />
+    <Compile Include="Initialization\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Initialization\RequestItemControl.xaml.cs">
+      <DependentUpon>RequestItemControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Initialization\VideothequeRequestViewModel.cs" />
     <Compile Include="Patch\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -213,6 +220,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="EditorWindows\MainEditorWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Initialization\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Initialization\RequestItemControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -289,10 +304,18 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="ClassDiagram1.cd" />
-    <None Include="NoiseReduction\make.bat" />
-    <None Include="NoiseReduction\noise" />
-    <None Include="NoiseReduction\nr.conf" />
-    <None Include="NoiseReduction\_temp.csv" />
+    <None Include="NoiseReduction\make.bat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="NoiseReduction\noise">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="NoiseReduction\nr.conf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="NoiseReduction\_temp.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -313,12 +336,24 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="NoiseReduction\cleared.mp3" />
-    <Content Include="NoiseReduction\gni.exe" />
-    <Content Include="NoiseReduction\gnp.exe" />
-    <Content Include="NoiseReduction\nr.exe" />
-    <Content Include="NoiseReduction\sample.wav" />
-    <Content Include="NoiseReduction\voice.mp3" />
+    <Content Include="NoiseReduction\cleared.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="NoiseReduction\gni.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="NoiseReduction\gnp.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="NoiseReduction\nr.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="NoiseReduction\sample.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="NoiseReduction\voice.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">

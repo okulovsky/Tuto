@@ -27,6 +27,7 @@ namespace Tuto.Model
 		public VideothequeLocations Locations { get; private set; }
 
 
+        #region Всякая старая дичь
         [Obsolete]
         public VoiceSettings VoiceSettings { get { return Settings.VoiceSettings; } }
         [Obsolete]
@@ -35,6 +36,20 @@ namespace Tuto.Model
         public bool ShowProcesses { get; set; }
         [Obsolete]
         public const string VideoListName = "VideoSummaries.txt";
+        [Obsolete]
+        public List<FinishedVideo> VideoData { get; set; }
+        [Obsolete]
+        public Topic TopicsRoot { get; set; }
+        [Obsolete]
+        public List<TopicLevel> TopicLevels { get; internal set; }
+        [Obsolete]
+        public bool CrossFadesEnabled { get; set; }
+        #endregion
+
+        public void Save()
+        {
+            throw new NotImplementedException();
+        }
 
         Dictionary<string,DirectoryInfo> binaryHashes;
 		List<Tuple<FileContainer,FileInfo>> loadedContainer;
@@ -48,7 +63,12 @@ namespace Tuto.Model
 		}
 
 
-
+        public void Reload()
+        {
+            LoadBinaryHashes(null);
+            LoadContainers(null);
+            CreateModels(null);
+        }
 
 		public static Videotheque Load(string videothequeFileName, IVideothequeLoadingUI ui)
 		{
@@ -323,10 +343,10 @@ namespace Tuto.Model
 
 		void LoadBinaryHashes(IVideothequeLoadingUI ui)
 		{
-			ui.StartPOSTWork("Indexing videofiles in " + RawFolder.FullName);
+            if (ui!=null) ui.StartPOSTWork("Indexing videofiles in " + RawFolder.FullName);
 			binaryHashes = new Dictionary<string,DirectoryInfo>();
             ComputeHashesInRawSubdirectories(RawFolder, Names.FaceFileName, Names.HashFileName, false, binaryHashes);
-			ui.CompletePOSTWork(true);
+            if (ui != null) ui.CompletePOSTWork(true);
 		}
 
 		static void LoadContainers(DirectoryInfo dir, List<Tuple<FileContainer,FileInfo>> list)
@@ -343,15 +363,15 @@ namespace Tuto.Model
 
 		void LoadContainers(IVideothequeLoadingUI ui)
 		{
-			ui.StartPOSTWork("Loading models");
+            if (ui != null) ui.StartPOSTWork("Loading models");
             loadedContainer = new List<Tuple<FileContainer, FileInfo>>();
 			LoadContainers(ModelsFolder, loadedContainer);
-			ui.CompletePOSTWork(true);
+            if (ui != null) ui.CompletePOSTWork(true);
 		}
 
         void CreateModels(IVideothequeLoadingUI ui)
         {
-            ui.StartPOSTWork("Creating models");
+            if (ui != null) ui.StartPOSTWork("Creating models");
             models = new List<EditorModel>();
             foreach(var e in loadedContainer)
             {
@@ -372,7 +392,7 @@ namespace Tuto.Model
                 model.Montage.ModificationTime = DateTime.Now;
                 models.Add(model);
             }
-            ui.CompletePOSTWork(true);
+            if (ui != null) ui.CompletePOSTWork(true);
         }
 
 

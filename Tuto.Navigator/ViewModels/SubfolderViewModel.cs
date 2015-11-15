@@ -16,7 +16,7 @@ namespace Tuto.Navigator
 
     public class SubfolderViewModel : INotifyPropertyChanged
     {
-        private EditorModel model { get; set; }
+        public EditorModel Model { get; private set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged(string propertyName)
@@ -27,7 +27,7 @@ namespace Tuto.Navigator
 
         public SubfolderViewModel(EditorModel model)
         {
-            this.model = model;
+            this.Model = model;
             StartEditorCommand = new RelayCommand(StartEditor);
             ResetMontageCommand = new RelayCommand(ResetMontage);
             OpenFolderCommand = new RelayCommand(OpenFolder);
@@ -71,10 +71,8 @@ namespace Tuto.Navigator
 
         public void StartEditor()
         {
-
-            var model = EditorModelIO.Load(EditorModelIO.SubstituteDebugDirectories(FullPath));
             var window = new MainEditorWindow();
-            window.DataContext = model;
+            window.DataContext = Model;
             window.Show();
         }
 
@@ -84,9 +82,8 @@ namespace Tuto.Navigator
         {
             var ok = MessageBox.Show("This action only makes sense if you corrected an internal error in Tuto. Have you done it?", "Tuto.Navigator", MessageBoxButtons.YesNoCancel);
             if (ok != DialogResult.Yes) return;
-            var model = EditorModelIO.Load(FullPath);
-            model.Montage.ReadyToEdit = false;
-            EditorModelIO.Save(model);
+            Model.Montage.ReadyToEdit = false;
+            Model.Save();
         }
 
         public RelayCommand ResetMontageCommand { get; private set; }

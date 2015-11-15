@@ -16,8 +16,14 @@ namespace Tuto.Navigator
         [STAThread]
         public static void Main(string[] args)
         {
+            var wnd = new Tuto.Init.MainWindow();
+            Func<Videotheque> start = () => Videotheque.Load(null, wnd);
+            var token = start.BeginInvoke(null, null);
+            new Application().Run(wnd);
+            var videotheque = start.EndInvoke(token);
+
             var mainWindow = new MainNavigatorWindow();
-            var globalModel = new GlobalViewModel();
+            var globalModel = new GlobalViewModel(videotheque);
             BatchWorkQueueWindow = globalModel.queueWindow;
             mainWindow.DataContext = globalModel;
             mainWindow.WindowState = System.Windows.WindowState.Maximized;
@@ -28,9 +34,7 @@ namespace Tuto.Navigator
 				directoryName = new FileInfo(args[0]).Directory.FullName;
 			}
 			
-			var path = EditorModelIO.SubstituteDebugDirectories(directoryName);
-            var file = System.IO.Path.Combine(path,"Project.tuto");
-            globalModel.Load(new FileInfo(file));
+	
 
             new Application().Run(mainWindow);
         }
