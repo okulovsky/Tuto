@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Shapes;
 using Tuto.Model;
 using Editor;
+using System.Threading;
 
 namespace Tuto.Navigator
 {
@@ -16,10 +17,12 @@ namespace Tuto.Navigator
         [STAThread]
         public static void Main(string[] args)
         {
+            var application = new Application();
+            application.ShutdownMode = ShutdownMode.OnExplicitShutdown;                 
             var wnd = new Tuto.Init.MainWindow();
             Func<Videotheque> start = () => Videotheque.Load(null, wnd);
             var token = start.BeginInvoke(null, null);
-            new Application().Run(wnd);
+            wnd.Show();
             var videotheque = start.EndInvoke(token);
 
             var mainWindow = new MainNavigatorWindow();
@@ -33,10 +36,9 @@ namespace Tuto.Navigator
 			{
 				directoryName = new FileInfo(args[0]).Directory.FullName;
 			}
-			
-	
 
-            new Application().Run(mainWindow);
+            application.Run(mainWindow);
+            application.Shutdown();
         }
 
         public static string MontageFile="montage.editor";
