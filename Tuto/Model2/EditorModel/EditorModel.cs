@@ -66,7 +66,7 @@ namespace Tuto.Model
 
         public void Save()
         {
-			throw new NotImplementedException();
+            Videotheque.SaveEditorModel(this);
         }
 
         #region Basic algorithms

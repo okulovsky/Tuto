@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Tuto.Model
 {
     [DataContract]
-    public class VideothequeEnvironmentSettings
+    public class VideothequeStartupSettings
     {
         [DataMember]
         public string FFMPEGPath { get; set; }
@@ -17,7 +17,7 @@ namespace Tuto.Model
         [DataMember]
         public List<string> LastLoadedProjects { get; set; }
 
-		public VideothequeEnvironmentSettings()
+		public VideothequeStartupSettings()
 		{
 			LastLoadedProjects = new List<string>();
 		}

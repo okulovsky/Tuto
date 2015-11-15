@@ -43,8 +43,8 @@ namespace Tuto.Model
 		[Obsolete]
 		public FileInfo PraatScriptSource { get { return Make(videotheque.ProgramFolder, "split_pauses.praat"); } }
         
-        public FileInfo FFmpegExecutable { get { return FileOrNull(videotheque.EnvironmentSettings.FFMPEGPath); } }
-        public FileInfo SoxExecutable { get { return FileOrNull(videotheque.EnvironmentSettings.SoxPath); } }
+        public FileInfo FFmpegExecutable { get { return FileOrNull(videotheque.StartupSettings.FFMPEGPath); } }
+        public FileInfo SoxExecutable { get { return FileOrNull(videotheque.StartupSettings.SoxPath); } }
 
 
 

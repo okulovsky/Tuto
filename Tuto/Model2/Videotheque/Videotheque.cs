@@ -17,7 +17,7 @@ namespace Tuto.Model
 	public class Videotheque
 	{
 		public VideothequeSettings Settings { get; private set; }
-		public VideothequeEnvironmentSettings EnvironmentSettings { get; private set; }
+		public VideothequeStartupSettings StartupSettings { get; private set; }
 		public DirectoryInfo ProgramFolder { get; private set; }
 		public DirectoryInfo RawFolder { get; private set; }
 		public DirectoryInfo ModelsFolder { get; private set; }
@@ -44,12 +44,11 @@ namespace Tuto.Model
         public List<TopicLevel> TopicLevels { get; internal set; }
         [Obsolete]
         public bool CrossFadesEnabled { get; set; }
+        [Obsolete]
+        public string RelativeVideoListPath { get; set; }
         #endregion
 
-        public void Save()
-        {
-            throw new NotImplementedException();
-        }
+
 
         Dictionary<string,DirectoryInfo> binaryHashes;
 		List<Tuple<FileContainer,FileInfo>> loadedContainer;
@@ -79,8 +78,17 @@ namespace Tuto.Model
 			{
 				v.LoadBuiltInSoftware(ui);
 				v.LoadExternalReferences(ui);
+                v.SaveStartupFile();
 				v.LoadVideotheque(videothequeFileName, ui);
+                if (!v.StartupSettings.LastLoadedProjects.Contains(v.VideothequeSettingsFile.FullName))
+                {
+                    v.StartupSettings.LastLoadedProjects.Add(v.VideothequeSettingsFile.FullName);
+                    v.SaveStartupFile();
+                }
+
 				v.CheckSubdirectories(ui);
+                v.Save();
+
 
 				v.LoadBinaryHashes(ui);
 				v.LoadContainers(ui);
@@ -94,6 +102,22 @@ namespace Tuto.Model
 				return null;
 			}
 		}
+
+        public void Save()
+        {
+            HeadedJsonFormat.Write(VideothequeSettingsFile, Settings);
+        }
+
+        void SaveStartupFile()
+        {
+            HeadedJsonFormat.Write(Locations.StartupSettings, StartupSettings);
+        }
+
+        public void SaveEditorModel(EditorModel model)
+        {
+            var container = new FileContainer { MontageModel = model.Montage, WindowState = model.WindowState };
+            HeadedJsonFormat.Write(model.ModelFileLocation, container);
+        }
 
 		#region Checking procedures 
 		static T Check<T>(
@@ -183,7 +207,7 @@ namespace Tuto.Model
 
 		static FileInfo CreateDefaultStartup(string location)
 		{
-			var data = new VideothequeEnvironmentSettings();
+			var data = new VideothequeStartupSettings();
 			var finfo = new FileInfo(location);
 			HeadedJsonFormat.Write(
 				finfo,
@@ -204,9 +228,10 @@ namespace Tuto.Model
 						InitFile = CreateDefaultStartup
 					});
 
-			EnvironmentSettings = HeadedJsonFormat.Read<VideothequeEnvironmentSettings>(Locations.StartupSettings);
+			StartupSettings = HeadedJsonFormat.Read<VideothequeStartupSettings>(Locations.StartupSettings);
+            FileInfo file;
 
-			CheckFile(Locations.FFmpegExecutable, ui, 
+			file = CheckFile(Locations.FFmpegExecutable, ui, 
 				"FFMPEG is a free software that processes videofiles. You have to install x64 version of it from http://ffmpeg.org/ prior to using Tuto.",
 				new VideothequeLoadingRequestItem
 				{
@@ -215,8 +240,9 @@ namespace Tuto.Model
 					 RequestedFileName = "ffmpeg.exe",
 				}
 				);
+            StartupSettings.FFMPEGPath = file.FullName;
 
-			CheckFile(Locations.FFmpegExecutable, ui,
+			file = CheckFile(Locations.SoxExecutable, ui,
 				"SOX is a software that processes audiofiles. You have to install it from http://sox.sourceforge.net/ prior to using Tuto.",
 				new VideothequeLoadingRequestItem
 				{
@@ -225,6 +251,7 @@ namespace Tuto.Model
 					RequestedFileName = "sox.exe",
 				}
 				);
+            StartupSettings.SoxPath = file.FullName;
 		}
 
 		static FileInfo CreateEmptyVideotheque(string location)
@@ -281,7 +308,7 @@ namespace Tuto.Model
 					Type = VideothequeLoadingRequestItemType.OpenFile,
 				});
 
-			options.AddRange(EnvironmentSettings.LastLoadedProjects.Take(3).Select(z => new VideothequeLoadingRequestItem
+			options.AddRange(StartupSettings.LastLoadedProjects.Take(3).Select(z => new VideothequeLoadingRequestItem
 			{
 				Prompt = "Load videotheque " + z,
 				Type = VideothequeLoadingRequestItemType.NoFile,

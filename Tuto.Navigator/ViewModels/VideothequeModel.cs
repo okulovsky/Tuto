@@ -18,25 +18,21 @@ using Tuto.BatchWorks;
 
 namespace Tuto.Navigator
 {
-    public class GlobalViewModel: NotifierModel
+    public class VideothequeModel: NotifierModel
     {
        
-        public GlobalViewModel(Videotheque videotheque)
+        public VideothequeModel(Videotheque videotheque)
         {
 
-            this.globalData = videotheque;
+            this.videotheque = videotheque;
             UpdateSubdirectories();
-            //NewCommand = new RelayCommand(New);
-            //OpenCommand = new RelayCommand(Open);
-            //CloseCommand = new RelayCommand(Close, () => IsLoaded);
 
             PreWorks = new AssemblySettings();
-            SaveCommand = new RelayCommand(Save, () => IsLoaded);
-            RefreshCommand = new RelayCommand(() => { globalData.Reload(); UpdateSubdirectories(); }, () => IsLoaded);
+            SaveCommand = new RelayCommand(Save, () => true);
+            RefreshCommand = new RelayCommand(() => { videotheque.Reload(); UpdateSubdirectories(); }, () => true);
 
 
-            Func<bool> somethingSelected=() => 
-                    IsLoaded && Subdirectories.Any(z => z.Selected);
+            Func<bool> somethingSelected=() => Subdirectories.Any(z => z.Selected);
 
 
             AssembleSelectedCommand = new RelayCommand(AssembleSelected, somethingSelected);
@@ -50,12 +46,12 @@ namespace Tuto.Navigator
         void UpdateSubdirectories()
         {
             Subdirectories = new ObservableCollection<SubfolderViewModel>();
-            foreach (var e in globalData.EditorModels)
+            foreach (var e in videotheque.EditorModels)
             {
                 var m = new SubfolderViewModel(e);
                 Subdirectories.Add(m);
             }
-            Publish = new PublishViewModel(globalData, models, () => { globalData.Save(); });
+            Publish = new PublishViewModel(videotheque, models, () => { videotheque.Save(); });
             FillQueue();
         }
 
@@ -94,7 +90,7 @@ namespace Tuto.Navigator
                 {
                     works.Add(new PraatWork(e));
                 }
-                works.AddRange(globalData.Settings.WorkSettings.GetBeforeEditingWorks(e));
+                works.AddRange(videotheque.Settings.WorkSettings.GetBeforeEditingWorks(e));
                 if (works.Count() != 0)
                 {
                     var t = works.Last();
@@ -116,33 +112,30 @@ namespace Tuto.Navigator
 
         public void Save()
         {
-            GlobalData.Save();
+            videotheque.Save();
+            if (videotheque.RelativeVideoListPath != null)
+            {
+                var file = new FileInfo(Path.Combine(
+                    videotheque.VideothequeSettingsFile.Directory.FullName,
+                    videotheque.RelativeVideoListPath,
+                    Tuto.Model.Videotheque.VideoListName));
+                List<VideoPublishSummary> currentList = new List<VideoPublishSummary>();
+                if (file.Exists)
+                    currentList = HeadedJsonFormat.Read<List<VideoPublishSummary>>(file);
 
-            //Publish.Commit();
-            //GlobalData.Save();
-            //if (GlobalData.RelativeVideoListPath!=null)
-            //{
-            //    var file = new FileInfo(Path.Combine(
-            //        GlobalData.GlobalDataFolder.FullName,
-            //        GlobalData.RelativeVideoListPath,
-            //        Tuto.Model.Videotheque.VideoListName));
-            //    List<VideoPublishSummary> currentList = new List<VideoPublishSummary>();
-            //    if (file.Exists)
-            //        currentList = HeadedJsonFormat.Read<List<VideoPublishSummary>>(file);
+                foreach (var e in models)
+                    for (int i = 0; i < e.Montage.Information.Episodes.Count; i++)
+                    {
+                        var alreadySaved = currentList.Where(z => z.Guid == e.Montage.Information.Episodes[i].Guid).FirstOrDefault();
+                        if (alreadySaved != null) currentList.Remove(alreadySaved);
+                        var fv = new FinishedVideo(e, i);
+                        var pv = new VideoPublishSummary { Guid = fv.Guid, Name = fv.Name, Duration = fv.Duration };
+                        pv.OrdinalSuffix = fv.RelativeSourceFolderLocation + "-" + fv.EpisodeNumber;
+                        currentList.Add(pv);
+                    }
 
-            //    foreach (var e in models)
-            //        for (int i = 0; i < e.Montage.Information.Episodes.Count; i++)
-            //        {
-            //            var alreadySaved = currentList.Where(z => z.Guid == e.Montage.Information.Episodes[i].Guid).FirstOrDefault();
-            //            if (alreadySaved != null) currentList.Remove(alreadySaved);
-            //            var fv = new FinishedVideo(e, i);
-            //            var pv = new VideoPublishSummary { Guid = fv.Guid, Name = fv.Name, Duration = fv.Duration };
-            //            pv.OrdinalSuffix = fv.RelativeSourceFolderLocation + "-" + fv.EpisodeNumber;
-            //            currentList.Add(pv);
-            //        }
-
-            //    HeadedJsonFormat.Write(file, currentList);
-            //}
+                HeadedJsonFormat.Write(file, currentList);
+            }
         }
 
         void Run(bool forceMontage)
@@ -200,15 +193,6 @@ namespace Tuto.Navigator
             }
         }
 
-        public Videotheque GlobalData {
-            get { return globalData; }
-            private set
-            {
-                globalData = value;
-                NotifyPropertyChanged();
-                NotifyPropertyChanged("IsLoaded");
-            }
-        }
 
         public ObservableCollection<SubfolderViewModel> Subdirectories {
             get { return subdirectories; }
@@ -227,11 +211,6 @@ namespace Tuto.Navigator
             private set { publish = value; NotifyPropertyChanged(); }
         }
 
-        public bool IsLoaded
-        {
-            get { return LoadedFile != null && GlobalData != null; }
-        }
-
         public string WindowTitle
         {
             get { return LoadedFile != null ? LoadedFile.DirectoryName : "Tuto.Navigator"; }
@@ -241,7 +220,7 @@ namespace Tuto.Navigator
         #endregion
 
         private FileInfo loadedFile;
-        private Videotheque globalData;
+        private Videotheque videotheque;
         private ObservableCollection<SubfolderViewModel> subdirectories;
         private PublishViewModel publish;
         //private FileSystemWatcher watcher;

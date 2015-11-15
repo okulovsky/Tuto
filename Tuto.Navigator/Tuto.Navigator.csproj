@@ -285,7 +285,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ViewModels\NotifierModel.cs" />
-    <Compile Include="ViewModels\GlobalViewModel.cs" />
+    <Compile Include="ViewModels\VideothequeModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -23,7 +23,7 @@ namespace Tuto.Navigator
             var videotheque = start.EndInvoke(token);
 
             var mainWindow = new MainNavigatorWindow();
-            var globalModel = new GlobalViewModel(videotheque);
+            var globalModel = new VideothequeModel(videotheque);
             BatchWorkQueueWindow = globalModel.queueWindow;
             mainWindow.DataContext = globalModel;
             mainWindow.WindowState = System.Windows.WindowState.Maximized;
