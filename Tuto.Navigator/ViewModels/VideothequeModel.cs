@@ -51,7 +51,6 @@ namespace Tuto.Navigator
                 var m = new SubfolderViewModel(e);
                 Subdirectories.Add(m);
             }
-            Publish = new PublishViewModel(videotheque, models, () => { videotheque.Save(); });
             FillQueue();
         }
 
@@ -205,11 +204,7 @@ namespace Tuto.Navigator
 
         public AssemblySettings PreWorks{get; set;}
 
-        public PublishViewModel Publish
-        {
-            get { return publish; }
-            private set { publish = value; NotifyPropertyChanged(); }
-        }
+       
 
         public string WindowTitle
         {
@@ -222,7 +217,6 @@ namespace Tuto.Navigator
         private FileInfo loadedFile;
         private Videotheque videotheque;
         private ObservableCollection<SubfolderViewModel> subdirectories;
-        private PublishViewModel publish;
         //private FileSystemWatcher watcher;
 
 

@@ -22,7 +22,7 @@ namespace Tuto.Navigator
             var wnd = new Tuto.Init.MainWindow();
             Func<Videotheque> start = () => Videotheque.Load(null, wnd);
             var token = start.BeginInvoke(null, null);
-            wnd.Show();
+            wnd.ShowDialog();
             var videotheque = start.EndInvoke(token);
 
             var mainWindow = new MainNavigatorWindow();

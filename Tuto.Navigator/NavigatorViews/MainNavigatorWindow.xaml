@@ -15,8 +15,7 @@
     <DockPanel>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
             <Button Command="{Binding SaveCommand}" Height="40" Width="40">Save</Button>
-            <Button Command="{Binding CreateBackupCommand}" Height="40" Width="40">Backup</Button>
-        </StackPanel>
+       </StackPanel>
 
         <TabControl Grid.Row="1" HorizontalAlignment="Stretch" Height="auto" VerticalAlignment="Stretch" Width="auto">
 
@@ -81,10 +80,7 @@
                 </DockPanel>
             </TabItem>
 
-            <TabItem Header="Topics" IsEnabled="{Binding IsLoaded}">
-                <navigator:PublishPanel DataContext="{Binding Publish}"/>
-            </TabItem>
-
+            
 
             <TabItem Header="Global Settings" IsEnabled="{Binding IsLoaded}">
                 <navigator:GlobalSettingsPanel DataContext="{Binding GlobalData}"/>

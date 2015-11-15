@@ -188,8 +188,6 @@
     <Compile Include="Timeline.cs" />
     <Compile Include="ViewModels\AssemblySettings.cs" />
     <Compile Include="ViewModels\Backup.cs" />
-    <Compile Include="ViewModels\CatalogViewModel.cs" />
-    <Compile Include="ViewModels\CatalogWraps.cs" />
     <Compile Include="NavigatorViews\BatchWorkWindow.xaml.cs">
       <DependentUpon>BatchWorkWindow.xaml</DependentUpon>
     </Compile>
@@ -198,9 +196,6 @@
     </Compile>
     <Compile Include="RelayCommand.cs" />
     <Compile Include="ViewModels\SubfolderViewModel.cs" />
-    <Compile Include="NavigatorViews\CatalogPanel.xaml.cs">
-      <DependentUpon>CatalogPanel.xaml</DependentUpon>
-    </Compile>
     <Compile Include="NavigatorViews\FinishedVideoPanel.xaml.cs">
       <DependentUpon>FinishedVideoPanel.xaml</DependentUpon>
     </Compile>
@@ -259,10 +254,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="NavigatorViews\Resources.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="NavigatorViews\CatalogPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -372,7 +363,9 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="ToDelete\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
