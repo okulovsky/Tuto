@@ -32,7 +32,7 @@ namespace Tuto.BatchWorks
                 var name = Path.Combine(Model.Locations.TemporalDirectory.FullName, ep.ConvertedName);
                 if (!File.Exists(name))
                 {
-                    var fileInPatches = new FileInfo(Path.Combine(emodel.Videotheque.Locations.PatchesFolder.FullName, new FileInfo(ep.Path.LocalPath).Name));
+                    var fileInPatches = new FileInfo(Path.Combine(emodel.Locations.PatchesDirectory.FullName, new FileInfo(ep.Path.LocalPath).Name));
                     BeforeWorks.Add(new PreparePatchWork(emodel, fileInPatches, new FileInfo(name), false));
                 }
             }
@@ -109,7 +109,8 @@ namespace Tuto.BatchWorks
             var avsScript = string.Format(@"import(""{0}"")", Model.Locations.AvsLibrary.FullName) + "\r\n" + avsContext.GetContent() + "var_0";
             File.WriteAllText(newName + "test.avs", avsScript, Encoding.GetEncoding("Windows-1251"));
 
-            var dir = Model.Locations.OutputDirectory.FullName;
+            //TODO: разобраться уже с правилами именования patched файлов. Тут опять какой-то позор.
+            var dir = Model.Locations.GetOutputFile(0).Directory.FullName;
             var patchedName = GetTempFile(pmodel.SourceInfo, "-patched").FullName;
             var path = Path.Combine(dir, patchedName);
             args = string.Format(args, newName + "test.avs", path);

@@ -27,7 +27,7 @@ namespace Tuto.BatchWorks
 
         public override void Work()
         {
-            var progPath = Model.Locations.NoiseReductionFolder; //get program's folder for noicereduction utility.
+            var progPath = Model.Videotheque.Locations.GNP.Directory; //get program's folder for noicereduction utility.
             var ffExe = Model.Locations.FFmpegExecutable;
             var soxExe = Model.Locations.SoxExecutable;
             var loc = Model.Locations.FaceVideo;

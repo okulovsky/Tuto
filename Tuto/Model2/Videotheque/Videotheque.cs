@@ -31,6 +31,10 @@ namespace Tuto.Model
         public VoiceSettings VoiceSettings { get { return Settings.VoiceSettings; } }
         [Obsolete]
         public WorkSettings WorkSettings { get { return Settings.WorkSettings; } }
+        [Obsolete]
+        public bool ShowProcesses { get; set; }
+        [Obsolete]
+        public const string VideoListName = "VideoSummaries.txt";
 
         Dictionary<string,DirectoryInfo> binaryHashes;
 		List<Tuple<FileContainer,FileInfo>> loadedContainer;
