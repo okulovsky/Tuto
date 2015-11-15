@@ -37,6 +37,7 @@ namespace Tuto.Navigator
 				directoryName = new FileInfo(args[0]).Directory.FullName;
 			}
 
+            application.ShutdownMode = ShutdownMode.OnMainWindowClose;    
             application.Run(mainWindow);
             application.Shutdown();
         }

@@ -89,7 +89,7 @@ namespace Tuto.Navigator
                 {
                     works.Add(new PraatWork(e));
                 }
-                works.AddRange(videotheque.Settings.WorkSettings.GetBeforeEditingWorks(e));
+                works.AddRange(videotheque.Data.WorkSettings.GetBeforeEditingWorks(e));
                 if (works.Count() != 0)
                 {
                     var t = works.Last();
@@ -217,6 +217,7 @@ namespace Tuto.Navigator
         private FileInfo loadedFile;
         private Videotheque videotheque;
         private ObservableCollection<SubfolderViewModel> subdirectories;
+        public Videotheque Videotheque { get { return videotheque; } }
         //private FileSystemWatcher watcher;
 
 

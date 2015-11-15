@@ -16,7 +16,7 @@ namespace Tuto.Model
 
 	public class Videotheque
 	{
-		public VideothequeSettings Settings { get; private set; }
+		public VideothequeData Data { get; private set; }
 		public VideothequeStartupSettings StartupSettings { get; private set; }
 		public DirectoryInfo ProgramFolder { get; private set; }
 		public DirectoryInfo RawFolder { get; private set; }
@@ -29,9 +29,9 @@ namespace Tuto.Model
 
         #region Всякая старая дичь
         [Obsolete]
-        public VoiceSettings VoiceSettings { get { return Settings.VoiceSettings; } }
+        public VoiceSettings VoiceSettings { get { return Data.VoiceSettings; } }
         [Obsolete]
-        public WorkSettings WorkSettings { get { return Settings.WorkSettings; } }
+        public WorkSettings WorkSettings { get { return Data.WorkSettings; } }
         [Obsolete]
         public bool ShowProcesses { get; set; }
         [Obsolete]
@@ -79,13 +79,16 @@ namespace Tuto.Model
 				v.LoadBuiltInSoftware(ui);
 				v.LoadExternalReferences(ui);
                 v.SaveStartupFile();
-				v.LoadVideotheque(videothequeFileName, ui);
-                if (!v.StartupSettings.LastLoadedProjects.Contains(v.VideothequeSettingsFile.FullName))
-                {
-                    v.StartupSettings.LastLoadedProjects.Add(v.VideothequeSettingsFile.FullName);
-                    v.SaveStartupFile();
-                }
 
+
+				v.LoadVideotheque(videothequeFileName, ui);
+                var fname = v.VideothequeSettingsFile.FullName;
+                if (v.StartupSettings.LastLoadedProjects.Contains(fname))
+                    v.StartupSettings.LastLoadedProjects.Remove(fname);
+
+                v.StartupSettings.LastLoadedProjects.Insert(0, fname);
+                v.SaveStartupFile();
+                
 				v.CheckSubdirectories(ui);
                 v.Save();
 
@@ -105,7 +108,7 @@ namespace Tuto.Model
 
         public void Save()
         {
-            HeadedJsonFormat.Write(VideothequeSettingsFile, Settings);
+            HeadedJsonFormat.Write(VideothequeSettingsFile, Data);
         }
 
         void SaveStartupFile()
@@ -256,7 +259,7 @@ namespace Tuto.Model
 
 		static FileInfo CreateEmptyVideotheque(string location)
 		{
-			var data = new VideothequeSettings();
+			var data = new VideothequeData();
 			var finfo = new FileInfo(location);
             data.PathsSettings.RawPath = CreateDefaultFolder(finfo, Names.DefaultRawFolder);
             data.PathsSettings.ModelPath = CreateDefaultFolder(finfo, Names.DefaultModelFolder);
@@ -278,7 +281,7 @@ namespace Tuto.Model
 		static FileInfo CreateVideothequeForSetup(string location)
 		{
 			var finfo = new FileInfo(location);
-			var data = new VideothequeSettings();
+			var data = new VideothequeData();
             data.PathsSettings.TempPath = CreateDefaultFolder(finfo, Names.DefaultTempFolder);
 
 			HeadedJsonFormat.Write(
@@ -323,17 +326,17 @@ namespace Tuto.Model
 				);
 
 			VideothequeSettingsFile = vfinfo;
-			Settings = HeadedJsonFormat.Read<VideothequeSettings>(VideothequeSettingsFile);
+			Data = HeadedJsonFormat.Read<VideothequeData>(VideothequeSettingsFile);
 		}
 
 		void CheckSubdirectories(IVideothequeLoadingUI ui)
 		{
 			//hooray! videotheque is loaded! Checking Input, Output and other directories
 
-            RawFolder = CheckVideothequeSubdirectory(Settings.PathsSettings.RawPath, Names.DefaultRawFolder, ui, "Can't locate the folder with the raw video files (ones you get from camera)");
-            ModelsFolder = CheckVideothequeSubdirectory(Settings.PathsSettings.ModelPath, Names.DefaultModelFolder, ui, "Can't locate the folder where the markup (the result of your work) is stored)");
-            OutputFolder = CheckVideothequeSubdirectory(Settings.PathsSettings.OutputPath, Names.DefaultOutputFolder, ui, "Can't locate the folder with the output video will be stored");
-            RawFolder = CheckVideothequeSubdirectory(Settings.PathsSettings.TempPath, Names.DefaultTempFolder, ui, "Can't locate the folder with the temporary files");
+            RawFolder = CheckVideothequeSubdirectory(Data.PathsSettings.RawPath, Names.DefaultRawFolder, ui, "Can't locate the folder with the raw video files (ones you get from camera)");
+            ModelsFolder = CheckVideothequeSubdirectory(Data.PathsSettings.ModelPath, Names.DefaultModelFolder, ui, "Can't locate the folder where the markup (the result of your work) is stored)");
+            OutputFolder = CheckVideothequeSubdirectory(Data.PathsSettings.OutputPath, Names.DefaultOutputFolder, ui, "Can't locate the folder with the output video will be stored");
+            TempFolder = CheckVideothequeSubdirectory(Data.PathsSettings.TempPath, Names.DefaultTempFolder, ui, "Can't locate the folder with the temporary files");
 
 		}
 		#endregion

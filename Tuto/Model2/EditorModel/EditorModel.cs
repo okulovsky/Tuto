@@ -160,15 +160,15 @@ namespace Tuto.Model
             if (leftChunk.Mode== Mode.Undefined || rightChunk.Mode == Mode.Undefined) return;
 
             var interval = Montage.SoundIntervals
-                .Where(z => !z.HasVoice && z.DistanceTo(rightChunk.StartTime) < Videotheque.Settings.VoiceSettings.MaxDistanceToSilence)
+                .Where(z => !z.HasVoice && z.DistanceTo(rightChunk.StartTime) < Videotheque.Data.VoiceSettings.MaxDistanceToSilence)
                 .FirstOrDefault();
             if (interval == null) return;
 
             var leftDistance = Math.Abs(interval.StartTime - rightChunk.StartTime);
             var rightDistance = Math.Abs(interval.EndTime - rightChunk.StartTime);
             var distance = interval.DistanceTo(rightChunk.StartTime);
-            bool LeftIn = leftDistance < Videotheque.Settings.VoiceSettings.MaxDistanceToSilence;
-            bool RightIn = rightDistance < Videotheque.Settings.VoiceSettings.MaxDistanceToSilence;
+            bool LeftIn = leftDistance < Videotheque.Data.VoiceSettings.MaxDistanceToSilence;
+            bool RightIn = rightDistance < Videotheque.Data.VoiceSettings.MaxDistanceToSilence;
 
             if (!LeftIn && !RightIn) return;
 
@@ -181,11 +181,11 @@ namespace Tuto.Model
             else if (LeftIn && !RightIn)
             {
                 //значит, только левая граница где-то недалеко. 
-                NewStart = interval.StartTime + Videotheque.Settings.VoiceSettings.SilenceMargin;
+                NewStart = interval.StartTime + Videotheque.Data.VoiceSettings.SilenceMargin;
             }
             else if (!LeftIn && RightIn)
             {
-                NewStart = interval.EndTime - Videotheque.Settings.VoiceSettings.SilenceMargin;
+                NewStart = interval.EndTime - Videotheque.Data.VoiceSettings.SilenceMargin;
             }
 
             //не вылезли за границы интервала при перемещении

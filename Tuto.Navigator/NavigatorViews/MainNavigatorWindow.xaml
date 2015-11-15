@@ -83,7 +83,7 @@
             
 
             <TabItem Header="Global Settings" IsEnabled="{Binding IsLoaded}">
-                <navigator:GlobalSettingsPanel DataContext="{Binding GlobalData}"/>
+                <navigator:GlobalSettingsPanel DataContext="{Binding Videotheque.Data}"/>
             </TabItem>
 
             <!--<TabItem Header="Debug">

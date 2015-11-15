@@ -9,7 +9,7 @@ using Tuto.Model;
 namespace Tuto.Model
 {
     [DataContract]
-    public class VideothequeSettings
+    public class VideothequeData
     {
         [DataMember]
         public VoiceSettings VoiceSettings { get; set; }
@@ -28,7 +28,7 @@ namespace Tuto.Model
 
         #endregion
 
-        public VideothequeSettings()
+        public VideothequeData()
 		{
 			VoiceSettings = new VoiceSettings();
 			WorkSettings = new WorkSettings();
