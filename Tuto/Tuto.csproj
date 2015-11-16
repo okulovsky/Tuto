@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{E69F7E9F-ED66-4935-8976-FF548AE72AEC}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Tuto</RootNamespace>
     <AssemblyName>Tuto</AssemblyName>
@@ -33,6 +33,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Google.Apis, Version=1.9.2.27817, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
@@ -110,6 +113,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssemblerService.cs" />
     <Compile Include="Model\Current\IO\GlobalUpdaters.cs" />
     <Compile Include="Model\Current\IO\LocalUpdaters.cs" />
     <Compile Include="Model\Current\IO\Miscellanous.cs" />
@@ -121,7 +125,6 @@
     <Compile Include="Model\Current\Global\Topic.cs" />
     <Compile Include="Model\Current\Global\TopicLevel.cs" />
     <Compile Include="Model\Current\Global\VoiceSettings.cs" />
-    <Compile Include="Main\Shell.cs" />
     <Compile Include="Model\Current\IO\GlobalIO.cs" />
     <Compile Include="Model\Current\IO\LocalIO.cs" />
     <Compile Include="Model\Current\Montage\BorderListExtensions.cs" />
@@ -143,7 +146,6 @@
     <Compile Include="Model\Current\Montage\Border.cs" />
     <Compile Include="Model\Current\Montage\Further Refactoring\ChunkMode.cs" />
     <Compile Include="Model\Current\Montage\SoundInterval.cs" />
-    <Compile Include="Main\Program.cs" />
     <Compile Include="Model\PatchModel.cs" />
     <Compile Include="Model\RelayCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -161,47 +163,38 @@
     <Compile Include="Publishing\YoutubeData\YoutubeClip.cs" />
     <Compile Include="Publishing\YoutubeData\YoutubePlaylist.cs" />
     <Compile Include="Publishing\Youtube\UploadVideo.cs" />
-    <Compile Include="Services\AssemblerService.cs" />
-    <Compile Include="Services\Assembler\AvsAutoLevels.cs" />
-    <Compile Include="Services\Assembler\AvsChangeFramerate.cs" />
-    <Compile Include="Services\Assembler\AvsChunk.cs" />
-    <Compile Include="Services\Assembler\AvsMix.cs" />
-    <Compile Include="Services\Assembler\AvsFileChunk.cs" />
-    <Compile Include="Services\Assembler\AvsConcatList.cs" />
-    <Compile Include="Services\Assembler\AvsConcatTwo.cs" />
-    <Compile Include="Services\Assembler\AvsContext.cs" />
-    <Compile Include="Services\Assembler\AvsConvertToYUY2.cs" />
-    <Compile Include="Services\Assembler\AvsCrossFade.cs" />
-    <Compile Include="Services\Assembler\AvsFadeIn.cs" />
-    <Compile Include="Services\Assembler\AvsFadeOut.cs" />
-    <Compile Include="Services\Assembler\AvsIntro.cs" />
-    <Compile Include="Services\Assembler\AvsNode.cs" />
-    <Compile Include="Services\Assembler\AvsPatchChunk.cs" />
-    <Compile Include="Services\Assembler\AvsResize.cs" />
-    <Compile Include="Services\Assembler\AssumeSameAVLength.cs" />
-    <Compile Include="Services\Assembler\AvsSub.cs" />
-    <Compile Include="Services\Assembler\AvsSubtitle.cs" />
-    <Compile Include="Services\Assembler\AvsWatermark.cs" />
-    <Compile Include="Services\BatchWorks\ConvertDesktopWork.cs" />
-    <Compile Include="Services\BatchWorks\ConvertFaceWork.cs" />
-    <Compile Include="Services\BatchWorks\YoutubeWork.cs" />
-    <Compile Include="Services\BatchWorks\PreparePatchWork.cs" />
-    <Compile Include="Services\BatchWorks\PatchWork.cs" />
-    <Compile Include="Services\BatchWorks\BatchWork.cs" />
-    <Compile Include="Services\BatchWorks\ConvertVideoWork.cs" />
-    <Compile Include="Services\BatchWorks\AssemblyVideoWork.cs" />
-    <Compile Include="Services\BatchWorks\CreateCleanSoundWork.cs" />
-    <Compile Include="Services\BatchWorks\CreateThumbWork.cs" />
-    <Compile Include="Services\BatchWorks\PraatWork.cs" />
-    <Compile Include="Services\BatchWorks\RepairVideoWork.cs" />
-    <Compile Include="Services\ImageMaker\ImageComposer.cs" />
-    <Compile Include="Services\ImageMaker\ParisComposer.cs" />
-    <Compile Include="Services\MontagerService.cs" />
-    <Compile Include="Services\Montager\FFMPEGCommands.cs" />
-    <Compile Include="Services\Service.cs" />
-    <Compile Include="Services\PraatService.cs" />
-    <Compile Include="Main\Services.cs" />
-    <Compile Include="Services\SrtMaker.cs" />
+    <Compile Include="Assembler\AvsAutoLevels.cs" />
+    <Compile Include="Assembler\AvsChangeFramerate.cs" />
+    <Compile Include="Assembler\AvsChunk.cs" />
+    <Compile Include="Assembler\AvsMix.cs" />
+    <Compile Include="Assembler\AvsFileChunk.cs" />
+    <Compile Include="Assembler\AvsConcatList.cs" />
+    <Compile Include="Assembler\AvsConcatTwo.cs" />
+    <Compile Include="Assembler\AvsContext.cs" />
+    <Compile Include="Assembler\AvsConvertToYUY2.cs" />
+    <Compile Include="Assembler\AvsCrossFade.cs" />
+    <Compile Include="Assembler\AvsFadeIn.cs" />
+    <Compile Include="Assembler\AvsFadeOut.cs" />
+    <Compile Include="Assembler\AvsIntro.cs" />
+    <Compile Include="Assembler\AvsNode.cs" />
+    <Compile Include="Assembler\AvsPatchChunk.cs" />
+    <Compile Include="Assembler\AvsResize.cs" />
+    <Compile Include="Assembler\AssumeSameAVLength.cs" />
+    <Compile Include="Assembler\AvsSub.cs" />
+    <Compile Include="Assembler\AvsSubtitle.cs" />
+    <Compile Include="Assembler\AvsWatermark.cs" />
+    <Compile Include="BatchWorks\ConvertDesktopWork.cs" />
+    <Compile Include="BatchWorks\ConvertFaceWork.cs" />
+    <Compile Include="BatchWorks\YoutubeWork.cs" />
+    <Compile Include="BatchWorks\PreparePatchWork.cs" />
+    <Compile Include="BatchWorks\PatchWork.cs" />
+    <Compile Include="BatchWorks\BatchWork.cs" />
+    <Compile Include="BatchWorks\ConvertVideoWork.cs" />
+    <Compile Include="BatchWorks\AssemblyVideoWork.cs" />
+    <Compile Include="BatchWorks\CreateCleanSoundWork.cs" />
+    <Compile Include="BatchWorks\CreateThumbWork.cs" />
+    <Compile Include="BatchWorks\PraatWork.cs" />
+    <Compile Include="BatchWorks\RepairVideoWork.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

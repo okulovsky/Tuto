@@ -3,7 +3,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tuto;
 using Tuto.TutoServices.Assembler;
 using Tuto.TutoServices;
-using Tuto.TutoServices.Montager;
 using Tuto.Model;
 using Editor;
 using System.IO;

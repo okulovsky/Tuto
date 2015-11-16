@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.IO;
 using Tuto.Model;
 using Tuto.TutoServices;
-using Tuto.TutoServices.Montager;
 using Tuto.TutoServices.Assembler;
 
 namespace Tuto.BatchWorks

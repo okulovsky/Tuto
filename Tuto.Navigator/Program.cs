@@ -16,7 +16,6 @@ namespace Tuto.Navigator
         [STAThread]
         public static void Main(string[] args)
         {
-            TutoProgram.SetSilentMode();
             var mainWindow = new MainNavigatorWindow();
             var globalModel = new GlobalViewModel();
             BatchWorkQueueWindow = globalModel.queueWindow;
