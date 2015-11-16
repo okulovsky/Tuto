@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -69,6 +70,8 @@ namespace Tuto.Model
             var stream = new MemoryStream();
             new DataContractJsonSerializer(typeof(T)).WriteObject(stream, data);
             var text = System.Text.Encoding.UTF8.GetString(stream.GetBuffer().Where(z => z != '\0').ToArray()); ;
+            dynamic parsedJson = JsonConvert.DeserializeObject(text);
+            text = JsonConvert.SerializeObject(parsedJson, Formatting.Indented);
             using (var writer = new StreamWriter(file.FullName))
             {
                 writer.WriteLine(header + VersionMarker + version);
