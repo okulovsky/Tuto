@@ -1,0 +1,82 @@
+﻿<Window x:Class="Editor.MainEditorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ed="clr-namespace:Editor"
+        Title="Tuto Editor" WindowState="Maximized" Width="1089.463" Height="687.825">
+    <Window.Resources>
+        <ed:EditorModeConverter x:Key="EditorModeCnv"/>
+        <ed:PausedToStringConverter x:Key="PausedCnv"/>
+        <ed:BoolToVisibilityConverter x:Key="BTVCnv"/>
+        <Style x:Key="buttonStyle">
+            <Setter Property="Control.Width" Value="50"/>
+            <Setter Property="Control.Height" Value="50"/>
+        </Style>
+        <Style TargetType="Button" BasedOn="{StaticResource buttonStyle}"/>
+        <Style TargetType="ToggleButton" BasedOn="{StaticResource buttonStyle}"/>
+    </Window.Resources>
+    <DockPanel>
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+            <Button Focusable="False" x:Name="Save">Save</Button>
+            <Button Focusable="False" x:Name="Synchronize">Synchronize</Button>
+            <Button Focusable="False" x:Name="Infos">Infos</Button>
+            <Button Focusable="False" x:Name="GoTo" Visibility="Collapsed" Content="GoTo"/>
+            <Rectangle Width="50"/>
+            <ToggleButton 
+                Focusable="False"
+                IsChecked="{Binding WindowState.Paused}"
+                Content="{Binding WindowState.Paused, Converter={StaticResource PausedCnv}}"
+                />
+            <ToggleButton 
+                Focusable="False"
+                IsChecked="{Binding WindowState.CurrentMode, Converter={StaticResource EditorModeCnv}, ConverterParameter='General'}">
+                Preview
+            </ToggleButton>
+            <ToggleButton 
+                Focusable="False"
+                IsChecked="{Binding WindowState.CurrentMode, Converter={StaticResource EditorModeCnv}, ConverterParameter='Border'}">
+                Final
+            </ToggleButton>
+            <ToggleButton 
+                Focusable="False"
+                IsChecked="{Binding WindowState.CurrentMode, Converter={StaticResource EditorModeCnv}, ConverterParameter='Fixes'}">
+                Fixes
+            </ToggleButton>
+            <Rectangle Width="10"/>
+            <Button Focusable="False" x:Name="Assembly" Width="66" Content="Assembly"/>
+            <Rectangle Width="10"/>
+
+            <StackPanel Orientation="Horizontal" Visibility="Collapsed" Name="ToolsPanel">
+                <Button Focusable="False" x:Name="RepairFace" Content="Repair Face" Width="49"/>
+                <Button Focusable="False" x:Name="RepairDesktop" Width="51">Repair Desktop</Button>
+                <Button Focusable="False" x:Name="NoiseReduction" Content="-Noise"/>
+                <Button Focusable="False" x:Name="Help" Content="Help"/>
+                <Button Focusable="False" Content="ThumbF" x:Name="ThumbFace" Width="58"/>
+                <Button Focusable="False" Content="ThumbD" x:Name="ThumbDesktop" Width="58"/>
+                <Button Focusable="False" x:Name="Montage" Content="Convert"/>
+                <Button Focusable="False" Width="120" x:Name="Patch" Content="Patch((Debug)"/>
+            </StackPanel>
+            <Button Content="Tools" x:Name="Tools" Height="50" Width="50" Click="Tools_Click"/>
+        </StackPanel>
+        <StackPanel Orientation="Vertical" DockPanel.Dock="Right">
+            <Label Content="{Binding WindowState.CurrentPosition}"/>
+            <MediaElement 
+                    Width="400"
+                    x:Name="FaceVideo" 
+                    Grid.Column="0"/>
+            <MediaElement 
+                    Width="400"
+                    x:Name="ScreenVideo"  
+                    Grid.Column="1"/>
+
+            <TextBlock x:Name="Subtitles" Width="400" TextWrapping="Wrap" FontSize="18"/>
+
+        </StackPanel>
+        <StackPanel Orientation="Vertical">
+            <Grid>
+                <ed:ModelView x:Name="ModelView" DataContext="{Binding}"/>
+                <ed:Slider x:Name="Slider" DataContext="{Binding}"/>
+            </Grid>
+
+        </StackPanel>
+    </DockPanel>
+</Window>

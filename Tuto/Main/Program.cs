@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using Tuto.Model;
+using Tuto.BatchWorks;
 
 namespace Tuto
 {
@@ -17,18 +18,7 @@ namespace Tuto
         {
             var dir=new DirectoryInfo(fullPathOfModel);
             var model = EditorModelIO.Load(fullPathOfModel);
-            if (forceMontage || !model.Montage.Montaged)
-                yield return new BatchWork 
-                    { 
-                        Name = "Montaging " + dir.Name,
-                        Work = () => Run(Services.Montager, dir)
-                    };
-
-            yield return new BatchWork 
-                    { 
-                        Name = "Assembling " + dir.Name,
-                        Work = ()=> Run(Services.Assembler, dir)
-                    };
+            yield return new AssemblyVideoWork(model, model.Global.CrossFadesEnabled);
         }
 
         public static void Run(Services service, DirectoryInfo directory, ExecMode mode = ExecMode.Run, bool noNewWindows=true)
@@ -53,8 +43,7 @@ namespace Tuto
             {
                 new PraatService(),
                 new MontagerService(),
-                new AssemblerService(),
-                new RepairService(),
+                new AssemblerService(true)
             };
 
             if (args.Length < 1)

@@ -13,8 +13,6 @@ namespace Tuto.TutoServices
     public class MontagerService : Service
     {
 
-       
-
         public override string Name
         {
             get { return Services.Montager.ToString(); } 
@@ -30,25 +28,29 @@ namespace Tuto.TutoServices
             get { return HelpString; }
         }
 
+        public bool IsDesktopConverted;
+        public bool IsFaceConverted;
+
+        public delegate void VideoConverter();
+        public event VideoConverter onConverted;
+
         public void DoWork(EditorModel model, bool print)
         {
-            model.ChunkFolder.Delete(true);
-            model.ChunkFolder.Create();
-            Thread.Sleep(100); //без этого почему-то вылетают ошибки
-			if (File.Exists(model.Locations.FaceVideo.FullName))
-				Shell.FFMPEG(print, @"-i ""{0}"" -vf scale=1280:720 -r 25 -q:v 0 -acodec libmp3lame -ar 44100 -ab 32k ""{1}""",
-					model.Locations.FaceVideo.FullName, model.Locations.ConvertedFaceVideo.FullName);
-
-			if (File.Exists(model.Locations.DesktopVideo.FullName))
-				Shell.FFMPEG(print, @"-i ""{0}"" -vf scale=1280:720 -r 25 -q:v 0 -an ""{1}""",
-								model.Locations.DesktopVideo.FullName, model.Locations.ConvertedDesktopVideo.FullName);
-
-
-            foreach (var e in Montager.ProcessingCommands.Processing(model, model.Montage.FileChunks))
+            if (!model.TempFolder.Exists)
             {
-                e.Execute(print);
+                model.TempFolder.Delete(true);
+                model.TempFolder.Create();
             }
+            Thread.Sleep(100); //без этого почему-то вылетают ошибки
+            if (File.Exists(model.Locations.FaceVideo.FullName) && !model.Locations.ConvertedFaceVideo.Exists)
+                Shell.FFMPEG(print, @"-i ""{0}"" -vf ""scale=1280:720, fps=25"" -q:v 0 -acodec libmp3lame -ar 44100 -ab 32k ""{1}""",
+                    model.Locations.FaceVideo.FullName, model.Locations.ConvertedFaceVideo.FullName);
+
+            if (File.Exists(model.Locations.DesktopVideo.FullName) && !model.Locations.ConvertedDesktopVideo.Exists)
+                Shell.FFMPEG(print, @"-i ""{0}"" -vf ""scale=1280:720, fps=25"" -q:v 0 -an ""{1}""",
+                                model.Locations.DesktopVideo.FullName, model.Locations.ConvertedDesktopVideo.FullName);
         }
+
 
         public override void DoWork(string[] args)
         {
@@ -61,9 +63,9 @@ namespace Tuto.TutoServices
             var print = mode == ExecMode.Print;
 
             var model = EditorModelIO.Load(folder);
-            model.CreateFileChunks();            
+            model.FormPreparedChunks();            
             DoWork(model, print);
-            model.Montage.Montaged = true;
+            model.Montage.ReadyToEdit = true;
             EditorModelIO.Save(model);
         }
         const string DescriptionString =

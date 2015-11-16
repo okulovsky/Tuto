@@ -1,18 +1,23 @@
-﻿using System;
+﻿using Editor;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tuto;
+using Tuto.Model;
 
 namespace Tuto.TutoServices.Assembler
 {
-    internal abstract class AvsNode
+    public abstract class AvsNode
     {
         public abstract void SerializeToContext(AvsContext context);
 
         public abstract IList<AvsNode> ChildNodes { get; }
 
+
+        public int SyncShift = 0;
         public string Id
         {
             get
@@ -37,29 +42,18 @@ namespace Tuto.TutoServices.Assembler
 
         protected virtual string Format{get { return ""; }}
 
-        public static AvsNode NormalizedNode(FileInfo chunkFile, int fps, bool autolevel)
+        public static AvsNode NormalizedNode(StreamChunk chunkFile, int fps, bool autolevel, int shift)
         {
-            var chunk = new AvsChunk {ChunkFile = chunkFile, ConvertToFps = fps};
-			
+            var chunk = new AvsChunk {Chunk = chunkFile, ConvertToFps = fps};
+            chunk.SyncShift = shift;
             return NormalizedNode(chunk, autolevel);
         }
 
         public static AvsNode NormalizedNode(AvsNode node, bool autolevel=false)
         {
-			var sameLen = new AssumeSameAVLength { Payload = node };
-	        return sameLen;
-
-
-	        //var resized = new AvsResize { Payload = yuy2 };
-	        //var changedFps = new AvsChangeFramerate { Payload = resized };
-	        //return changedFps;
-
-	        /*
-            if(!autolevel)
-                return changedFps;
-            var leveled = new AvsAutoLevels {Payload = changedFps};
-            return leveled;
-			*/
+            return node;
+            //var sameLen = new AssumeSameAVLength { Payload = node };
+            //return sameLen;
         }
     }
 }

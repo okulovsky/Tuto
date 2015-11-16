@@ -1,0 +1,76 @@
+﻿<UserControl x:Class="Tuto.Navigator.GlobalSettingsPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             xmlns:navigator="clr-namespace:Tuto.Navigator"
+             d:DesignWidth="500"
+             >
+    <StackPanel Orientation="Vertical">
+        <GroupBox>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition ></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Column="0" Grid.Row="0" Content="Max distance to silence"></Label>
+                <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding VoiceSettings.MaxDistanceToSilence}"></TextBox>
+
+                <Label Grid.Column="0" Grid.Row="1" Content="Silence margin"></Label>
+                <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding VoiceSettings.SilenceMargin}"></TextBox>
+
+                <Label Grid.Column="0" Grid.Row="2" Content="Subfolder where the video sumarry should be"></Label>
+                <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding RelativeVideoListPath}"></TextBox>
+
+                <Label Grid.Column="0" Grid.Row="3" Content="Conversion"></Label>
+                <ComboBox 
+                    Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Width="130" Grid.Row="3" 
+                    ItemsSource="{Binding WorkSettings.ConversionSettings.OptionsAsStrings}"
+                    SelectedItem="{Binding WorkSettings.ConversionSettings.CurrentAsString}">
+                </ComboBox>
+
+                <Label Grid.Column="0" Grid.Row="4" Content="Thumb Face creation"></Label>
+                <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Width="130" Grid.Row="4"
+                    ItemsSource="{Binding WorkSettings.FaceThumbSettings.OptionsAsStrings}"
+                    SelectedItem="{Binding WorkSettings.FaceThumbSettings.CurrentAsString}"></ComboBox>
+
+                <Label Grid.Column="0" Grid.Row="5" Content="Thumb Desktop creation"></Label>
+                <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Width="130" Grid.Row="5"
+                    ItemsSource="{Binding WorkSettings.DesktopThumbSettings.OptionsAsStrings}"
+                    SelectedItem="{Binding WorkSettings.DesktopThumbSettings.CurrentAsString}"></ComboBox>
+
+                <Label Grid.Column="0" Grid.Row="6" Content="Sound correction"></Label>
+                <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Width="130" Grid.Row="6"
+                    ItemsSource="{Binding WorkSettings.AudioCleanSettings.OptionsAsStrings}"
+                    SelectedItem="{Binding WorkSettings.AudioCleanSettings.CurrentAsString}"
+                          ></ComboBox>
+
+                <Label Grid.Column="0" Grid.Row="7" Content="Show processes window (for debugging purposes only)"></Label>
+                <CheckBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Width="130" Grid.Row="7"
+                  IsChecked="{Binding ShowProcesses}"></CheckBox>
+
+                <Label Grid.Column="0" Grid.Row="8" Content="Cross Fades enabled"></Label>
+                <CheckBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Width="130" Grid.Row="8"
+                  IsChecked="{Binding CrossFadesEnabled}"></CheckBox>
+
+                <Label Grid.Column="0" Grid.Row="9" Content="Move patch origin instead of copying"></Label>
+                <CheckBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Width="130" Grid.Row="9"
+                  IsChecked="{Binding MovePatchOriginInsteadOfCopying}"></CheckBox>
+            </Grid>
+        </GroupBox>
+    </StackPanel>
+</UserControl>

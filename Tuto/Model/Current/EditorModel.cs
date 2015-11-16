@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
+using Tuto.TutoServices.Assembler;
 
 
 namespace Tuto.Model
@@ -24,7 +25,7 @@ namespace Tuto.Model
             this.VideoFolder = videoFolder;
         }
 
-        public DirectoryInfo ChunkFolder { get { return Locations.TemporalDirectory; } }
+        public DirectoryInfo TempFolder { get { return Locations.TemporalDirectory; } }
 
         public Locations Locations { get; private set; }
         public GlobalData Global { get; set; }
@@ -42,7 +43,7 @@ namespace Tuto.Model
         public void OnMontageModelChanged()
         {
             OnNonSignificantChanged();
-            Montage.Montaged = false;
+            //Montage.Montaged = false;
         }
 
 
@@ -55,7 +56,9 @@ namespace Tuto.Model
             Locations = new Locations(this);
             WindowState = new WindowState();
             Global = new GlobalData();
+            Global.WorkSettings = new WorkSettings();
         }
+
 
         public void Save()
         {
@@ -108,7 +111,7 @@ namespace Tuto.Model
         {
             if (mode == Mode.Drop) return new bool[] { false, false };
             if (mode == Mode.Face) return new bool[] { true, false };
-            if (mode == Mode.Screen) return new bool[] { false, true};
+            if (mode == Mode.Desktop) return new bool[] { false, true};
             throw new ArgumentException();
 
         }
@@ -190,11 +193,11 @@ namespace Tuto.Model
             Tokens.MoveToken(rightChunkIndex, NewStart);
         }
         #endregion
-        #region Creation of FileChunks
-        public void CreateFileChunks()
+        #region Creation of final preparing
+        public void FormPreparedChunks()
         {
-            // Collapse adjacent chunks of same type into one FileChunk
-            Montage.FileChunks = new List<FileChunk>();
+             //Collapse adjacent chunks of same type into one FileChunk
+            Montage.PreparedChunks = new List<StreamChunk>();
             var activeChunks = Tokens.ToList();
 
             if(!activeChunks.Any())
@@ -210,18 +213,21 @@ namespace Tuto.Model
                 if (!currentChunk.StartsNewEpisode && currentChunk.Mode == oldChunk.Mode)
                     continue;
                 // or flush adjacent chunks into one and start new sequence
-                if (oldChunk.IsActive && oldChunk.Length!=0)
-                    Montage.FileChunks.Add(new FileChunk
-                    {
-                        Mode = oldChunk.Mode,
-                        StartTime = oldChunk.StartTime,
-                        Length = prevChunk.EndTime - oldChunk.StartTime,
-                        //SourceFilename = oldChunk.Mode == Mode.Face ? Locations.FaceVideo : Locations.DesktopVideo,
-                        StartsNewEpisode = oldChunk.StartsNewEpisode
-                    });
+                if (oldChunk.Length != 0)
+                {
+                    var preparedChunk = new StreamChunk(
+                        oldChunk.StartTime,
+                        prevChunk.EndTime,
+                        oldChunk.Mode,
+                        oldChunk.StartsNewEpisode
+                        );
+                    Montage.PreparedChunks.Add(preparedChunk);
+                }
                 oldChunk = currentChunk;
             }
         }
+
+      
         #endregion
 
     }

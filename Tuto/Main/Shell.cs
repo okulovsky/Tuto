@@ -30,10 +30,8 @@ namespace Tuto
                 var process = new Process();
                 process.StartInfo.FileName = fullPath;
                 process.StartInfo.Arguments = args;
-
                 process.StartInfo.UseShellExecute = !SilentMode;
                 process.StartInfo.CreateNoWindow = SilentMode;
-
                 process.Start();
                 process.WaitForExit();
                 if (process.ExitCode != 0)

@@ -23,7 +23,7 @@ namespace Tuto.Tests
                 new StreamChunk(0000,1000, Editor.Mode.Drop, false),
                 new StreamChunk(1000,2000, Editor.Mode.Face, false),
                 new StreamChunk(2000,3000, Editor.Mode.Drop, false),
-                new StreamChunk(3000,4000, Editor.Mode.Screen, false),
+                new StreamChunk(3000,4000, Editor.Mode.Desktop, false),
             };
             Assert.AreEqual(1500, SrtMaker.FindFinalLocation(3500, array));
         }

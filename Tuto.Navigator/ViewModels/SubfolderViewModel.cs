@@ -5,15 +5,29 @@ using System.Windows.Forms;
 using Tuto.Model;
 using System.Linq;
 using System.Diagnostics;
+using Editor;
+using Tuto.BatchWorks;
+using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace Tuto.Navigator
 {
 
-    public class SubfolderViewModel
+
+    public class SubfolderViewModel : INotifyPropertyChanged
     {
+        private EditorModel model { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         public SubfolderViewModel(EditorModel model)
         {
-            
+            this.model = model;
             StartEditorCommand = new RelayCommand(StartEditor);
             ResetMontageCommand = new RelayCommand(ResetMontage);
             OpenFolderCommand = new RelayCommand(OpenFolder);
@@ -24,32 +38,44 @@ namespace Tuto.Navigator
             if (model.Montage.Information != null && model.Montage.Information.Episodes.Count>0)
             {
                 TotalDuration = model.Montage.Information.Episodes.Sum(z => z.Duration.TotalMinutes);
+                int index = 0;
                 EpisodesNames = model.Montage.Information.Episodes
-                    .Select(z=>z.Name)
-                    .Aggregate((a, b) => a + "\r\n" + b);
+                    .Select(z => 
+                    {
+                        var info = new EpisodeBindingInfo();
+                        info.EpisodeInfo = z;
+                        info.FullName = model.Locations.GetOutputFile(index++).FullName;
+                        info.Model = model;
+                        return info;
+                    }).ToList();
             }
-            if (model.Montage.Montaged)
-                Montaged = true;
         }
         public bool Selected { get; set; }
 
         public bool Marked { get; private set; }
 
-        public bool Montaged { get; private set; }
+        private bool _readyToEdit;
+        public bool ReadyToEdit
+        {
+            get { return _readyToEdit; }
+            set { _readyToEdit = value; OnPropertyChanged("ReadyToEdit"); }
+        }
 
         public string FullPath { get; private set; }
 
         public string Name {get { return Path.GetFileName(FullPath); }}
 
-        public string EpisodesNames { get; private set; }
+        public List<EpisodeBindingInfo> EpisodesNames { get; private set; }
 
         public double? TotalDuration { get; private set; }
 
         public void StartEditor()
         {
-	        var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            var editorExe = new FileInfo(Path.Combine(path, "editor.exe"));
-            Shell.ExecQuoteArgs(false, editorExe, FullPath);
+
+            var model = EditorModelIO.Load(EditorModelIO.SubstituteDebugDirectories(FullPath));
+            var window = new MainEditorWindow();
+            window.DataContext = model;
+            window.Show();
         }
 
         public RelayCommand StartEditorCommand { get; private set; }
@@ -59,9 +85,8 @@ namespace Tuto.Navigator
             var ok = MessageBox.Show("This action only makes sense if you corrected an internal error in Tuto. Have you done it?", "Tuto.Navigator", MessageBoxButtons.YesNoCancel);
             if (ok != DialogResult.Yes) return;
             var model = EditorModelIO.Load(FullPath);
-            model.Montage.Montaged = false;
+            model.Montage.ReadyToEdit = false;
             EditorModelIO.Save(model);
-            Montaged = false;
         }
 
         public RelayCommand ResetMontageCommand { get; private set; }

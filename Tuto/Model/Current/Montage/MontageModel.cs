@@ -34,10 +34,13 @@ namespace Tuto.Model
         public VideoInformation Information { get; private set; }
 
         [DataMember]
-        public List<FileChunk> FileChunks { get; set; }
+        public List<StreamChunk> PreparedChunks { get; set; }
 
         [DataMember]
         public int SynchronizationShift { get; set; }
+
+        [DataMember]
+        public bool CrossfadesEnabled { get; set; }
 
         /// <summary>
         /// String fixes for video, which are to encoded as subtitiles
@@ -51,10 +54,10 @@ namespace Tuto.Model
         public List<Border> Borders { get; set; }
 
         /// <summary>
-        /// True, if the chunks were cut. This field is automatically set to false if the model changed
+        /// True, if the clips were prepared
         /// </summary>
         [DataMember]
-        public bool Montaged { get; set; }
+        public bool ReadyToEdit { get; set; }
 
         public MontageModel(int totalLength)
         {
@@ -63,6 +66,7 @@ namespace Tuto.Model
             Information = new VideoInformation();
             SoundIntervals = new List<SoundInterval>();
             SubtitleFixes = new List<SubtitleFix>();
+            CrossfadesEnabled = true;
         }
     }
 }

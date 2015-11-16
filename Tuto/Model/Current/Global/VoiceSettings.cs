@@ -15,10 +15,14 @@ namespace Tuto.Model
         [DataMember]
         public int SilenceMargin { get; set; }
 
+        [DataMember]
+        public int Test { get; set; }
+
         public VoiceSettings()
         {
             MaxDistanceToSilence = 1000;
             SilenceMargin = 300;
+            Test = 5;
         }
     }
 }

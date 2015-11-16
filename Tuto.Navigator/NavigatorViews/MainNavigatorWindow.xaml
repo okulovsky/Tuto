@@ -1,0 +1,107 @@
+﻿<Window x:Class="Tuto.Navigator.MainNavigatorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:model="clr-namespace:Tuto.Model;assembly=Tuto"
+        xmlns:navigator="clr-namespace:Tuto.Navigator"
+        Title="{Binding WindowTitle}" Height="350" Width="800"
+        >
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <DockPanel>
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+            <Button Command="{Binding SaveCommand}" Height="40" Width="40">Save</Button>
+            <Button Command="{Binding CreateBackupCommand}" Height="40" Width="40">Backup</Button>
+        </StackPanel>
+
+        <TabControl Grid.Row="1" HorizontalAlignment="Stretch" Height="auto" VerticalAlignment="Stretch" Width="auto">
+
+
+            <TabItem Header="Overview">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                        <Button Content="Refresh list" Command="{Binding RefreshCommand}"></Button>
+                        <!--<Button Content="Batch assembly" Command="{Binding AssembleSelectedCommand}"/>
+                        <Button Content="Batch repair face" Command="{Binding RepairFaceSelectedCommand}"/>-->
+                        <!--<Button Content="Upload" Command="{Binding UploadSelectedClipsCommand}"></Button>-->
+                        <Button Content="Tasks" Click="Tasks_Click" Width="51" Height="43"/>
+
+                        <StackPanel Orientation="Horizontal" Name="BatchWithOptions" Visibility="Collapsed">
+                            <StackPanel>
+                                <Label Content="FaceThumb"></Label>
+                                <CheckBox IsChecked="{Binding PreWorks.FaceThumb}" VerticalAlignment="Center" HorizontalAlignment="Center"></CheckBox>
+                            </StackPanel>
+
+                            <StackPanel>
+                                <Label Content="DesktopThumb"></Label>
+                                <CheckBox IsChecked="{Binding PreWorks.DesktopThumb}" VerticalAlignment="Center" HorizontalAlignment="Center"></CheckBox>
+                            </StackPanel>
+
+                            <StackPanel>
+                                <Label VerticalAlignment="Top" Content="Clean audio"></Label>
+                                <CheckBox IsChecked="{Binding PreWorks.CleanSound}" VerticalAlignment="Top" HorizontalAlignment="Center"></CheckBox>
+                            </StackPanel>
+
+                            <StackPanel>
+                                <Label Content="Conversion"></Label>
+                                <CheckBox IsChecked="{Binding PreWorks.ConvertNeeded}" VerticalAlignment="Center" HorizontalAlignment="Center"></CheckBox>
+                            </StackPanel>
+
+                            <StackPanel>
+                                <Label Content="Repair Face"></Label>
+                                <CheckBox IsChecked="{Binding PreWorks.RepairFace}" VerticalAlignment="Center" HorizontalAlignment="Center"></CheckBox>
+                            </StackPanel>
+
+                            <StackPanel>
+                                <Label Content="Repair Desktop"></Label>
+                                <CheckBox IsChecked="{Binding PreWorks.RepairDesktop}" VerticalAlignment="Center" HorizontalAlignment="Center"></CheckBox>
+                            </StackPanel>
+
+                            <StackPanel>
+                                <Label Content="Assembly"></Label>
+                                <CheckBox IsChecked="{Binding PreWorks.AssemblyNeeded}" VerticalAlignment="Center" HorizontalAlignment="Center"></CheckBox>
+                            </StackPanel>
+
+                            <StackPanel>
+                                <Label Content="All"></Label>
+                                <CheckBox IsChecked="{Binding PreWorks.All}" VerticalAlignment="Center" HorizontalAlignment="Center"></CheckBox>
+                            </StackPanel>
+
+                            <Rectangle Width="10"></Rectangle>
+                            <Button Content="Do works" Command="{Binding AssembleSelectedWithOptionsCommand}"/>
+                        </StackPanel>
+
+                        <!--<Button Content="Batch remontage" Command="{Binding RemontageSelectedCommand}"/>-->
+                    </StackPanel>
+                    <navigator:SubfoldersDataGrid DataContext="{Binding Subdirectories}"/>
+                </DockPanel>
+            </TabItem>
+
+            <TabItem Header="Topics" IsEnabled="{Binding IsLoaded}">
+                <navigator:PublishPanel DataContext="{Binding Publish}"/>
+            </TabItem>
+
+
+            <TabItem Header="Global Settings" IsEnabled="{Binding IsLoaded}">
+                <navigator:GlobalSettingsPanel DataContext="{Binding GlobalData}"/>
+            </TabItem>
+
+            <!--<TabItem Header="Debug">
+                <StackPanel
+                    Background="BurlyWood">
+                    <Button Content="Create test model in .\10 directory" 
+                            HorizontalAlignment="Center" Padding="5" Margin="10"/>
+                    <Button Content="Open command window in .\" 
+                            HorizontalAlignment="Center" Padding="5" Margin="10"/>
+                </StackPanel>
+            </TabItem>-->
+        </TabControl>
+
+
+    </DockPanel>
+
+</Window>

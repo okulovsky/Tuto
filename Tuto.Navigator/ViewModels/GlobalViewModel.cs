@@ -14,6 +14,7 @@ using Microsoft.Win32;
 using Tuto.Model;
 using Tuto.Navigator.ViewModels;
 using Tuto.Publishing;
+using Tuto.BatchWorks;
 
 namespace Tuto.Navigator
 {
@@ -25,8 +26,8 @@ namespace Tuto.Navigator
             //NewCommand = new RelayCommand(New);
             //OpenCommand = new RelayCommand(Open);
             //CloseCommand = new RelayCommand(Close, () => IsLoaded);
-         
 
+            PreWorks = new AssemblySettings();
             SaveCommand = new RelayCommand(Save, () => IsLoaded);
             RefreshCommand = new RelayCommand(ReadSubdirectories, () => IsLoaded);
 
@@ -36,9 +37,29 @@ namespace Tuto.Navigator
 
 
             AssembleSelectedCommand = new RelayCommand(AssembleSelected, somethingSelected);
+            AssembleSelectedWithOptionsCommand = new RelayCommand(AssembleWithOptions, somethingSelected);
             RemontageSelectedCommand = new RelayCommand(MontageSelected, somethingSelected);
 			RepairFaceSelectedCommand = new RelayCommand(RepairFaceSelected, somethingSelected);				 
             CreateBackupCommand = new RelayCommand(CreateBackup);
+            UploadSelectedClipsCommand = new RelayCommand(UploadClips);
+        }
+
+        public void AssembleWithOptions()
+        {
+            var work = Subdirectories.Where(z => z.Selected);
+            var models = work.Select(x => EditorModelIO.Load(x.FullPath));
+            var tasks = new List<BatchWork>();
+            foreach (var m in models)
+            {
+                tasks.AddRange(PreWorks.GetWorksAccordingSettings(m));
+            }
+            if (tasks.Count != 0)
+                queueWindow.Run(tasks);
+        }
+
+        public void UploadClips()
+        {
+
         }
 
         public void Load(FileInfo file)
@@ -54,21 +75,64 @@ namespace Tuto.Navigator
             ReadSubdirectories();
         }
 
-        List<EditorModel> models;
+        List<EditorModel> models { get; set; }
+        public BatchWorkWindow queueWindow = new BatchWorkWindow();
 
         public void ReadSubdirectories()
         {
             var data=EditorModelIO.ReadAllProjectData(LoadedFile.Directory);
+
+            //for older version
+            if (data.Global.WorkSettings == null)
+            {
+                data.Global.WorkSettings = new WorkSettings();
+            }
+
             this.globalData=data.Global;
             models = new List<EditorModel>();
-            models.AddRange(data.Models);
-
+            foreach (var m in data.Models)
+            {
+                models.Add(m);
+            }
             Subdirectories = new ObservableCollection<SubfolderViewModel>();
-            foreach(var e in data.Models)
-                Subdirectories.Add(new SubfolderViewModel(e));
-            Publish = new PublishViewModel(globalData);
+            foreach (var e in data.Models)
+            {
+                var m = new SubfolderViewModel(e);
+                Subdirectories.Add(m);
+            }
+            Publish = new PublishViewModel(globalData, models, () => { EditorModelIO.Save(GlobalData); });
+            FillQueue(data);
+        }
 
-                     
+        
+        void FillQueue(AllProjectData data)
+        {
+            var tasks = new List<BatchWork>();
+            for (var i = 0; i < data.Models.Count; i++)
+            {
+                var works = new List<BatchWork>();
+                var e = data.Models[i];
+                var m = Subdirectories[i];
+                if (!e.Locations.PraatVoice.Exists)
+                {
+                    works.Add(new PraatWork(e));
+                }
+                works.AddRange(data.Global.WorkSettings.GetBeforeEditingWorks(e));
+                if (works.Count() != 0)
+                {
+                    var t = works.Last();
+                    t.TaskFinished += (s, a) => { m.ReadyToEdit = true; e.Save(); };
+                    tasks.AddRange(works);
+                }
+                else m.ReadyToEdit = true;
+            }
+            if (tasks.Count != 0)
+                queueWindow.Run(tasks);
+        }
+
+        void Montage()
+        {
+
         }
 
         void CreateBackup()
@@ -109,12 +173,11 @@ namespace Tuto.Navigator
 
         void Run(bool forceMontage)
         {
-            var work = Subdirectories
-                .Where(z => z.Selected)
-                .SelectMany(z => TutoProgram.MakeAll(z.FullPath, forceMontage))
-                .ToArray();
-            var window = new BatchWorkWindow();
-            window.Run(work);
+            var work = Subdirectories.Where(z => z.Selected);
+            var models = work.Select(x => EditorModelIO.Load(x.FullPath));
+            var tasks = models.Select(x =>
+                new AssemblyVideoWork(x, x.Global.CrossFadesEnabled)).ToList();
+            queueWindow.Run(tasks);
 
         }
 
@@ -130,17 +193,11 @@ namespace Tuto.Navigator
 
 		public void RepairFaceSelected()
 		{
-			var work = Subdirectories
-				.Where(z => z.Selected)
-				.Select(z => new BatchWork
-					{
-						Name = "Repairing face in"+z.Name,
-						Work=() => 
-							TutoProgram.Repair(new DirectoryInfo(z.FullPath), true)
-					})
-				.ToArray();
-			var window = new BatchWorkWindow();
-			window.Run(work);
+            var work = Subdirectories.Where(z => z.Selected);
+            var models = work.Select(x => EditorModelIO.Load(x.FullPath));
+            var tasks = models.Select(x =>
+                new RepairVideoWork(x, x.Locations.FaceVideo, true)).ToList();
+            queueWindow.Run(tasks);
 		}
 
         #region commands
@@ -148,8 +205,10 @@ namespace Tuto.Navigator
         public RelayCommand SaveCommand { get; private set; }
         public RelayCommand RefreshCommand { get; private set; }
         public RelayCommand AssembleSelectedCommand { get; private set; }
+        public RelayCommand AssembleSelectedWithOptionsCommand { get; private set; }
         public RelayCommand RemontageSelectedCommand { get; private set; }
 		public RelayCommand RepairFaceSelectedCommand { get; private set; }
+        public RelayCommand UploadSelectedClipsCommand { get; private set; }
         public RelayCommand CreateBackupCommand { get; private set; }
         #endregion
 
@@ -185,6 +244,8 @@ namespace Tuto.Navigator
                 NotifyPropertyChanged();
             }
         }
+
+        public AssemblySettings PreWorks{get; set;}
 
         public PublishViewModel Publish
         {

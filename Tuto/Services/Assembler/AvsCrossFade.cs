@@ -2,7 +2,7 @@
 
 namespace Tuto.TutoServices.Assembler
 {
-    class AvsCrossFade : AvsNode
+    public class AvsCrossFade : AvsNode
     {
         public AvsNode FadeFrom { get; set; }
 

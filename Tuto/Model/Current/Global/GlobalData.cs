@@ -56,6 +56,18 @@ namespace Tuto.Model
 		[DataMember]
 		public string RelativeVideoListPath { get; set; }
 
+        [DataMember]
+        public WorkSettings WorkSettings { get; set; }
+
+        [DataMember]
+        public bool CrossFadesEnabled { get; set; }
+
+        [DataMember]
+        public bool ShowProcesses { get; set; }
+
+        [DataMember]
+        public bool MovePatchOriginInsteadOfCopying { get; set; }
+
         public DirectoryInfo GlobalDataFolder { get; internal set; }
 
         public GlobalLocations Locations { get; private set; }
@@ -74,6 +86,7 @@ namespace Tuto.Model
             Name = "";
             Locations = new GlobalLocations(this);
             TopicLevels = new List<TopicLevel>();
+            WorkSettings = new WorkSettings();
         }
     }
 }

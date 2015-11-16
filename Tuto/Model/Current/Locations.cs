@@ -17,7 +17,26 @@ namespace Tuto.Model
             return new FileInfo(Path.Combine(info.FullName, fname));
         }
 
+        internal FileInfo GetSuffixedName(FileInfo source, string suffix)
+        {
+            var newPath = source.FullName.Split('\\');
+            var nameAndExt = source.Name.Split('.');
+            nameAndExt[0] = nameAndExt[0] + suffix;
+            newPath[newPath.Length - 1] = string.Join(".", nameAndExt);
+            return new FileInfo(string.Join("\\", newPath));
+        }
+
+        internal FileInfo GetThumbName(FileInfo source)
+        {
+            return GetSuffixedName(source, "-thumb");
+        }
+
         public FileInfo PraatExecutable { get { return Make(model.ProgramFolder, "praatcon.exe"); } }
+        public FileInfo FFmpegExecutable { get { return new FileInfo(@"C:\ffmpeg\bin\ffmpeg.exe"); } }
+        public FileInfo SoxExecutable { get { return new FileInfo(@"C:\sox\sox.exe"); } }
+        public DirectoryInfo NoiseReductionFolder { get { return new DirectoryInfo(Directory.GetParent(model.ProgramFolder.FullName).Parent.FullName + @"\NoiseReduction"); } }
+
+        public FileInfo ClearedSound { get { return Make(model.Locations.FaceVideo.Directory, "cleaned.mp3"); } }
         public FileInfo PraatScriptSource { get { return Make(model.ProgramFolder, "split_pauses.praat"); } }
         public FileInfo AvsLibrary { get { return Make(model.ProgramFolder, "library.avs"); } }
         public FileInfo AutoLevelsLibrary { get { return Make(model.ProgramFolder, "autolevels.dll"); } }
@@ -28,9 +47,12 @@ namespace Tuto.Model
 
         public FileInfo FaceVideo { get { return Make(model.VideoFolder, FaceVideoFileName); } }
         public FileInfo DesktopVideo { get { return Make(model.VideoFolder, DesktopVideoFileName ); } }
+
+        public FileInfo FaceVideoThumb { get { return GetThumbName(FaceVideo); } }
+        public FileInfo DesktopVideoThumb { get { return GetThumbName(DesktopVideo); } }
         
-        public FileInfo ConvertedFaceVideo { get { return Make(model.ChunkFolder, "face-converted.avi"); } }
-        public FileInfo ConvertedDesktopVideo { get { return Make(model.ChunkFolder, "desktop-converted.avi"); } }
+        public FileInfo ConvertedFaceVideo { get { return Make(model.TempFolder, "face-converted.avi"); } }
+        public FileInfo ConvertedDesktopVideo { get { return Make(model.TempFolder, "desktop-converted.avi"); } }
         
         public FileInfo PraatVoice { get { return Make(model.VideoFolder, "voice.mp3"); } }
         public FileInfo LocalFilePath { get { return Make(model.VideoFolder, LocalFileName); } }
@@ -43,6 +65,16 @@ namespace Tuto.Model
             {
                 var relative=model.Global.Locations.RelativeTo(model.VideoFolder.FullName, model.Global.Locations.InputFolder.FullName);
                 var name = Path.Combine(model.Global.Locations.TemporalFolder.FullName,relative);
+                return new DirectoryInfo(name);
+            }
+        }
+
+        public DirectoryInfo PatchesDirectory
+        {
+            get
+            {
+                var relative = model.Global.Locations.RelativeTo(model.VideoFolder.FullName, model.Global.Locations.InputFolder.FullName);
+                var name = Path.Combine(model.Global.Locations.PatchesFolder.FullName, relative);
                 return new DirectoryInfo(name);
             }
         }
@@ -63,6 +95,7 @@ namespace Tuto.Model
         public const string OutputFolderName = "Output";
         public const string InputFolderName = "Input";
         public const string AllTemporaryFilesFolder = "Temp";
+        public const string ConvertedPatchFilesFolder = "Patches";
 
         public FileInfo GetOutputFile(int episodeNumber)
         {
@@ -82,7 +115,7 @@ namespace Tuto.Model
         {
             return new FileInfo(
                 Path.Combine(
-                    model.ChunkFolder.FullName,
+                    model.TempFolder.FullName,
                     string.Format("script_{0}.avs", episodeNumber)));
         }
 
@@ -90,7 +123,7 @@ namespace Tuto.Model
         {
             return new FileInfo(
                 Path.Combine(
-                    model.ChunkFolder.FullName,
+                    model.TempFolder.FullName,
                     string.Format("subtitles_{0}.srt", episodeNumber)));
         }
 

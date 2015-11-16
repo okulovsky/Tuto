@@ -1,0 +1,61 @@
+﻿<UserControl x:Class="Tuto.Navigator.SubfoldersDataGrid"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="572">
+   
+    <Grid>
+    <Grid.Resources>
+        <DataTemplate x:Key="DateTemplate" >
+            <StackPanel>
+                <ItemsControl ItemsSource="{Binding EpisodesNames}">
+                    <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="{Binding EpisodeInfo.Name}"></Label>
+                                    <!--<CheckBox VerticalAlignment="Center" IsChecked="{Binding Checked}"></CheckBox>-->
+                                </StackPanel>
+                            </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </DataTemplate>
+    </Grid.Resources>
+    
+    <DataGrid VerticalScrollBarVisibility="Visible" AutoGenerateColumns="False" ItemsSource="{Binding}"> 
+        <DataGrid.Columns>
+            <DataGridCheckBoxColumn Header="Selected" Binding="{Binding Selected}"/>
+                <DataGridTextColumn Binding="{Binding Name}" Header="Name"/>
+                <DataGridTemplateColumn Header="EpisodesNames" CellTemplate="{StaticResource DateTemplate}"></DataGridTemplateColumn>
+
+            <DataGridTextColumn Binding="{Binding TotalDuration}" Header="TotalDuration"/>
+            <DataGridCheckBoxColumn Binding="{Binding Marked, Mode=OneWay}" Header="Marked"/>
+            <DataGridCheckBoxColumn Binding="{Binding ReadyToEdit, Mode=OneWay}" Header="Ready for edit"/>
+            <DataGridTemplateColumn>
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <Button Width="50" Height="30" Command="{Binding StartEditorCommand}" IsEnabled="{Binding ReadyToEdit}" Content="Editor"/>
+                        </DataTemplate>                    
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+            <DataGridTemplateColumn>
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <Button Width="50" Height="30" Command="{Binding ResetMontageCommand}" Content="Reset montage"/>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+            <DataGridTemplateColumn>
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <Button Width="50" Height="30" Command="{Binding OpenFolderCommand}" Content="OpenFolder"/>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+        </DataGrid.Columns>
+        
+    </DataGrid>
+    </Grid>
+</UserControl>

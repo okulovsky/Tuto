@@ -22,6 +22,6 @@ namespace Tuto.TutoServices.Assembler
             get { return new[] { First, Second }; }
         }
 
-        protected override string Format { get { return "{0} = {1} + {2}"; } }
+        protected override string Format { get { return "{0} = {1} ++ {2}"; } }
     }
 }

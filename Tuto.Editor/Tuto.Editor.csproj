@@ -52,19 +52,19 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Windows\FixWindow.xaml">
+    <Page Include="EditorWindows\FixWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\HelpWindow.xaml">
+    <Page Include="EditorWindows\HelpWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\InfoWindow.xaml">
+    <Page Include="EditorWindows\InfoWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\MainWindow.xaml">
+    <Page Include="EditorWindows\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -81,18 +81,18 @@
     <Compile Include="EditorModes\Keyboard\KeyMap.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Timeline.cs" />
-    <Compile Include="Windows\Converters.cs" />
-    <Compile Include="Windows\FixWindow.xaml.cs">
+    <Compile Include="EditorWindows\Converters.cs" />
+    <Compile Include="EditorWindows\FixWindow.xaml.cs">
       <DependentUpon>FixWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\HelpData.cs" />
-    <Compile Include="Windows\HelpWindow.xaml.cs">
+    <Compile Include="EditorWindows\HelpData.cs" />
+    <Compile Include="EditorWindows\HelpWindow.xaml.cs">
       <DependentUpon>HelpWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\InfoWindow.xaml.cs">
+    <Compile Include="EditorWindows\InfoWindow.xaml.cs">
       <DependentUpon>InfoWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\MainWindow.xaml.cs">
+    <Compile Include="EditorWindows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>

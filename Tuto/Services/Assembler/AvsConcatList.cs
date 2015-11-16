@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Tuto.TutoServices.Assembler
 {
-    class AvsConcatList : AvsNode
+    public class AvsConcatList : AvsNode
     {
         public List<AvsNode> Items { get; set; }
 
@@ -12,7 +12,7 @@ namespace Tuto.TutoServices.Assembler
         {
             id = context.Id;
             Items.ForEach(item => item.SerializeToContext(context));
-            var allItems = string.Join(" + ", Items.Select(item => item.Id));
+            var allItems = string.Join(" ++ ", Items.Select(item => item.Id));
             context.AddData(string.Format(Format, Id, allItems));
         }
 
