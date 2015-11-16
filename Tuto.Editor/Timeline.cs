@@ -15,7 +15,7 @@ namespace Editor
         protected EditorModel editorModel { get { return (EditorModel)DataContext; } }
         protected MontageModel model { get { return editorModel.Montage; } }
 
-        protected readonly int RowHeight = 15;
+        protected readonly int RowHeight = 20;
         protected readonly int msInRow = 300000;
 
         protected readonly Brush[] fills = new Brush[] { Brushes.White, Brushes.MistyRose, Brushes.LightGreen, Brushes.LightBlue };
