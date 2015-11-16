@@ -63,7 +63,7 @@ namespace Tuto.Navigator
 
         public string FullPath { get; private set; }
 
-        public string Name {get { return Path.GetFileName(FullPath); }}
+        public string Name {get { return Model.Locations.RelativeInputLocation; }}
 
         public List<EpisodeBindingInfo> EpisodesNames { get; private set; }
 

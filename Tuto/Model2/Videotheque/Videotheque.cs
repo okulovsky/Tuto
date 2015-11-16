@@ -217,45 +217,58 @@ namespace Tuto.Model
 				data);
 			return finfo;
 		}
-		
-		void LoadExternalReferences(IVideothequeLoadingUI ui)
-		{
-            //loading startup settings
-			CheckFile(Locations.StartupSettings, ui,
-				"Startup settings are not found. It is probably the first time you start Tuto. ",
-				new VideothequeLoadingRequestItem
-					{
-						Prompt = "Create default startup settings. Be ready to locate external software",
-						SuggestedPath = Locations.StartupSettings.FullName,
-						Type = VideothequeLoadingRequestItemType.NoFile,
-						InitFile = CreateDefaultStartup
-					});
 
-			StartupSettings = HeadedJsonFormat.Read<VideothequeStartupSettings>(Locations.StartupSettings);
+        void LoadExternalReferences(IVideothequeLoadingUI ui)
+        {
+            //loading startup settings
+            CheckFile(Locations.StartupSettings, ui,
+                "Startup settings are not found. It is probably the first time you start Tuto. ",
+                new VideothequeLoadingRequestItem
+                    {
+                        Prompt = "Create default startup settings. Be ready to locate external software",
+                        SuggestedPath = Locations.StartupSettings.FullName,
+                        Type = VideothequeLoadingRequestItemType.NoFile,
+                        InitFile = CreateDefaultStartup
+                    });
+
+            StartupSettings = HeadedJsonFormat.Read<VideothequeStartupSettings>(Locations.StartupSettings);
             FileInfo file;
 
-			file = CheckFile(Locations.FFmpegExecutable, ui, 
-				"FFMPEG is a free software that processes videofiles. You have to install x64 version of it from http://ffmpeg.org/ prior to using Tuto.",
-				new VideothequeLoadingRequestItem
-				{
-					Prompt="FFMPEG is installed. I'm ready to locate ffmpeg.exe",
-					Type =  VideothequeLoadingRequestItemType.OpenFile,
-					 RequestedFileName = "ffmpeg.exe",
-				}
-				);
+            file = CheckFile(Locations.FFmpegExecutable, ui,
+                "FFMPEG is a free software that processes videofiles. You have to install x64 version of it from http://ffmpeg.zeranoe.com/builds/ prior to using Tuto.",
+                new VideothequeLoadingRequestItem
+                {
+                    Prompt = "FFMPEG is installed. I'm ready to locate ffmpeg.exe",
+                    Type = VideothequeLoadingRequestItemType.OpenFile,
+                    RequestedFileName = "ffmpeg.exe",
+                }
+                );
             StartupSettings.FFMPEGPath = file.FullName;
 
-			file = CheckFile(Locations.SoxExecutable, ui,
-				"SOX is a software that processes audiofiles. You have to install it from http://sox.sourceforge.net/ prior to using Tuto.",
-				new VideothequeLoadingRequestItem
-				{
-					Prompt = "SOX is installed. I'm ready to locate sox.exe",
-					Type = VideothequeLoadingRequestItemType.OpenFile,
-					RequestedFileName = "sox.exe",
-				}
-				);
+            file = CheckFile(Locations.SoxExecutable, ui,
+                "SOX is a free software that processes audiofiles. You have to install it from http://sox.sourceforge.net/ prior to using Tuto.",
+                new VideothequeLoadingRequestItem
+                {
+                    Prompt = "SOX is installed. I'm ready to locate sox.exe",
+                    Type = VideothequeLoadingRequestItemType.OpenFile,
+                    RequestedFileName = "sox.exe",
+                }
+                );
             StartupSettings.SoxPath = file.FullName;
-		}
+
+            var directory = CheckFolder(Locations.AviSynth, ui,
+                "AviSynth is a free software that enables scripting of videofiles. You have to install it from http://avisynth.nl/index.php/AviSynth+#Development_branch , version greater than r1800, prior to using Tuto.",
+                new VideothequeLoadingRequestItem
+                {
+                    Prompt = "AviSynth is installed. I'm ready to locate its folder",
+                    Type = VideothequeLoadingRequestItemType.Directory,
+                }
+                );
+            StartupSettings.AviSynthPath = directory.FullName;
+
+
+          
+        }
 
 		static FileInfo CreateEmptyVideotheque(string location)
 		{
@@ -418,7 +431,7 @@ namespace Tuto.Model
                 var path = MyPath.RelativeTo(e.Value.FullName,RawFolder.FullName);
                 path = MyPath.CreateHierarchicalName(path);
                 var finfo=new FileInfo(Path.Combine(ModelsFolder.FullName,path+"."+Names.ModelExtension));
-                var model = new EditorModel(finfo, e.Value, this, new MontageModel(360000, e.Key), new WindowState());
+                var model = new EditorModel(finfo, e.Value, this, new MontageModel(3600000, e.Key), new WindowState());
                 model.Montage.ModificationTime = DateTime.Now;
                 models.Add(model);
             }

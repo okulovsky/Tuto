@@ -34,6 +34,8 @@ namespace Tuto.Model
         public FileInfo NR { get { return Make(videotheque.ProgramFolder, "NoiseReduction", "nr.exe"); } }
 		public FileInfo StartupSettings { get { return Make(videotheque.ProgramFolder, "startup.json"); } }
 
+        public DirectoryInfo AviSynth { get { if (videotheque.StartupSettings.AviSynthPath == null) return null; return new DirectoryInfo(videotheque.StartupSettings.AviSynthPath); } }
+
 		[Obsolete]
 		public FileInfo AvsLibrary { get { return Make(videotheque.ProgramFolder, "library.avs"); } }
 		[Obsolete]

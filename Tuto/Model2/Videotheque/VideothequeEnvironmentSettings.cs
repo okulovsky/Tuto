@@ -13,7 +13,11 @@ namespace Tuto.Model
         [DataMember]
         public string FFMPEGPath { get; set; }
         [DataMember]
-        public string SoxPath { get; set; }        
+        public string SoxPath { get; set; }
+
+        [DataMember]
+        public string AviSynthPath { get; set; }
+
         [DataMember]
         public List<string> LastLoadedProjects { get; set; }
 

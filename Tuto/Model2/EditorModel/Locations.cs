@@ -54,6 +54,8 @@ namespace Tuto.Model
 
         public FileInfo AvsLibrary { get { return Make(model.Videotheque.ProgramFolder, "library.avs"); } }
         public FileInfo AutoLevelsLibrary { get { return Make(model.Videotheque.ProgramFolder, "autolevels.dll"); } }
+
+        public string RelativeInputLocation { get { return MyPath.RelativeTo(model.RawLocation.FullName, model.Videotheque.RawFolder.FullName); } }
      
 
         [Obsolete]

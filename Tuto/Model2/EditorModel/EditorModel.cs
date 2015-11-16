@@ -15,10 +15,10 @@ namespace Tuto.Model
 {
     public class EditorModel
     {
-		public readonly Locations Locations;
-        public readonly Videotheque Videotheque;
-		public readonly MontageModel Montage;
-		public readonly WindowState WindowState;
+        public Locations Locations { get; private set; }
+        public Videotheque Videotheque { get; private set; }
+        public MontageModel Montage { get; private set; }
+        public WindowState WindowState { get; private set; }
 		public readonly FileInfo ModelFileLocation;
 		public readonly DirectoryInfo RawLocation;
 		public DirectoryInfo TempFolder
