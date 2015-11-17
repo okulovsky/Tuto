@@ -13,6 +13,11 @@ namespace Tuto.Model
 
 	public class LoadingException : Exception { }
 
+    public class RawFileHashes
+    {
+        public readonly Dictionary<string, DirectoryInfo> Hashes = new Dictionary<string, DirectoryInfo>();
+        public readonly Dictionary<string, List<DirectoryInfo>> DuplicatedHashes = new Dictionary<string, List<DirectoryInfo>>();
+    }
 
 	public class Videotheque
 	{
@@ -50,7 +55,7 @@ namespace Tuto.Model
 
 
 
-        Dictionary<string,DirectoryInfo> binaryHashes;
+        Dictionary<string, DirectoryInfo> binaryHashes;
 		List<Tuple<FileContainer,FileInfo>> loadedContainer;
         List<EditorModel> models;
         public IEnumerable<EditorModel> EditorModels { get { return models; } }
@@ -365,20 +370,30 @@ namespace Tuto.Model
 			}
 		}
 
-		public static void ComputeHashesInRawSubdirectories(DirectoryInfo directory, string targetFileName, string hashFileName, bool recomputeAll, Dictionary<string, DirectoryInfo> hashes)
+		public static void ComputeHashesInRawSubdirectories(DirectoryInfo directory, string targetFileName, string hashFileName, bool recomputeAll, RawFileHashes hashes)
 		{
 			var files = directory.GetFiles();
 			if (files.Any(z => z.Name == targetFileName))
 			{
-				if (!recomputeAll)
-					if (files.Any(z => z.Name == hashFileName))
-					{
-                        hashes[File.ReadAllText(Path.Combine(directory.FullName, hashFileName))] = directory;
-						return;
-					}
-				var hash = ComputeHash(new FileInfo(Path.Combine(directory.FullName, targetFileName)));
-				File.WriteAllText(Path.Combine(directory.FullName, hashFileName), hash);
-                hashes[hash] = directory;
+                string hash = null;
+                if (!recomputeAll && files.Any(z => z.Name == hashFileName))
+                    hash = File.ReadAllText(Path.Combine(directory.FullName, hashFileName));
+                else
+                {
+                    hash = ComputeHash(new FileInfo(Path.Combine(directory.FullName, targetFileName)));
+                    File.WriteAllText(Path.Combine(directory.FullName, hashFileName), hash);
+                }
+                if (hashes.Hashes.ContainsKey(hash))
+                {
+                    if (!hashes.DuplicatedHashes.ContainsKey(hash))
+                    {
+                        hashes.DuplicatedHashes[hash] = new List<DirectoryInfo>();
+                        hashes.DuplicatedHashes[hash].Add(hashes.Hashes[hash]);
+                    }
+                    hashes.DuplicatedHashes[hash].Add(directory);
+                }
+                else 
+                    hashes.Hashes[hash] = directory;
 			}
 			else foreach (var d in directory.GetDirectories())
 					ComputeHashesInRawSubdirectories(d, targetFileName, hashFileName, recomputeAll, hashes);
@@ -387,8 +402,18 @@ namespace Tuto.Model
 		void LoadBinaryHashes(IVideothequeLoadingUI ui)
 		{
             if (ui!=null) ui.StartPOSTWork("Indexing videofiles in " + RawFolder.FullName);
-			binaryHashes = new Dictionary<string,DirectoryInfo>();
-            ComputeHashesInRawSubdirectories(RawFolder, Names.FaceFileName, Names.HashFileName, false, binaryHashes);
+            var hashes = new RawFileHashes();
+            ComputeHashesInRawSubdirectories(RawFolder, Names.FaceFileName, Names.HashFileName, false, hashes);
+            if (hashes.DuplicatedHashes.Count != 0)
+            {
+                var message="Some input video files are duplicated. This is not acceptable. Please resolve the issue. The duplications are:\r\n";
+                foreach(var e in hashes.DuplicatedHashes)
+                    message+=e.Value.Select(z=>z.FullName).Select(z=>MyPath.RelativeTo(z,RawFolder.FullName)).Aggregate((a,b)=>a+", "+b)+"\r\n";
+                if (ui!=null) 
+                    ui.Request(message, new VideothequeLoadingRequestItem[0]);
+                throw new LoadingException();
+            }
+            binaryHashes = hashes.Hashes;
             if (ui != null) ui.CompletePOSTWork(true);
 		}
 
