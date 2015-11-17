@@ -33,45 +33,47 @@ namespace Tuto.Init
 
 		void BrowseButton_Click(object sender, RoutedEventArgs e)
 		{
-			var context = (VideothequeLoadingRequestItem)DataContext;
+			var context = (VideothequeItemViewModel)DataContext;
 			if (context == null) throw new Exception();
-			if (context.Type == VideothequeLoadingRequestItemType.NoFile) throw new Exception();
-			if (context.Type==  VideothequeLoadingRequestItemType.OpenFile)
+			if (context.Item.Type == VideothequeLoadingRequestItemType.NoFile) throw new Exception();
+			if (context.Item.Type==  VideothequeLoadingRequestItemType.OpenFile)
 			{
 				var wnd = new System.Windows.Forms.OpenFileDialog();
 				var result = wnd.ShowDialog();
 				if (result == DialogResult.OK)
 				{
-					context.SuggestedPath = wnd.FileName;
-				
+					SuggestedPath.Text = wnd.FileName;
+                    context.Selected = true;
 				}
 			}
-			if (context.Type == VideothequeLoadingRequestItemType.SaveFile)
+			if (context.Item.Type == VideothequeLoadingRequestItemType.SaveFile)
 			{
 				var wnd = new System.Windows.Forms.SaveFileDialog();
 				var result = wnd.ShowDialog();
 				if (result == DialogResult.OK)
 				{
-					context.SuggestedPath = wnd.FileName;
+					SuggestedPath.Text = wnd.FileName;
+                    context.Selected = true;
 				}
 			}
-			if (context.Type == VideothequeLoadingRequestItemType.Directory)
+			if (context.Item.Type == VideothequeLoadingRequestItemType.Directory)
 			{
 				var wnd = new FolderBrowserDialog();
 				 var result = wnd.ShowDialog();
 				 if (result == DialogResult.OK)
 				 {
-					 context.SuggestedPath = wnd.SelectedPath;
+					 SuggestedPath.Text = wnd.SelectedPath;
+                     context.Selected = true;
 				 }
 			}
-			SuggestedPath.Text = context.SuggestedPath;
+			
 
 		}
 
 		void RequestItemControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
-			var context = (VideothequeLoadingRequestItem)DataContext;
-			if (context.Type == VideothequeLoadingRequestItemType.NoFile)
+			var context = (VideothequeItemViewModel)DataContext;
+			if (context.Item.Type == VideothequeLoadingRequestItemType.NoFile)
 				this.BrowsePanel.Visibility = System.Windows.Visibility.Collapsed;
 		}
 

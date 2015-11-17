@@ -437,9 +437,6 @@ namespace Tuto.Model
             }
             if (ui != null) ui.CompletePOSTWork(true);
         }
-
-
-
 		#endregion
 	}
 }

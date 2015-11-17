@@ -26,11 +26,12 @@ namespace Tuto.Init
 		public MainWindow()
 		{
 			InitializeComponent();
-			Options.SelectionChanged += Options_SelectionChanged;
 			OK.Click += OK_Click;
 			Cancel.Click += Cancel_Click;
 			DataContextChanged += MainWindow_DataContextChanged;
 		}
+
+        VideothequeRequestViewModel context { get { return ((VideothequeRequestViewModel)DataContext); } }
 
 		void MainWindow_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
@@ -39,20 +40,19 @@ namespace Tuto.Init
 
 		void Cancel_Click(object sender, RoutedEventArgs e)
 		{
-			((VideothequeRequestViewModel)DataContext).SelectedItem = null;
+            context.Cancelled = true;
 			handle.Set();
 		
 		}
 
 		void OK_Click(object sender, RoutedEventArgs e)
 		{
+            if (!context.OkIsEnabled) throw new Exception();
+            context.Cancelled = false;
 			handle.Set();
 		}
 
-		void Options_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			((VideothequeRequestViewModel)DataContext).SelectedItem = (VideothequeLoadingRequestItem)Options.SelectedItem;
-		}
+	
 
 		public void StartPOSTWork(string name)
 		{
@@ -72,16 +72,14 @@ namespace Tuto.Init
 		AutoResetEvent handle;
 		public VideothequeLoadingRequestItem Request(string prompt, VideothequeLoadingRequestItem[] items)
 		{
-			var viewModel = new VideothequeRequestViewModel
-			{
-				Prompt=prompt,
-				Items=items
-			};
+            var viewModel = new VideothequeRequestViewModel(prompt, items);
+
 			handle = new AutoResetEvent(false);
 			Dispatcher.BeginInvoke(new Action(() => DataContext = viewModel));
 			handle.WaitOne();
 
-			return viewModel.SelectedItem;
+            if (viewModel.Cancelled) return null;
+            return viewModel.Items.First(z => z.Selected).Item;	
 		}
 
 
