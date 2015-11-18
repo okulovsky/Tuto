@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Tuto.Model;
 
-namespace Tuto.Init
+namespace Tuto.NewMainWindow
 {
 	class Program
 	{
@@ -15,9 +15,9 @@ namespace Tuto.Init
 		public static void Main()
 		{
 			//File.Delete("startup.json");
+            var model = new List<TestModel> { new TestModel { Name = "abcd" }, new TestModel { Name = "xyz" } };
 			var wnd = new MainWindow();
-			Func<Videotheque> start = () => Videotheque.Load(null, wnd);
-			start.BeginInvoke(null, null);
+            wnd.DataContext = model;
 			new Application().Run(wnd);
 		}
 	}

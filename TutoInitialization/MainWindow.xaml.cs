@@ -16,7 +16,7 @@ using System.Windows.Shapes;
 using Tuto.Model;
 using Tuto.Model;
 
-namespace Tuto.Init
+namespace Tuto.NewMainWindow
 {
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
