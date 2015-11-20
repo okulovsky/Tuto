@@ -85,7 +85,7 @@ namespace Tuto.Navigator
             {
                 var works = new List<BatchWork>();
                 var e = m.Model;
-                if (!e.Locations.PraatVoice.Exists)
+                if (e.FileActionsEnabled && !e.Locations.PraatVoice.Exists)
                 {
                     works.Add(new PraatWork(e));
                 }

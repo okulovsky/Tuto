@@ -55,9 +55,6 @@ namespace Tuto.Model
         public FileInfo AvsLibrary { get { return Make(model.Videotheque.ProgramFolder, "library.avs"); } }
         public FileInfo AutoLevelsLibrary { get { return Make(model.Videotheque.ProgramFolder, "autolevels.dll"); } }
 
-        public string RelativeInputLocation { get { return MyPath.RelativeTo(model.RawLocation.FullName, model.Videotheque.RawFolder.FullName); } }
-     
-
         [Obsolete]
         public FileInfo PraatExecutable { get { return model.Videotheque.Locations.PraatExecutable; } }
         [Obsolete]
@@ -90,7 +87,7 @@ namespace Tuto.Model
 
         public FileInfo GetOutputFile(int episodeNumber)
         {
-            var fname = MyPath.RelativeTo(model.RawLocation.FullName, model.Videotheque.RawFolder.FullName);
+            var fname = model.Montage.DisplayedRawLocation;
             fname = MyPath.CreateHierarchicalName(fname);
             fname += episodeNumber + " " + model.Montage.Information.Episodes[episodeNumber].Name+".avi";
             var file = new FileInfo(

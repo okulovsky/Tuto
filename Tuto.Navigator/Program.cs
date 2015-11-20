@@ -14,9 +14,17 @@ namespace Tuto.Navigator
 {
     public static class Program
     {
+        public static void NewMain()
+        {
+
+        }
+
         [STAThread]
         public static void Main(string[] args)
         {
+           // NewMain(); return;
+
+
             var application = new Application();
             application.ShutdownMode = ShutdownMode.OnExplicitShutdown;                 
             var wnd = new Tuto.Init.MainWindow();
@@ -29,6 +37,8 @@ namespace Tuto.Navigator
 				MessageBox.Show("Cannot initialize Tuto");
 				return;
 			}
+
+
 
             var mainWindow = new MainNavigatorWindow();
             var globalModel = new VideothequeModel(videotheque);

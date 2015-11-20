@@ -21,6 +21,10 @@ namespace Tuto.Model
         public WindowState WindowState { get; private set; }
 		public readonly FileInfo ModelFileLocation;
 		public readonly DirectoryInfo RawLocation;
+        public bool FileActionsEnabled
+        {
+            get { return RawLocation != null; }
+        }
 		public DirectoryInfo TempFolder
 		{
 			get

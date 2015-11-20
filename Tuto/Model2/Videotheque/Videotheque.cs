@@ -361,7 +361,7 @@ namespace Tuto.Model
 					Type = VideothequeLoadingRequestItemType.OpenFile,
 				});
 
-			options.AddRange(StartupSettings.LastLoadedProjects.Take(3).Select(z => new VideothequeLoadingRequestItem
+			options.AddRange(StartupSettings.LastLoadedProjects.Where(z=>File.Exists(z)).Take(3).Select(z => new VideothequeLoadingRequestItem
 			{
 				Prompt = "Load videotheque " + z,
 				Type = VideothequeLoadingRequestItemType.NoFile,
@@ -486,9 +486,18 @@ namespace Tuto.Model
             {
                 var hash = e.Item1.MontageModel.RawVideoHash; 
                 if (hash == null) throw new Exception("No reference to video is specified in the model");
-                if (!binaryHashes.ContainsKey(hash)) throw new Exception("Wrong reference to video is specified in the model");
+                DirectoryInfo rawDirectory = null;
+                if (binaryHashes.ContainsKey(hash))
+                {
+                    rawDirectory=binaryHashes[hash];
+                    e.Item1.MontageModel.DisplayedRawLocation = MyPath.RelativeTo(rawDirectory.FullName, RawFolder.FullName);
+                }
+                else if (string.IsNullOrEmpty(e.Item1.MontageModel.DisplayedRawLocation))
+                {
+                    e.Item1.MontageModel.DisplayedRawLocation = "Some trash";
+                }
                 e.Item1.MontageModel.ModificationTime = e.Item2.LastWriteTime;
-                var model = new EditorModel(e.Item2, binaryHashes[hash], this, e.Item1.MontageModel, e.Item1.WindowState);
+                var model = new EditorModel(e.Item2, rawDirectory, this, e.Item1.MontageModel, e.Item1.WindowState);
                 binaryHashes.Remove(hash);
                 models.Add(model);
             }
@@ -532,7 +541,7 @@ namespace Tuto.Model
 						Guid = e.Guid,
 						Duration = e.Duration,
 						Name = e.Name,
-						OrdinalSuffix = m.Locations.RelativeInputLocation + "-"
+						OrdinalSuffix = m.Montage.DisplayedRawLocation + "-"
 								+ m.Montage.Information.Episodes.IndexOf(e)
 					});
 				}
