@@ -36,14 +36,17 @@ namespace Tuto.Init
 			var context = (VideothequeItemViewModel)DataContext;
 			if (context == null) throw new Exception();
 			if (context.Item.Type == VideothequeLoadingRequestItemType.NoFile) throw new Exception();
+
+			string fname = null;
+
 			if (context.Item.Type==  VideothequeLoadingRequestItemType.OpenFile)
 			{
 				var wnd = new System.Windows.Forms.OpenFileDialog();
 				var result = wnd.ShowDialog();
-				if (result == DialogResult.OK)
+				if (result == DialogResult.OK) 
 				{
-					SuggestedPath.Text = wnd.FileName;
-                    context.Selected = true;
+					fname = wnd.FileName;
+
 				}
 			}
 			if (context.Item.Type == VideothequeLoadingRequestItemType.SaveFile)
@@ -52,8 +55,7 @@ namespace Tuto.Init
 				var result = wnd.ShowDialog();
 				if (result == DialogResult.OK)
 				{
-					SuggestedPath.Text = wnd.FileName;
-                    context.Selected = true;
+					fname = wnd.FileName;
 				}
 			}
 			if (context.Item.Type == VideothequeLoadingRequestItemType.Directory)
@@ -62,11 +64,16 @@ namespace Tuto.Init
 				 var result = wnd.ShowDialog();
 				 if (result == DialogResult.OK)
 				 {
-					 SuggestedPath.Text = wnd.SelectedPath;
-                     context.Selected = true;
+					 fname = wnd.SelectedPath;
 				 }
 			}
-			
+	
+			if (fname!=null)
+			{
+				SuggestedPath.Text = fname;
+				context.Item.SuggestedPath = fname;
+				context.Selected = true;
+			}
 
 		}
 

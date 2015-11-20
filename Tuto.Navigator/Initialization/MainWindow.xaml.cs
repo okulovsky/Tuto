@@ -78,6 +78,7 @@ namespace Tuto.Init
 			Dispatcher.BeginInvoke(new Action(() => DataContext = viewModel));
 			handle.WaitOne();
 
+			Dispatcher.BeginInvoke(new Action(() => DataContext = null));
             if (viewModel.Cancelled) return null;
             return viewModel.Items.First(z => z.Selected).Item;	
 		}

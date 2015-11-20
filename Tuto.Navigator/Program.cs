@@ -24,6 +24,11 @@ namespace Tuto.Navigator
             var token = start.BeginInvoke(null, null);
             wnd.ShowDialog();
             var videotheque = start.EndInvoke(token);
+			if (videotheque == null)
+			{
+				MessageBox.Show("Cannot initialize Tuto");
+				return;
+			}
 
             var mainWindow = new MainNavigatorWindow();
             var globalModel = new VideothequeModel(videotheque);

@@ -25,15 +25,7 @@ namespace Tuto.Publishing
 				return;
 			}
 
-
-			string currentDirectoryName = "";
-
-			if (File.Exists(args[0]))
-				currentDirectoryName = new FileInfo(args[0]).Directory.FullName;
-			else 
-				currentDirectoryName = EditorModelIO.SubstituteDebugDirectories(args[0]);
-            
-			currentDirectory = new DirectoryInfo(currentDirectoryName);
+			var currentDirectory = new DirectoryInfo(args[0]);
             Application = new System.Windows.Application();
             var model = new MainViewModel(currentDirectory, ()=>SourcesFactory());
             var window = new MainWindow();
@@ -60,7 +52,7 @@ namespace Tuto.Publishing
             {
                 var data = catalog.Commit();
 				HeadedJsonFormat.Write(currentDirectory, data);               
-                (Application.MainWindow.DataContext as MainViewModel).Reload();
+                (Application.MainWindow.DataContext as MainViewModel).ReloadOld();
             }
             Application.MainWindow.Show();
         }

@@ -74,5 +74,11 @@ namespace Tuto.Model
             SubtitleFixes = new List<SubtitleFix>();
             CrossfadesEnabled = true;
         }
+
+		[Obsolete("Костыль. Убрать, когда заночу с Updater-ом")]
+		public void SetHash(string hash)
+		{
+			RawVideoHash = hash;
+		}
     }
 }
