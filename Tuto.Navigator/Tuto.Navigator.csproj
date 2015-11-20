@@ -174,7 +174,6 @@
       <DependentUpon>RequestItemControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Initialization\VideothequeRequestViewModel.cs" />
-    <Compile Include="NavigatorViews\WorkQueue.cs" />
     <Compile Include="Patch\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>

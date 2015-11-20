@@ -45,7 +45,7 @@ namespace Tuto.Navigator.ViewModels
                 if (CleanSound)
                     tasks.Add(new CreateCleanSoundWork(m.Locations.FaceVideo, m, true));
                 if (AssemblyNeeded)
-                    tasks.Add(new AssemblyVideoWork(m, m.Videotheque.CrossFadesEnabled));
+                    tasks.Add(new AssemblyVideoWork(m));
                 foreach (var e in tasks)
                     e.Forced = true;
             }
@@ -60,7 +60,7 @@ namespace Tuto.Navigator.ViewModels
                 tasks.Add(new CreateThumbWork(m.Locations.DesktopVideo, m, true));
             if (m.Videotheque.WorkSettings.FaceThumbSettings.CurrentOption != Options.Skip)
                 tasks.Add(new CreateThumbWork(m.Locations.FaceVideo, m, true));
-            tasks.Add(new AssemblyVideoWork(m, m.Videotheque.CrossFadesEnabled));
+            tasks.Add(new AssemblyVideoWork(m));
             return tasks;
         }
     }

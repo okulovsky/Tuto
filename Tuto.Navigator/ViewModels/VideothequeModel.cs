@@ -30,7 +30,14 @@ namespace Tuto.Navigator
             PreWorks = new AssemblySettings();
             SaveCommand = new RelayCommand(Save, () => true);
             RefreshCommand = new RelayCommand(() => { videotheque.Reload(); UpdateSubdirectories(); }, () => true);
-
+            MakeAllCommand = new RelayCommand(() =>
+                {
+                    var work = Subdirectories.Where(z => z.Selected);
+                    var models = work.Select(x => x.Model);
+                    foreach (var e in models)
+                        Program.WorkQueue.Run(new MakeAll(e));
+                }
+                );
 
             Func<bool> somethingSelected=() => Subdirectories.Any(z => z.Selected);
 
@@ -51,7 +58,6 @@ namespace Tuto.Navigator
                 var m = new SubfolderViewModel(e);
                 Subdirectories.Add(m);
             }
-            FillQueue();
         }
 
         public void AssembleWithOptions()
@@ -78,7 +84,7 @@ namespace Tuto.Navigator
 
 
         
-        void FillQueue()
+        public void FillQueue()
         {
             var tasks = new List<BatchWork>();
             foreach(var m in Subdirectories)
@@ -142,7 +148,7 @@ namespace Tuto.Navigator
             var work = Subdirectories.Where(z => z.Selected);
             var models = work.Select(x => x.Model);
             var tasks = models.Select(x =>
-                new AssemblyVideoWork(x, x.Videotheque.CrossFadesEnabled)).ToList();
+                new AssemblyVideoWork(x)).ToList();
             Program.WorkQueue.Run(tasks);
 
         }
@@ -166,10 +172,12 @@ namespace Tuto.Navigator
             Program.WorkQueue.Run(tasks);
 		}
 
+
         #region commands
 
         public RelayCommand SaveCommand { get; private set; }
         public RelayCommand RefreshCommand { get; private set; }
+        public RelayCommand MakeAllCommand { get; private set; }
         public RelayCommand AssembleSelectedCommand { get; private set; }
         public RelayCommand AssembleSelectedWithOptionsCommand { get; private set; }
         public RelayCommand RemontageSelectedCommand { get; private set; }

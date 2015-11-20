@@ -32,7 +32,6 @@ namespace Tuto.Navigator
         private void Window_Closing(object sender, CancelEventArgs e)
         {
             e.Cancel = true;
-            this.Hide();
         }
 
         private void Window_Deactivated(object sender, EventArgs e)

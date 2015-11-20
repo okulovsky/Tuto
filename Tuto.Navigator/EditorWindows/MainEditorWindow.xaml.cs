@@ -95,7 +95,7 @@ namespace Editor
             Assembly.Click += (s, a) =>
                 {
                     model.Save();
-                    Program.WorkQueue.Run(new AssemblyVideoWork(model, model.Videotheque.CrossFadesEnabled));
+                    Program.WorkQueue.Run(new AssemblyVideoWork(model));
                 };
 
             RepairFace.Click += (s, a) =>
@@ -103,6 +103,12 @@ namespace Editor
                     model.Save();
                     var task = new RepairVideoWork(model, model.Locations.FaceVideo, true);
                     Program.WorkQueue.Run(task);
+                };
+
+            MakeAll.Click += (s, a) =>
+                {
+                    model.Save();
+                    Program.WorkQueue.Run(new MakeAll(model));
                 };
 
             NoiseReduction.Click += (s, a) =>
@@ -176,7 +182,7 @@ namespace Editor
                     patchWindow.LoadModel(m, model);
                     patchWindow.Show();
                 }
-                else Program.WorkQueue.Run(new AssemblyVideoWork(model, model.Videotheque.CrossFadesEnabled));
+                else Program.WorkQueue.Run(new AssemblyVideoWork(model));
             };
             GoTo.Click += (s, a) =>
                 {

@@ -9,6 +9,7 @@ using System.Windows.Shapes;
 using Tuto.Model;
 using Editor;
 using System.Threading;
+using Tuto.BatchWorks;
 
 namespace Tuto.Navigator
 {
@@ -28,11 +29,12 @@ namespace Tuto.Navigator
             var mainWindow = new MainNavigatorWindow();
             var globalModel = new VideothequeModel(videotheque);
 
-            WorkQueue = new WorkQueue(globalModel);
+            WorkQueue = new WorkQueue(globalModel.Videotheque.Data.WorkSettings);
             var queueWindow = new BatchWorkWindow();
             queueWindow.AssignCancelOperation(WorkQueue.CancelTask);
             queueWindow.DataContext = WorkQueue.Work;
             WorkQueue.Dispatcher = queueWindow.Dispatcher;
+            globalModel.FillQueue();
             queueWindow.Show();
 
             mainWindow.DataContext = globalModel;

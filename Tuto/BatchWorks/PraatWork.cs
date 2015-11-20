@@ -41,7 +41,7 @@ namespace Tuto.BatchWorks
             var work = 
                 String.Format(
                     CultureInfo.InvariantCulture,
-                    " \"{0}\" \"{1}\" \"{2}\" {3} {4} {5} {6} {7} {8} {9}",
+                    " --run \"{0}\" \"{1}\" \"{2}\" {3} {4} {5} {6} {7} {8} {9}",
                     Model.Locations.PraatScriptSource,
                     Model.Locations.PraatVoice,
                     Model.Locations.PraatOutput,
