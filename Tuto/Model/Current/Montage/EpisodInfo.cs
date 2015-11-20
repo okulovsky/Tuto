@@ -20,9 +20,11 @@ namespace Tuto.Model
         [DataMember]
         public string YoutubeId { get; set; }
 
+		[Obsolete]
         [DataMember]
         public string ItemPlaylistId { get; set; }
 
+		[Obsolete]
         [DataMember]
         public string PlaylistId { get; set; }
 

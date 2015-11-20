@@ -34,6 +34,7 @@ namespace Tuto.Model
 		public VideothequeLocations Locations { get; private set; }
 
 
+
         #region Всякая старая дичь
         [Obsolete]
         public VoiceSettings VoiceSettings { get { return Data.VoiceSettings; } }
@@ -65,6 +66,13 @@ namespace Tuto.Model
 		List<PublishingModel> publisingModels;
 		public IEnumerable<PublishingModel> PublishingModels { get { return publisingModels; } }
 		
+		public IEnumerable<Tuple<EditorModel,EpisodInfo>> Episodes
+		{
+			get
+			{
+				return EditorModels.SelectMany(z => z.Montage.Information.Episodes.Select(x => Tuple.Create(z, x)));
+			}
+		}
 
 		private Videotheque()
 		{
@@ -79,23 +87,29 @@ namespace Tuto.Model
             CreateModels(null);
         }
 
-		public static Videotheque Load(string videothequeFileName, IVideothequeLoadingUI ui)
+		public static Videotheque Load(string videothequeFileName, IVideothequeLoadingUI ui, bool ignoreExternalSoftware)
 		{
 			ui = new LoadingUIDecorator(ui);
 			Videotheque v = new Videotheque();
+			v.ProgramFolder = new FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).Directory;
 			v.Locations = new VideothequeLocations(v);
 			try
 			{
-				v.LoadBuiltInSoftware(ui);
-				v.LoadExternalReferences(ui);
-                v.SaveStartupFile();
-
+				if (!ignoreExternalSoftware)
+				{
+					v.LoadBuiltInSoftware(ui);
+					v.LoadExternalReferences(ui);
+					v.SaveStartupFile();
+				}
+				else
+				{
+					v.StartupSettings = new VideothequeStartupSettings();
+				}
 
 				v.LoadVideotheque(videothequeFileName, ui);
                 var fname = v.VideothequeSettingsFile.FullName;
                 if (v.StartupSettings.LastLoadedProjects.Contains(fname))
                     v.StartupSettings.LastLoadedProjects.Remove(fname);
-
                 v.StartupSettings.LastLoadedProjects.Insert(0, fname);
                 v.SaveStartupFile();
                 
@@ -224,8 +238,7 @@ namespace Tuto.Model
 		#region Basic loading procedures
 		void LoadBuiltInSoftware(IVideothequeLoadingUI ui)
         {
-			ProgramFolder = new FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).Directory;
-
+		
 			//initialize built-in components
 			CheckFile(Locations.GNP, ui,  "GNP is not found in program's folder. Please reinstall Tuto");
             CheckFile(Locations.NR, ui, "NR is not found in program's folder. Please reinstall Tuto");

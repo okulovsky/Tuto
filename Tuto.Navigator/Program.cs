@@ -20,7 +20,7 @@ namespace Tuto.Navigator
             var application = new Application();
             application.ShutdownMode = ShutdownMode.OnExplicitShutdown;                 
             var wnd = new Tuto.Init.MainWindow();
-            Func<Videotheque> start = () => Videotheque.Load(null, wnd);
+            Func<Videotheque> start = () => Videotheque.Load(null, wnd, false);
             var token = start.BeginInvoke(null, null);
             wnd.ShowDialog();
             var videotheque = start.EndInvoke(token);

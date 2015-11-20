@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Tuto;
 using Tuto.Model;
+using Tuto.Publishing;
 
 namespace V3Updater
 {
@@ -13,7 +14,9 @@ namespace V3Updater
 	{
 		static string InputFolderName=@"C:\TestMigration\Input";
 		static string ModelsFolderName=@"C:\TestMigration\Models";
-		static string[] PublishingModels = new[] { @"C:\TestMigration\ObsoletePublishing" };
+		static string[] PublishingModels = new[] { @"C:\TestMigration\ObsoletePublishing\testing" };
+		static string VideothequeFileName = @"C:\TestMigration\Videotheque";
+
 
 		static void Recursive(DirectoryInfo dir)
 		{
@@ -36,9 +39,47 @@ namespace V3Updater
 			HeadedJsonFormat.Write(new FileInfo(fname), container);
 		}
 
+		static IEnumerable<IMaterialSource> SourcesFactory()
+		{
+			yield break;
+		}
+
+		static void ParsePublishing(string path, Videotheque v)
+		{
+			var dir = new DirectoryInfo(path);
+			var globalData = CourseTreeData.Load(dir);
+			var root = ItemTreeBuilder.Build<FolderWrap, LectureWrap, VideoWrap>(globalData);
+			YoutubeDataBinding.LoadYoutubeData(root, dir);
+			var Settings= HeadedJsonFormat.Read<PublishingSettings>(dir);
+			foreach(var video in root.Subtree())
+			{
+				var clip = video.Get<YoutubeClip>();
+				if (clip == null) continue;
+				var episode =
+						v.Episodes.Where(z => z.Item2.Guid == video.Guid).FirstOrDefault();
+				if (episode!=null)
+				{
+					episode.Item2.YoutubeId = clip.Id;
+					episode.Item1.Save();
+				}
+			}
+			var pubModel = new PublishingModel
+			{
+				CourseStructure=globalData.Structure,
+				 Videos = globalData.Videos,
+				  Settings=Settings,
+			};
+			var pubName=Path.Combine(ModelsFolderName,dir.Name+"."+Names.PublishingModelExtension);
+			HeadedJsonFormat.Write(new FileInfo(pubName), pubModel);
+		}
+
+
 		static void Main(string[] args)
 		{
 			Recursive(new DirectoryInfo(InputFolderName));
+			var v = Videotheque.Load(VideothequeFileName, null, true);
+			foreach (var e in PublishingModels)
+				ParsePublishing(e, v);
 		}
 	}
 }
