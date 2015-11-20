@@ -16,6 +16,12 @@ namespace Tuto
             var handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public void NotifyAll()
+        {
+            foreach (var e in GetType().GetProperties())
+                NotifyPropertyChanged(e.Name);
+        }
     }
 
     public static class NotifierModelExtensions
