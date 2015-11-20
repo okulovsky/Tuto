@@ -64,7 +64,7 @@ namespace Tuto.Navigator
                 tasks.AddRange(PreWorks.GetWorksAccordingSettings(m));
             }
             if (tasks.Count != 0)
-                queueWindow.Run(tasks);
+                Program.WorkQueue.Run(tasks);
         }
 
         public void UploadClips()
@@ -99,7 +99,7 @@ namespace Tuto.Navigator
                 else m.ReadyToEdit = true;
             }
             if (tasks.Count != 0)
-                queueWindow.Run(tasks);
+                Program.WorkQueue.Run(tasks);
         }
 
         void Montage()
@@ -143,7 +143,7 @@ namespace Tuto.Navigator
             var models = work.Select(x => x.Model);
             var tasks = models.Select(x =>
                 new AssemblyVideoWork(x, x.Videotheque.CrossFadesEnabled)).ToList();
-            queueWindow.Run(tasks);
+            Program.WorkQueue.Run(tasks);
 
         }
 
@@ -163,7 +163,7 @@ namespace Tuto.Navigator
             var models = work.Select(x => x.Model);
             var tasks = models.Select(x =>
                 new RepairVideoWork(x, x.Locations.FaceVideo, true)).ToList();
-            queueWindow.Run(tasks);
+            Program.WorkQueue.Run(tasks);
 		}
 
         #region commands

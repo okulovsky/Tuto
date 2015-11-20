@@ -27,7 +27,14 @@ namespace Tuto.Navigator
 
             var mainWindow = new MainNavigatorWindow();
             var globalModel = new VideothequeModel(videotheque);
-            BatchWorkQueueWindow = globalModel.queueWindow;
+
+            WorkQueue = new WorkQueue(globalModel);
+            var queueWindow = new BatchWorkWindow();
+            queueWindow.AssignCancelOperation(WorkQueue.CancelTask);
+            queueWindow.DataContext = WorkQueue.Work;
+            WorkQueue.Dispatcher = queueWindow.Dispatcher;
+            queueWindow.Show();
+
             mainWindow.DataContext = globalModel;
             mainWindow.WindowState = System.Windows.WindowState.Maximized;
 
@@ -44,7 +51,7 @@ namespace Tuto.Navigator
 
         public static string MontageFile="montage.editor";
         public static string TimesFile="times.txt";
-        public static BatchWorkWindow BatchWorkQueueWindow {get; set;}
+        public static WorkQueue WorkQueue { get; set; }
 
 
         
