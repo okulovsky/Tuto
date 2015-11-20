@@ -76,11 +76,13 @@ namespace Editor
 
                 case KeyboardCommands.SpeedUp:
                     model.WindowState.SpeedRatio+=0.5;
-                    return;
+					model.WindowState.SpeedRatio = Math.Min(3, model.WindowState.SpeedRatio);
+                     return;
 
                 case KeyboardCommands.SpeedDown:
                     model.WindowState.SpeedRatio -= 0.5;
-                    return;
+					 model.WindowState.SpeedRatio = Math.Max(0.5, model.WindowState.SpeedRatio);
+                  return;
             }
 
         }

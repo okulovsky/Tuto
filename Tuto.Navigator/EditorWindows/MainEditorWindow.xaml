@@ -57,19 +57,17 @@
             </StackPanel>
             <Button Content="Tools" x:Name="Tools" Height="50" Width="50" Click="Tools_Click"/>
         </StackPanel>
-        <StackPanel Orientation="Vertical" DockPanel.Dock="Right">
-            <Label Content="{Binding WindowState.CurrentPosition}"/>
+            <Label Content="{Binding WindowState.CurrentPosition}" DockPanel.Dock="Top"/>
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
             <MediaElement 
-                    Width="400"
+                    Width="500"
                     x:Name="FaceVideo" 
                     Grid.Column="0"/>
             <MediaElement 
-                    Width="400"
+                    Width="500"
                     x:Name="ScreenVideo"  
                     Grid.Column="1"/>
-
             <TextBlock x:Name="Subtitles" Width="400" TextWrapping="Wrap" FontSize="18"/>
-
         </StackPanel>
         <StackPanel Orientation="Vertical">
             <Grid>

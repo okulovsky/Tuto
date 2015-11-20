@@ -144,9 +144,11 @@ namespace Editor
                     return;
                 case KeyboardCommands.SpeedDown:
                     FastSpeed -= 0.5;
+					FastSpeed = Math.Max(0.5, FastSpeed);
                     return;
                 case KeyboardCommands.SpeedUp:
                     FastSpeed += 0.5;
+					FastSpeed = Math.Min(3, FastSpeed);
                     return;
             }
 
