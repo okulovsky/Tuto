@@ -494,7 +494,7 @@ namespace Tuto.Model
                 }
                 else if (string.IsNullOrEmpty(e.Item1.MontageModel.DisplayedRawLocation))
                 {
-                    e.Item1.MontageModel.DisplayedRawLocation = "Some trash";
+                    e.Item1.MontageModel.DisplayedRawLocation = e.Item2.Name;
                 }
                 e.Item1.MontageModel.ModificationTime = e.Item2.LastWriteTime;
                 var model = new EditorModel(e.Item2, rawDirectory, this, e.Item1.MontageModel, e.Item1.WindowState);
