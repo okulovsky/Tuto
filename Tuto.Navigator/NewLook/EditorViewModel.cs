@@ -30,7 +30,7 @@ namespace Tuto.Navigator.NewLook
             {
                 return (EditorModel.Montage.SoundIntervals != null
                     && EditorModel.Montage.SoundIntervals.Count > 3)
-                    ? Visibility.Visible : Visibility.Collapsed;
+                    ? Visibility.Collapsed : Visibility.Visible;
             }
         }
 

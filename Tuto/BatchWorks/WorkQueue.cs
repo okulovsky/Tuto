@@ -35,6 +35,13 @@ namespace Tuto.BatchWorks
         private Process currentProcess;
         public Dispatcher Dispatcher { get; set; }
 
+        public event Action<BatchWork> StatusChanged;
+
+        void OnStatusChanged(BatchWork work)
+        {
+            if (StatusChanged != null) StatusChanged(work);
+        }
+
         private void Execute()
         {
             while (currentIndex != this.Work.Count && queueWorking)
@@ -51,6 +58,7 @@ namespace Tuto.BatchWorks
                     currentProcess = e.Process;
                     e.Work();
                     e.Status = BatchWorkStatus.Success;
+                    StatusChanged(e);
                     currentIndex++;
                 }
                 catch (ThreadAbortException)
@@ -59,6 +67,7 @@ namespace Tuto.BatchWorks
                     e.Clean();
                     wasException = true;
                     CancelTasksAfterException();
+                    StatusChanged(e);
                 }
                 catch (Exception ex)
                 {
@@ -67,6 +76,7 @@ namespace Tuto.BatchWorks
                     e.Clean();
                     wasException = true;
                     CancelTasksAfterException();
+                    StatusChanged(e);
                 };
             }
             queueWorking = false;

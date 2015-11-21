@@ -181,6 +181,13 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="NewLook\LinkLabel.cs" />
+    <Compile Include="NewLook\NavigatorControl.xaml.cs">
+      <DependentUpon>NavigatorControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NewLook\WorkQueueControl.xaml.cs">
+      <DependentUpon>WorkQueueControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NewLook\WorkQueueViewModel.cs" />
     <Compile Include="Patch\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -269,6 +276,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="NewLook\MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NewLook\NavigatorControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NewLook\WorkQueueControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

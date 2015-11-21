@@ -27,7 +27,7 @@ namespace Tuto.Navigator
         [STAThread]
         public static void Main(string[] args)
         {
-          //  NewMain(); return;
+            NewMain(); return;
 
 
             var application = new Application();

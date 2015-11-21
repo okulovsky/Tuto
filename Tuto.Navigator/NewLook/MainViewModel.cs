@@ -13,6 +13,7 @@ namespace Tuto.Navigator.NewLook
 
         public List<EditorViewModel> EditorViewModels { get; private set;}
 
+
         public MainViewModel(Videotheque v)
         {
             this.Videotheque = v;
