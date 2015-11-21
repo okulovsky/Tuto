@@ -30,11 +30,8 @@ namespace Tuto.BatchWorks
             foreach (var ep in model.MediaTracks)
             {
                 var name = Path.Combine(Model.Locations.TemporalDirectory.FullName, ep.ConvertedName);
-                if (!File.Exists(name))
-                {
-                    var fileInPatches = new FileInfo(Path.Combine(emodel.Locations.PatchesDirectory.FullName, new FileInfo(ep.Path.LocalPath).Name));
-                    BeforeWorks.Add(new PreparePatchWork(emodel, fileInPatches, new FileInfo(name), false));
-                }
+                var fileInPatches = new FileInfo(Path.Combine(emodel.Locations.PatchesDirectory.FullName, new FileInfo(ep.Path.LocalPath).Name));
+                BeforeWorks.Add(new PreparePatchWork(emodel, fileInPatches, new FileInfo(name), false));
             }
         }
 
@@ -114,7 +111,7 @@ namespace Tuto.BatchWorks
             var patchedName = GetTempFile(pmodel.SourceInfo, "-patched").FullName;
             var path = Path.Combine(dir, patchedName);
             args = string.Format(args, newName + "test.avs", path);
-            RunProcess(args, Model.Locations.FFmpegExecutable.FullName);
+            RunProcess(args, Model.Videotheque.Locations.FFmpegExecutable.FullName);
             File.Delete(newName + "test.avs");
             OnTaskFinished();
             File.Move(newName, oldName);

@@ -33,8 +33,8 @@ namespace Tuto.BatchWorks
             Process = new Process();
             Process.StartInfo.FileName = path;
             Process.StartInfo.Arguments = args;
-            Process.StartInfo.UseShellExecute = Model.Videotheque.ShowProcesses;
-            Process.StartInfo.CreateNoWindow = !Model.Videotheque.ShowProcesses;
+            Process.StartInfo.UseShellExecute = Model.Videotheque.Data.ShowProcesses;
+            Process.StartInfo.CreateNoWindow = !Model.Videotheque.Data.ShowProcesses;
             Process.Start();
             Process.WaitForExit();
             if (Process.ExitCode != 0)

@@ -18,9 +18,7 @@ namespace Tuto.BatchWorks
             this.Source = source;
             this.Model = model;
             Forced = forced;
-            if (!File.Exists(model.Locations.ClearedSound.FullName) &&
-                model.Videotheque.WorkSettings.AudioCleanSettings.CurrentOption != Options.Skip)
-                this.BeforeWorks.Add(new CreateCleanSoundWork(model.Locations.FaceVideo, model, true));
+            BeforeWorks.Add(new CreateCleanSoundWork(model.Locations.FaceVideo, model, false));
         }
 
         public FileInfo Source;
@@ -43,8 +41,8 @@ namespace Tuto.BatchWorks
             var argsWithCleaning = string.Format(@"-i ""{0}"" -i ""{3}"" -map 0:0 -map 1 -shortest -r 25 -q:v 15 {2} -acodec libmp3lame -ar 44100 -ab 32k  ""{1}"" -y",
                     Source.FullName, tempFile.FullName, codec, Model.Locations.ClearedSound.FullName);
 
-            var args = Model.Videotheque.WorkSettings.AudioCleanSettings.CurrentOption != Options.Skip ? argsWithCleaning : argsWithoutCleaning;
-            var fullPath = Model.Locations.FFmpegExecutable;
+            var args = Model.Videotheque.Data.WorkSettings.AudioCleanSettings.CurrentOption != Options.Skip ? argsWithCleaning : argsWithoutCleaning;
+            var fullPath = Model.Videotheque.Locations.FFmpegExecutable;
             RunProcess(args, fullPath.FullName);
             Thread.Sleep(500);
             if (File.Exists(ThumbName.FullName))

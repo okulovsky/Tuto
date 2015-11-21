@@ -114,6 +114,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblerService.cs" />
+    <Compile Include="BatchWorks\MoveFile.cs" />
+    <Compile Include="BatchWorks\MakeAll.cs" />
+    <Compile Include="BatchWorks\NormalizeSoundWork.cs" />
+    <Compile Include="BatchWorks\WorkQueue.cs" />
     <Compile Include="Model2\EditorModel\EditorModel.cs" />
     <Compile Include="Model2\EditorModel\Locations.cs" />
     <Compile Include="Model2\MyPath.cs" />
