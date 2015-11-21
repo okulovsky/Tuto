@@ -12,10 +12,11 @@ namespace V3Updater
 {
 	class Program
 	{
-		static string InputFolderName=@"C:\TestMigration\Input";
-		static string ModelsFolderName=@"C:\TestMigration\Models";
-		static string[] PublishingModels = new[] { @"C:\TestMigration\ObsoletePublishing\testing" };
-		static string VideothequeFileName = @"C:\TestMigration\Videotheque";
+        static string FolderName = @"C:\Users\Yura\Desktop\TestMontage\";
+		static string InputFolderName=FolderName+"Input";
+		static string ModelsFolderName=FolderName+"Models";
+		static string[] PublishingModels = new string[] { };
+		static string VideothequeFileName = FolderName+"v";
 
 
 		static void Recursive(DirectoryInfo dir)
