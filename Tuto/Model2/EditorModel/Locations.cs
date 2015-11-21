@@ -93,9 +93,12 @@ namespace Tuto.Model
             var fname = MyPath.RelativeTo(model.RawLocation.FullName, model.Videotheque.RawFolder.FullName);
             fname = MyPath.CreateHierarchicalName(fname);
             fname += episodeNumber + " " + model.Montage.Information.Episodes[episodeNumber].Name+".avi";
+            var assembledDirectory = Path.Combine(model.Videotheque.TempFolder.FullName, model.RawLocation.Name, "Assembled");
+            if (!Directory.Exists(assembledDirectory))
+                Directory.CreateDirectory(assembledDirectory);
             var file = new FileInfo(
             Path.Combine(
-                   model.Videotheque.OutputFolder.FullName,
+                   assembledDirectory,
                    fname));
             return file;
         }

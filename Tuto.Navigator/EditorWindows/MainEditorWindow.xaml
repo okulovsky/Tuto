@@ -42,10 +42,11 @@
                 Fixes
             </ToggleButton>
             <Rectangle Width="10"/>
-            <Button Focusable="False" x:Name="Assembly" Width="66" Content="Assembly"/>
             <Rectangle Width="10"/>
-
+            <Button Focusable="False" x:Name="MakeAll" Width="66" Content="MakeAll"/>
+            <Rectangle Width="10"/>
             <StackPanel Orientation="Horizontal" Visibility="Collapsed" Name="ToolsPanel">
+                <Button Focusable="False" x:Name="Assembly" Width="66" Content="Assembly"/>
                 <Button Focusable="False" x:Name="RepairFace" Content="Repair Face" Width="49"/>
                 <Button Focusable="False" x:Name="RepairDesktop" Width="51">Repair Desktop</Button>
                 <Button Focusable="False" x:Name="NoiseReduction" Content="-Noise"/>
@@ -55,6 +56,7 @@
                 <Button Focusable="False" x:Name="Montage" Content="Convert"/>
                 <Button Focusable="False" Width="120" x:Name="Patch" Content="Patch((Debug)"/>
             </StackPanel>
+            
             <Button Content="Tools" x:Name="Tools" Height="50" Width="50" Click="Tools_Click"/>
         </StackPanel>
             <Label Content="{Binding WindowState.CurrentPosition}" DockPanel.Dock="Top"/>

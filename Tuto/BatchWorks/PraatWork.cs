@@ -35,14 +35,13 @@ namespace Tuto.BatchWorks
             Model.Locations.PraatOutput.Delete();
 
             var convert = "";
-            if (!Model.Locations.PraatVoice.Exists)
-                 convert = string.Format("\"{2}\" -i \"{0}\" -vn -q:a 0 \"{1}\"", Model.Locations.FaceVideo, Model.Locations.PraatVoice, Model.Locations.FFmpegExecutable);
-
-
+            var ffmpegExecutable = Model.Videotheque.Locations.FFmpegExecutable;
+            var args = string.Format("-i \"{0}\" -vn -q:a 0 \"{1}\"", Model.Locations.FaceVideo, Model.Locations.PraatVoice);
+            RunProcess(args, ffmpegExecutable.ToString());
             var work = 
                 String.Format(
                     CultureInfo.InvariantCulture,
-                    "\"{10}\" \"{0}\" \"{1}\" \"{2}\" {3} {4} {5} {6} {7} {8} {9}",
+                    " --run \"{0}\" \"{1}\" \"{2}\" {3} {4} {5} {6} {7} {8} {9}",
                     Model.Locations.PraatScriptSource,
                     Model.Locations.PraatVoice,
                     Model.Locations.PraatOutput,
@@ -52,13 +51,8 @@ namespace Tuto.BatchWorks
                     TimeStep,
                     SilenceThreshold,
                     MinSilentInterval,
-                    MinSoundInterval,
-                    Model.Locations.PraatExecutable);
-            File.WriteAllLines(Model.Locations.TemporalDirectory + "\\praat.bat", new string[] { convert, work });
-            var args = string.Format(@"/c ""{0}\praat.bat""", Model.Locations.TemporalDirectory);
-            var fullPath = "CMD.exe";
-            RunProcess(args, fullPath);
-
+                    MinSoundInterval);
+            RunProcess(work, Model.Videotheque.Locations.PraatExecutable.ToString());
             Model.Montage.SoundIntervals.Clear();
             using (var reader = new StreamReader(Model.Locations.PraatOutput.FullName))
             {
@@ -83,7 +77,6 @@ namespace Tuto.BatchWorks
 
             //  model.Locations.PraatVoice.Delete();
             Model.Locations.PraatOutput.Delete();
-            File.Delete(Model.Locations.TemporalDirectory + "\\praat.bat");
             OnTaskFinished();
         }
 

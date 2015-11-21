@@ -31,7 +31,7 @@ namespace Tuto.BatchWorks
                 throw new ArgumentException(source.FullName + " not found");      
             var args = string.Format(@"-i ""{0}"" -vf ""scale=1280:720, fps=25"" -q:v 0 -acodec libmp3lame -ar 44100 -ab 32k ""{1}"" -y",
                    source.FullName, tempFile.FullName);
-            var fullPath = Model.Locations.FFmpegExecutable;
+            var fullPath = Model.Videotheque.Locations.FFmpegExecutable;
             RunProcess(args, fullPath.FullName);
             Thread.Sleep(500);
             if (convertedFile.Exists)

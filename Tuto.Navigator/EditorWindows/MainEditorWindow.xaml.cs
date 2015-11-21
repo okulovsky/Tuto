@@ -88,38 +88,42 @@ namespace Editor
                 {
                     model.Save();
                     var task = new ConvertDesktopWork(model, true);
-                    Program.BatchWorkQueueWindow.Run(new List<BatchWork>(){task});
+                    Program.WorkQueue.Run(task);
                     var task2 = new ConvertFaceWork(model, true);
-                    Program.BatchWorkQueueWindow.Run(new List<BatchWork>() { task2 });
+                    Program.WorkQueue.Run(task2);
                 };
 
             Assembly.Click += (s, a) =>
                 {
                     model.Save();
-                    var tasks = new List<BatchWork>();
-                    tasks.Add(new AssemblyVideoWork(model, model.Videotheque.CrossFadesEnabled));
-                    Program.BatchWorkQueueWindow.Run(tasks);
+                    Program.WorkQueue.Run(new AssemblyVideoWork(model));
                 };
 
             RepairFace.Click += (s, a) =>
                 {
                     model.Save();
                     var task = new RepairVideoWork(model, model.Locations.FaceVideo, true);
-                    Program.BatchWorkQueueWindow.Run(new List<BatchWork> { task });
+                    Program.WorkQueue.Run(task);
+                };
+
+            MakeAll.Click += (s, a) =>
+                {
+                    model.Save();
+                    Program.WorkQueue.Run(new MakeAll(model));
                 };
 
             NoiseReduction.Click += (s, a) =>
             {
                model.Save();
                 var task = new CreateCleanSoundWork(model.Locations.FaceVideo, model, true);
-                Program.BatchWorkQueueWindow.Run(new List<BatchWork> { task });
+                Program.WorkQueue.Run(task);
             };
 
             RepairDesktop.Click += (s, a) =>
             {
                 model.Save();
                 var task = new RepairVideoWork(model, model.Locations.DesktopVideo, true);
-                Program.BatchWorkQueueWindow.Run(new List<BatchWork> { task });
+                Program.WorkQueue.Run(task);
             };
 
 
@@ -127,7 +131,7 @@ namespace Editor
                 {
                     model.Save();
                         var task = new CreateThumbWork(model.Locations.FaceVideo, model, true);
-                        Program.BatchWorkQueueWindow.Run(new List<BatchWork> { task });
+                        Program.WorkQueue.Run(task);
                         task.TaskFinished += (z, x) =>
                         {
                             Action t = () => { FaceVideo.Source = new Uri(((CreateThumbWork)z).ThumbName.FullName); };
@@ -140,7 +144,7 @@ namespace Editor
                 {
                     model.Save();
                         var task = new CreateThumbWork(model.Locations.DesktopVideo, model, true);
-                        Program.BatchWorkQueueWindow.Run(new List<BatchWork> { task });
+                        Program.WorkQueue.Run(task);
                         task.TaskFinished += (z, x) =>
                             {
                                 Action t = () => { ScreenVideo.Source = new Uri(((CreateThumbWork)z).ThumbName.FullName); };
@@ -179,7 +183,7 @@ namespace Editor
                     patchWindow.LoadModel(m, model);
                     patchWindow.Show();
                 }
-                else Program.BatchWorkQueueWindow.Run(new List<BatchWork>() { new AssemblyVideoWork(model, model.Videotheque.CrossFadesEnabled) });
+                else Program.WorkQueue.Run(new AssemblyVideoWork(model));
             };
             GoTo.Click += (s, a) =>
                 {
@@ -234,7 +238,7 @@ namespace Editor
                     };
             }
             if (toDo.Count != 0 )
-                Program.BatchWorkQueueWindow.Run(toDo);
+                Program.WorkQueue.Run(toDo);
         }
 
         void Synchronize_Click(object sender, RoutedEventArgs e)

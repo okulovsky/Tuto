@@ -38,7 +38,7 @@ namespace Tuto.BatchWorks
                 CopyingOver = true;
                 var args = string.Format(@"-i ""{0}"" -vf scale=1280:720 -r 25 -q:v 0 {2} -acodec libmp3lame -ar 44100 -ab 32k ""{1}"" -y",
                         source.FullName, tempFile, codec);
-                var fullPath = Model.Locations.FFmpegExecutable;
+                var fullPath = Model.Videotheque.Locations.FFmpegExecutable;
                 RunProcess(args, fullPath.FullName);
                 ConversionOver = true;
                 File.Replace(tempFile, source.FullName, originPath);
