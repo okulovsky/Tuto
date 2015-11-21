@@ -17,13 +17,17 @@ namespace Tuto.Navigator
     {
         public static void NewMain()
         {
-
+            var videotheque = Videotheque.Load(@"C:\Users\Yura\Desktop\TestMontage\v", null, true);
+            var model = new Tuto.Navigator.NewLook.MainViewModel(videotheque);
+            var wnd = new Tuto.Navigator.NewLook.MainWindow();
+            wnd.DataContext=model;
+            new Application().Run(wnd);
         }
 
         [STAThread]
         public static void Main(string[] args)
         {
-           // NewMain(); return;
+            NewMain(); return;
 
 
             var application = new Application();

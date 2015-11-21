@@ -174,10 +174,13 @@
       <DependentUpon>RequestItemControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Initialization\VideothequeRequestViewModel.cs" />
+    <Compile Include="NewLook\EditorViewModel.cs" />
+    <Compile Include="NewLook\EpisodeViewModel.cs" />
     <Compile Include="NewLook\MainViewModel.cs" />
     <Compile Include="NewLook\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="NewLook\LinkLabel.cs" />
     <Compile Include="Patch\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -335,6 +338,10 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Icons\fileBroken.png" />
+    <Resource Include="Icons\silence.png" />
+    <Resource Include="Icons\montage.png" />
+    <Resource Include="Icons\youtube.gif" />
     <Content Include="NoiseReduction\cleared.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

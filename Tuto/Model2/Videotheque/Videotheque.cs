@@ -486,7 +486,7 @@ namespace Tuto.Model
             {
                 var hash = e.Item1.MontageModel.RawVideoHash; 
                 if (hash == null) throw new Exception("No reference to video is specified in the model");
-                DirectoryInfo rawDirectory = null;
+                DirectoryInfo rawDirectory = new DirectoryInfo("Z:\\");
                 if (binaryHashes.ContainsKey(hash))
                 {
                     rawDirectory=binaryHashes[hash];
@@ -507,6 +507,7 @@ namespace Tuto.Model
                 path = MyPath.CreateHierarchicalName(path);
                 var finfo=new FileInfo(Path.Combine(ModelsFolder.FullName,path+"."+Names.ModelExtension));
                 var model = new EditorModel(finfo, e.Value, this, new MontageModel(3600000, e.Key), new WindowState());
+                model.Montage.DisplayedRawLocation = path;
                 model.Montage.ModificationTime = DateTime.Now;
                 models.Add(model);
             }

@@ -21,10 +21,8 @@ namespace Tuto.Model
         public WindowState WindowState { get; private set; }
 		public readonly FileInfo ModelFileLocation;
 		public readonly DirectoryInfo RawLocation;
-        public bool FileActionsEnabled
-        {
-            get { return RawLocation != null; }
-        }
+        public readonly bool InputFilesAreOK;
+
 		public DirectoryInfo TempFolder
 		{
 			get
@@ -37,7 +35,18 @@ namespace Tuto.Model
 			}
 		}
 
+        public event EventHandler EnvironmentChanged;
+
+        public void OnEnvironmentChanged()
+        {
+            if (EnvironmentChanged!=null)
+                EnvironmentChanged(this,EventArgs.Empty);
+        }
+
+      
         public event EventHandler MontageModelChanged;
+
+
 
         public void OnNonSignificantChanged()
         {
@@ -65,6 +74,7 @@ namespace Tuto.Model
 			RawLocation = raw;
 			ModelFileLocation = model;
 			Locations = new Locations(this);
+            InputFilesAreOK = raw.Exists;
         }
 
 
