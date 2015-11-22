@@ -21,13 +21,15 @@ namespace Tuto.Publishing
         {
 			if (args.Length==0)
 			{
-				MessageBox.Show("This program should be called with an argument: the working directory or the arbitrary file in this directory");
+				MessageBox.Show("This program should be called with an argument: the path to videotheque file");
 				return;
 			}
 
-			var currentDirectory = new DirectoryInfo(args[0]);
+            var videotheque = Videotheque.Load(args[0], null, true);
+            var model = videotheque.PublishingModels.First();
+			
             Application = new System.Windows.Application();
-            var model = new MainViewModel(currentDirectory, ()=>SourcesFactory());
+            var model = new MainViewModel(videotheque,model,()=>SourcesFactory());
             var window = new MainWindow();
             window.DataContext = model;
             Application.Run(window);

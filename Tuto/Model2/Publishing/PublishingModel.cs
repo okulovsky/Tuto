@@ -16,8 +16,8 @@ namespace Tuto.Publishing
 		public PublishingSettings Settings { get; set; }
 		[DataMember]
 		public List<VideoPublishSummary> Videos { get; set; }
-		[DataMember]
-		public CourseStructure CourseStructure { get; set; }
+        [DataMember]
+        public CourseStructure CourseStructure { get; set; }
 
 		public List<VideoPublishSummary> NonDistributedVideos { get; set; }
 		public Videotheque Videotheque { get; set; }

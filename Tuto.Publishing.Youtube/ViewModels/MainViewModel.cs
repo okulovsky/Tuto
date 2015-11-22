@@ -15,83 +15,45 @@ namespace Tuto.Publishing
 {
     public class MainViewModel : NotifierModel
     {
-        #region Properties
-        DirectoryInfo directory;
-        public DirectoryInfo Directory
-        {
-            get { return directory; }
-            set { directory = value; NotifyPropertyChanged(); }
-        }
+        public PublishingModel Model { get; private set; }
+        public Videotheque Videotheque { get; private set; }
 
-
-        PublishingSettings settings;
-        public PublishingSettings Settings
-        {
-            get { return settings; }
-            set { settings = value; NotifyPropertyChanged(); }
-        }
-      
-
-        public Item[] root;
-        public Item[] Root
-        {
-            get { return root; }
-            set { root = value; NotifyPropertyChanged(); }
-        }
-
-
-		public List<VideoPublishSummary> finishedNotMatched;
-
-        public List<VideoPublishSummary> FinishedNotMatched
-        {
-            get { return finishedNotMatched; }
-            set { finishedNotMatched = value; NotifyPropertyChanged(); }
-        }
-
-        public List<YoutubeClip> youtubeNotMatched;
-
-        public List<YoutubeClip> YoutubeNotMatched
-        {
-            get { return youtubeNotMatched; }
-            set { youtubeNotMatched = value; NotifyPropertyChanged(); }
-        }
-   
-        #endregion
+        public Item[] Root { get; private set; }
 
 		List<IMaterialSource> sources;
         Func<IEnumerable<IMaterialSource>> sourcesFactory;
 
-		[Obsolete]
-        public MainViewModel(DirectoryInfo directory, Func<IEnumerable<IMaterialSource>> sourcesFactory)
+        public MainViewModel(Videotheque videotheque, PublishingModel model, Func<IEnumerable<IMaterialSource>> sourcesFactory)
         {
             this.sourcesFactory = sourcesFactory;
-            this.Directory = directory;
             UpdateVideoCommand = new RelayCommand(UpdateVideo);
-			UpdateLatexCommand = new RelayCommand(UpdateLatex);
-				 
+            UpdateLatexCommand = new RelayCommand(UpdateLatex);
+
             SaveCommand = new RelayCommand(Save);
-            ReloadOld();
+            Reload();
         }
 
-		[Obsolete]
-        public void ReloadOld()
+        void Reload()
         {
-			var globalData = CourseTreeData.Load(Directory);
-            var root = ItemTreeBuilder.Build<FolderWrap, LectureWrap, VideoWrap>(globalData);
+            var data = new CourseTreeData
+            {
+                Structure = Model.CourseStructure,
+                Videos = Model.Videos
+            };
+            var root = ItemTreeBuilder.Build<FolderWrap, LectureWrap, VideoWrap>(data);
             Root = new[] { root };
-
-            Settings= HeadedJsonFormat.Read<PublishingSettings>(Directory);
-            if (Settings == null) Settings = new PublishingSettings();
-            Settings.Location = Directory;
+            base.NotifyAll();
 
             sources = sourcesFactory().ToList();
             foreach (var source in sources)
-                source.Initialize(Settings);
+                source.Initialize(Model.Settings);
 
             Load();
-			CreateCommandBlocks();
-            DataBinding<IExpandingDataHolder>.PullFromFile<ExpandingData>(root, settings.Location);
+            CreateCommandBlocks();
         }
+
+
+		
 
         public void Closing()
         {
