@@ -27,8 +27,8 @@ namespace Tuto.BatchWorks
             BeforeWorks.Add(new ConvertFaceWork(model, false));
             BeforeWorks.Add(new CreateCleanSoundWork(model.Locations.FaceVideo, model, false));
 
-            var serv = new AssemblerService(crossFades);
-            episodes = serv.GetEpisodesNodes(Model);
+            var service = new AssemblerService(crossFades);
+            episodes = service.GetEpisodesNodes(Model);
             var episodeNumber = 0;
             foreach (var episode in episodes)
             {
