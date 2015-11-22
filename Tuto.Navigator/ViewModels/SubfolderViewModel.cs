@@ -44,7 +44,7 @@ namespace Tuto.Navigator
                     {
                         var info = new EpisodeBindingInfo();
                         info.EpisodeInfo = z;
-                        info.FullName = model.Locations.GetOutputFile(index++).FullName;
+                        info.FullName = model.Montage.DisplayedRawLocation + "-" + (index++) ;
                         info.Model = model;
                         return info;
                     }).ToList();
@@ -63,7 +63,7 @@ namespace Tuto.Navigator
 
         public string FullPath { get; private set; }
 
-        public string Name {get { return Model.Locations.RelativeInputLocation; }}
+        public string Name {get { return Model.Montage.DisplayedRawLocation; }}
 
         public List<EpisodeBindingInfo> EpisodesNames { get; private set; }
 

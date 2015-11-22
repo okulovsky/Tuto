@@ -21,21 +21,15 @@ namespace Tuto.Publishing
         {
 			if (args.Length==0)
 			{
-				MessageBox.Show("This program should be called with an argument: the working directory or the arbitrary file in this directory");
+				MessageBox.Show("This program should be called with an argument: the path to videotheque file");
 				return;
 			}
 
-
-			string currentDirectoryName = "";
-
-			if (File.Exists(args[0]))
-				currentDirectoryName = new FileInfo(args[0]).Directory.FullName;
-			else 
-				currentDirectoryName = EditorModelIO.SubstituteDebugDirectories(args[0]);
-            
-			currentDirectory = new DirectoryInfo(currentDirectoryName);
+            var videotheque = Videotheque.Load(args[0], null, true);
+            var model = videotheque.PublishingModels.First();
+			
             Application = new System.Windows.Application();
-            var model = new MainViewModel(currentDirectory, ()=>SourcesFactory());
+            var model = new MainViewModel(videotheque,model,()=>SourcesFactory());
             var window = new MainWindow();
             window.DataContext = model;
             Application.Run(window);
@@ -60,7 +54,7 @@ namespace Tuto.Publishing
             {
                 var data = catalog.Commit();
 				HeadedJsonFormat.Write(currentDirectory, data);               
-                (Application.MainWindow.DataContext as MainViewModel).Reload();
+                (Application.MainWindow.DataContext as MainViewModel).ReloadOld();
             }
             Application.MainWindow.Show();
         }

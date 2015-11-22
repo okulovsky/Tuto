@@ -17,6 +17,8 @@ namespace Tuto.Model
     {
         [DataMember]
         public string RawVideoHash { get; private set; }
+        [DataMember]
+        public string DisplayedRawLocation { get; internal set; }
 
         public DateTime ModificationTime { get; set; }
 
@@ -74,5 +76,11 @@ namespace Tuto.Model
             SubtitleFixes = new List<SubtitleFix>();
             CrossfadesEnabled = true;
         }
+
+		[Obsolete("Костыль. Убрать, когда заночу с Updater-ом")]
+		public void SetHash(string hash)
+		{
+			RawVideoHash = hash;
+		}
     }
 }

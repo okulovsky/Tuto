@@ -65,6 +65,7 @@ namespace Editor
             PausedChanged();
             RatioChanged();
             videoAvailable = model.Locations.FaceVideo.Exists;
+			desktopVideoAvailable = model.Locations.DesktopVideo.Exists;
 
 
             DispatcherTimer timer = new DispatcherTimer();
@@ -392,19 +393,28 @@ namespace Editor
 
         int timerInterval = 10;
         bool videoAvailable;
+		bool desktopVideoAvailable;
 
         IEditorMode currentMode;
 
         void CheckPlayTime()
         {
             supressPositionChanged = true;
-            if (videoAvailable)
-                model.WindowState.CurrentPosition = (int)FaceVideo.Position.TotalMilliseconds;
-            else
-            {
-                if (!model.WindowState.Paused)
-                    model.WindowState.CurrentPosition += (int)(timerInterval * model.WindowState.SpeedRatio);
-            }
+			if (videoAvailable)
+			{
+				model.WindowState.CurrentPosition = (int)FaceVideo.Position.TotalMilliseconds;
+				if (desktopVideoAvailable)
+				{
+					var desktopVideoPosition = (int)ScreenVideo.Position.TotalMilliseconds+model.Montage.SynchronizationShift;
+					if (Math.Abs(desktopVideoPosition - model.WindowState.CurrentPosition) > 50)
+						ScreenVideo.Position = TimeSpan.FromMilliseconds(model.WindowState.CurrentPosition - model.Montage.SynchronizationShift);       
+				}
+			}
+			else
+			{
+				if (!model.WindowState.Paused)
+					model.WindowState.CurrentPosition += (int)(timerInterval * model.WindowState.SpeedRatio);
+			}
             supressPositionChanged = false;
 
             if (pauseRequested)

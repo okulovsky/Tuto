@@ -7,12 +7,19 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Tuto.Model;
+using Tuto.Publishing;
 
 namespace Tuto.Model
 {
 
 	public class LoadingException : Exception { }
 
+
+    public class RawFileHashes
+    {
+        public readonly Dictionary<string, DirectoryInfo> Hashes = new Dictionary<string, DirectoryInfo>();
+        public readonly Dictionary<string, List<DirectoryInfo>> DuplicatedHashes = new Dictionary<string, List<DirectoryInfo>>();
+    }
 
 	public class Videotheque
 	{
@@ -25,6 +32,7 @@ namespace Tuto.Model
 		public DirectoryInfo TempFolder { get; private set; }
 		public FileInfo VideothequeSettingsFile { get; private set;  }
 		public VideothequeLocations Locations { get; private set; }
+
 
 
         #region Всякая старая дичь
@@ -50,11 +58,21 @@ namespace Tuto.Model
 
 
 
-        Dictionary<string,DirectoryInfo> binaryHashes;
+        Dictionary<string, DirectoryInfo> binaryHashes;
 		List<Tuple<FileContainer,FileInfo>> loadedContainer;
         List<EditorModel> models;
         public IEnumerable<EditorModel> EditorModels { get { return models; } }
+
+		List<PublishingModel> publisingModels;
+		public IEnumerable<PublishingModel> PublishingModels { get { return publisingModels; } }
 		
+		public IEnumerable<Tuple<EditorModel,EpisodInfo>> Episodes
+		{
+			get
+			{
+				return EditorModels.SelectMany(z => z.Montage.Information.Episodes.Select(x => Tuple.Create(z, x)));
+			}
+		}
 
 		private Videotheque()
 		{
@@ -69,23 +87,29 @@ namespace Tuto.Model
             CreateModels(null);
         }
 
-		public static Videotheque Load(string videothequeFileName, IVideothequeLoadingUI ui)
+		public static Videotheque Load(string videothequeFileName, IVideothequeLoadingUI ui, bool ignoreExternalSoftware)
 		{
-			
+			ui = new LoadingUIDecorator(ui);
 			Videotheque v = new Videotheque();
+			v.ProgramFolder = new FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).Directory;
 			v.Locations = new VideothequeLocations(v);
 			try
 			{
-				v.LoadBuiltInSoftware(ui);
-				v.LoadExternalReferences(ui);
-                v.SaveStartupFile();
-
+				if (!ignoreExternalSoftware)
+				{
+					v.LoadBuiltInSoftware(ui);
+					v.LoadExternalReferences(ui);
+					v.SaveStartupFile();
+				}
+				else
+				{
+					v.StartupSettings = new VideothequeStartupSettings();
+				}
 
 				v.LoadVideotheque(videothequeFileName, ui);
                 var fname = v.VideothequeSettingsFile.FullName;
                 if (v.StartupSettings.LastLoadedProjects.Contains(fname))
                     v.StartupSettings.LastLoadedProjects.Remove(fname);
-
                 v.StartupSettings.LastLoadedProjects.Insert(0, fname);
                 v.SaveStartupFile();
                 
@@ -106,8 +130,22 @@ namespace Tuto.Model
 			}
 		}
 
+		string RelativeOrAbsoluteDirection(DirectoryInfo path)
+		{
+			var root = VideothequeSettingsFile.Directory.FullName;
+			if (path.FullName.StartsWith(root))
+				return MyPath.RelativeTo(path.FullName, root);
+			else
+				return path.FullName;
+		}
+
         public void Save()
         {
+			Data.PathsSettings.RawPath = RelativeOrAbsoluteDirection(RawFolder);
+			Data.PathsSettings.OutputPath = RelativeOrAbsoluteDirection(OutputFolder);
+			Data.PathsSettings.ModelPath = RelativeOrAbsoluteDirection(ModelsFolder);
+			Data.PathsSettings.TempPath = RelativeOrAbsoluteDirection(TempFolder);
+
             HeadedJsonFormat.Write(VideothequeSettingsFile, Data);
         }
 
@@ -200,8 +238,7 @@ namespace Tuto.Model
 		#region Basic loading procedures
 		void LoadBuiltInSoftware(IVideothequeLoadingUI ui)
         {
-			ProgramFolder = new FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).Directory;
-
+		
 			//initialize built-in components
 			CheckFile(Locations.GNP, ui,  "GNP is not found in program's folder. Please reinstall Tuto");
             CheckFile(Locations.NR, ui, "NR is not found in program's folder. Please reinstall Tuto");
@@ -324,7 +361,7 @@ namespace Tuto.Model
 					Type = VideothequeLoadingRequestItemType.OpenFile,
 				});
 
-			options.AddRange(StartupSettings.LastLoadedProjects.Take(3).Select(z => new VideothequeLoadingRequestItem
+			options.AddRange(StartupSettings.LastLoadedProjects.Where(z=>File.Exists(z)).Take(3).Select(z => new VideothequeLoadingRequestItem
 			{
 				Prompt = "Load videotheque " + z,
 				Type = VideothequeLoadingRequestItemType.NoFile,
@@ -365,64 +402,102 @@ namespace Tuto.Model
 			}
 		}
 
-		public static void ComputeHashesInRawSubdirectories(DirectoryInfo directory, string targetFileName, string hashFileName, bool recomputeAll, Dictionary<string, DirectoryInfo> hashes)
+		public static string ComputeHash(DirectoryInfo directory, string targetFileName, string hashFileName, bool recomputeAll)
+		{
+			string hash = null;
+			string localHashFileName = Path.Combine(directory.FullName, hashFileName);
+			if (!recomputeAll && File.Exists(localHashFileName))
+				hash = File.ReadAllText(localHashFileName);
+			else
+			{
+				hash = ComputeHash(new FileInfo(Path.Combine(directory.FullName, targetFileName)));
+				File.WriteAllText(localHashFileName, hash);
+			}
+			return hash;
+		}
+
+		public static void ComputeHashesInRawSubdirectories(DirectoryInfo directory, string targetFileName, string hashFileName, bool recomputeAll, RawFileHashes hashes)
 		{
 			var files = directory.GetFiles();
 			if (files.Any(z => z.Name == targetFileName))
 			{
-				if (!recomputeAll)
-					if (files.Any(z => z.Name == hashFileName))
-					{
-                        hashes[File.ReadAllText(Path.Combine(directory.FullName, hashFileName))] = directory;
-						return;
-					}
-				var hash = ComputeHash(new FileInfo(Path.Combine(directory.FullName, targetFileName)));
-				File.WriteAllText(Path.Combine(directory.FullName, hashFileName), hash);
-                hashes[hash] = directory;
+				string hash = ComputeHash(directory, targetFileName, hashFileName, recomputeAll);
+                if (hashes.Hashes.ContainsKey(hash))
+                {
+                    if (!hashes.DuplicatedHashes.ContainsKey(hash))
+                    {
+                        hashes.DuplicatedHashes[hash] = new List<DirectoryInfo>();
+                        hashes.DuplicatedHashes[hash].Add(hashes.Hashes[hash]);
+                    }
+                    hashes.DuplicatedHashes[hash].Add(directory);
+                }
+                else 
+                    hashes.Hashes[hash] = directory;
 			}
 			else foreach (var d in directory.GetDirectories())
 					ComputeHashesInRawSubdirectories(d, targetFileName, hashFileName, recomputeAll, hashes);
 		}
 
+
+
 		void LoadBinaryHashes(IVideothequeLoadingUI ui)
 		{
-            if (ui!=null) ui.StartPOSTWork("Indexing videofiles in " + RawFolder.FullName);
-			binaryHashes = new Dictionary<string,DirectoryInfo>();
-            ComputeHashesInRawSubdirectories(RawFolder, Names.FaceFileName, Names.HashFileName, false, binaryHashes);
-            if (ui != null) ui.CompletePOSTWork(true);
+            ui.StartPOSTWork("Indexing videofiles in " + RawFolder.FullName);
+            var hashes = new RawFileHashes();
+            ComputeHashesInRawSubdirectories(RawFolder, Names.FaceFileName, Names.HashFileName, false, hashes);
+            if (hashes.DuplicatedHashes.Count != 0)
+            {
+                var message="Some input video files are duplicated. This is not acceptable. Please resolve the issue. The duplications are:\r\n";
+                foreach(var e in hashes.DuplicatedHashes)
+                    message+=e.Value.Select(z=>z.FullName).Select(z=>MyPath.RelativeTo(z,RawFolder.FullName)).Aggregate((a,b)=>a+", "+b)+"\r\n";
+				ui.Request(message, new VideothequeLoadingRequestItem[0]);
+                throw new LoadingException();
+            }
+            binaryHashes = hashes.Hashes;
+            ui.CompletePOSTWork(true);
 		}
 
-		static void LoadContainers(DirectoryInfo dir, List<Tuple<FileContainer,FileInfo>> list)
+		static void LoadFiles<T>(DirectoryInfo dir,  string extension, List<Tuple<T,FileInfo>> list)
+			where T : new()
 		{
-			foreach (var e in dir.GetFiles("*." + Names.ModelExtension))
+			foreach (var e in dir.GetFiles("*." + extension))
             {
-                var container = HeadedJsonFormat.Read<FileContainer>(e);
+                var container = HeadedJsonFormat.Read<T>(e);
                 list.Add(Tuple.Create(container, e));
             }
 				
 			foreach (var e in dir.GetDirectories())
-				LoadContainers(e, list);
+				LoadFiles(e, extension, list);
 		}
 
 		void LoadContainers(IVideothequeLoadingUI ui)
 		{
-            if (ui != null) ui.StartPOSTWork("Loading models");
+            ui.StartPOSTWork("Loading models");
             loadedContainer = new List<Tuple<FileContainer, FileInfo>>();
-			LoadContainers(ModelsFolder, loadedContainer);
-            if (ui != null) ui.CompletePOSTWork(true);
+			LoadFiles<FileContainer>(ModelsFolder, Names.ModelExtension, loadedContainer);
+            ui.CompletePOSTWork(true);
 		}
 
         void CreateModels(IVideothequeLoadingUI ui)
         {
-            if (ui != null) ui.StartPOSTWork("Creating models");
+            ui.StartPOSTWork("Creating models");
             models = new List<EditorModel>();
             foreach(var e in loadedContainer)
             {
                 var hash = e.Item1.MontageModel.RawVideoHash; 
                 if (hash == null) throw new Exception("No reference to video is specified in the model");
-                if (!binaryHashes.ContainsKey(hash)) throw new Exception("Wrong reference to video is specified in the model");
+                DirectoryInfo rawDirectory = new DirectoryInfo("Z:\\");
+                if (binaryHashes.ContainsKey(hash))
+                {
+                    rawDirectory=binaryHashes[hash];
+                    e.Item1.MontageModel.DisplayedRawLocation = MyPath.RelativeTo(rawDirectory.FullName, RawFolder.FullName);
+                }
+                else if (string.IsNullOrEmpty(e.Item1.MontageModel.DisplayedRawLocation))
+                {
+                    e.Item1.MontageModel.DisplayedRawLocation = e.Item2.Name;
+                }
                 e.Item1.MontageModel.ModificationTime = e.Item2.LastWriteTime;
-                var model = new EditorModel(e.Item2, binaryHashes[hash], this, e.Item1.MontageModel, e.Item1.WindowState);
+                var model = new EditorModel(e.Item2, rawDirectory, this, e.Item1.MontageModel, e.Item1.WindowState);
                 binaryHashes.Remove(hash);
                 models.Add(model);
             }
@@ -432,14 +507,48 @@ namespace Tuto.Model
                 path = MyPath.CreateHierarchicalName(path);
                 var finfo=new FileInfo(Path.Combine(ModelsFolder.FullName,path+"."+Names.ModelExtension));
                 var model = new EditorModel(finfo, e.Value, this, new MontageModel(3600000, e.Key), new WindowState());
+                model.Montage.DisplayedRawLocation = path;
                 model.Montage.ModificationTime = DateTime.Now;
                 models.Add(model);
             }
-            if (ui != null) ui.CompletePOSTWork(true);
+            ui.CompletePOSTWork(true);
         }
 
 
 
+
+
+		void LoadPublishing(IVideothequeLoadingUI ui)
+		{
+			ui.StartPOSTWork("Loading publishing models");
+			var models = new List<Tuple<PublishingModel, FileInfo>>();
+			LoadFiles<PublishingModel>(ModelsFolder, Names.PublishingModelExtension, models);
+			publisingModels = new List<PublishingModel>();
+			foreach(var e in models)
+			{
+				e.Item1.Videotheque = this;
+				e.Item1.Location = e.Item2;
+				publisingModels.Add(e.Item1);
+			}
+			ui.CompletePOSTWork(true);
+
+			var nonDist = new List<VideoPublishSummary>();
+			foreach(var m in EditorModels)
+				foreach (var e in m.Montage.Information.Episodes)
+				{
+					if (publisingModels.SelectMany(z => z.Videos).Any(z => z.Guid == e.Guid)) continue;
+					nonDist.Add(new VideoPublishSummary
+					{
+						Guid = e.Guid,
+						Duration = e.Duration,
+						Name = e.Name,
+						OrdinalSuffix = m.Montage.DisplayedRawLocation + "-"
+								+ m.Montage.Information.Episodes.IndexOf(e)
+					});
+				}
+			foreach (var p in publisingModels)
+				p.NonDistributedVideos = nonDist;
+		}
 		#endregion
 	}
 }

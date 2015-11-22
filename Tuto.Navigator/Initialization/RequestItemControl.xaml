@@ -5,11 +5,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <StackPanel Orientation="Vertical">
-        <TextBlock Text="{Binding Prompt}" TextWrapping="Wrap"/>
-        <DockPanel x:Name="BrowsePanel">
-            <Button x:Name="BrowseButton" DockPanel.Dock="Right">Browse</Button>
-            <TextBox x:Name="SuggestedPath" Text="{Binding SuggestedPath}"></TextBox>
-        </DockPanel>
-    </StackPanel>
+    <RadioButton GroupName="RequestOptions" IsChecked="{Binding Selected}"  HorizontalContentAlignment="Stretch">
+    <StackPanel>
+            <Rectangle Height="5"/>
+            <TextBlock Text="{Binding Item.Prompt}" TextWrapping="Wrap"/>
+            <DockPanel x:Name="BrowsePanel" DockPanel.Dock="Top">
+                <Button x:Name="BrowseButton" DockPanel.Dock="Right" Width="50">Browse</Button>
+                <TextBox x:Name="SuggestedPath" Text="{Binding Item.SuggestedPath}"></TextBox>
+            </DockPanel>
+            <Rectangle Height="5"/>
+        </StackPanel>
+    </RadioButton>
 </UserControl>

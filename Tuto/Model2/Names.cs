@@ -16,6 +16,7 @@ namespace Tuto.Model
        public const string FaceFileName = "face.mp4";
        public const string HashFileName = "hash";
        public const string ModelExtension = "mm";
+	   public const string PublishingModelExtension = "pm";
        public const string ConvertedFaceName = "face-converted.avi";
        public const string ConvertedDesktopName = "desktop-converted.avi";
 

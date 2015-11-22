@@ -30,18 +30,9 @@ namespace Tuto.Publishing
 		[DataMember]
 		public string UlearnCourseDirectory { get; set; }
 
-        RelayCommand _saveCommand;
-        public RelayCommand SaveCommand
-        {
-            get { if (_saveCommand == null)  _saveCommand = new RelayCommand(Save); return _saveCommand; }
-        }
-
-        public DirectoryInfo Location { get; set; }
-        
-        void Save()
-        {
-            HeadedJsonFormat.Write(Location, this);
-        }
+	   [DataMember]
+	   [Obsolete]
+		public DirectoryInfo Location { get; set; }
 
         public PublishingSettings()
         {
