@@ -95,11 +95,11 @@ namespace Tuto.BatchWorks
             var allWorks = new List<BatchWork>();
 
             foreach (var e in work.BeforeWorks)
-            {
-                Run(e);
+            {   
                 if (e.Finished()) continue;
                 if (WorkSettings.AudioCleanSettings.CurrentOption == Model.Options.Skip && e is CreateCleanSoundWork)
                     continue;
+                Run(e);
                 allWorks.Add(e);
             }
             
@@ -109,6 +109,7 @@ namespace Tuto.BatchWorks
             foreach (var e in work.AfterWorks)
             {
                 if (e.Finished()) continue;
+                if (WorkSettings.AutoUploadVideo == false && e is YoutubeWork) continue;
                 allWorks.Add(e);
             }
 

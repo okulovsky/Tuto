@@ -67,6 +67,11 @@
                             </StackPanel>
 
                             <StackPanel>
+                                <Label Content="Upload"></Label>
+                                <CheckBox IsChecked="{Binding PreWorks.UploadSelected}" VerticalAlignment="Center" HorizontalAlignment="Center"></CheckBox>
+                            </StackPanel>
+
+                            <StackPanel>
                                 <Label Content="All"></Label>
                                 <CheckBox IsChecked="{Binding PreWorks.All}" VerticalAlignment="Center" HorizontalAlignment="Center"></CheckBox>
                             </StackPanel>

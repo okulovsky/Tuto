@@ -138,6 +138,18 @@ namespace Editor
                         };
                 };
 
+            Upload.Click += (s, a) =>
+                {
+                    model.Save();
+                    for (var i = 0; i < model.Montage.Information.Episodes.Count; i++)
+                    {
+                        var episode = model.Locations.GetOutputFile(i);
+                        if (!episode.Exists)
+                            episode = new FileInfo(System.IO.Path.Combine(model.Videotheque.OutputFolder.FullName, episode.Name));
+                        Program.WorkQueue.Run(new YoutubeWork(model, i, episode));
+                    }
+
+                };
             
             ThumbDesktop.Click += (s, a) =>
                 {

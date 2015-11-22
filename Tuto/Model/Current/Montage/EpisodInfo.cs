@@ -21,12 +21,6 @@ namespace Tuto.Model
         public string YoutubeId { get; set; }
 
         [DataMember]
-        public string ItemPlaylistId { get; set; }
-
-        [DataMember]
-        public string PlaylistId { get; set; }
-
-        [DataMember]
         public PatchModel PatchModel { get; set; }
 
         [DataMember]

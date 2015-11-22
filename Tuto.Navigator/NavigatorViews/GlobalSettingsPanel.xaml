@@ -25,6 +25,7 @@
                     <RowDefinition></RowDefinition>
                     <RowDefinition></RowDefinition>
                     <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
 
                 <Label Grid.Column="0" Grid.Row="0" Content="Max distance to silence"></Label>
@@ -67,8 +68,12 @@
                 <CheckBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Width="130" Grid.Row="8"
                   IsChecked="{Binding CrossFadesEnabled}"></CheckBox>
 
-                <Label Grid.Column="0" Grid.Row="9" Content="Move patch origin instead of copying"></Label>
+                <Label Grid.Column="0" Grid.Row="9" Content="Upload video"></Label>
                 <CheckBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Width="130" Grid.Row="9"
+                  IsChecked="{Binding WorkSettings.AutoUploadVideo}"></CheckBox>
+
+                <Label Grid.Column="0" Grid.Row="10" Content="Move patch origin instead of copying"></Label>
+                <CheckBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Width="130" Grid.Row="10"
                   IsChecked="{Binding MovePatchOriginInsteadOfCopying}"></CheckBox>
             </Grid>
         </GroupBox>

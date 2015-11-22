@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using Tuto.BatchWorks;
@@ -20,6 +21,7 @@ namespace Tuto.Navigator.ViewModels
 
         public bool AssemblyNeeded { get; set; }
         public bool CleanSound { get; set; }
+        public bool UploadSelected { get; set; }
         
         public bool All { get; set; }
 
@@ -46,6 +48,17 @@ namespace Tuto.Navigator.ViewModels
                     tasks.Add(new CreateCleanSoundWork(m.Locations.FaceVideo, m, true));
                 if (AssemblyNeeded)
                     tasks.Add(new AssemblyVideoWork(m));
+
+                if (UploadSelected)
+                {
+                    for (var i = 0; i < m.Montage.Information.Episodes.Count; i++)
+                    {
+                        var episode = m.Locations.GetOutputFile(i);
+                        if (!episode.Exists)
+                            episode = new FileInfo(System.IO.Path.Combine(m.Videotheque.OutputFolder.FullName, episode.Name));
+                        tasks.Add(new YoutubeWork(m, i, episode));
+                    }
+                }
                 foreach (var e in tasks)
                     e.Forced = true;
             }
