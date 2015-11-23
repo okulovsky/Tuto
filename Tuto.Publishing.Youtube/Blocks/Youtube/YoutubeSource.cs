@@ -16,7 +16,6 @@ namespace Tuto.Publishing
 	{
         public PublishingModel Model { get; private set; }
         public readonly IYoutubeProcessor YoutubeProcessor;
-		DirectoryInfo directory;
 		public Matcher<VideoItem, YoutubeClip> LastMatch { get; private set; }
 
         public YoutubeSource()
@@ -27,37 +26,15 @@ namespace Tuto.Publishing
         public void Initialize(PublishingModel model)
 		{
             this.Model= model;
-			directory = model.Settings.Location;
-			YoutubeProcessor.Authorize(directory);
+			YoutubeProcessor.Authorize(model.Videotheque.TempFolder);
 		}
 		public void Load(Item root)
 		{
-			YoutubeDataBinding.LoadYoutubeData(root, directory);
+            DataBinding<VideoItem>.PullFromLayer(root, Model.YoutubeClipData);
+            DataBinding<LectureItem>.PullFromLayer(root, Model.YoutubePlaylistData);
 		}
 
-		public void OldPull(Item root)
-		{
-			List<YoutubeClip> clips = new List<YoutubeClip>();
-			try
-			{
-				clips = YoutubeProcessor.GetAllClips();
-			}
-			catch(Exception e)
-			{
-				MessageBox.Show("Loading video from Youtube failed.");
-				return;
-			}
-			LastMatch = Matchers.Clips(clips);
-			LastMatch.Push(root);
-
-			var playlists = YoutubeProcessor.GetAllPlaylists();
-			var listMatcher = Matchers.Playlists(playlists);
-			listMatcher.Push(root);
-
-			//Root = new[] { Root[0] };
-			//FinishedNotMatched = matcher.UnmatchedTreeItems.Select(z => z.Video).ToList();
-			//YoutubeNotMatched = matcher.UnmatchedExternalDataItems.ToList();
-		}
+		
 
 		public List<YoutubeClip> GetYoutubeClips()
 		{
@@ -144,12 +121,13 @@ namespace Tuto.Publishing
 		{
 			PullClips(root);
 			PullPlaylists(root);
-			YoutubeDataBinding.SaveYoutubeData(root, directory);
+            Save(root);
 		}
 
 		public void Save(Item root)
 		{
-			YoutubeDataBinding.SaveYoutubeData(root, directory);
+            Model.YoutubeClipData = DataBinding<VideoItem>.GetLayer<YoutubeClip>(root);
+            Model.YoutubePlaylistData = DataBinding<LectureItem>.GetLayer<YoutubePlaylist>(root);
 		}
 
 		public ICommandBlockModel ForVideo(VideoWrap wrap)
@@ -161,7 +139,5 @@ namespace Tuto.Publishing
 		{
             return new YoutubeLectureCommands(this,wrap);
 		}
-
-		
 	}
 }

@@ -18,6 +18,10 @@ namespace Tuto.Publishing
 		public List<VideoPublishSummary> Videos { get; set; }
         [DataMember]
         public CourseStructure CourseStructure { get; set; }
+        [DataMember]
+        public DataLayer<YoutubeClip> YoutubeClipData { get; set; }
+        [DataMember]
+        public DataLayer<YoutubePlaylist> YoutubePlaylistData { get; set; }
 
 		public List<VideoPublishSummary> NonDistributedVideos { get; set; }
 		public Videotheque Videotheque { get; set; }
@@ -32,6 +36,14 @@ namespace Tuto.Publishing
 
 		public void Save()
 		{
+            foreach(var e in Videotheque.Episodes)
+            {
+                var clip = YoutubeClipData.Records.Where(z => z.Guid == e.Item2.Guid).FirstOrDefault();
+                if (clip == null) continue;
+                if (clip.Data.Id == e.Item2.YoutubeId) continue;
+                e.Item2.YoutubeId = clip.Data.Id;
+                e.Item1.Save();
+            }
 			HeadedJsonFormat.Write(Location, this);
 		}
 	}

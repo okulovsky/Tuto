@@ -56,7 +56,7 @@ namespace Tuto.Publishing
 
         public void Closing()
         {
-            DataBinding<IExpandingDataHolder>.SaveLayer<ExpandingData>(Root[0], Model.Settings.Location);
+            Save();
         }
 
 		void Load()
@@ -95,6 +95,7 @@ namespace Tuto.Publishing
         {
 			foreach (var s in sources)
 				s.Save(Root[0]);
+            Model.Save();
         }
 
 
