@@ -85,8 +85,15 @@ namespace Tuto.Model
 
         public DirectoryInfo TemporalDirectory { get { return model.TempFolder; } }
 
+        public FileInfo GetOutputFile(EpisodInfo info)
+        {
+            return GetOutputFile(model.Montage.Information.Episodes.IndexOf(info));
+        }
+
+        [Obsolete]
         public FileInfo GetOutputFile(int episodeNumber)
         {
+            if (episodeNumber < 0) throw new Exception();
             var fname = model.Montage.DisplayedRawLocation;
             fname = MyPath.CreateHierarchicalName(fname);
             fname += episodeNumber + " " + model.Montage.Information.Episodes[episodeNumber].Name+".avi";
@@ -108,14 +115,7 @@ namespace Tuto.Model
                     string.Format("script_{0}.avs", episodeNumber)));
         }
 
-        public FileInfo GetSrtFile(int episodeNumber)
-        {
-            return new FileInfo(
-                Path.Combine(
-                    model.TempFolder.FullName,
-                    string.Format("subtitles_{0}.srt", episodeNumber)));
-        }
-
+  
 
     }
 }
