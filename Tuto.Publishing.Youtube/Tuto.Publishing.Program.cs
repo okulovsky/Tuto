@@ -29,9 +29,9 @@ namespace Tuto.Publishing
             var model = videotheque.PublishingModels.First();
 			
             Application = new System.Windows.Application();
-            var model = new MainViewModel(videotheque,model,()=>SourcesFactory());
+            var viewModel = new MainViewModel(videotheque,model,()=>SourcesFactory());
             var window = new MainWindow();
-            window.DataContext = model;
+            window.DataContext = viewModel;
             Application.Run(window);
         }
 
@@ -54,7 +54,7 @@ namespace Tuto.Publishing
             {
                 var data = catalog.Commit();
 				HeadedJsonFormat.Write(currentDirectory, data);               
-                (Application.MainWindow.DataContext as MainViewModel).ReloadOld();
+                (Application.MainWindow.DataContext as MainViewModel).Reload();
             }
             Application.MainWindow.Show();
         }
@@ -62,8 +62,7 @@ namespace Tuto.Publishing
         static IEnumerable<IMaterialSource> SourcesFactory()
         {
             yield return new YoutubeSource();
-            yield return new LatexSource();
-			yield return new ULearnSource();
+    		yield return new ULearnSource();
         }
 
     }

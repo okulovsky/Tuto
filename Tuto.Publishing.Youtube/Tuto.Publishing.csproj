@@ -120,9 +120,6 @@
   <ItemGroup>
     <Compile Include="Blocks\BlockStatus.cs" />
     <Compile Include="Blocks\CommandsBlockModel.cs" />
-    <Compile Include="Blocks\Latex\LatexLectureCommands.cs" />
-    <Compile Include="Blocks\Latex\LatexSource.cs" />
-    <Compile Include="Blocks\Latex\LatexVideoCommands.cs" />
     <Compile Include="Blocks\ULearn\ULearnSource.cs" />
     <Compile Include="Blocks\ULearn\ULearnLectureCommands.cs" />
     <Compile Include="Blocks\ULearn\ULearnVideoCommands.cs" />
@@ -133,9 +130,6 @@
     <Compile Include="Blocks\Youtube\YoutubeProcessor.cs" />
     <Compile Include="Blocks\Youtube\YoutubeSource.cs" />
     <Compile Include="Blocks\Youtube\YoutubeVideoCommands.cs" />
-    <Compile Include="Blocks\Latex\GalleryInfo.cs" />
-    <Compile Include="Blocks\Latex\LatexDocument.cs" />
-    <Compile Include="Blocks\Latex\LaTeXProcessor.cs" />
     <Compile Include="Blocks\Interfaces.cs" />
     <Compile Include="Catalog\CatalogPanel.xaml.cs">
       <DependentUpon>CatalogPanel.xaml</DependentUpon>
@@ -168,7 +162,6 @@
     <Compile Include="Tuto.Publishing.Program.cs" />
     <Compile Include="ViewModels\ExpandingData.cs" />
     <Compile Include="ViewModels\IExpandingDataHolder.cs" />
-    <Compile Include="ViewModels\VideoWrap.Latex.cs" />
     <Compile Include="ViewModels\FolderWrap.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\LectureWrap.cs" />

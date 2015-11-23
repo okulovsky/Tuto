@@ -50,14 +50,14 @@ namespace Tuto.Publishing
 		{
 			var prefix = "";
 			var description = "";
-            prefix += Source.Settings.CourseAbbreviation;
+            prefix += Source.Model.Settings.CourseAbbreviation;
 			var path = Wrap.PathFromRoot.Skip(1).ToArray();
 			for (int levelNumber = 0; levelNumber < path.Length; levelNumber++)
 			{
 
 				TopicLevel level = new TopicLevel();
-                if (levelNumber < Source.Settings.TopicLevels.Count)
-                    level = Source.Settings.TopicLevels[levelNumber];
+                if (levelNumber < Source.Model.Settings.TopicLevels.Count)
+                    level = Source.Model.Settings.TopicLevels[levelNumber];
 				prefix += "-";
 				prefix += string.Format("{0:D" + level.Digits + "}", path[levelNumber].NumberInTopic + 1);
 
@@ -69,7 +69,7 @@ namespace Tuto.Publishing
 			}
 
 			dueTitle = prefix + " " + Wrap.Video.Name;
-			description += Source.Settings.DescriptionPS;
+			description += Source.Model.Settings.DescriptionPS;
 			description += "\n\n" + YoutubeClip.GuidMarker(Wrap.Guid);
 			dueDescription = description;
 		}
@@ -99,9 +99,9 @@ namespace Tuto.Publishing
 		public void CmThumbnail()
 		{
 			if (YoutubeClip == null) return;
-			if (Source.Settings.ThumbnailImagePath == null) return;
+			if (Source.Model.Settings.ThumbnailImagePath == null) return;
 			Source.YoutubeProcessor.UpdateVideoThumbnail(YoutubeClip,
-				new System.IO.FileInfo(Path.Combine(Source.Settings.Location.FullName,Source.Settings.ThumbnailImagePath)));
+                new System.IO.FileInfo(Path.Combine(Source.Model.Settings.Location.FullName, Source.Model.Settings.ThumbnailImagePath)));
 		}
 
 
