@@ -54,6 +54,7 @@
                 <Button Focusable="False" Content="ThumbF" x:Name="ThumbFace" Width="58"/>
                 <Button Focusable="False" Content="ThumbD" x:Name="ThumbDesktop" Width="58"/>
                 <Button Focusable="False" x:Name="Montage" Content="Convert"/>
+                <Button Focusable="False" x:Name="Upload" Content="Upload"/>
                 <Button Focusable="False" Width="120" x:Name="Patch" Content="Patch((Debug)"/>
             </StackPanel>
             

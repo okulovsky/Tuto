@@ -55,6 +55,7 @@ namespace Tuto.Model
         public AudioCleanSettings AudioCleanSettings { get; set; }
         public FaceThumbSettings FaceThumbSettings { get; set; }
         public DesktopThumbSettings DesktopThumbSettings { get; set; }
+        public bool AutoUploadVideo { get; set; }
 
         public WorkSettings()
         {

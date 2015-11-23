@@ -25,6 +25,7 @@ namespace Tuto.Model
         [Obsolete]
         [DataMember]
         public bool ShowProcesses { get; set; }
+        
 
         #endregion
 

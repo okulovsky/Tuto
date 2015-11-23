@@ -12,17 +12,24 @@ namespace Tuto.BatchWorks
 {
     public class YoutubeWork : BatchWork
     {
-        FinishedVideo info;
-        public YoutubeWork(FinishedVideo info)
+        EditorModel editorModel;
+        int episodeNumber;
+        EpisodInfo episode;
+        FileInfo pathToFile;
+
+        public YoutubeWork(EditorModel model, int number, FileInfo path)
         {
-            this.info = info;
-            Name = "Uploading: " + info.Name;
+            this.editorModel = model;
+            this.episodeNumber = number;
+            episode = model.Montage.Information.Episodes[number];
+            this.pathToFile = path;
+            Name = "Uploading: " + episode.Name;
         }
 
 
         public override void Work()
         {
-            var w = new UploadVideo(info);
+            var w = new UploadVideo(editorModel, episodeNumber, pathToFile);
             w.Uploaded += (s, a) => { OnTaskFinished(); };
             w.Proceed();
         }
