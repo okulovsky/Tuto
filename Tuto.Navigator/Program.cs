@@ -27,13 +27,15 @@ namespace Tuto.Navigator
         [STAThread]
         public static void Main(string[] args)
         {
-          //  NewMain(); return;
+            //  NewMain(); return;
 
 
+            string fname = null;
+            if (args.Length > 0) fname = args[0];
             var application = new Application();
             application.ShutdownMode = ShutdownMode.OnExplicitShutdown;                 
             var wnd = new Tuto.Init.MainWindow();
-            Func<Videotheque> start = () => Videotheque.Load(null, wnd, false);
+            Func<Videotheque> start = () => Videotheque.Load(fname, wnd, false);
             var token = start.BeginInvoke(null, null);
             wnd.ShowDialog();
             var videotheque = start.EndInvoke(token);
