@@ -94,6 +94,7 @@ namespace Tuto.Model
         public FileInfo GetOutputFile(int episodeNumber)
         {
             if (episodeNumber < 0) throw new Exception();
+            return new FileInfo(Path.Combine(model.TempFolder.FullName, "assembled-" + episodeNumber + ".avi"));
             var fname = model.Montage.DisplayedRawLocation;
             fname = MyPath.CreateHierarchicalName(fname);
             fname += episodeNumber + " " + model.Montage.Information.Episodes[episodeNumber].Name+".avi";
@@ -106,6 +107,16 @@ namespace Tuto.Model
                    fname));
             return file;
         }
+
+        public FileInfo GetFinalOutputFile(int episodeNumber)
+        {
+            var fname = model.Montage.DisplayedRawLocation;
+            fname = MyPath.CreateHierarchicalName(fname);
+            fname += episodeNumber + " " + model.Montage.Information.Episodes[episodeNumber].Name + ".avi";
+
+            return new FileInfo(Path.Combine(model.Videotheque.OutputFolder.FullName, fname));
+        }
+
 
         public FileInfo GetAvsStriptFile(int episodeNumber)
         {

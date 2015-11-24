@@ -26,7 +26,7 @@ namespace Tuto.BatchWorks
             foreach (var episode in episodes)
             {
                 var from = model.Locations.GetOutputFile(episodeNumber);
-                var to = new FileInfo(Path.Combine(model.Videotheque.OutputFolder.FullName, from.Name)); 
+                var to = model.Locations.GetFinalOutputFile(episodeNumber); 
                 AfterWorks.Add(new MoveFile(from, to));
                 AfterWorks.Add(new YoutubeWork(model, episodeNumber, to));
                 episodeNumber++;
