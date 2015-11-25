@@ -27,7 +27,11 @@ namespace V3Updater
 			}
 			var tutoFile = files.Where(z => z.Name == "local.tuto").FirstOrDefault();
 			if (tutoFile == null)
-				throw new Exception();
+			{
+				Console.WriteLine("No tuto file is found. Press any key");
+				Console.ReadKey();
+				return;
+			}
 
 			var hash = Videotheque.ComputeHash(currentDirectory, Names.FaceFileName, Names.HashFileName, true);
 			var container = HeadedJsonFormat.Read<FileContainer>(tutoFile, "Tuto local file", 3);
@@ -40,7 +44,9 @@ namespace V3Updater
 
 		static void UpdateOldLocalTutoFiles(string fromWhere, string newPlace, string prefix)
 		{
-			Recursive(new DirectoryInfo(fromWhere), new DirectoryInfo(fromWhere), new DirectoryInfo(newPlace), prefix);
+			var newPlaceD =  new DirectoryInfo(newPlace);
+			if (!newPlaceD.Exists) newPlaceD.Create();
+			Recursive(new DirectoryInfo(fromWhere), new DirectoryInfo(fromWhere), newPlaceD, prefix);
 		}
 
 		static IEnumerable<IMaterialSource> SourcesFactory()
@@ -48,29 +54,50 @@ namespace V3Updater
 			yield break;
 		}
 
-		//static void ParsePublishing(string path, Videotheque v)
-		//{
-		//	var pubModel = new PublishingModel();
-		//	pubModel.Videotheque=v;
-		//	var dir = new DirectoryInfo(path);
-		//	var globalData = CourseTreeData.Load(dir);
-		//	pubModel.CourseStructure=globalData.Structure;
-		//	pubModel.Videos = globalData.Videos;
-		//	pubModel.Settings=HeadedJsonFormat.Read<PublishingSettings>(dir);
-		//	pubModel.YoutubeClipData=HeadedJsonFormat.Read<DataLayer<YoutubeClip>>(dir);
-		//	pubModel.YoutubePlaylistData=HeadedJsonFormat.Read<DataLayer<YoutubePlaylist>>(dir);
-		//	var pubName=Path.Combine(ModelsFolderName,dir.Name+"."+Names.PublishingModelExtension);
-		//	pubModel.Location = new FileInfo(pubName);
-		//	pubModel.Save();
-		//}
+		static void ParsePublishing(string oldPath, string videothequePath)
+		{
+			var dir = new DirectoryInfo(oldPath);
+			var v = Videotheque.Load(videothequePath, null, true);
+			var pubModel = new PublishingModel();
+			pubModel.Videotheque = v;
+			var globalData = CourseTreeData.Load(dir);
+			pubModel.CourseStructure = globalData.Structure;
+			pubModel.Videos = globalData.Videos;
+			pubModel.Settings = HeadedJsonFormat.Read<PublishingSettings>(dir);
+			var clipFile = dir.GetFiles("YoutubeClip.layer.txt").First();
+			pubModel.YoutubeClipData = HeadedJsonFormat.Read<DataLayer<YoutubeClip>>(clipFile,null,-1);
+			var listFile = dir.GetFiles("YoutubePlaylist.layer.txt").First();
+			pubModel.YoutubePlaylistData = HeadedJsonFormat.Read<DataLayer<YoutubePlaylist>>(listFile,null,-1);
+			var pubName = Path.Combine(v.ModelsFolder.FullName, dir.Name + "." + Names.PublishingModelExtension);
+			pubModel.Location = new FileInfo(pubName);
+			pubModel.Save();
+		}
 
 
 		static void Main(string[] args)
 		{
-			UpdateOldLocalTutoFiles(
-				@"D:\HACKERDOM\Input",
-				@"D:\Montage\Models\OldHackerdomLectures",
-				"Hackerdom\\");
+			if (false)
+			{
+				UpdateOldLocalTutoFiles(
+					@"D:\HACKERDOM\Input",
+					@"D:\Montage\Models\OldHackerdomLectures",
+					"Hackerdom\\");
+			}
+			if (true)
+			{
+				ParsePublishing(
+					@"D:\hackerdom-publishing\VideoData",
+					@"D:\Montage\videotheque"
+					);
+			}
+
+			if (false)
+			{
+				UpdateOldLocalTutoFiles(
+					@"D:\Montage\Raw\CS2\Lecture01",
+					@"D:\Montage\Models",
+					"CS2\\Lecture01\\");
+			}
 		}
 	}
 }

@@ -92,6 +92,8 @@ namespace Tuto.Model
 			}
 		}
 
+		List<VideoPublishSummary> nonDistributed;
+
 		private Videotheque()
 		{
 
@@ -138,6 +140,8 @@ namespace Tuto.Model
 				v.LoadBinaryHashes(ui);
 				v.LoadContainers(ui);
                 v.CreateModels(ui);
+
+				v.LoadPublishing(ui);
 
 				ui.ExitSuccessfully();
 				return v;
@@ -541,12 +545,21 @@ namespace Tuto.Model
 			}
 			ui.CompletePOSTWork(true);
 
-			var nonDist = new List<VideoPublishSummary>();
+			nonDistributed = new List<VideoPublishSummary>();
+			foreach (var e in PublishingModels)
+				e.NonDistributedVideos = nonDistributed;
+			UpdateNonDistributedVideos();
+
+		}
+
+		public void UpdateNonDistributedVideos()
+		{
+			nonDistributed.Clear();
 			foreach(var m in EditorModels)
 				foreach (var e in m.Montage.Information.Episodes)
 				{
 					if (publisingModels.SelectMany(z => z.Videos).Any(z => z.Guid == e.Guid)) continue;
-					nonDist.Add(new VideoPublishSummary
+					nonDistributed.Add(new VideoPublishSummary
 					{
 						Guid = e.Guid,
 						Duration = e.Duration,
@@ -555,8 +568,6 @@ namespace Tuto.Model
 								+ m.Montage.Information.Episodes.IndexOf(e)
 					});
 				}
-			foreach (var p in publisingModels)
-				p.NonDistributedVideos = nonDist;
 		}
 		#endregion
 	}

@@ -22,6 +22,7 @@ namespace Tuto.Model
 
 		static void CheckHeader(string actualHeader, string header, int expectedVersion)
 		{
+			if (header == null) return;
 			if (!actualHeader.StartsWith(header)) throw new Exception("Wrong file format");
 
 			var versionIndex = actualHeader.IndexOf(VersionMarker);
