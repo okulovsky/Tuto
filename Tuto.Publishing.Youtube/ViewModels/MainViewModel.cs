@@ -25,6 +25,7 @@ namespace Tuto.Publishing
 
         public MainViewModel(Videotheque videotheque, PublishingModel model, Func<IEnumerable<IMaterialSource>> sourcesFactory)
         {
+			this.Model = model;
             this.sourcesFactory = sourcesFactory;
             UpdateVideoCommand = new RelayCommand(UpdateVideo);
       

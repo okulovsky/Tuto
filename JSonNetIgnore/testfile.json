@@ -1,0 +1,6145 @@
+﻿FileContainer Tuto file Version 1
+
+{
+  "MontageModel": {
+    "Chunks": {
+      "StreamLength": 3600000,
+      "tokens": [
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 0
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 14482
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 18813
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 22199
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 25425
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 29334
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 31394
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 33294
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 41027
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 45753
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 51584
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 55753
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 61842
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 67875
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 69461
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 76669
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 86269
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 91702
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 99511
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 105982
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 109846
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 115211
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 118831
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 125151
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 127691
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 131390
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 141007
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 144439
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 146102
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 147959
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 151646
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 153423
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 155299
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 161348
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 166050
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 169211
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 174828
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 177791
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 179999
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 186362
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 195591
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 198544
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 204999
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 210023
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 215019
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 221747
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 227460
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 231134
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 234826
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 241469
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 246502
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 249895
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 252226
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 259287
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 266595
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 278631
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 283719
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 284775
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 291579
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 294495
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 297951
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 301983
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 309703
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 316991
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 320479
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 328944
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 331938
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 334733
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 338521
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 341053
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 350133
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 353345
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 362573
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 373747
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 378079
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 383615
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 385913
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 403642
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 412422
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 425587
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 433397
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 439991
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 444880
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 453976
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 462237
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 465316
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 467736
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 477676
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": true,
+          "Time": 484288
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 488768
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 495937
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 499477
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 503766
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 511804
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 518334
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 523424
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 528314
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 532132
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 537634
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 544206
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 550288
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 554694
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 558375
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 560434
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 566834
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 570914
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 577988
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 581907
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 585515
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 589783
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 594127
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 596148
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 602523
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 605880
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 611163
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 614748
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 618740
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 628607
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 635625
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 643344
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 647888
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 650342
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 653026
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 655687
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 661087
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": true,
+          "Time": 669095
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 674435
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 676811
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 679759
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 682675
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 686085
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 691662
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 697654
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 701022
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 710699
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 719490
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 726131
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 729390
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 736183
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 743669
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 747678
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 756747
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 759233
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 761950
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 765630
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 768456
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 773158
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 779176
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 782737
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 787377
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 796355
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 800717
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 805865
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 809585
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 814907
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 818477
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 821846
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 825425
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 831222
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 835019
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": true,
+          "Time": 843075
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 855664
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 859924
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 866342
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 874726
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 882843
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 888143
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 893508
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 900665
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 907348
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 910614
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 918479
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 921444
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 922935
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 924913
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 933230
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 938553
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 944462
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 953207
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 959501
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 968423
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 976313
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 981767
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 985453
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 987319
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 997015
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1004381
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1007374
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1014993
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1018423
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1023763
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1026143
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1029392
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1041686
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1047352
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1055261
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1062203
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1069064
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1073888
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1080845
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1087117
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1094013
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1096132
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1103123
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1107241
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1112201
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1115793
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1119793
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1123754
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1129931
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1134555
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1138231
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1140833
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1146000
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1153038
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1161641
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1175241
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1179362
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1185478
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1189482
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1193842
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1196402
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1198011
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1210616
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1214642
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1219662
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1223484
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1227587
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1230342
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1239217
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1243981
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1251613
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            true
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1254082
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1256542
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1260512
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1264242
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1271869
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            true,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1276933
+        },
+        {
+          "Defined": true,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1279943
+        },
+        {
+          "Defined": false,
+          "FromStream": [
+            false,
+            false
+          ],
+          "StartsNewEpisode": false,
+          "Time": 1282812
+        }
+      ]
+    },
+    "CrossfadesEnabled": true,
+    "DisplayedRawLocation": "Lecture11\\112",
+    "Information": {
+      "Episodes": [
+        {
+          "Dirty": false,
+          "Duration": "PT5M38.863S",
+          "Guid": "e4c11062-7ed1-42b9-815d-e39a455ccc02",
+          "Name": "Группировка, сортировка и работа с файлами",
+          "OutputType": 0,
+          "PatchModel": null,
+          "YoutubeId": null
+        },
+        {
+          "Dirty": false,
+          "Duration": "PT2M43.217S",
+          "Guid": "2a37b4c1-4666-4808-b4e3-6cc03be72a2d",
+          "Name": "Экранирование символов",
+          "OutputType": 0,
+          "PatchModel": null,
+          "YoutubeId": null
+        },
+        {
+          "Dirty": false,
+          "Duration": "PT2M25.083S",
+          "Guid": "8adcc22b-abbe-4a36-8bd6-88c4f953a54a",
+          "Name": "Множественные запросы",
+          "OutputType": 0,
+          "PatchModel": null,
+          "YoutubeId": null
+        },
+        {
+          "Dirty": false,
+          "Duration": "PT6M8.501S",
+          "Guid": "bbbc041f-10fe-4663-99df-48e568783624",
+          "Name": "Слепые инъекции",
+          "OutputType": 0,
+          "PatchModel": null,
+          "YoutubeId": null
+        }
+      ]
+    },
+    "PreparedChunks": null,
+    "RawVideoHash": "4B-1C-D6-08-18-29-E3-1E-63-8F-4D-FA-FD-34-4E-10",
+    "ReadyToEdit": false,
+    "SoundIntervals": [
+      {
+        "EndTime": 15003,
+        "HasVoice": false,
+        "StartTime": 0
+      },
+      {
+        "EndTime": 18603,
+        "HasVoice": true,
+        "StartTime": 15003
+      },
+      {
+        "EndTime": 19131,
+        "HasVoice": false,
+        "StartTime": 18603
+      },
+      {
+        "EndTime": 20819,
+        "HasVoice": true,
+        "StartTime": 19131
+      },
+      {
+        "EndTime": 21275,
+        "HasVoice": false,
+        "StartTime": 20819
+      },
+      {
+        "EndTime": 21587,
+        "HasVoice": true,
+        "StartTime": 21275
+      },
+      {
+        "EndTime": 25563,
+        "HasVoice": false,
+        "StartTime": 21587
+      },
+      {
+        "EndTime": 30795,
+        "HasVoice": true,
+        "StartTime": 25563
+      },
+      {
+        "EndTime": 31291,
+        "HasVoice": false,
+        "StartTime": 30795
+      },
+      {
+        "EndTime": 32635,
+        "HasVoice": true,
+        "StartTime": 31291
+      },
+      {
+        "EndTime": 33043,
+        "HasVoice": false,
+        "StartTime": 32635
+      },
+      {
+        "EndTime": 39883,
+        "HasVoice": true,
+        "StartTime": 33043
+      },
+      {
+        "EndTime": 46011,
+        "HasVoice": false,
+        "StartTime": 39883
+      },
+      {
+        "EndTime": 50971,
+        "HasVoice": true,
+        "StartTime": 46011
+      },
+      {
+        "EndTime": 51571,
+        "HasVoice": false,
+        "StartTime": 50971
+      },
+      {
+        "EndTime": 53939,
+        "HasVoice": true,
+        "StartTime": 51571
+      },
+      {
+        "EndTime": 54547,
+        "HasVoice": false,
+        "StartTime": 53939
+      },
+      {
+        "EndTime": 55067,
+        "HasVoice": true,
+        "StartTime": 54547
+      },
+      {
+        "EndTime": 55931,
+        "HasVoice": false,
+        "StartTime": 55067
+      },
+      {
+        "EndTime": 56955,
+        "HasVoice": true,
+        "StartTime": 55931
+      },
+      {
+        "EndTime": 57363,
+        "HasVoice": false,
+        "StartTime": 56955
+      },
+      {
+        "EndTime": 57707,
+        "HasVoice": true,
+        "StartTime": 57363
+      },
+      {
+        "EndTime": 62211,
+        "HasVoice": false,
+        "StartTime": 57707
+      },
+      {
+        "EndTime": 62675,
+        "HasVoice": true,
+        "StartTime": 62211
+      },
+      {
+        "EndTime": 63099,
+        "HasVoice": false,
+        "StartTime": 62675
+      },
+      {
+        "EndTime": 65531,
+        "HasVoice": true,
+        "StartTime": 63099
+      },
+      {
+        "EndTime": 65979,
+        "HasVoice": false,
+        "StartTime": 65531
+      },
+      {
+        "EndTime": 66611,
+        "HasVoice": true,
+        "StartTime": 65979
+      },
+      {
+        "EndTime": 67243,
+        "HasVoice": false,
+        "StartTime": 66611
+      },
+      {
+        "EndTime": 68283,
+        "HasVoice": true,
+        "StartTime": 67243
+      },
+      {
+        "EndTime": 69387,
+        "HasVoice": false,
+        "StartTime": 68283
+      },
+      {
+        "EndTime": 74211,
+        "HasVoice": true,
+        "StartTime": 69387
+      },
+      {
+        "EndTime": 74667,
+        "HasVoice": false,
+        "StartTime": 74211
+      },
+      {
+        "EndTime": 75923,
+        "HasVoice": true,
+        "StartTime": 74667
+      },
+      {
+        "EndTime": 76411,
+        "HasVoice": false,
+        "StartTime": 75923
+      },
+      {
+        "EndTime": 84947,
+        "HasVoice": true,
+        "StartTime": 76411
+      },
+      {
+        "EndTime": 88947,
+        "HasVoice": false,
+        "StartTime": 84947
+      },
+      {
+        "EndTime": 89195,
+        "HasVoice": true,
+        "StartTime": 88947
+      },
+      {
+        "EndTime": 91803,
+        "HasVoice": false,
+        "StartTime": 89195
+      },
+      {
+        "EndTime": 95731,
+        "HasVoice": true,
+        "StartTime": 91803
+      },
+      {
+        "EndTime": 96403,
+        "HasVoice": false,
+        "StartTime": 95731
+      },
+      {
+        "EndTime": 98843,
+        "HasVoice": true,
+        "StartTime": 96403
+      },
+      {
+        "EndTime": 99579,
+        "HasVoice": false,
+        "StartTime": 98843
+      },
+      {
+        "EndTime": 104011,
+        "HasVoice": true,
+        "StartTime": 99579
+      },
+      {
+        "EndTime": 104627,
+        "HasVoice": false,
+        "StartTime": 104011
+      },
+      {
+        "EndTime": 105187,
+        "HasVoice": true,
+        "StartTime": 104627
+      },
+      {
+        "EndTime": 105691,
+        "HasVoice": false,
+        "StartTime": 105187
+      },
+      {
+        "EndTime": 109083,
+        "HasVoice": true,
+        "StartTime": 105691
+      },
+      {
+        "EndTime": 109619,
+        "HasVoice": false,
+        "StartTime": 109083
+      },
+      {
+        "EndTime": 110075,
+        "HasVoice": true,
+        "StartTime": 109619
+      },
+      {
+        "EndTime": 110547,
+        "HasVoice": false,
+        "StartTime": 110075
+      },
+      {
+        "EndTime": 112883,
+        "HasVoice": true,
+        "StartTime": 110547
+      },
+      {
+        "EndTime": 113403,
+        "HasVoice": false,
+        "StartTime": 112883
+      },
+      {
+        "EndTime": 115507,
+        "HasVoice": true,
+        "StartTime": 113403
+      },
+      {
+        "EndTime": 115971,
+        "HasVoice": false,
+        "StartTime": 115507
+      },
+      {
+        "EndTime": 117339,
+        "HasVoice": true,
+        "StartTime": 115971
+      },
+      {
+        "EndTime": 117763,
+        "HasVoice": false,
+        "StartTime": 117339
+      },
+      {
+        "EndTime": 118251,
+        "HasVoice": true,
+        "StartTime": 117763
+      },
+      {
+        "EndTime": 118771,
+        "HasVoice": false,
+        "StartTime": 118251
+      },
+      {
+        "EndTime": 122691,
+        "HasVoice": true,
+        "StartTime": 118771
+      },
+      {
+        "EndTime": 123291,
+        "HasVoice": false,
+        "StartTime": 122691
+      },
+      {
+        "EndTime": 123947,
+        "HasVoice": true,
+        "StartTime": 123291
+      },
+      {
+        "EndTime": 124691,
+        "HasVoice": false,
+        "StartTime": 123947
+      },
+      {
+        "EndTime": 126827,
+        "HasVoice": true,
+        "StartTime": 124691
+      },
+      {
+        "EndTime": 131715,
+        "HasVoice": false,
+        "StartTime": 126827
+      },
+      {
+        "EndTime": 140315,
+        "HasVoice": true,
+        "StartTime": 131715
+      },
+      {
+        "EndTime": 140795,
+        "HasVoice": false,
+        "StartTime": 140315
+      },
+      {
+        "EndTime": 143571,
+        "HasVoice": true,
+        "StartTime": 140795
+      },
+      {
+        "EndTime": 144211,
+        "HasVoice": false,
+        "StartTime": 143571
+      },
+      {
+        "EndTime": 145403,
+        "HasVoice": true,
+        "StartTime": 144211
+      },
+      {
+        "EndTime": 146267,
+        "HasVoice": false,
+        "StartTime": 145403
+      },
+      {
+        "EndTime": 147555,
+        "HasVoice": true,
+        "StartTime": 146267
+      },
+      {
+        "EndTime": 147971,
+        "HasVoice": false,
+        "StartTime": 147555
+      },
+      {
+        "EndTime": 150875,
+        "HasVoice": true,
+        "StartTime": 147971
+      },
+      {
+        "EndTime": 153723,
+        "HasVoice": false,
+        "StartTime": 150875
+      },
+      {
+        "EndTime": 154659,
+        "HasVoice": true,
+        "StartTime": 153723
+      },
+      {
+        "EndTime": 155771,
+        "HasVoice": false,
+        "StartTime": 154659
+      },
+      {
+        "EndTime": 160627,
+        "HasVoice": true,
+        "StartTime": 155771
+      },
+      {
+        "EndTime": 161587,
+        "HasVoice": false,
+        "StartTime": 160627
+      },
+      {
+        "EndTime": 161995,
+        "HasVoice": true,
+        "StartTime": 161587
+      },
+      {
+        "EndTime": 162635,
+        "HasVoice": false,
+        "StartTime": 161995
+      },
+      {
+        "EndTime": 164443,
+        "HasVoice": true,
+        "StartTime": 162635
+      },
+      {
+        "EndTime": 164915,
+        "HasVoice": false,
+        "StartTime": 164443
+      },
+      {
+        "EndTime": 165787,
+        "HasVoice": true,
+        "StartTime": 164915
+      },
+      {
+        "EndTime": 166491,
+        "HasVoice": false,
+        "StartTime": 165787
+      },
+      {
+        "EndTime": 166995,
+        "HasVoice": true,
+        "StartTime": 166491
+      },
+      {
+        "EndTime": 167507,
+        "HasVoice": false,
+        "StartTime": 166995
+      },
+      {
+        "EndTime": 168523,
+        "HasVoice": true,
+        "StartTime": 167507
+      },
+      {
+        "EndTime": 169899,
+        "HasVoice": false,
+        "StartTime": 168523
+      },
+      {
+        "EndTime": 171187,
+        "HasVoice": true,
+        "StartTime": 169899
+      },
+      {
+        "EndTime": 171627,
+        "HasVoice": false,
+        "StartTime": 171187
+      },
+      {
+        "EndTime": 172459,
+        "HasVoice": true,
+        "StartTime": 171627
+      },
+      {
+        "EndTime": 172883,
+        "HasVoice": false,
+        "StartTime": 172459
+      },
+      {
+        "EndTime": 173723,
+        "HasVoice": true,
+        "StartTime": 172883
+      },
+      {
+        "EndTime": 178091,
+        "HasVoice": false,
+        "StartTime": 173723
+      },
+      {
+        "EndTime": 178987,
+        "HasVoice": true,
+        "StartTime": 178091
+      },
+      {
+        "EndTime": 180299,
+        "HasVoice": false,
+        "StartTime": 178987
+      },
+      {
+        "EndTime": 183075,
+        "HasVoice": true,
+        "StartTime": 180299
+      },
+      {
+        "EndTime": 183515,
+        "HasVoice": false,
+        "StartTime": 183075
+      },
+      {
+        "EndTime": 183899,
+        "HasVoice": true,
+        "StartTime": 183515
+      },
+      {
+        "EndTime": 184387,
+        "HasVoice": false,
+        "StartTime": 183899
+      },
+      {
+        "EndTime": 185003,
+        "HasVoice": true,
+        "StartTime": 184387
+      },
+      {
+        "EndTime": 186683,
+        "HasVoice": false,
+        "StartTime": 185003
+      },
+      {
+        "EndTime": 194827,
+        "HasVoice": true,
+        "StartTime": 186683
+      },
+      {
+        "EndTime": 195491,
+        "HasVoice": false,
+        "StartTime": 194827
+      },
+      {
+        "EndTime": 198219,
+        "HasVoice": true,
+        "StartTime": 195491
+      },
+      {
+        "EndTime": 199139,
+        "HasVoice": false,
+        "StartTime": 198219
+      },
+      {
+        "EndTime": 199307,
+        "HasVoice": true,
+        "StartTime": 199139
+      },
+      {
+        "EndTime": 199979,
+        "HasVoice": false,
+        "StartTime": 199307
+      },
+      {
+        "EndTime": 204187,
+        "HasVoice": true,
+        "StartTime": 199979
+      },
+      {
+        "EndTime": 204739,
+        "HasVoice": false,
+        "StartTime": 204187
+      },
+      {
+        "EndTime": 206427,
+        "HasVoice": true,
+        "StartTime": 204739
+      },
+      {
+        "EndTime": 206827,
+        "HasVoice": false,
+        "StartTime": 206427
+      },
+      {
+        "EndTime": 208035,
+        "HasVoice": true,
+        "StartTime": 206827
+      },
+      {
+        "EndTime": 208571,
+        "HasVoice": false,
+        "StartTime": 208035
+      },
+      {
+        "EndTime": 209115,
+        "HasVoice": true,
+        "StartTime": 208571
+      },
+      {
+        "EndTime": 215267,
+        "HasVoice": false,
+        "StartTime": 209115
+      },
+      {
+        "EndTime": 220491,
+        "HasVoice": true,
+        "StartTime": 215267
+      },
+      {
+        "EndTime": 221819,
+        "HasVoice": false,
+        "StartTime": 220491
+      },
+      {
+        "EndTime": 226955,
+        "HasVoice": true,
+        "StartTime": 221819
+      },
+      {
+        "EndTime": 227395,
+        "HasVoice": false,
+        "StartTime": 226955
+      },
+      {
+        "EndTime": 229107,
+        "HasVoice": true,
+        "StartTime": 227395
+      },
+      {
+        "EndTime": 230283,
+        "HasVoice": false,
+        "StartTime": 229107
+      },
+      {
+        "EndTime": 230507,
+        "HasVoice": true,
+        "StartTime": 230283
+      },
+      {
+        "EndTime": 231707,
+        "HasVoice": false,
+        "StartTime": 230507
+      },
+      {
+        "EndTime": 234051,
+        "HasVoice": true,
+        "StartTime": 231707
+      },
+      {
+        "EndTime": 234483,
+        "HasVoice": false,
+        "StartTime": 234051
+      },
+      {
+        "EndTime": 234747,
+        "HasVoice": true,
+        "StartTime": 234483
+      },
+      {
+        "EndTime": 235211,
+        "HasVoice": false,
+        "StartTime": 234747
+      },
+      {
+        "EndTime": 237035,
+        "HasVoice": true,
+        "StartTime": 235211
+      },
+      {
+        "EndTime": 237563,
+        "HasVoice": false,
+        "StartTime": 237035
+      },
+      {
+        "EndTime": 238435,
+        "HasVoice": true,
+        "StartTime": 237563
+      },
+      {
+        "EndTime": 238899,
+        "HasVoice": false,
+        "StartTime": 238435
+      },
+      {
+        "EndTime": 240739,
+        "HasVoice": true,
+        "StartTime": 238899
+      },
+      {
+        "EndTime": 241163,
+        "HasVoice": false,
+        "StartTime": 240739
+      },
+      {
+        "EndTime": 243483,
+        "HasVoice": true,
+        "StartTime": 241163
+      },
+      {
+        "EndTime": 244115,
+        "HasVoice": false,
+        "StartTime": 243483
+      },
+      {
+        "EndTime": 247075,
+        "HasVoice": true,
+        "StartTime": 244115
+      },
+      {
+        "EndTime": 247483,
+        "HasVoice": false,
+        "StartTime": 247075
+      },
+      {
+        "EndTime": 247635,
+        "HasVoice": true,
+        "StartTime": 247483
+      },
+      {
+        "EndTime": 248043,
+        "HasVoice": false,
+        "StartTime": 247635
+      },
+      {
+        "EndTime": 249259,
+        "HasVoice": true,
+        "StartTime": 248043
+      },
+      {
+        "EndTime": 249771,
+        "HasVoice": false,
+        "StartTime": 249259
+      },
+      {
+        "EndTime": 251515,
+        "HasVoice": true,
+        "StartTime": 249771
+      },
+      {
+        "EndTime": 251955,
+        "HasVoice": false,
+        "StartTime": 251515
+      },
+      {
+        "EndTime": 258411,
+        "HasVoice": true,
+        "StartTime": 251955
+      },
+      {
+        "EndTime": 258851,
+        "HasVoice": false,
+        "StartTime": 258411
+      },
+      {
+        "EndTime": 263347,
+        "HasVoice": true,
+        "StartTime": 258851
+      },
+      {
+        "EndTime": 263875,
+        "HasVoice": false,
+        "StartTime": 263347
+      },
+      {
+        "EndTime": 264883,
+        "HasVoice": true,
+        "StartTime": 263875
+      },
+      {
+        "EndTime": 265355,
+        "HasVoice": false,
+        "StartTime": 264883
+      },
+      {
+        "EndTime": 266099,
+        "HasVoice": true,
+        "StartTime": 265355
+      },
+      {
+        "EndTime": 266643,
+        "HasVoice": false,
+        "StartTime": 266099
+      },
+      {
+        "EndTime": 267075,
+        "HasVoice": true,
+        "StartTime": 266643
+      },
+      {
+        "EndTime": 267507,
+        "HasVoice": false,
+        "StartTime": 267075
+      },
+      {
+        "EndTime": 268363,
+        "HasVoice": true,
+        "StartTime": 267507
+      },
+      {
+        "EndTime": 269003,
+        "HasVoice": false,
+        "StartTime": 268363
+      },
+      {
+        "EndTime": 271691,
+        "HasVoice": true,
+        "StartTime": 269003
+      },
+      {
+        "EndTime": 272123,
+        "HasVoice": false,
+        "StartTime": 271691
+      },
+      {
+        "EndTime": 273147,
+        "HasVoice": true,
+        "StartTime": 272123
+      },
+      {
+        "EndTime": 273643,
+        "HasVoice": false,
+        "StartTime": 273147
+      },
+      {
+        "EndTime": 274539,
+        "HasVoice": true,
+        "StartTime": 273643
+      },
+      {
+        "EndTime": 278763,
+        "HasVoice": false,
+        "StartTime": 274539
+      },
+      {
+        "EndTime": 281627,
+        "HasVoice": true,
+        "StartTime": 278763
+      },
+      {
+        "EndTime": 282451,
+        "HasVoice": false,
+        "StartTime": 281627
+      },
+      {
+        "EndTime": 283339,
+        "HasVoice": true,
+        "StartTime": 282451
+      },
+      {
+        "EndTime": 284003,
+        "HasVoice": false,
+        "StartTime": 283339
+      },
+      {
+        "EndTime": 284363,
+        "HasVoice": true,
+        "StartTime": 284003
+      },
+      {
+        "EndTime": 285187,
+        "HasVoice": false,
+        "StartTime": 284363
+      },
+      {
+        "EndTime": 286971,
+        "HasVoice": true,
+        "StartTime": 285187
+      },
+      {
+        "EndTime": 287779,
+        "HasVoice": false,
+        "StartTime": 286971
+      },
+      {
+        "EndTime": 288891,
+        "HasVoice": true,
+        "StartTime": 287779
+      },
+      {
+        "EndTime": 289339,
+        "HasVoice": false,
+        "StartTime": 288891
+      },
+      {
+        "EndTime": 289483,
+        "HasVoice": true,
+        "StartTime": 289339
+      },
+      {
+        "EndTime": 289931,
+        "HasVoice": false,
+        "StartTime": 289483
+      },
+      {
+        "EndTime": 291299,
+        "HasVoice": true,
+        "StartTime": 289931
+      },
+      {
+        "EndTime": 291859,
+        "HasVoice": false,
+        "StartTime": 291299
+      },
+      {
+        "EndTime": 294195,
+        "HasVoice": true,
+        "StartTime": 291859
+      },
+      {
+        "EndTime": 298315,
+        "HasVoice": false,
+        "StartTime": 294195
+      },
+      {
+        "EndTime": 299363,
+        "HasVoice": true,
+        "StartTime": 298315
+      },
+      {
+        "EndTime": 302283,
+        "HasVoice": false,
+        "StartTime": 299363
+      },
+      {
+        "EndTime": 304219,
+        "HasVoice": true,
+        "StartTime": 302283
+      },
+      {
+        "EndTime": 304827,
+        "HasVoice": false,
+        "StartTime": 304219
+      },
+      {
+        "EndTime": 305547,
+        "HasVoice": true,
+        "StartTime": 304827
+      },
+      {
+        "EndTime": 306251,
+        "HasVoice": false,
+        "StartTime": 305547
+      },
+      {
+        "EndTime": 307515,
+        "HasVoice": true,
+        "StartTime": 306251
+      },
+      {
+        "EndTime": 308003,
+        "HasVoice": false,
+        "StartTime": 307515
+      },
+      {
+        "EndTime": 308187,
+        "HasVoice": true,
+        "StartTime": 308003
+      },
+      {
+        "EndTime": 308619,
+        "HasVoice": false,
+        "StartTime": 308187
+      },
+      {
+        "EndTime": 309299,
+        "HasVoice": true,
+        "StartTime": 308619
+      },
+      {
+        "EndTime": 310107,
+        "HasVoice": false,
+        "StartTime": 309299
+      },
+      {
+        "EndTime": 316787,
+        "HasVoice": true,
+        "StartTime": 310107
+      },
+      {
+        "EndTime": 317195,
+        "HasVoice": false,
+        "StartTime": 316787
+      },
+      {
+        "EndTime": 319059,
+        "HasVoice": true,
+        "StartTime": 317195
+      },
+      {
+        "EndTime": 319491,
+        "HasVoice": false,
+        "StartTime": 319059
+      },
+      {
+        "EndTime": 320075,
+        "HasVoice": true,
+        "StartTime": 319491
+      },
+      {
+        "EndTime": 320779,
+        "HasVoice": false,
+        "StartTime": 320075
+      },
+      {
+        "EndTime": 323571,
+        "HasVoice": true,
+        "StartTime": 320779
+      },
+      {
+        "EndTime": 329171,
+        "HasVoice": false,
+        "StartTime": 323571
+      },
+      {
+        "EndTime": 331179,
+        "HasVoice": true,
+        "StartTime": 329171
+      },
+      {
+        "EndTime": 331987,
+        "HasVoice": false,
+        "StartTime": 331179
+      },
+      {
+        "EndTime": 334251,
+        "HasVoice": true,
+        "StartTime": 331987
+      },
+      {
+        "EndTime": 334867,
+        "HasVoice": false,
+        "StartTime": 334251
+      },
+      {
+        "EndTime": 338067,
+        "HasVoice": true,
+        "StartTime": 334867
+      },
+      {
+        "EndTime": 338571,
+        "HasVoice": false,
+        "StartTime": 338067
+      },
+      {
+        "EndTime": 339499,
+        "HasVoice": true,
+        "StartTime": 338571
+      },
+      {
+        "EndTime": 339955,
+        "HasVoice": false,
+        "StartTime": 339499
+      },
+      {
+        "EndTime": 340291,
+        "HasVoice": true,
+        "StartTime": 339955
+      },
+      {
+        "EndTime": 341115,
+        "HasVoice": false,
+        "StartTime": 340291
+      },
+      {
+        "EndTime": 342347,
+        "HasVoice": true,
+        "StartTime": 341115
+      },
+      {
+        "EndTime": 342875,
+        "HasVoice": false,
+        "StartTime": 342347
+      },
+      {
+        "EndTime": 345547,
+        "HasVoice": true,
+        "StartTime": 342875
+      },
+      {
+        "EndTime": 346147,
+        "HasVoice": false,
+        "StartTime": 345547
+      },
+      {
+        "EndTime": 349523,
+        "HasVoice": true,
+        "StartTime": 346147
+      },
+      {
+        "EndTime": 350019,
+        "HasVoice": false,
+        "StartTime": 349523
+      },
+      {
+        "EndTime": 351635,
+        "HasVoice": true,
+        "StartTime": 350019
+      },
+      {
+        "EndTime": 352051,
+        "HasVoice": false,
+        "StartTime": 351635
+      },
+      {
+        "EndTime": 352499,
+        "HasVoice": true,
+        "StartTime": 352051
+      },
+      {
+        "EndTime": 353019,
+        "HasVoice": false,
+        "StartTime": 352499
+      },
+      {
+        "EndTime": 353403,
+        "HasVoice": true,
+        "StartTime": 353019
+      },
+      {
+        "EndTime": 353859,
+        "HasVoice": false,
+        "StartTime": 353403
+      },
+      {
+        "EndTime": 358059,
+        "HasVoice": true,
+        "StartTime": 353859
+      },
+      {
+        "EndTime": 358475,
+        "HasVoice": false,
+        "StartTime": 358059
+      },
+      {
+        "EndTime": 359987,
+        "HasVoice": true,
+        "StartTime": 358475
+      },
+      {
+        "EndTime": 360867,
+        "HasVoice": false,
+        "StartTime": 359987
+      },
+      {
+        "EndTime": 361059,
+        "HasVoice": true,
+        "StartTime": 360867
+      },
+      {
+        "EndTime": 361571,
+        "HasVoice": false,
+        "StartTime": 361059
+      },
+      {
+        "EndTime": 361899,
+        "HasVoice": true,
+        "StartTime": 361571
+      },
+      {
+        "EndTime": 362419,
+        "HasVoice": false,
+        "StartTime": 361899
+      },
+      {
+        "EndTime": 365003,
+        "HasVoice": true,
+        "StartTime": 362419
+      },
+      {
+        "EndTime": 365539,
+        "HasVoice": false,
+        "StartTime": 365003
+      },
+      {
+        "EndTime": 367147,
+        "HasVoice": true,
+        "StartTime": 365539
+      },
+      {
+        "EndTime": 367587,
+        "HasVoice": false,
+        "StartTime": 367147
+      },
+      {
+        "EndTime": 369747,
+        "HasVoice": true,
+        "StartTime": 367587
+      },
+      {
+        "EndTime": 370395,
+        "HasVoice": false,
+        "StartTime": 369747
+      },
+      {
+        "EndTime": 372811,
+        "HasVoice": true,
+        "StartTime": 370395
+      },
+      {
+        "EndTime": 378379,
+        "HasVoice": false,
+        "StartTime": 372811
+      },
+      {
+        "EndTime": 383243,
+        "HasVoice": true,
+        "StartTime": 378379
+      },
+      {
+        "EndTime": 383987,
+        "HasVoice": false,
+        "StartTime": 383243
+      },
+      {
+        "EndTime": 384267,
+        "HasVoice": true,
+        "StartTime": 383987
+      },
+      {
+        "EndTime": 385411,
+        "HasVoice": false,
+        "StartTime": 384267
+      },
+      {
+        "EndTime": 385587,
+        "HasVoice": true,
+        "StartTime": 385411
+      },
+      {
+        "EndTime": 386051,
+        "HasVoice": false,
+        "StartTime": 385587
+      },
+      {
+        "EndTime": 390203,
+        "HasVoice": true,
+        "StartTime": 386051
+      },
+      {
+        "EndTime": 390627,
+        "HasVoice": false,
+        "StartTime": 390203
+      },
+      {
+        "EndTime": 393451,
+        "HasVoice": true,
+        "StartTime": 390627
+      },
+      {
+        "EndTime": 393915,
+        "HasVoice": false,
+        "StartTime": 393451
+      },
+      {
+        "EndTime": 395067,
+        "HasVoice": true,
+        "StartTime": 393915
+      },
+      {
+        "EndTime": 395819,
+        "HasVoice": false,
+        "StartTime": 395067
+      },
+      {
+        "EndTime": 402811,
+        "HasVoice": true,
+        "StartTime": 395819
+      },
+      {
+        "EndTime": 403851,
+        "HasVoice": false,
+        "StartTime": 402811
+      },
+      {
+        "EndTime": 406555,
+        "HasVoice": true,
+        "StartTime": 403851
+      },
+      {
+        "EndTime": 407139,
+        "HasVoice": false,
+        "StartTime": 406555
+      },
+      {
+        "EndTime": 408051,
+        "HasVoice": true,
+        "StartTime": 407139
+      },
+      {
+        "EndTime": 408467,
+        "HasVoice": false,
+        "StartTime": 408051
+      },
+      {
+        "EndTime": 409699,
+        "HasVoice": true,
+        "StartTime": 408467
+      },
+      {
+        "EndTime": 410459,
+        "HasVoice": false,
+        "StartTime": 409699
+      },
+      {
+        "EndTime": 412019,
+        "HasVoice": true,
+        "StartTime": 410459
+      },
+      {
+        "EndTime": 412475,
+        "HasVoice": false,
+        "StartTime": 412019
+      },
+      {
+        "EndTime": 413875,
+        "HasVoice": true,
+        "StartTime": 412475
+      },
+      {
+        "EndTime": 424811,
+        "HasVoice": false,
+        "StartTime": 413875
+      },
+      {
+        "EndTime": 425147,
+        "HasVoice": true,
+        "StartTime": 424811
+      },
+      {
+        "EndTime": 425659,
+        "HasVoice": false,
+        "StartTime": 425147
+      },
+      {
+        "EndTime": 432603,
+        "HasVoice": true,
+        "StartTime": 425659
+      },
+      {
+        "EndTime": 433475,
+        "HasVoice": false,
+        "StartTime": 432603
+      },
+      {
+        "EndTime": 438523,
+        "HasVoice": true,
+        "StartTime": 433475
+      },
+      {
+        "EndTime": 438963,
+        "HasVoice": false,
+        "StartTime": 438523
+      },
+      {
+        "EndTime": 439387,
+        "HasVoice": true,
+        "StartTime": 438963
+      },
+      {
+        "EndTime": 440067,
+        "HasVoice": false,
+        "StartTime": 439387
+      },
+      {
+        "EndTime": 444411,
+        "HasVoice": true,
+        "StartTime": 440067
+      },
+      {
+        "EndTime": 445011,
+        "HasVoice": false,
+        "StartTime": 444411
+      },
+      {
+        "EndTime": 449067,
+        "HasVoice": true,
+        "StartTime": 445011
+      },
+      {
+        "EndTime": 449699,
+        "HasVoice": false,
+        "StartTime": 449067
+      },
+      {
+        "EndTime": 450939,
+        "HasVoice": true,
+        "StartTime": 449699
+      },
+      {
+        "EndTime": 451355,
+        "HasVoice": false,
+        "StartTime": 450939
+      },
+      {
+        "EndTime": 452731,
+        "HasVoice": true,
+        "StartTime": 451355
+      },
+      {
+        "EndTime": 454531,
+        "HasVoice": false,
+        "StartTime": 452731
+      },
+      {
+        "EndTime": 461587,
+        "HasVoice": true,
+        "StartTime": 454531
+      },
+      {
+        "EndTime": 462355,
+        "HasVoice": false,
+        "StartTime": 461587
+      },
+      {
+        "EndTime": 464179,
+        "HasVoice": true,
+        "StartTime": 462355
+      },
+      {
+        "EndTime": 464915,
+        "HasVoice": false,
+        "StartTime": 464179
+      },
+      {
+        "EndTime": 465115,
+        "HasVoice": true,
+        "StartTime": 464915
+      },
+      {
+        "EndTime": 465515,
+        "HasVoice": false,
+        "StartTime": 465115
+      },
+      {
+        "EndTime": 467059,
+        "HasVoice": true,
+        "StartTime": 465515
+      },
+      {
+        "EndTime": 467875,
+        "HasVoice": false,
+        "StartTime": 467059
+      },
+      {
+        "EndTime": 470923,
+        "HasVoice": true,
+        "StartTime": 467875
+      },
+      {
+        "EndTime": 471427,
+        "HasVoice": false,
+        "StartTime": 470923
+      },
+      {
+        "EndTime": 472907,
+        "HasVoice": true,
+        "StartTime": 471427
+      },
+      {
+        "EndTime": 473363,
+        "HasVoice": false,
+        "StartTime": 472907
+      },
+      {
+        "EndTime": 474915,
+        "HasVoice": true,
+        "StartTime": 473363
+      },
+      {
+        "EndTime": 475763,
+        "HasVoice": false,
+        "StartTime": 474915
+      },
+      {
+        "EndTime": 476683,
+        "HasVoice": true,
+        "StartTime": 475763
+      },
+      {
+        "EndTime": 484691,
+        "HasVoice": false,
+        "StartTime": 476683
+      },
+      {
+        "EndTime": 488091,
+        "HasVoice": true,
+        "StartTime": 484691
+      },
+      {
+        "EndTime": 488491,
+        "HasVoice": false,
+        "StartTime": 488091
+      },
+      {
+        "EndTime": 495355,
+        "HasVoice": true,
+        "StartTime": 488491
+      },
+      {
+        "EndTime": 495979,
+        "HasVoice": false,
+        "StartTime": 495355
+      },
+      {
+        "EndTime": 498899,
+        "HasVoice": true,
+        "StartTime": 495979
+      },
+      {
+        "EndTime": 499475,
+        "HasVoice": false,
+        "StartTime": 498899
+      },
+      {
+        "EndTime": 505307,
+        "HasVoice": true,
+        "StartTime": 499475
+      },
+      {
+        "EndTime": 508227,
+        "HasVoice": false,
+        "StartTime": 505307
+      },
+      {
+        "EndTime": 509427,
+        "HasVoice": true,
+        "StartTime": 508227
+      },
+      {
+        "EndTime": 512051,
+        "HasVoice": false,
+        "StartTime": 509427
+      },
+      {
+        "EndTime": 515507,
+        "HasVoice": true,
+        "StartTime": 512051
+      },
+      {
+        "EndTime": 515947,
+        "HasVoice": false,
+        "StartTime": 515507
+      },
+      {
+        "EndTime": 517659,
+        "HasVoice": true,
+        "StartTime": 515947
+      },
+      {
+        "EndTime": 518203,
+        "HasVoice": false,
+        "StartTime": 517659
+      },
+      {
+        "EndTime": 522939,
+        "HasVoice": true,
+        "StartTime": 518203
+      },
+      {
+        "EndTime": 523459,
+        "HasVoice": false,
+        "StartTime": 522939
+      },
+      {
+        "EndTime": 524731,
+        "HasVoice": true,
+        "StartTime": 523459
+      },
+      {
+        "EndTime": 525163,
+        "HasVoice": false,
+        "StartTime": 524731
+      },
+      {
+        "EndTime": 525659,
+        "HasVoice": true,
+        "StartTime": 525163
+      },
+      {
+        "EndTime": 526075,
+        "HasVoice": false,
+        "StartTime": 525659
+      },
+      {
+        "EndTime": 526939,
+        "HasVoice": true,
+        "StartTime": 526075
+      },
+      {
+        "EndTime": 527723,
+        "HasVoice": false,
+        "StartTime": 526939
+      },
+      {
+        "EndTime": 531475,
+        "HasVoice": true,
+        "StartTime": 527723
+      },
+      {
+        "EndTime": 532155,
+        "HasVoice": false,
+        "StartTime": 531475
+      },
+      {
+        "EndTime": 533779,
+        "HasVoice": true,
+        "StartTime": 532155
+      },
+      {
+        "EndTime": 534219,
+        "HasVoice": false,
+        "StartTime": 533779
+      },
+      {
+        "EndTime": 534659,
+        "HasVoice": true,
+        "StartTime": 534219
+      },
+      {
+        "EndTime": 535315,
+        "HasVoice": false,
+        "StartTime": 534659
+      },
+      {
+        "EndTime": 537243,
+        "HasVoice": true,
+        "StartTime": 535315
+      },
+      {
+        "EndTime": 537707,
+        "HasVoice": false,
+        "StartTime": 537243
+      },
+      {
+        "EndTime": 543667,
+        "HasVoice": true,
+        "StartTime": 537707
+      },
+      {
+        "EndTime": 544083,
+        "HasVoice": false,
+        "StartTime": 543667
+      },
+      {
+        "EndTime": 548003,
+        "HasVoice": true,
+        "StartTime": 544083
+      },
+      {
+        "EndTime": 548603,
+        "HasVoice": false,
+        "StartTime": 548003
+      },
+      {
+        "EndTime": 549563,
+        "HasVoice": true,
+        "StartTime": 548603
+      },
+      {
+        "EndTime": 550243,
+        "HasVoice": false,
+        "StartTime": 549563
+      },
+      {
+        "EndTime": 554259,
+        "HasVoice": true,
+        "StartTime": 550243
+      },
+      {
+        "EndTime": 554755,
+        "HasVoice": false,
+        "StartTime": 554259
+      },
+      {
+        "EndTime": 558115,
+        "HasVoice": true,
+        "StartTime": 554755
+      },
+      {
+        "EndTime": 558635,
+        "HasVoice": false,
+        "StartTime": 558115
+      },
+      {
+        "EndTime": 559499,
+        "HasVoice": true,
+        "StartTime": 558635
+      },
+      {
+        "EndTime": 559915,
+        "HasVoice": false,
+        "StartTime": 559499
+      },
+      {
+        "EndTime": 560083,
+        "HasVoice": true,
+        "StartTime": 559915
+      },
+      {
+        "EndTime": 560803,
+        "HasVoice": false,
+        "StartTime": 560083
+      },
+      {
+        "EndTime": 564355,
+        "HasVoice": true,
+        "StartTime": 560803
+      },
+      {
+        "EndTime": 565003,
+        "HasVoice": false,
+        "StartTime": 564355
+      },
+      {
+        "EndTime": 566979,
+        "HasVoice": true,
+        "StartTime": 565003
+      },
+      {
+        "EndTime": 567395,
+        "HasVoice": false,
+        "StartTime": 566979
+      },
+      {
+        "EndTime": 570595,
+        "HasVoice": true,
+        "StartTime": 567395
+      },
+      {
+        "EndTime": 571123,
+        "HasVoice": false,
+        "StartTime": 570595
+      },
+      {
+        "EndTime": 577459,
+        "HasVoice": true,
+        "StartTime": 571123
+      },
+      {
+        "EndTime": 578163,
+        "HasVoice": false,
+        "StartTime": 577459
+      },
+      {
+        "EndTime": 581427,
+        "HasVoice": true,
+        "StartTime": 578163
+      },
+      {
+        "EndTime": 582003,
+        "HasVoice": false,
+        "StartTime": 581427
+      },
+      {
+        "EndTime": 584795,
+        "HasVoice": true,
+        "StartTime": 582003
+      },
+      {
+        "EndTime": 585275,
+        "HasVoice": false,
+        "StartTime": 584795
+      },
+      {
+        "EndTime": 587699,
+        "HasVoice": true,
+        "StartTime": 585275
+      },
+      {
+        "EndTime": 588187,
+        "HasVoice": false,
+        "StartTime": 587699
+      },
+      {
+        "EndTime": 588923,
+        "HasVoice": true,
+        "StartTime": 588187
+      },
+      {
+        "EndTime": 590283,
+        "HasVoice": false,
+        "StartTime": 588923
+      },
+      {
+        "EndTime": 592755,
+        "HasVoice": true,
+        "StartTime": 590283
+      },
+      {
+        "EndTime": 593931,
+        "HasVoice": false,
+        "StartTime": 592755
+      },
+      {
+        "EndTime": 594067,
+        "HasVoice": true,
+        "StartTime": 593931
+      },
+      {
+        "EndTime": 594595,
+        "HasVoice": false,
+        "StartTime": 594067
+      },
+      {
+        "EndTime": 595531,
+        "HasVoice": true,
+        "StartTime": 594595
+      },
+      {
+        "EndTime": 596027,
+        "HasVoice": false,
+        "StartTime": 595531
+      },
+      {
+        "EndTime": 599867,
+        "HasVoice": true,
+        "StartTime": 596027
+      },
+      {
+        "EndTime": 600299,
+        "HasVoice": false,
+        "StartTime": 599867
+      },
+      {
+        "EndTime": 601907,
+        "HasVoice": true,
+        "StartTime": 600299
+      },
+      {
+        "EndTime": 602531,
+        "HasVoice": false,
+        "StartTime": 601907
+      },
+      {
+        "EndTime": 604859,
+        "HasVoice": true,
+        "StartTime": 602531
+      },
+      {
+        "EndTime": 605267,
+        "HasVoice": false,
+        "StartTime": 604859
+      },
+      {
+        "EndTime": 605531,
+        "HasVoice": true,
+        "StartTime": 605267
+      },
+      {
+        "EndTime": 606315,
+        "HasVoice": false,
+        "StartTime": 605531
+      },
+      {
+        "EndTime": 610403,
+        "HasVoice": true,
+        "StartTime": 606315
+      },
+      {
+        "EndTime": 611147,
+        "HasVoice": false,
+        "StartTime": 610403
+      },
+      {
+        "EndTime": 611619,
+        "HasVoice": true,
+        "StartTime": 611147
+      },
+      {
+        "EndTime": 615051,
+        "HasVoice": false,
+        "StartTime": 611619
+      },
+      {
+        "EndTime": 615475,
+        "HasVoice": true,
+        "StartTime": 615051
+      },
+      {
+        "EndTime": 615931,
+        "HasVoice": false,
+        "StartTime": 615475
+      },
+      {
+        "EndTime": 617851,
+        "HasVoice": true,
+        "StartTime": 615931
+      },
+      {
+        "EndTime": 618355,
+        "HasVoice": false,
+        "StartTime": 617851
+      },
+      {
+        "EndTime": 618523,
+        "HasVoice": true,
+        "StartTime": 618355
+      },
+      {
+        "EndTime": 619411,
+        "HasVoice": false,
+        "StartTime": 618523
+      },
+      {
+        "EndTime": 628003,
+        "HasVoice": true,
+        "StartTime": 619411
+      },
+      {
+        "EndTime": 628435,
+        "HasVoice": false,
+        "StartTime": 628003
+      },
+      {
+        "EndTime": 630963,
+        "HasVoice": true,
+        "StartTime": 628435
+      },
+      {
+        "EndTime": 631515,
+        "HasVoice": false,
+        "StartTime": 630963
+      },
+      {
+        "EndTime": 632451,
+        "HasVoice": true,
+        "StartTime": 631515
+      },
+      {
+        "EndTime": 632939,
+        "HasVoice": false,
+        "StartTime": 632451
+      },
+      {
+        "EndTime": 635267,
+        "HasVoice": true,
+        "StartTime": 632939
+      },
+      {
+        "EndTime": 635731,
+        "HasVoice": false,
+        "StartTime": 635267
+      },
+      {
+        "EndTime": 641139,
+        "HasVoice": true,
+        "StartTime": 635731
+      },
+      {
+        "EndTime": 641739,
+        "HasVoice": false,
+        "StartTime": 641139
+      },
+      {
+        "EndTime": 642603,
+        "HasVoice": true,
+        "StartTime": 641739
+      },
+      {
+        "EndTime": 643371,
+        "HasVoice": false,
+        "StartTime": 642603
+      },
+      {
+        "EndTime": 646523,
+        "HasVoice": true,
+        "StartTime": 643371
+      },
+      {
+        "EndTime": 647107,
+        "HasVoice": false,
+        "StartTime": 646523
+      },
+      {
+        "EndTime": 647427,
+        "HasVoice": true,
+        "StartTime": 647107
+      },
+      {
+        "EndTime": 647979,
+        "HasVoice": false,
+        "StartTime": 647427
+      },
+      {
+        "EndTime": 649571,
+        "HasVoice": true,
+        "StartTime": 647979
+      },
+      {
+        "EndTime": 650147,
+        "HasVoice": false,
+        "StartTime": 649571
+      },
+      {
+        "EndTime": 652235,
+        "HasVoice": true,
+        "StartTime": 650147
+      },
+      {
+        "EndTime": 652643,
+        "HasVoice": false,
+        "StartTime": 652235
+      },
+      {
+        "EndTime": 654955,
+        "HasVoice": true,
+        "StartTime": 652643
+      },
+      {
+        "EndTime": 655547,
+        "HasVoice": false,
+        "StartTime": 654955
+      },
+      {
+        "EndTime": 658987,
+        "HasVoice": true,
+        "StartTime": 655547
+      },
+      {
+        "EndTime": 659531,
+        "HasVoice": false,
+        "StartTime": 658987
+      },
+      {
+        "EndTime": 660755,
+        "HasVoice": true,
+        "StartTime": 659531
+      },
+      {
+        "EndTime": 669587,
+        "HasVoice": false,
+        "StartTime": 660755
+      },
+      {
+        "EndTime": 674163,
+        "HasVoice": true,
+        "StartTime": 669587
+      },
+      {
+        "EndTime": 674707,
+        "HasVoice": false,
+        "StartTime": 674163
+      },
+      {
+        "EndTime": 675883,
+        "HasVoice": true,
+        "StartTime": 674707
+      },
+      {
+        "EndTime": 676531,
+        "HasVoice": false,
+        "StartTime": 675883
+      },
+      {
+        "EndTime": 678979,
+        "HasVoice": true,
+        "StartTime": 676531
+      },
+      {
+        "EndTime": 679411,
+        "HasVoice": false,
+        "StartTime": 678979
+      },
+      {
+        "EndTime": 681363,
+        "HasVoice": true,
+        "StartTime": 679411
+      },
+      {
+        "EndTime": 682035,
+        "HasVoice": false,
+        "StartTime": 681363
+      },
+      {
+        "EndTime": 685571,
+        "HasVoice": true,
+        "StartTime": 682035
+      },
+      {
+        "EndTime": 686003,
+        "HasVoice": false,
+        "StartTime": 685571
+      },
+      {
+        "EndTime": 690947,
+        "HasVoice": true,
+        "StartTime": 686003
+      },
+      {
+        "EndTime": 691947,
+        "HasVoice": false,
+        "StartTime": 690947
+      },
+      {
+        "EndTime": 695683,
+        "HasVoice": true,
+        "StartTime": 691947
+      },
+      {
+        "EndTime": 696467,
+        "HasVoice": false,
+        "StartTime": 695683
+      },
+      {
+        "EndTime": 697059,
+        "HasVoice": true,
+        "StartTime": 696467
+      },
+      {
+        "EndTime": 697579,
+        "HasVoice": false,
+        "StartTime": 697059
+      },
+      {
+        "EndTime": 700547,
+        "HasVoice": true,
+        "StartTime": 697579
+      },
+      {
+        "EndTime": 701059,
+        "HasVoice": false,
+        "StartTime": 700547
+      },
+      {
+        "EndTime": 703235,
+        "HasVoice": true,
+        "StartTime": 701059
+      },
+      {
+        "EndTime": 703987,
+        "HasVoice": false,
+        "StartTime": 703235
+      },
+      {
+        "EndTime": 704707,
+        "HasVoice": true,
+        "StartTime": 703987
+      },
+      {
+        "EndTime": 705531,
+        "HasVoice": false,
+        "StartTime": 704707
+      },
+      {
+        "EndTime": 707003,
+        "HasVoice": true,
+        "StartTime": 705531
+      },
+      {
+        "EndTime": 707611,
+        "HasVoice": false,
+        "StartTime": 707003
+      },
+      {
+        "EndTime": 709555,
+        "HasVoice": true,
+        "StartTime": 707611
+      },
+      {
+        "EndTime": 709963,
+        "HasVoice": false,
+        "StartTime": 709555
+      },
+      {
+        "EndTime": 710155,
+        "HasVoice": true,
+        "StartTime": 709963
+      },
+      {
+        "EndTime": 710563,
+        "HasVoice": false,
+        "StartTime": 710155
+      },
+      {
+        "EndTime": 713555,
+        "HasVoice": true,
+        "StartTime": 710563
+      },
+      {
+        "EndTime": 714083,
+        "HasVoice": false,
+        "StartTime": 713555
+      },
+      {
+        "EndTime": 715739,
+        "HasVoice": true,
+        "StartTime": 714083
+      },
+      {
+        "EndTime": 716307,
+        "HasVoice": false,
+        "StartTime": 715739
+      },
+      {
+        "EndTime": 718659,
+        "HasVoice": true,
+        "StartTime": 716307
+      },
+      {
+        "EndTime": 719235,
+        "HasVoice": false,
+        "StartTime": 718659
+      },
+      {
+        "EndTime": 722619,
+        "HasVoice": true,
+        "StartTime": 719235
+      },
+      {
+        "EndTime": 723139,
+        "HasVoice": false,
+        "StartTime": 722619
+      },
+      {
+        "EndTime": 723659,
+        "HasVoice": true,
+        "StartTime": 723139
+      },
+      {
+        "EndTime": 724123,
+        "HasVoice": false,
+        "StartTime": 723659
+      },
+      {
+        "EndTime": 725371,
+        "HasVoice": true,
+        "StartTime": 724123
+      },
+      {
+        "EndTime": 725835,
+        "HasVoice": false,
+        "StartTime": 725371
+      },
+      {
+        "EndTime": 728355,
+        "HasVoice": true,
+        "StartTime": 725835
+      },
+      {
+        "EndTime": 728859,
+        "HasVoice": false,
+        "StartTime": 728355
+      },
+      {
+        "EndTime": 729203,
+        "HasVoice": true,
+        "StartTime": 728859
+      },
+      {
+        "EndTime": 729835,
+        "HasVoice": false,
+        "StartTime": 729203
+      },
+      {
+        "EndTime": 735243,
+        "HasVoice": true,
+        "StartTime": 729835
+      },
+      {
+        "EndTime": 743907,
+        "HasVoice": false,
+        "StartTime": 735243
+      },
+      {
+        "EndTime": 745899,
+        "HasVoice": true,
+        "StartTime": 743907
+      },
+      {
+        "EndTime": 746403,
+        "HasVoice": false,
+        "StartTime": 745899
+      },
+      {
+        "EndTime": 746539,
+        "HasVoice": true,
+        "StartTime": 746403
+      },
+      {
+        "EndTime": 747227,
+        "HasVoice": false,
+        "StartTime": 746539
+      },
+      {
+        "EndTime": 747403,
+        "HasVoice": true,
+        "StartTime": 747227
+      },
+      {
+        "EndTime": 747923,
+        "HasVoice": false,
+        "StartTime": 747403
+      },
+      {
+        "EndTime": 755723,
+        "HasVoice": true,
+        "StartTime": 747923
+      },
+      {
+        "EndTime": 756451,
+        "HasVoice": false,
+        "StartTime": 755723
+      },
+      {
+        "EndTime": 758523,
+        "HasVoice": true,
+        "StartTime": 756451
+      },
+      {
+        "EndTime": 758979,
+        "HasVoice": false,
+        "StartTime": 758523
+      },
+      {
+        "EndTime": 761179,
+        "HasVoice": true,
+        "StartTime": 758979
+      },
+      {
+        "EndTime": 761875,
+        "HasVoice": false,
+        "StartTime": 761179
+      },
+      {
+        "EndTime": 763875,
+        "HasVoice": true,
+        "StartTime": 761875
+      },
+      {
+        "EndTime": 764291,
+        "HasVoice": false,
+        "StartTime": 763875
+      },
+      {
+        "EndTime": 764907,
+        "HasVoice": true,
+        "StartTime": 764291
+      },
+      {
+        "EndTime": 765475,
+        "HasVoice": false,
+        "StartTime": 764907
+      },
+      {
+        "EndTime": 767715,
+        "HasVoice": true,
+        "StartTime": 765475
+      },
+      {
+        "EndTime": 768307,
+        "HasVoice": false,
+        "StartTime": 767715
+      },
+      {
+        "EndTime": 771667,
+        "HasVoice": true,
+        "StartTime": 768307
+      },
+      {
+        "EndTime": 772171,
+        "HasVoice": false,
+        "StartTime": 771667
+      },
+      {
+        "EndTime": 772531,
+        "HasVoice": true,
+        "StartTime": 772171
+      },
+      {
+        "EndTime": 773075,
+        "HasVoice": false,
+        "StartTime": 772531
+      },
+      {
+        "EndTime": 778299,
+        "HasVoice": true,
+        "StartTime": 773075
+      },
+      {
+        "EndTime": 783131,
+        "HasVoice": false,
+        "StartTime": 778299
+      },
+      {
+        "EndTime": 786819,
+        "HasVoice": true,
+        "StartTime": 783131
+      },
+      {
+        "EndTime": 787275,
+        "HasVoice": false,
+        "StartTime": 786819
+      },
+      {
+        "EndTime": 794531,
+        "HasVoice": true,
+        "StartTime": 787275
+      },
+      {
+        "EndTime": 795067,
+        "HasVoice": false,
+        "StartTime": 794531
+      },
+      {
+        "EndTime": 795787,
+        "HasVoice": true,
+        "StartTime": 795067
+      },
+      {
+        "EndTime": 796347,
+        "HasVoice": false,
+        "StartTime": 795787
+      },
+      {
+        "EndTime": 798835,
+        "HasVoice": true,
+        "StartTime": 796347
+      },
+      {
+        "EndTime": 799403,
+        "HasVoice": false,
+        "StartTime": 798835
+      },
+      {
+        "EndTime": 799779,
+        "HasVoice": true,
+        "StartTime": 799403
+      },
+      {
+        "EndTime": 800651,
+        "HasVoice": false,
+        "StartTime": 799779
+      },
+      {
+        "EndTime": 805187,
+        "HasVoice": true,
+        "StartTime": 800651
+      },
+      {
+        "EndTime": 805667,
+        "HasVoice": false,
+        "StartTime": 805187
+      },
+      {
+        "EndTime": 808963,
+        "HasVoice": true,
+        "StartTime": 805667
+      },
+      {
+        "EndTime": 809507,
+        "HasVoice": false,
+        "StartTime": 808963
+      },
+      {
+        "EndTime": 814267,
+        "HasVoice": true,
+        "StartTime": 809507
+      },
+      {
+        "EndTime": 814803,
+        "HasVoice": false,
+        "StartTime": 814267
+      },
+      {
+        "EndTime": 814987,
+        "HasVoice": true,
+        "StartTime": 814803
+      },
+      {
+        "EndTime": 815419,
+        "HasVoice": false,
+        "StartTime": 814987
+      },
+      {
+        "EndTime": 816227,
+        "HasVoice": true,
+        "StartTime": 815419
+      },
+      {
+        "EndTime": 817139,
+        "HasVoice": false,
+        "StartTime": 816227
+      },
+      {
+        "EndTime": 817723,
+        "HasVoice": true,
+        "StartTime": 817139
+      },
+      {
+        "EndTime": 818323,
+        "HasVoice": false,
+        "StartTime": 817723
+      },
+      {
+        "EndTime": 821299,
+        "HasVoice": true,
+        "StartTime": 818323
+      },
+      {
+        "EndTime": 821803,
+        "HasVoice": false,
+        "StartTime": 821299
+      },
+      {
+        "EndTime": 824419,
+        "HasVoice": true,
+        "StartTime": 821803
+      },
+      {
+        "EndTime": 831515,
+        "HasVoice": false,
+        "StartTime": 824419
+      },
+      {
+        "EndTime": 832691,
+        "HasVoice": true,
+        "StartTime": 831515
+      },
+      {
+        "EndTime": 833243,
+        "HasVoice": false,
+        "StartTime": 832691
+      },
+      {
+        "EndTime": 833435,
+        "HasVoice": true,
+        "StartTime": 833243
+      },
+      {
+        "EndTime": 835427,
+        "HasVoice": false,
+        "StartTime": 833435
+      },
+      {
+        "EndTime": 839483,
+        "HasVoice": true,
+        "StartTime": 835427
+      },
+      {
+        "EndTime": 843291,
+        "HasVoice": false,
+        "StartTime": 839483
+      },
+      {
+        "EndTime": 853331,
+        "HasVoice": true,
+        "StartTime": 843291
+      },
+      {
+        "EndTime": 853739,
+        "HasVoice": false,
+        "StartTime": 853331
+      },
+      {
+        "EndTime": 853851,
+        "HasVoice": true,
+        "StartTime": 853739
+      },
+      {
+        "EndTime": 854259,
+        "HasVoice": false,
+        "StartTime": 853851
+      },
+      {
+        "EndTime": 854691,
+        "HasVoice": true,
+        "StartTime": 854259
+      },
+      {
+        "EndTime": 855755,
+        "HasVoice": false,
+        "StartTime": 854691
+      },
+      {
+        "EndTime": 859467,
+        "HasVoice": true,
+        "StartTime": 855755
+      },
+      {
+        "EndTime": 859883,
+        "HasVoice": false,
+        "StartTime": 859467
+      },
+      {
+        "EndTime": 861843,
+        "HasVoice": true,
+        "StartTime": 859883
+      },
+      {
+        "EndTime": 862323,
+        "HasVoice": false,
+        "StartTime": 861843
+      },
+      {
+        "EndTime": 863403,
+        "HasVoice": true,
+        "StartTime": 862323
+      },
+      {
+        "EndTime": 864011,
+        "HasVoice": false,
+        "StartTime": 863403
+      },
+      {
+        "EndTime": 865427,
+        "HasVoice": true,
+        "StartTime": 864011
+      },
+      {
+        "EndTime": 865947,
+        "HasVoice": false,
+        "StartTime": 865427
+      },
+      {
+        "EndTime": 866843,
+        "HasVoice": true,
+        "StartTime": 865947
+      },
+      {
+        "EndTime": 867331,
+        "HasVoice": false,
+        "StartTime": 866843
+      },
+      {
+        "EndTime": 869155,
+        "HasVoice": true,
+        "StartTime": 867331
+      },
+      {
+        "EndTime": 869571,
+        "HasVoice": false,
+        "StartTime": 869155
+      },
+      {
+        "EndTime": 871523,
+        "HasVoice": true,
+        "StartTime": 869571
+      },
+      {
+        "EndTime": 872067,
+        "HasVoice": false,
+        "StartTime": 871523
+      },
+      {
+        "EndTime": 873667,
+        "HasVoice": true,
+        "StartTime": 872067
+      },
+      {
+        "EndTime": 874235,
+        "HasVoice": false,
+        "StartTime": 873667
+      },
+      {
+        "EndTime": 874531,
+        "HasVoice": true,
+        "StartTime": 874235
+      },
+      {
+        "EndTime": 875019,
+        "HasVoice": false,
+        "StartTime": 874531
+      },
+      {
+        "EndTime": 878571,
+        "HasVoice": true,
+        "StartTime": 875019
+      },
+      {
+        "EndTime": 879355,
+        "HasVoice": false,
+        "StartTime": 878571
+      },
+      {
+        "EndTime": 880299,
+        "HasVoice": true,
+        "StartTime": 879355
+      },
+      {
+        "EndTime": 880883,
+        "HasVoice": false,
+        "StartTime": 880299
+      },
+      {
+        "EndTime": 881627,
+        "HasVoice": true,
+        "StartTime": 880883
+      },
+      {
+        "EndTime": 882371,
+        "HasVoice": false,
+        "StartTime": 881627
+      },
+      {
+        "EndTime": 884259,
+        "HasVoice": true,
+        "StartTime": 882371
+      },
+      {
+        "EndTime": 884683,
+        "HasVoice": false,
+        "StartTime": 884259
+      },
+      {
+        "EndTime": 885115,
+        "HasVoice": true,
+        "StartTime": 884683
+      },
+      {
+        "EndTime": 885779,
+        "HasVoice": false,
+        "StartTime": 885115
+      },
+      {
+        "EndTime": 886363,
+        "HasVoice": true,
+        "StartTime": 885779
+      },
+      {
+        "EndTime": 886899,
+        "HasVoice": false,
+        "StartTime": 886363
+      },
+      {
+        "EndTime": 887107,
+        "HasVoice": true,
+        "StartTime": 886899
+      },
+      {
+        "EndTime": 889043,
+        "HasVoice": false,
+        "StartTime": 887107
+      },
+      {
+        "EndTime": 889923,
+        "HasVoice": true,
+        "StartTime": 889043
+      },
+      {
+        "EndTime": 890547,
+        "HasVoice": false,
+        "StartTime": 889923
+      },
+      {
+        "EndTime": 891315,
+        "HasVoice": true,
+        "StartTime": 890547
+      },
+      {
+        "EndTime": 892027,
+        "HasVoice": false,
+        "StartTime": 891315
+      },
+      {
+        "EndTime": 892155,
+        "HasVoice": true,
+        "StartTime": 892027
+      },
+      {
+        "EndTime": 901035,
+        "HasVoice": false,
+        "StartTime": 892155
+      },
+      {
+        "EndTime": 906963,
+        "HasVoice": true,
+        "StartTime": 901035
+      },
+      {
+        "EndTime": 907475,
+        "HasVoice": false,
+        "StartTime": 906963
+      },
+      {
+        "EndTime": 908643,
+        "HasVoice": true,
+        "StartTime": 907475
+      },
+      {
+        "EndTime": 910755,
+        "HasVoice": false,
+        "StartTime": 908643
+      },
+      {
+        "EndTime": 915363,
+        "HasVoice": true,
+        "StartTime": 910755
+      },
+      {
+        "EndTime": 915867,
+        "HasVoice": false,
+        "StartTime": 915363
+      },
+      {
+        "EndTime": 917923,
+        "HasVoice": true,
+        "StartTime": 915867
+      },
+      {
+        "EndTime": 918643,
+        "HasVoice": false,
+        "StartTime": 917923
+      },
+      {
+        "EndTime": 920667,
+        "HasVoice": true,
+        "StartTime": 918643
+      },
+      {
+        "EndTime": 921339,
+        "HasVoice": false,
+        "StartTime": 920667
+      },
+      {
+        "EndTime": 924339,
+        "HasVoice": true,
+        "StartTime": 921339
+      },
+      {
+        "EndTime": 924859,
+        "HasVoice": false,
+        "StartTime": 924339
+      },
+      {
+        "EndTime": 927835,
+        "HasVoice": true,
+        "StartTime": 924859
+      },
+      {
+        "EndTime": 928283,
+        "HasVoice": false,
+        "StartTime": 927835
+      },
+      {
+        "EndTime": 929155,
+        "HasVoice": true,
+        "StartTime": 928283
+      },
+      {
+        "EndTime": 929571,
+        "HasVoice": false,
+        "StartTime": 929155
+      },
+      {
+        "EndTime": 932371,
+        "HasVoice": true,
+        "StartTime": 929571
+      },
+      {
+        "EndTime": 932851,
+        "HasVoice": false,
+        "StartTime": 932371
+      },
+      {
+        "EndTime": 935691,
+        "HasVoice": true,
+        "StartTime": 932851
+      },
+      {
+        "EndTime": 936323,
+        "HasVoice": false,
+        "StartTime": 935691
+      },
+      {
+        "EndTime": 939371,
+        "HasVoice": true,
+        "StartTime": 936323
+      },
+      {
+        "EndTime": 939795,
+        "HasVoice": false,
+        "StartTime": 939371
+      },
+      {
+        "EndTime": 940947,
+        "HasVoice": true,
+        "StartTime": 939795
+      },
+      {
+        "EndTime": 941547,
+        "HasVoice": false,
+        "StartTime": 940947
+      },
+      {
+        "EndTime": 942323,
+        "HasVoice": true,
+        "StartTime": 941547
+      },
+      {
+        "EndTime": 942771,
+        "HasVoice": false,
+        "StartTime": 942323
+      },
+      {
+        "EndTime": 942923,
+        "HasVoice": true,
+        "StartTime": 942771
+      },
+      {
+        "EndTime": 943355,
+        "HasVoice": false,
+        "StartTime": 942923
+      },
+      {
+        "EndTime": 944019,
+        "HasVoice": true,
+        "StartTime": 943355
+      },
+      {
+        "EndTime": 944531,
+        "HasVoice": false,
+        "StartTime": 944019
+      },
+      {
+        "EndTime": 948803,
+        "HasVoice": true,
+        "StartTime": 944531
+      },
+      {
+        "EndTime": 949291,
+        "HasVoice": false,
+        "StartTime": 948803
+      },
+      {
+        "EndTime": 949843,
+        "HasVoice": true,
+        "StartTime": 949291
+      },
+      {
+        "EndTime": 950515,
+        "HasVoice": false,
+        "StartTime": 949843
+      },
+      {
+        "EndTime": 952523,
+        "HasVoice": true,
+        "StartTime": 950515
+      },
+      {
+        "EndTime": 953411,
+        "HasVoice": false,
+        "StartTime": 952523
+      },
+      {
+        "EndTime": 954667,
+        "HasVoice": true,
+        "StartTime": 953411
+      },
+      {
+        "EndTime": 955083,
+        "HasVoice": false,
+        "StartTime": 954667
+      },
+      {
+        "EndTime": 958339,
+        "HasVoice": true,
+        "StartTime": 955083
+      },
+      {
+        "EndTime": 959459,
+        "HasVoice": false,
+        "StartTime": 958339
+      },
+      {
+        "EndTime": 960955,
+        "HasVoice": true,
+        "StartTime": 959459
+      },
+      {
+        "EndTime": 961387,
+        "HasVoice": false,
+        "StartTime": 960955
+      },
+      {
+        "EndTime": 963907,
+        "HasVoice": true,
+        "StartTime": 961387
+      },
+      {
+        "EndTime": 964563,
+        "HasVoice": false,
+        "StartTime": 963907
+      },
+      {
+        "EndTime": 965315,
+        "HasVoice": true,
+        "StartTime": 964563
+      },
+      {
+        "EndTime": 965835,
+        "HasVoice": false,
+        "StartTime": 965315
+      },
+      {
+        "EndTime": 966771,
+        "HasVoice": true,
+        "StartTime": 965835
+      },
+      {
+        "EndTime": 969179,
+        "HasVoice": false,
+        "StartTime": 966771
+      },
+      {
+        "EndTime": 973547,
+        "HasVoice": true,
+        "StartTime": 969179
+      },
+      {
+        "EndTime": 976571,
+        "HasVoice": false,
+        "StartTime": 973547
+      },
+      {
+        "EndTime": 977691,
+        "HasVoice": true,
+        "StartTime": 976571
+      },
+      {
+        "EndTime": 978155,
+        "HasVoice": false,
+        "StartTime": 977691
+      },
+      {
+        "EndTime": 981523,
+        "HasVoice": true,
+        "StartTime": 978155
+      },
+      {
+        "EndTime": 981987,
+        "HasVoice": false,
+        "StartTime": 981523
+      },
+      {
+        "EndTime": 983251,
+        "HasVoice": true,
+        "StartTime": 981987
+      },
+      {
+        "EndTime": 983739,
+        "HasVoice": false,
+        "StartTime": 983251
+      },
+      {
+        "EndTime": 984835,
+        "HasVoice": true,
+        "StartTime": 983739
+      },
+      {
+        "EndTime": 985291,
+        "HasVoice": false,
+        "StartTime": 984835
+      },
+      {
+        "EndTime": 988315,
+        "HasVoice": true,
+        "StartTime": 985291
+      },
+      {
+        "EndTime": 988947,
+        "HasVoice": false,
+        "StartTime": 988315
+      },
+      {
+        "EndTime": 989387,
+        "HasVoice": true,
+        "StartTime": 988947
+      },
+      {
+        "EndTime": 990019,
+        "HasVoice": false,
+        "StartTime": 989387
+      },
+      {
+        "EndTime": 992059,
+        "HasVoice": true,
+        "StartTime": 990019
+      },
+      {
+        "EndTime": 992491,
+        "HasVoice": false,
+        "StartTime": 992059
+      },
+      {
+        "EndTime": 996379,
+        "HasVoice": true,
+        "StartTime": 992491
+      },
+      {
+        "EndTime": 997203,
+        "HasVoice": false,
+        "StartTime": 996379
+      },
+      {
+        "EndTime": 998867,
+        "HasVoice": true,
+        "StartTime": 997203
+      },
+      {
+        "EndTime": 999675,
+        "HasVoice": false,
+        "StartTime": 998867
+      },
+      {
+        "EndTime": 1003979,
+        "HasVoice": true,
+        "StartTime": 999675
+      },
+      {
+        "EndTime": 1004483,
+        "HasVoice": false,
+        "StartTime": 1003979
+      },
+      {
+        "EndTime": 1006651,
+        "HasVoice": true,
+        "StartTime": 1004483
+      },
+      {
+        "EndTime": 1007699,
+        "HasVoice": false,
+        "StartTime": 1006651
+      },
+      {
+        "EndTime": 1009027,
+        "HasVoice": true,
+        "StartTime": 1007699
+      },
+      {
+        "EndTime": 1009627,
+        "HasVoice": false,
+        "StartTime": 1009027
+      },
+      {
+        "EndTime": 1009795,
+        "HasVoice": true,
+        "StartTime": 1009627
+      },
+      {
+        "EndTime": 1010291,
+        "HasVoice": false,
+        "StartTime": 1009795
+      },
+      {
+        "EndTime": 1011555,
+        "HasVoice": true,
+        "StartTime": 1010291
+      },
+      {
+        "EndTime": 1012011,
+        "HasVoice": false,
+        "StartTime": 1011555
+      },
+      {
+        "EndTime": 1012699,
+        "HasVoice": true,
+        "StartTime": 1012011
+      },
+      {
+        "EndTime": 1013211,
+        "HasVoice": false,
+        "StartTime": 1012699
+      },
+      {
+        "EndTime": 1013483,
+        "HasVoice": true,
+        "StartTime": 1013211
+      },
+      {
+        "EndTime": 1013899,
+        "HasVoice": false,
+        "StartTime": 1013483
+      },
+      {
+        "EndTime": 1014235,
+        "HasVoice": true,
+        "StartTime": 1013899
+      },
+      {
+        "EndTime": 1018723,
+        "HasVoice": false,
+        "StartTime": 1014235
+      },
+      {
+        "EndTime": 1022427,
+        "HasVoice": true,
+        "StartTime": 1018723
+      },
+      {
+        "EndTime": 1026475,
+        "HasVoice": false,
+        "StartTime": 1022427
+      },
+      {
+        "EndTime": 1030483,
+        "HasVoice": true,
+        "StartTime": 1026475
+      },
+      {
+        "EndTime": 1031011,
+        "HasVoice": false,
+        "StartTime": 1030483
+      },
+      {
+        "EndTime": 1034427,
+        "HasVoice": true,
+        "StartTime": 1031011
+      },
+      {
+        "EndTime": 1034867,
+        "HasVoice": false,
+        "StartTime": 1034427
+      },
+      {
+        "EndTime": 1039883,
+        "HasVoice": true,
+        "StartTime": 1034867
+      },
+      {
+        "EndTime": 1040443,
+        "HasVoice": false,
+        "StartTime": 1039883
+      },
+      {
+        "EndTime": 1040923,
+        "HasVoice": true,
+        "StartTime": 1040443
+      },
+      {
+        "EndTime": 1041403,
+        "HasVoice": false,
+        "StartTime": 1040923
+      },
+      {
+        "EndTime": 1046787,
+        "HasVoice": true,
+        "StartTime": 1041403
+      },
+      {
+        "EndTime": 1047691,
+        "HasVoice": false,
+        "StartTime": 1046787
+      },
+      {
+        "EndTime": 1048483,
+        "HasVoice": true,
+        "StartTime": 1047691
+      },
+      {
+        "EndTime": 1048915,
+        "HasVoice": false,
+        "StartTime": 1048483
+      },
+      {
+        "EndTime": 1050515,
+        "HasVoice": true,
+        "StartTime": 1048915
+      },
+      {
+        "EndTime": 1055811,
+        "HasVoice": false,
+        "StartTime": 1050515
+      },
+      {
+        "EndTime": 1059779,
+        "HasVoice": true,
+        "StartTime": 1055811
+      },
+      {
+        "EndTime": 1060195,
+        "HasVoice": false,
+        "StartTime": 1059779
+      },
+      {
+        "EndTime": 1060827,
+        "HasVoice": true,
+        "StartTime": 1060195
+      },
+      {
+        "EndTime": 1062523,
+        "HasVoice": false,
+        "StartTime": 1060827
+      },
+      {
+        "EndTime": 1063035,
+        "HasVoice": true,
+        "StartTime": 1062523
+      },
+      {
+        "EndTime": 1063435,
+        "HasVoice": false,
+        "StartTime": 1063035
+      },
+      {
+        "EndTime": 1065867,
+        "HasVoice": true,
+        "StartTime": 1063435
+      },
+      {
+        "EndTime": 1066283,
+        "HasVoice": false,
+        "StartTime": 1065867
+      },
+      {
+        "EndTime": 1068067,
+        "HasVoice": true,
+        "StartTime": 1066283
+      },
+      {
+        "EndTime": 1068675,
+        "HasVoice": false,
+        "StartTime": 1068067
+      },
+      {
+        "EndTime": 1070419,
+        "HasVoice": true,
+        "StartTime": 1068675
+      },
+      {
+        "EndTime": 1070835,
+        "HasVoice": false,
+        "StartTime": 1070419
+      },
+      {
+        "EndTime": 1073251,
+        "HasVoice": true,
+        "StartTime": 1070835
+      },
+      {
+        "EndTime": 1073819,
+        "HasVoice": false,
+        "StartTime": 1073251
+      },
+      {
+        "EndTime": 1080171,
+        "HasVoice": true,
+        "StartTime": 1073819
+      },
+      {
+        "EndTime": 1080939,
+        "HasVoice": false,
+        "StartTime": 1080171
+      },
+      {
+        "EndTime": 1083739,
+        "HasVoice": true,
+        "StartTime": 1080939
+      },
+      {
+        "EndTime": 1085187,
+        "HasVoice": false,
+        "StartTime": 1083739
+      },
+      {
+        "EndTime": 1086083,
+        "HasVoice": true,
+        "StartTime": 1085187
+      },
+      {
+        "EndTime": 1086915,
+        "HasVoice": false,
+        "StartTime": 1086083
+      },
+      {
+        "EndTime": 1091883,
+        "HasVoice": true,
+        "StartTime": 1086915
+      },
+      {
+        "EndTime": 1092291,
+        "HasVoice": false,
+        "StartTime": 1091883
+      },
+      {
+        "EndTime": 1093227,
+        "HasVoice": true,
+        "StartTime": 1092291
+      },
+      {
+        "EndTime": 1093819,
+        "HasVoice": false,
+        "StartTime": 1093227
+      },
+      {
+        "EndTime": 1095403,
+        "HasVoice": true,
+        "StartTime": 1093819
+      },
+      {
+        "EndTime": 1095947,
+        "HasVoice": false,
+        "StartTime": 1095403
+      },
+      {
+        "EndTime": 1102667,
+        "HasVoice": true,
+        "StartTime": 1095947
+      },
+      {
+        "EndTime": 1103411,
+        "HasVoice": false,
+        "StartTime": 1102667
+      },
+      {
+        "EndTime": 1106555,
+        "HasVoice": true,
+        "StartTime": 1103411
+      },
+      {
+        "EndTime": 1107043,
+        "HasVoice": false,
+        "StartTime": 1106555
+      },
+      {
+        "EndTime": 1111483,
+        "HasVoice": true,
+        "StartTime": 1107043
+      },
+      {
+        "EndTime": 1112507,
+        "HasVoice": false,
+        "StartTime": 1111483
+      },
+      {
+        "EndTime": 1113355,
+        "HasVoice": true,
+        "StartTime": 1112507
+      },
+      {
+        "EndTime": 1114019,
+        "HasVoice": false,
+        "StartTime": 1113355
+      },
+      {
+        "EndTime": 1115131,
+        "HasVoice": true,
+        "StartTime": 1114019
+      },
+      {
+        "EndTime": 1115667,
+        "HasVoice": false,
+        "StartTime": 1115131
+      },
+      {
+        "EndTime": 1117491,
+        "HasVoice": true,
+        "StartTime": 1115667
+      },
+      {
+        "EndTime": 1117923,
+        "HasVoice": false,
+        "StartTime": 1117491
+      },
+      {
+        "EndTime": 1119163,
+        "HasVoice": true,
+        "StartTime": 1117923
+      },
+      {
+        "EndTime": 1119579,
+        "HasVoice": false,
+        "StartTime": 1119163
+      },
+      {
+        "EndTime": 1123099,
+        "HasVoice": true,
+        "StartTime": 1119579
+      },
+      {
+        "EndTime": 1123587,
+        "HasVoice": false,
+        "StartTime": 1123099
+      },
+      {
+        "EndTime": 1129643,
+        "HasVoice": true,
+        "StartTime": 1123587
+      },
+      {
+        "EndTime": 1130219,
+        "HasVoice": false,
+        "StartTime": 1129643
+      },
+      {
+        "EndTime": 1131539,
+        "HasVoice": true,
+        "StartTime": 1130219
+      },
+      {
+        "EndTime": 1132147,
+        "HasVoice": false,
+        "StartTime": 1131539
+      },
+      {
+        "EndTime": 1134347,
+        "HasVoice": true,
+        "StartTime": 1132147
+      },
+      {
+        "EndTime": 1134763,
+        "HasVoice": false,
+        "StartTime": 1134347
+      },
+      {
+        "EndTime": 1135059,
+        "HasVoice": true,
+        "StartTime": 1134763
+      },
+      {
+        "EndTime": 1135803,
+        "HasVoice": false,
+        "StartTime": 1135059
+      },
+      {
+        "EndTime": 1137931,
+        "HasVoice": true,
+        "StartTime": 1135803
+      },
+      {
+        "EndTime": 1140915,
+        "HasVoice": false,
+        "StartTime": 1137931
+      },
+      {
+        "EndTime": 1145395,
+        "HasVoice": true,
+        "StartTime": 1140915
+      },
+      {
+        "EndTime": 1146059,
+        "HasVoice": false,
+        "StartTime": 1145395
+      },
+      {
+        "EndTime": 1152499,
+        "HasVoice": true,
+        "StartTime": 1146059
+      },
+      {
+        "EndTime": 1152899,
+        "HasVoice": false,
+        "StartTime": 1152499
+      },
+      {
+        "EndTime": 1158843,
+        "HasVoice": true,
+        "StartTime": 1152899
+      },
+      {
+        "EndTime": 1159339,
+        "HasVoice": false,
+        "StartTime": 1158843
+      },
+      {
+        "EndTime": 1160043,
+        "HasVoice": true,
+        "StartTime": 1159339
+      },
+      {
+        "EndTime": 1160659,
+        "HasVoice": false,
+        "StartTime": 1160043
+      },
+      {
+        "EndTime": 1160851,
+        "HasVoice": true,
+        "StartTime": 1160659
+      },
+      {
+        "EndTime": 1161611,
+        "HasVoice": false,
+        "StartTime": 1160851
+      },
+      {
+        "EndTime": 1167611,
+        "HasVoice": true,
+        "StartTime": 1161611
+      },
+      {
+        "EndTime": 1168027,
+        "HasVoice": false,
+        "StartTime": 1167611
+      },
+      {
+        "EndTime": 1170811,
+        "HasVoice": true,
+        "StartTime": 1168027
+      },
+      {
+        "EndTime": 1171219,
+        "HasVoice": false,
+        "StartTime": 1170811
+      },
+      {
+        "EndTime": 1173627,
+        "HasVoice": true,
+        "StartTime": 1171219
+      },
+      {
+        "EndTime": 1174139,
+        "HasVoice": false,
+        "StartTime": 1173627
+      },
+      {
+        "EndTime": 1174723,
+        "HasVoice": true,
+        "StartTime": 1174139
+      },
+      {
+        "EndTime": 1175131,
+        "HasVoice": false,
+        "StartTime": 1174723
+      },
+      {
+        "EndTime": 1178795,
+        "HasVoice": true,
+        "StartTime": 1175131
+      },
+      {
+        "EndTime": 1179467,
+        "HasVoice": false,
+        "StartTime": 1178795
+      },
+      {
+        "EndTime": 1185051,
+        "HasVoice": true,
+        "StartTime": 1179467
+      },
+      {
+        "EndTime": 1185579,
+        "HasVoice": false,
+        "StartTime": 1185051
+      },
+      {
+        "EndTime": 1187619,
+        "HasVoice": true,
+        "StartTime": 1185579
+      },
+      {
+        "EndTime": 1188059,
+        "HasVoice": false,
+        "StartTime": 1187619
+      },
+      {
+        "EndTime": 1188715,
+        "HasVoice": true,
+        "StartTime": 1188059
+      },
+      {
+        "EndTime": 1189155,
+        "HasVoice": false,
+        "StartTime": 1188715
+      },
+      {
+        "EndTime": 1193219,
+        "HasVoice": true,
+        "StartTime": 1189155
+      },
+      {
+        "EndTime": 1193851,
+        "HasVoice": false,
+        "StartTime": 1193219
+      },
+      {
+        "EndTime": 1195651,
+        "HasVoice": true,
+        "StartTime": 1193851
+      },
+      {
+        "EndTime": 1196435,
+        "HasVoice": false,
+        "StartTime": 1195651
+      },
+      {
+        "EndTime": 1197411,
+        "HasVoice": true,
+        "StartTime": 1196435
+      },
+      {
+        "EndTime": 1197835,
+        "HasVoice": false,
+        "StartTime": 1197411
+      },
+      {
+        "EndTime": 1201155,
+        "HasVoice": true,
+        "StartTime": 1197835
+      },
+      {
+        "EndTime": 1201715,
+        "HasVoice": false,
+        "StartTime": 1201155
+      },
+      {
+        "EndTime": 1203499,
+        "HasVoice": true,
+        "StartTime": 1201715
+      },
+      {
+        "EndTime": 1204019,
+        "HasVoice": false,
+        "StartTime": 1203499
+      },
+      {
+        "EndTime": 1209827,
+        "HasVoice": true,
+        "StartTime": 1204019
+      },
+      {
+        "EndTime": 1210347,
+        "HasVoice": false,
+        "StartTime": 1209827
+      },
+      {
+        "EndTime": 1211723,
+        "HasVoice": true,
+        "StartTime": 1210347
+      },
+      {
+        "EndTime": 1212275,
+        "HasVoice": false,
+        "StartTime": 1211723
+      },
+      {
+        "EndTime": 1214187,
+        "HasVoice": true,
+        "StartTime": 1212275
+      },
+      {
+        "EndTime": 1214667,
+        "HasVoice": false,
+        "StartTime": 1214187
+      },
+      {
+        "EndTime": 1218891,
+        "HasVoice": true,
+        "StartTime": 1214667
+      },
+      {
+        "EndTime": 1223699,
+        "HasVoice": false,
+        "StartTime": 1218891
+      },
+      {
+        "EndTime": 1226971,
+        "HasVoice": true,
+        "StartTime": 1223699
+      },
+      {
+        "EndTime": 1227563,
+        "HasVoice": false,
+        "StartTime": 1226971
+      },
+      {
+        "EndTime": 1227963,
+        "HasVoice": true,
+        "StartTime": 1227563
+      },
+      {
+        "EndTime": 1228779,
+        "HasVoice": false,
+        "StartTime": 1227963
+      },
+      {
+        "EndTime": 1238763,
+        "HasVoice": true,
+        "StartTime": 1228779
+      },
+      {
+        "EndTime": 1239459,
+        "HasVoice": false,
+        "StartTime": 1238763
+      },
+      {
+        "EndTime": 1239651,
+        "HasVoice": true,
+        "StartTime": 1239459
+      },
+      {
+        "EndTime": 1240219,
+        "HasVoice": false,
+        "StartTime": 1239651
+      },
+      {
+        "EndTime": 1241651,
+        "HasVoice": true,
+        "StartTime": 1240219
+      },
+      {
+        "EndTime": 1242211,
+        "HasVoice": false,
+        "StartTime": 1241651
+      },
+      {
+        "EndTime": 1242483,
+        "HasVoice": true,
+        "StartTime": 1242211
+      },
+      {
+        "EndTime": 1244347,
+        "HasVoice": false,
+        "StartTime": 1242483
+      },
+      {
+        "EndTime": 1251131,
+        "HasVoice": true,
+        "StartTime": 1244347
+      },
+      {
+        "EndTime": 1251539,
+        "HasVoice": false,
+        "StartTime": 1251131
+      },
+      {
+        "EndTime": 1253491,
+        "HasVoice": true,
+        "StartTime": 1251539
+      },
+      {
+        "EndTime": 1254131,
+        "HasVoice": false,
+        "StartTime": 1253491
+      },
+      {
+        "EndTime": 1255403,
+        "HasVoice": true,
+        "StartTime": 1254131
+      },
+      {
+        "EndTime": 1256803,
+        "HasVoice": false,
+        "StartTime": 1255403
+      },
+      {
+        "EndTime": 1259875,
+        "HasVoice": true,
+        "StartTime": 1256803
+      },
+      {
+        "EndTime": 1260291,
+        "HasVoice": false,
+        "StartTime": 1259875
+      },
+      {
+        "EndTime": 1262931,
+        "HasVoice": true,
+        "StartTime": 1260291
+      },
+      {
+        "EndTime": 1263515,
+        "HasVoice": false,
+        "StartTime": 1262931
+      },
+      {
+        "EndTime": 1264003,
+        "HasVoice": true,
+        "StartTime": 1263515
+      },
+      {
+        "EndTime": 1264419,
+        "HasVoice": false,
+        "StartTime": 1264003
+      },
+      {
+        "EndTime": 1265643,
+        "HasVoice": true,
+        "StartTime": 1264419
+      },
+      {
+        "EndTime": 1266131,
+        "HasVoice": false,
+        "StartTime": 1265643
+      },
+      {
+        "EndTime": 1267339,
+        "HasVoice": true,
+        "StartTime": 1266131
+      },
+      {
+        "EndTime": 1267907,
+        "HasVoice": false,
+        "StartTime": 1267339
+      },
+      {
+        "EndTime": 1270267,
+        "HasVoice": true,
+        "StartTime": 1267907
+      },
+      {
+        "EndTime": 1270811,
+        "HasVoice": false,
+        "StartTime": 1270267
+      },
+      {
+        "EndTime": 1271283,
+        "HasVoice": true,
+        "StartTime": 1270811
+      },
+      {
+        "EndTime": 1271787,
+        "HasVoice": false,
+        "StartTime": 1271283
+      },
+      {
+        "EndTime": 1276163,
+        "HasVoice": true,
+        "StartTime": 1271787
+      },
+      {
+        "EndTime": 1276635,
+        "HasVoice": false,
+        "StartTime": 1276163
+      },
+      {
+        "EndTime": 1276907,
+        "HasVoice": true,
+        "StartTime": 1276635
+      },
+      {
+        "EndTime": 1277411,
+        "HasVoice": false,
+        "StartTime": 1276907
+      },
+      {
+        "EndTime": 1278731,
+        "HasVoice": true,
+        "StartTime": 1277411
+      },
+      {
+        "EndTime": 1286934,
+        "HasVoice": false,
+        "StartTime": 1278731
+      }
+    ],
+    "SubtitleFixes": [],
+    "SynchronizationShift": 6568
+  },
+  "Version": 1,
+  "WindowState": {
+    "currentMode": 1,
+    "currentPosition": 1279963,
+    "currentSubtitle": null,
+    "desktopVideoIsVisible": false,
+    "faceVideoIsVisible": true,
+    "paused": true,
+    "speedRatio": 1
+  }
+}
