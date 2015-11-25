@@ -23,12 +23,12 @@ namespace Tuto.Model
 		public readonly DirectoryInfo RawLocation;
         public readonly bool InputFilesAreOK;
 
+
 		public DirectoryInfo TempFolder
 		{
 			get
 			{
-				var relative = MyPath.RelativeTo(RawLocation.FullName, Videotheque.RawFolder.FullName);
-				var temp = Path.Combine(Videotheque.TempFolder.FullName, relative);
+				var temp = Path.Combine(Videotheque.TempFolder.FullName, Montage.RawVideoHash);
 				var directory = new DirectoryInfo(temp);
 				if (!directory.Exists) directory.Create();
 				return directory;

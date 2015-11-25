@@ -27,13 +27,12 @@ namespace Tuto.Publishing
         {
             this.sourcesFactory = sourcesFactory;
             UpdateVideoCommand = new RelayCommand(UpdateVideo);
-            UpdateLatexCommand = new RelayCommand(UpdateLatex);
-
+      
             SaveCommand = new RelayCommand(Save);
             Reload();
         }
 
-        void Reload()
+        public void Reload()
         {
             var data = new CourseTreeData
             {
@@ -46,7 +45,7 @@ namespace Tuto.Publishing
 
             sources = sourcesFactory().ToList();
             foreach (var source in sources)
-                source.Initialize(Model.Settings);
+                source.Initialize(Model);
 
             Load();
             CreateCommandBlocks();
@@ -57,7 +56,7 @@ namespace Tuto.Publishing
 
         public void Closing()
         {
-            DataBinding<IExpandingDataHolder>.SaveLayer<ExpandingData>(Root[0], Settings.Location);
+            Save();
         }
 
 		void Load()
@@ -91,22 +90,17 @@ namespace Tuto.Publishing
 			Root = new[] { Root[0] };
 		}
 
-		void UpdateLatex()
-		{
-			sources.OfType<LatexSource>().FirstOrDefault().Pull(Root[0]);
-			Root = new[] { Root[0] };
-		}
 
         public void Save()
         {
 			foreach (var s in sources)
 				s.Save(Root[0]);
+            Model.Save();
         }
 
 
         public RelayCommand SaveCommand { get; private set; }
 		public RelayCommand UpdateVideoCommand { get; private set; }
-		public RelayCommand UpdateLatexCommand { get; private set; }
 		public RelayCommand TestCommand { get; private set; }
 
     }

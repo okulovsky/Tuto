@@ -11,11 +11,11 @@ namespace Tuto.Publishing
 	public class ULearnSource : IMaterialSource
 	{
 
-        public PublishingSettings Settings { get; private set; }
-	
-		public void Initialize(PublishingSettings settings)
+        public PublishingModel Model { get; private set; }
+
+        public void Initialize(PublishingModel model)
 		{
-            Settings = settings;
+            Model = model;
    		}
 
         Regex csRegex = new Regex(@"[ \.,:-]");
@@ -37,7 +37,7 @@ namespace Tuto.Publishing
         public DirectoryInfo DirectoryForLecture(LectureWrap wrap)
         {
             return new DirectoryInfo(Path.Combine(
-                Settings.UlearnCourseDirectory,
+                Model.Settings.UlearnCourseDirectory,
                 string.Format("L{0:D3} - {1}", wrap.LectureNumber*10, wrap.Caption)));
         }
 

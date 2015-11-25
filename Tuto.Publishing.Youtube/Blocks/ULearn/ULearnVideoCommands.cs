@@ -35,7 +35,7 @@ namespace {0}
 }}";
 
             return string.Format(template,
-                Source.Settings.CourseAbbreviation,
+                Source.Model.Settings.CourseAbbreviation,
                 Wrap.Caption,
                 Wrap.Guid,
                 Source.CSConvert(Wrap.Caption),
@@ -49,23 +49,12 @@ namespace {0}
             return "";
         }
 
-        string PrepareGalleryAndCreateEntry()
-        {
-            var latexBlock = Wrap.BlockOfType<LatexVideoCommands>();
-            if (latexBlock.Status.ExportPrevented()) return "";
 
-			var dstFile = new FileInfo(
-				Path.Combine(Source.FileForSlide(Wrap).Directory.FullName,
-				"_"+Source.FilePrefixForSlide(Wrap) + ".pdf"));
-            latexBlock.PdfFile.CopyTo(dstFile.FullName,true);
-            return "\t\t/*\n\t\t[Презентация](" + dstFile.Name + ")\n\t\t*/\n";
-
-        }
 
         public void Compile()
         {
             if (!Source.FileForSlide(Wrap).Directory.Exists) Source.FileForSlide(Wrap).Directory.Create();
-            var content = CreateContent(CreateVideoEntry()+"\n"+PrepareGalleryAndCreateEntry());
+            var content = CreateContent(CreateVideoEntry());
 			System.IO.File.WriteAllText(Source.FileForSlide(Wrap).FullName, content);
         }
 

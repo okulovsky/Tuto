@@ -47,31 +47,18 @@ namespace V3Updater
 
 		static void ParsePublishing(string path, Videotheque v)
 		{
-			var dir = new DirectoryInfo(path);
+            var pubModel = new PublishingModel();
+			pubModel.Videotheque=v;
+            var dir = new DirectoryInfo(path);
 			var globalData = CourseTreeData.Load(dir);
-			var root = ItemTreeBuilder.Build<FolderWrap, LectureWrap, VideoWrap>(globalData);
-			YoutubeDataBinding.LoadYoutubeData(root, dir);
-			var Settings= HeadedJsonFormat.Read<PublishingSettings>(dir);
-			foreach(var video in root.Subtree())
-			{
-				var clip = video.Get<YoutubeClip>();
-				if (clip == null) continue;
-				var episode =
-						v.Episodes.Where(z => z.Item2.Guid == video.Guid).FirstOrDefault();
-				if (episode!=null)
-				{
-					episode.Item2.YoutubeId = clip.Id;
-					episode.Item1.Save();
-				}
-			}
-			var pubModel = new PublishingModel
-			{
-				CourseStructure=globalData.Structure,
-				 Videos = globalData.Videos,
-				  Settings=Settings,
-			};
-			var pubName=Path.Combine(ModelsFolderName,dir.Name+"."+Names.PublishingModelExtension);
-			HeadedJsonFormat.Write(new FileInfo(pubName), pubModel);
+            pubModel.CourseStructure=globalData.Structure;
+            pubModel.Videos = globalData.Videos;
+            pubModel.Settings=HeadedJsonFormat.Read<PublishingSettings>(dir);
+            pubModel.YoutubeClipData=HeadedJsonFormat.Read<DataLayer<YoutubeClip>>(dir);
+            pubModel.YoutubePlaylistData=HeadedJsonFormat.Read<DataLayer<YoutubePlaylist>>(dir);
+            var pubName=Path.Combine(ModelsFolderName,dir.Name+"."+Names.PublishingModelExtension);
+            pubModel.Location = new FileInfo(pubName);
+            pubModel.Save();
 		}
 
 
