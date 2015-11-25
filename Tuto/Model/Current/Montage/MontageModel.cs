@@ -18,7 +18,7 @@ namespace Tuto.Model
         [DataMember]
         public string RawVideoHash { get; private set; }
         [DataMember]
-        public string DisplayedRawLocation { get; internal set; }
+        public string DisplayedRawLocation { get; set; }
 
         public DateTime ModificationTime { get; set; }
 

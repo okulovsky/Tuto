@@ -15,10 +15,28 @@ namespace Tuto.Model
 	public class LoadingException : Exception { }
 
 
-    public class RawFileHashes
+    public class RawFileHashes<T>
     {
-        public readonly Dictionary<string, DirectoryInfo> Hashes = new Dictionary<string, DirectoryInfo>();
-        public readonly Dictionary<string, List<DirectoryInfo>> DuplicatedHashes = new Dictionary<string, List<DirectoryInfo>>();
+        public readonly Dictionary<string, T> Hashes = new Dictionary<string, T>();
+        public readonly Dictionary<string, List<T>> DuplicatedHashes = new Dictionary<string, List<T>>();
+		public void Add(string hash, T value)
+		{
+			if (Hashes.ContainsKey(hash))
+			{
+				if (!DuplicatedHashes.ContainsKey(hash))
+					DuplicatedHashes[hash] = new List<T> { Hashes[hash] };
+				DuplicatedHashes[hash].Add(value);
+			}
+			else
+				Hashes[hash] = value;
+		}
+		public string GetMessage(Func<T, string> selector)
+		{
+			if (DuplicatedHashes.Count==0) return null;
+			return DuplicatedHashes
+				.Select(v => "Hash " + v.Key + ": " + v.Value.Select(selector).Aggregate((a, b) => a + "," + b))
+				.Aggregate((a, b) => a + "\r\n" + b);
+		}
     }
 
 	public class Videotheque
@@ -416,23 +434,13 @@ namespace Tuto.Model
 			return hash;
 		}
 
-		public static void ComputeHashesInRawSubdirectories(DirectoryInfo directory, string targetFileName, string hashFileName, bool recomputeAll, RawFileHashes hashes)
+		public static void ComputeHashesInRawSubdirectories(DirectoryInfo directory, string targetFileName, string hashFileName, bool recomputeAll, RawFileHashes<DirectoryInfo> hashes)
 		{
 			var files = directory.GetFiles();
 			if (files.Any(z => z.Name == targetFileName))
 			{
 				string hash = ComputeHash(directory, targetFileName, hashFileName, recomputeAll);
-                if (hashes.Hashes.ContainsKey(hash))
-                {
-                    if (!hashes.DuplicatedHashes.ContainsKey(hash))
-                    {
-                        hashes.DuplicatedHashes[hash] = new List<DirectoryInfo>();
-                        hashes.DuplicatedHashes[hash].Add(hashes.Hashes[hash]);
-                    }
-                    hashes.DuplicatedHashes[hash].Add(directory);
-                }
-                else 
-                    hashes.Hashes[hash] = directory;
+				hashes.Add(hash, directory);
 			}
 			else foreach (var d in directory.GetDirectories())
 					ComputeHashesInRawSubdirectories(d, targetFileName, hashFileName, recomputeAll, hashes);
@@ -443,7 +451,7 @@ namespace Tuto.Model
 		void LoadBinaryHashes(IVideothequeLoadingUI ui)
 		{
             ui.StartPOSTWork("Indexing videofiles in " + RawFolder.FullName);
-            var hashes = new RawFileHashes();
+            var hashes = new RawFileHashes<DirectoryInfo>();
             ComputeHashesInRawSubdirectories(RawFolder, Names.FaceFileName, Names.HashFileName, false, hashes);
             if (hashes.DuplicatedHashes.Count != 0)
             {
@@ -475,6 +483,7 @@ namespace Tuto.Model
             ui.StartPOSTWork("Loading models");
             loadedContainer = new List<Tuple<FileContainer, FileInfo>>();
 			LoadFiles<FileContainer>(ModelsFolder, Names.ModelExtension, loadedContainer);
+			
             ui.CompletePOSTWork(true);
 		}
 
