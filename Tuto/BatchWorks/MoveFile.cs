@@ -17,7 +17,7 @@ namespace Tuto.BatchWorks
 
         public MoveFile(FileInfo from, FileInfo to)
         {
-            Name = string.Format("Move \"{0}\" to Output folder", from.Name);
+            Name = string.Format("Move \"{0}\" to Output folder", from.FullName);
             this.from = from;
             this.to = to;
         }

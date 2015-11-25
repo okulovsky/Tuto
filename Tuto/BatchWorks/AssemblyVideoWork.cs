@@ -21,7 +21,7 @@ namespace Tuto.BatchWorks
         {
             Model = model;
             crossFades = model.Videotheque.CrossFadesEnabled;
-            Name = "Assembly video: " + model.Locations.FaceVideo.Directory.Name;
+            Name = "Assembly video: " + model.Locations.FaceVideo.Directory.FullName;
             filesToDelIfAborted = new List<string>();
             BeforeWorks.Add(new ConvertDesktopWork(model, false));
             BeforeWorks.Add(new ConvertFaceWork(model, false));
