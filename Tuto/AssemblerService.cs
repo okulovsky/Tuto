@@ -69,6 +69,8 @@ namespace Tuto.TutoServices
 			return null;
 		}
 
+        private bool UseChainProcessing = false;
+
 		private AvsNode MakeEpisode(EditorModel model, EpisodesChunks episode)
 		{
 			var chunks = episode.chunks;
@@ -85,12 +87,18 @@ namespace Tuto.TutoServices
 				currentChunk = chunks[i];
 				AvsNode currentAvsChunk = AvsNode.NormalizedNode(currentChunk, fps, currentChunk.Mode == Mode.Face, shift);
 				AvsNode prevAvsChunk = avsChunks.Items.Count >= 1 ? avsChunks.Items[avsChunks.Items.Count - 1] : AvsNode.NormalizedNode(chunks[0], fps, false, shift);
-				var chain = GetChainNodeAndNewIndex(i, chunks, shift, fps);
-				if (chain != null)
-				{
-					currentAvsChunk = chain.Item1;
-					i = chain.Item2;
-				}
+                
+                //Оптимизация face-desktop et cetera
+                if (UseChainProcessing)
+                {
+                    var chain = GetChainNodeAndNewIndex(i, chunks, shift, fps);
+                    if (chain != null)
+                    {
+                        currentAvsChunk = chain.Item1;
+                        i = chain.Item2;
+                    }
+                }
+
 				if (prevChunk != null && prevChunk.Mode == Mode.Face && currentChunk.Mode == Mode.Face && CrossFadesEnabled)
 					avsChunks.Items[avsChunks.Items.Count - 1] = new AvsCrossFade
 					{
