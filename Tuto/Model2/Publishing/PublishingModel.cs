@@ -32,7 +32,11 @@ namespace Tuto.Publishing
 			Settings = new PublishingSettings();
 			Videos = new List<VideoPublishSummary>();
 			CourseStructure = new CourseStructure();
+            YoutubeClipData = new DataLayer<YoutubeClip>();
+            YoutubePlaylistData = new DataLayer<YoutubePlaylist>();
 		}
+
+       
 
 		public void Save()
 		{

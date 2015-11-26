@@ -92,6 +92,16 @@ namespace Tuto.Model
 			}
 		}
 
+        public PublishingModel CreateNewPublishingModel(string name)
+        {
+            var model = new PublishingModel();
+            model.Videotheque = this;
+            publisingModels.Add(model);
+            model.NonDistributedVideos = nonDistributed;
+            model.Location = new FileInfo(Path.Combine(ModelsFolder.FullName, name + "." + Names.PublishingModelExtension));
+            return model;
+        }
+
 		List<VideoPublishSummary> nonDistributed;
 
 		private Videotheque()

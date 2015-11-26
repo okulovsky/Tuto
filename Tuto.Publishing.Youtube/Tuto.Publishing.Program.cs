@@ -18,6 +18,15 @@ namespace Tuto.Publishing
 		static Videotheque videotheque;
 		static PublishingModel publishingModel;
 
+        static void OpenModel(string name)
+        {
+            publishingModel = videotheque.PublishingModels.Where(z => z.Location.Name == name+"."+Names.PublishingModelExtension).FirstOrDefault();
+            if (publishingModel == null)
+            {
+                publishingModel = videotheque.CreateNewPublishingModel(name);
+            }
+        }
+
         [STAThread]
         public static void Main(string[] args)
         {
@@ -28,7 +37,7 @@ namespace Tuto.Publishing
 			}
 
             videotheque = Videotheque.Load(args[0], null, true);
-            publishingModel = videotheque.PublishingModels.First();
+            OpenModel("CS2");
 			
             Application = new System.Windows.Application();
             var viewModel = new MainViewModel(videotheque,publishingModel,()=>SourcesFactory());
@@ -56,7 +65,8 @@ namespace Tuto.Publishing
             if (response != MessageBoxResult.No)
             {
                 var data = catalog.Commit();
-				publishingModel.CourseStructure = data;
+				publishingModel.CourseStructure = data.Item1;
+                publishingModel.Videos = data.Item2;
 				publishingModel.Save();
 				videotheque.UpdateNonDistributedVideos();
 		        (Application.MainWindow.DataContext as MainViewModel).Reload();
