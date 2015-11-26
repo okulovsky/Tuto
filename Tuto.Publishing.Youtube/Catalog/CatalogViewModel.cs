@@ -26,7 +26,7 @@ namespace Tuto.TreeEditor
 
 
 
-		public void Commit(TopicWrap wrap, CourseStructure structure)
+		public void Commit(TopicWrap wrap, CourseStructure structure, List<VideoPublishSummary> videos)
 		{
 			wrap.Topic.Items.Clear();
 			foreach (var e in wrap.Items)
@@ -34,7 +34,7 @@ namespace Tuto.TreeEditor
 				if (e is TopicWrap)
 				{
 					var tw = e as TopicWrap;
-					Commit(tw,structure);
+					Commit(tw,structure,videos);
 					wrap.Topic.Items.Add(tw.Topic);
 					continue;
 				}
@@ -46,16 +46,18 @@ namespace Tuto.TreeEditor
 					relation.NumberInTopic = wrap.Items.IndexOf(vw);
 					relation.VideoGuid = vw.Video.Guid;
 					structure.VideoToTopicRelations.Add(relation);
+                    videos.Add(vw.Video);
 				}
 			}
 		}
 
-		public CourseStructure Commit()
+		public Tuple<CourseStructure,List<VideoPublishSummary>> Commit()
 		{
 			var result = new CourseStructure();
-			Commit(Root[0], result);
+            var videos = new List<VideoPublishSummary>();
+			Commit(Root[0], result,videos);
 			result.RootTopic = Root[0].Topic;
-			return result;
+            return Tuple.Create(result, videos);
 		}
 
         public PublishViewModel(CourseTreeData globalData)

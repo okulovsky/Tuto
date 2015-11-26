@@ -15,6 +15,17 @@ namespace Tuto.Publishing
     {
         static DirectoryInfo currentDirectory;
         static Application Application;
+		static Videotheque videotheque;
+		static PublishingModel publishingModel;
+
+        static void OpenModel(string name)
+        {
+            publishingModel = videotheque.PublishingModels.Where(z => z.Location.Name == name+"."+Names.PublishingModelExtension).FirstOrDefault();
+            if (publishingModel == null)
+            {
+                publishingModel = videotheque.CreateNewPublishingModel(name);
+            }
+        }
 
         [STAThread]
         public static void Main(string[] args)
@@ -25,11 +36,11 @@ namespace Tuto.Publishing
 				return;
 			}
 
-            var videotheque = Videotheque.Load(args[0], null, true);
-            var model = videotheque.PublishingModels.First();
+            videotheque = Videotheque.Load(args[0], null, true);
+            OpenModel("CS2");
 			
             Application = new System.Windows.Application();
-            var viewModel = new MainViewModel(videotheque,model,()=>SourcesFactory());
+            var viewModel = new MainViewModel(videotheque,publishingModel,()=>SourcesFactory());
             var window = new MainWindow();
             window.DataContext = viewModel;
             Application.Run(window);
@@ -37,7 +48,8 @@ namespace Tuto.Publishing
 
         public static void RunCatalogWindow()
         {
-			var globalData = CourseTreeData.Load(currentDirectory);
+			var videos = publishingModel.NonDistributedVideos.Concat(publishingModel.Videos).ToList();
+			var globalData = new CourseTreeData { Structure = publishingModel.CourseStructure, Videos = videos };
 			var model = new Tuto.TreeEditor.PublishViewModel(globalData);
             var wnd = new Tuto.TreeEditor.PublishPanel();
             wnd.DataContext = model;
@@ -53,8 +65,11 @@ namespace Tuto.Publishing
             if (response != MessageBoxResult.No)
             {
                 var data = catalog.Commit();
-				HeadedJsonFormat.Write(currentDirectory, data);               
-                (Application.MainWindow.DataContext as MainViewModel).Reload();
+				publishingModel.CourseStructure = data.Item1;
+                publishingModel.Videos = data.Item2;
+				publishingModel.Save();
+				videotheque.UpdateNonDistributedVideos();
+		        (Application.MainWindow.DataContext as MainViewModel).Reload();
             }
             Application.MainWindow.Show();
         }
