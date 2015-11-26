@@ -69,7 +69,7 @@ namespace Tuto.TutoServices
 			return null;
 		}
 
-        private bool UseChainProcessing = false;
+        private bool UseChainProcessing = true;
 
 		private AvsNode MakeEpisode(EditorModel model, EpisodesChunks episode)
 		{
