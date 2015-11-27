@@ -204,6 +204,9 @@
     <Compile Include="Model2\Videotheque\VideothequeEnvironmentSettings.cs" />
     <Compile Include="Model2\Videotheque\VideothequeLocations.cs" />
     <Compile Include="Model2\Videotheque\VideothequeSettings.cs" />
+    <Compile Include="YoutubeProcessing\YoutubeClientSecrets.cs" />
+    <Compile Include="YoutubeProcessing\YoutubeClientSecrets.Sample.cs" />
+    <Compile Include="YoutubeProcessing\YoutubeProcessor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

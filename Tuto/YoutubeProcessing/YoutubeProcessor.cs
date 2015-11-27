@@ -177,5 +177,34 @@ namespace Tuto.Publishing.Youtube
 
 
         }
+
+		public void DeleteVideo(string id)
+		{
+			service.Videos.Delete(id).ExecuteAsync().RunSync();
+		}
+
+		public string UploadVideo(FileInfo path, string name, Guid guid)
+		{
+			var video = new Video();
+			video.Snippet = new VideoSnippet();
+			video.Snippet.Title = name;
+			//video.Snippet.Description = info.Guid.ToString(); //maybe description will be
+			//video.Snippet.Tags = new string[] { "tag1", "tag2" }; //maybe tags will be
+			video.Snippet.CategoryId = "22";
+			video.Snippet.Description = YoutubeClip.GuidMarker(guid);
+			video.Status = new VideoStatus();
+			video.Status.PrivacyStatus = "public";
+			var filePath = path.FullName;
+
+			string result = null;
+
+			using (var fileStream = new FileStream(filePath, FileMode.Open))
+			{
+				var videosInsertRequest = service.Videos.Insert(video, "snippet,status", fileStream, "video/*");
+				videosInsertRequest.ResponseReceived += v => { result = v.Id; };
+				videosInsertRequest.UploadAsync().RunSync();
+			}
+			return result;
+		}
     }
 }
