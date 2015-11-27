@@ -18,15 +18,9 @@ namespace Tuto.BatchWorks
         EpisodInfo episode;
         FileInfo pathToFile;
 
-		static YoutubeApisProcessor processor;
 
         public YoutubeWork(EditorModel model, int number, FileInfo path)
         {
-			if (processor==null)
-			{
-				processor = new YoutubeApisProcessor();
-				processor.Authorize(model.Videotheque.TempFolder);
-			}
             this.editorModel = model;
             this.episodeNumber = number;
             episode = model.Montage.Information.Episodes[number];
@@ -37,8 +31,8 @@ namespace Tuto.BatchWorks
 
         public override void Work()
         {
-            if (episode.YoutubeId!=null) processor.DeleteVideo(episode.YoutubeId);
-			episode.YoutubeId=processor.UploadVideo(pathToFile, episode.Name, episode.Guid);
+            if (episode.YoutubeId!=null) YoutubeApisProcessor.Current.DeleteVideo(episode.YoutubeId);
+            episode.YoutubeId = YoutubeApisProcessor.Current.UploadVideo(pathToFile, episode.Name, episode.Guid);
 			editorModel.Save();
         }
 

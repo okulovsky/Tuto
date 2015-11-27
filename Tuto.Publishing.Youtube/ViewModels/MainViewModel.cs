@@ -9,7 +9,6 @@ using System.Windows.Controls;
 using Tuto;
 using Tuto.Model;
 using Tuto.Publishing.Youtube.Views;
-using Tuto.Publishing.YoutubeData;
 
 namespace Tuto.Publishing
 {
