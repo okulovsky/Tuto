@@ -54,12 +54,11 @@ namespace V3Updater
 			yield break;
 		}
 
-		static void ParsePublishing(string oldPath, string videothequePath)
+		static void ParsePublishing(string oldPath, string videothequePath, string name)
 		{
 			var dir = new DirectoryInfo(oldPath);
 			var v = Videotheque.Load(videothequePath, null, true);
-			var pubModel = new PublishingModel();
-			pubModel.Videotheque = v;
+			var pubModel = v.CreateNewPublishingModel(name);
 			var globalData = CourseTreeData.Load(dir);
 			pubModel.CourseStructure = globalData.Structure;
 			pubModel.Videos = globalData.Videos;
@@ -68,8 +67,6 @@ namespace V3Updater
 			pubModel.YoutubeClipData = HeadedJsonFormat.Read<DataLayer<YoutubeClip>>(clipFile,null,-1);
 			var listFile = dir.GetFiles("YoutubePlaylist.layer.txt").First();
 			pubModel.YoutubePlaylistData = HeadedJsonFormat.Read<DataLayer<YoutubePlaylist>>(listFile,null,-1);
-			var pubName = Path.Combine(v.ModelsFolder.FullName, dir.Name + "." + Names.PublishingModelExtension);
-			pubModel.Location = new FileInfo(pubName);
 			pubModel.Save();
 		}
 
@@ -87,7 +84,8 @@ namespace V3Updater
 			{
 				ParsePublishing(
 					@"D:\hackerdom-publishing\VideoData",
-					@"D:\Montage\videotheque"
+					@"D:\Montage\videotheque",
+					"Hackerdom"
 					);
 			}
 
