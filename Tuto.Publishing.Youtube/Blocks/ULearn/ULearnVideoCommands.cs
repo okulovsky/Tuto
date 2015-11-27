@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Media;
 
@@ -51,12 +52,22 @@ namespace {0}
 
 
 
-        public void Compile()
-        {
-            if (!Source.FileForSlide(Wrap).Directory.Exists) Source.FileForSlide(Wrap).Directory.Create();
-            var content = CreateContent(CreateVideoEntry());
-			System.IO.File.WriteAllText(Source.FileForSlide(Wrap).FullName, content);
-        }
+		public void Compile()
+		{
+			if (!Source.FileForSlide(Wrap).Directory.Exists) Source.FileForSlide(Wrap).Directory.Create();
+			var file = Source.FileForSlide(Wrap);
+			if (!file.Exists)
+			{
+				var content = CreateContent(CreateVideoEntry());
+				System.IO.File.WriteAllText(Source.FileForSlide(Wrap).FullName, content);
+			}
+			else
+			{
+				var text = File.ReadAllText(file.FullName);
+				text = text.Replace("//#video", CreateVideoEntry() + "\r\n//old video");
+				File.WriteAllText(file.FullName, text);
+			}
+		}
 
        
 
