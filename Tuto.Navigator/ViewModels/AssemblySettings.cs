@@ -53,9 +53,7 @@ namespace Tuto.Navigator.ViewModels
                 {
                     for (var i = 0; i < m.Montage.Information.Episodes.Count; i++)
                     {
-                        var episode = m.Locations.GetOutputFile(i);
-                        if (!episode.Exists)
-                            episode = new FileInfo(System.IO.Path.Combine(m.Videotheque.OutputFolder.FullName, episode.Name));
+                        var episode = m.Locations.GetFinalOutputFile(i);
                         tasks.Add(new YoutubeWork(m, i, episode));
                     }
                 }

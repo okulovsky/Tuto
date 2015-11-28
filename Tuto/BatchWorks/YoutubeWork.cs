@@ -31,8 +31,9 @@ namespace Tuto.BatchWorks
 
         public override void Work()
         {
-            if (episode.YoutubeId!=null) YoutubeApisProcessor.Current.DeleteVideo(episode.YoutubeId);
-            episode.YoutubeId = YoutubeApisProcessor.Current.UploadVideo(pathToFile, episode.Name, episode.Guid);
+            var newId = YoutubeApisProcessor.Current.UploadVideo(pathToFile, episode.Name, episode.Guid);
+            if (episode.YoutubeId != null) YoutubeApisProcessor.Current.DeleteVideo(episode.YoutubeId);
+            episode.YoutubeId = newId;
 			editorModel.Save();
         }
 
