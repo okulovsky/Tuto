@@ -54,8 +54,10 @@ namespace {0}
 
 		public void Compile()
 		{
-			if (!Source.FileForSlide(Wrap).Directory.Exists) Source.FileForSlide(Wrap).Directory.Create();
-			var file = Source.FileForSlide(Wrap);
+            var file = Source.FileForSlide(Wrap); ;
+
+			if (!file.Directory.Exists) file.Directory.Create();
+			
 			if (!file.Exists)
 			{
 				var content = CreateContent(CreateVideoEntry());
@@ -63,9 +65,12 @@ namespace {0}
 			}
 			else
 			{
+ 
 				var text = File.ReadAllText(file.FullName);
-				text = text.Replace("//#video", CreateVideoEntry() + "\r\n//old video");
-				File.WriteAllText(file.FullName, text);
+                var regexp = new Regex("//#video ([a-zA-Z0-9_-]+)");
+                var id = Wrap.BlockOfType<YoutubeVideoCommands>().YoutubeClip.Id;
+                text = regexp.Replace(text, "//#video " + id);
+    			File.WriteAllText(file.FullName, text);
 			}
 		}
 

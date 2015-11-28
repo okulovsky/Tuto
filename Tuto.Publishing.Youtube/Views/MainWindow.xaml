@@ -20,7 +20,7 @@
                 </DockPanel>
             </TabItem>
             <TabItem Header="Settings">
-                <v:SettingsPanel DataContext="{Binding Settings}"/>
+                <v:SettingsPanel DataContext="{Binding}"/>
             </TabItem>
         </TabControl>
     </DockPanel>

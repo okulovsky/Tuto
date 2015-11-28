@@ -19,6 +19,8 @@ namespace Tuto.Publishing
 
         public Item[] Root { get; private set; }
 
+        public PublishingSettings Settings { get { return Model.Settings; } }
+
 		List<IMaterialSource> sources;
         Func<IEnumerable<IMaterialSource>> sourcesFactory;
 
