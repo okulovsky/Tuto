@@ -18,7 +18,16 @@ namespace Tuto.Model
         [DataMember]
         public string RawVideoHash { get; private set; }
         [DataMember]
-        public string DisplayedRawLocation { get; internal set; }
+        public string DisplayedRawLocation { get; set; }
+		/// <summary>
+		/// Additional information about the video and its episodes
+		/// </summary>
+		[DataMember]
+		public VideoInformation Information { get; private set; }
+		[DataMember]
+		public int SynchronizationShift { get; set; }
+		[DataMember]
+		public bool CrossfadesEnabled { get; set; }
 
         public DateTime ModificationTime { get; set; }
 
@@ -34,20 +43,10 @@ namespace Tuto.Model
         [DataMember]
         public List<SoundInterval> SoundIntervals { get; private set; }
 
-        /// <summary>
-        /// Additional information about the video and its episodes
-        /// </summary>
-        [DataMember]
-        public VideoInformation Information { get; private set; }
+       
 
         [DataMember]
         public List<StreamChunk> PreparedChunks { get; set; }
-
-        [DataMember]
-        public int SynchronizationShift { get; set; }
-
-        [DataMember]
-        public bool CrossfadesEnabled { get; set; }
 
         /// <summary>
         /// String fixes for video, which are to encoded as subtitiles

@@ -163,7 +163,6 @@
     <Compile Include="Publishing\NameMatchAlgorithm\NameMatchAlgorithm.cs" />
     <Compile Include="Model2\Publishing\VideoPublishSummary.cs" />
     <Compile Include="Publishing\YoutubeData\DataBinding.cs" />
-    <Compile Include="Publishing\YoutubeData\IYoutubeProcessor.cs" />
     <Compile Include="Publishing\YoutubeData\YoutubeClip.cs" />
     <Compile Include="Publishing\YoutubeData\YoutubePlaylist.cs" />
     <Compile Include="Publishing\Youtube\UploadVideo.cs" />
@@ -204,6 +203,7 @@
     <Compile Include="Model2\Videotheque\VideothequeEnvironmentSettings.cs" />
     <Compile Include="Model2\Videotheque\VideothequeLocations.cs" />
     <Compile Include="Model2\Videotheque\VideothequeSettings.cs" />
+    <Compile Include="YoutubeProcessing\YoutubeProcessor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

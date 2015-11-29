@@ -13,37 +13,46 @@ namespace Tuto.Model
     {
         const string VersionMarker= " Version ";
 
-        public static T ReadWithoutHeader<T>(string text)
+        public static T ReadWithoutHeader<T>(Stream stream)
         {
-            var stream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(text));
             var data = (T)new DataContractJsonSerializer(typeof(T)).ReadObject(stream);
+			stream.Close();
             return data;
         }
 
-        public static T Read<T>(FileInfo file, string header, int expectedVersion, params Func<FileInfo, string, T>[] updaters)
+		static void CheckHeader(string actualHeader, string header, int expectedVersion)
+		{
+			if (header == null) return;
+			if (!actualHeader.StartsWith(header)) throw new Exception("Wrong file format");
+
+			var versionIndex = actualHeader.IndexOf(VersionMarker);
+			if (versionIndex == -1) throw new Exception("Wrong file format");
+
+			var versionNumberString = actualHeader.Substring(versionIndex + VersionMarker.Length, actualHeader.Length - versionIndex - VersionMarker.Length);
+			int version = 0;
+			if (!int.TryParse(versionNumberString, out version)) throw new Exception("Wrong file format");
+		}
+		
+		public static Stream OpenAndCheckHeader(FileInfo file, string header, int expectedVersion)
+		{
+			var stream = File.Open(file.FullName, FileMode.Open, FileAccess.Read);
+			List<byte> firstBytes = new List<byte>();
+			while(true)
+			{
+				var bt = stream.ReadByte();
+				firstBytes.Add((byte)bt);
+				if (bt == '\n') break;
+			}
+			var firstLine = System.Text.Encoding.UTF8.GetString(firstBytes.ToArray());
+			CheckHeader(firstLine, header, expectedVersion);
+			return stream;
+		}
+
+
+        public static T Read<T>(FileInfo file, string header, int expectedVersion)
         {
-            var lines = File.ReadAllLines(file.FullName);
-            if (!lines[0].StartsWith(header)) throw new Exception("Wrong file format");
-
-            var versionIndex = lines[0].IndexOf(VersionMarker);
-            if (versionIndex == -1) throw new Exception("Wrong file format");
-
-            var versionNumberString = lines[0].Substring(versionIndex + VersionMarker.Length, lines[0].Length - versionIndex - VersionMarker.Length);
-            int version = 0;
-            if (!int.TryParse(versionNumberString, out version)) throw new Exception("Wrong file format");
-
-            var text = lines.Skip(1).Aggregate((a, b) => a + "\n" + b);
-
-
-            if (version != expectedVersion)
-            {
-                if (version < 0 || version > expectedVersion) throw new Exception("Wrong version number, expected less or equal to " + expectedVersion);
-                if (version >= updaters.Length) throw new Exception("No updater given for version " + version);
-                var rightobject=updaters[version](file, text);
-                Write<T>(file, header, expectedVersion, rightobject);
-                return Read<T>(file, header, expectedVersion, updaters);
-            }
-            return ReadWithoutHeader<T>(text);
+			var stream = OpenAndCheckHeader(file, header, expectedVersion);
+			return ReadWithoutHeader<T>(stream);
         }
 
 

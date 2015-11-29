@@ -10,6 +10,7 @@ using Tuto.Model;
 using Editor;
 using System.Threading;
 using Tuto.BatchWorks;
+using Tuto.Publishing.Youtube;
 
 namespace Tuto.Navigator
 {
@@ -28,7 +29,7 @@ namespace Tuto.Navigator
         public static void Main(string[] args)
         {
             //  NewMain(); return;
-
+           
 
             string fname = null;
             if (args.Length > 0) fname = args[0];
@@ -45,7 +46,7 @@ namespace Tuto.Navigator
 				return;
 			}
 
-
+            YoutubeApisProcessor.Initialize(videotheque.TempFolder);
 
             var mainWindow = new MainNavigatorWindow();
             var globalModel = new VideothequeModel(videotheque);

@@ -44,8 +44,7 @@ namespace Tuto.Publishing
 	{
 		public List<VideoPublishSummary> Videos { get; set; }
 		public CourseStructure Structure { get; set; }
-		public DirectoryInfo Directory { get; set; }
-
+		
 		public CourseTreeData(){}
 
 		public static CourseTreeData Load(DirectoryInfo directory)
@@ -54,17 +53,9 @@ namespace Tuto.Publishing
 			result.Videos = HeadedJsonFormat.Read<List<VideoPublishSummary>>(
 				new FileInfo(Path.Combine(directory.FullName, Videotheque.VideoListName)));
 			result.Structure = HeadedJsonFormat.Read<CourseStructure>(directory);
-			result.Directory=directory;
 			return result;
 		}
 
-		public void Save()
-		{
-			HeadedJsonFormat.Write(
-				new FileInfo(Path.Combine(Directory.FullName, Videotheque.VideoListName)),
-				Videos);
-			HeadedJsonFormat.Write(Directory, Structure);
-
-		}
+	
 	}
 }

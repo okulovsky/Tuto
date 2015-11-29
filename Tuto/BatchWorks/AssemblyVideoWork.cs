@@ -21,7 +21,7 @@ namespace Tuto.BatchWorks
         {
             Model = model;
             crossFades = model.Videotheque.CrossFadesEnabled;
-            Name = "Assembly video: " + model.Locations.FaceVideo.Directory.Name;
+            Name = "Assembly video: " + model.Locations.FaceVideo.Directory.FullName;
             filesToDelIfAborted = new List<string>();
             BeforeWorks.Add(new ConvertDesktopWork(model, false));
             BeforeWorks.Add(new ConvertFaceWork(model, false));
@@ -50,7 +50,7 @@ namespace Tuto.BatchWorks
                 var avsScript = avsContext.Serialize(Model);
                 var avsFile = Model.Locations.GetAvsStriptFile(episodeNumber);
 
-                File.WriteAllText(avsFile.FullName, avsScript);
+                File.WriteAllText(avsFile.FullName, avsScript, Encoding.GetEncoding("Windows-1251"));
 
                 var videoFile = Model.Locations.GetOutputFile(episodeNumber);
                 if (videoFile.Exists) videoFile.Delete();

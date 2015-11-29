@@ -15,10 +15,28 @@ namespace Tuto.Model
 	public class LoadingException : Exception { }
 
 
-    public class RawFileHashes
+    public class RawFileHashes<T>
     {
-        public readonly Dictionary<string, DirectoryInfo> Hashes = new Dictionary<string, DirectoryInfo>();
-        public readonly Dictionary<string, List<DirectoryInfo>> DuplicatedHashes = new Dictionary<string, List<DirectoryInfo>>();
+        public readonly Dictionary<string, T> Hashes = new Dictionary<string, T>();
+        public readonly Dictionary<string, List<T>> DuplicatedHashes = new Dictionary<string, List<T>>();
+		public void Add(string hash, T value)
+		{
+			if (Hashes.ContainsKey(hash))
+			{
+				if (!DuplicatedHashes.ContainsKey(hash))
+					DuplicatedHashes[hash] = new List<T> { Hashes[hash] };
+				DuplicatedHashes[hash].Add(value);
+			}
+			else
+				Hashes[hash] = value;
+		}
+		public string GetMessage(Func<T, string> selector)
+		{
+			if (DuplicatedHashes.Count==0) return null;
+			return DuplicatedHashes
+				.Select(v => "Hash " + v.Key + ": " + v.Value.Select(selector).Aggregate((a, b) => a + "," + b))
+				.Aggregate((a, b) => a + "\r\n" + b);
+		}
     }
 
 	public class Videotheque
@@ -74,6 +92,23 @@ namespace Tuto.Model
 			}
 		}
 
+        public Tuple<EditorModel,EpisodInfo> FindEpisode(Guid guid)
+        {
+            return Episodes.Where(z => z.Item2.Guid == guid).FirstOrDefault();
+        }
+
+        public PublishingModel CreateNewPublishingModel(string name)
+        {
+            var model = new PublishingModel();
+            model.Videotheque = this;
+            publisingModels.Add(model);
+            model.NonDistributedVideos = nonDistributed;
+            model.Location = new FileInfo(Path.Combine(ModelsFolder.FullName, name + "." + Names.PublishingModelExtension));
+            return model;
+        }
+
+		List<VideoPublishSummary> nonDistributed;
+
 		private Videotheque()
 		{
 
@@ -120,6 +155,8 @@ namespace Tuto.Model
 				v.LoadBinaryHashes(ui);
 				v.LoadContainers(ui);
                 v.CreateModels(ui);
+
+				v.LoadPublishing(ui);
 
 				ui.ExitSuccessfully();
 				return v;
@@ -416,23 +453,13 @@ namespace Tuto.Model
 			return hash;
 		}
 
-		public static void ComputeHashesInRawSubdirectories(DirectoryInfo directory, string targetFileName, string hashFileName, bool recomputeAll, RawFileHashes hashes)
+		public static void ComputeHashesInRawSubdirectories(DirectoryInfo directory, string targetFileName, string hashFileName, bool recomputeAll, RawFileHashes<DirectoryInfo> hashes)
 		{
 			var files = directory.GetFiles();
 			if (files.Any(z => z.Name == targetFileName))
 			{
 				string hash = ComputeHash(directory, targetFileName, hashFileName, recomputeAll);
-                if (hashes.Hashes.ContainsKey(hash))
-                {
-                    if (!hashes.DuplicatedHashes.ContainsKey(hash))
-                    {
-                        hashes.DuplicatedHashes[hash] = new List<DirectoryInfo>();
-                        hashes.DuplicatedHashes[hash].Add(hashes.Hashes[hash]);
-                    }
-                    hashes.DuplicatedHashes[hash].Add(directory);
-                }
-                else 
-                    hashes.Hashes[hash] = directory;
+				hashes.Add(hash, directory);
 			}
 			else foreach (var d in directory.GetDirectories())
 					ComputeHashesInRawSubdirectories(d, targetFileName, hashFileName, recomputeAll, hashes);
@@ -443,7 +470,7 @@ namespace Tuto.Model
 		void LoadBinaryHashes(IVideothequeLoadingUI ui)
 		{
             ui.StartPOSTWork("Indexing videofiles in " + RawFolder.FullName);
-            var hashes = new RawFileHashes();
+            var hashes = new RawFileHashes<DirectoryInfo>();
             ComputeHashesInRawSubdirectories(RawFolder, Names.FaceFileName, Names.HashFileName, false, hashes);
             if (hashes.DuplicatedHashes.Count != 0)
             {
@@ -475,6 +502,7 @@ namespace Tuto.Model
             ui.StartPOSTWork("Loading models");
             loadedContainer = new List<Tuple<FileContainer, FileInfo>>();
 			LoadFiles<FileContainer>(ModelsFolder, Names.ModelExtension, loadedContainer);
+			
             ui.CompletePOSTWork(true);
 		}
 
@@ -532,12 +560,29 @@ namespace Tuto.Model
 			}
 			ui.CompletePOSTWork(true);
 
-			var nonDist = new List<VideoPublishSummary>();
+			nonDistributed = new List<VideoPublishSummary>();
+			foreach (var e in PublishingModels)
+				e.NonDistributedVideos = nonDistributed;
+			UpdateNonDistributedVideos();
+            
+            foreach(var e in PublishingModels.SelectMany(z=>z.YoutubeClipData.Records))
+            {
+                var ep = FindEpisode(e.Guid);
+                if (ep != null && ep.Item2.YoutubeId!=null)
+                    e.Data.Id = ep.Item2.YoutubeId;
+            }
+
+
+		}
+
+		public void UpdateNonDistributedVideos()
+		{
+			nonDistributed.Clear();
 			foreach(var m in EditorModels)
 				foreach (var e in m.Montage.Information.Episodes)
 				{
 					if (publisingModels.SelectMany(z => z.Videos).Any(z => z.Guid == e.Guid)) continue;
-					nonDist.Add(new VideoPublishSummary
+					nonDistributed.Add(new VideoPublishSummary
 					{
 						Guid = e.Guid,
 						Duration = e.Duration,
@@ -546,8 +591,6 @@ namespace Tuto.Model
 								+ m.Montage.Information.Episodes.IndexOf(e)
 					});
 				}
-			foreach (var p in publisingModels)
-				p.NonDistributedVideos = nonDist;
 		}
 		#endregion
 	}

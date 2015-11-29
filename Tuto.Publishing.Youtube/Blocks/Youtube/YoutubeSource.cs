@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Tuto.Model;
-using Tuto.Publishing.YoutubeData;
 using Tuto.Publishing.Youtube;
 using System.Diagnostics;
 
@@ -15,19 +14,16 @@ namespace Tuto.Publishing
 	public class YoutubeSource : IMaterialSource
 	{
         public PublishingModel Model { get; private set; }
-        public readonly IYoutubeProcessor YoutubeProcessor;
 		public Matcher<VideoItem, YoutubeClip> LastMatch { get; private set; }
 
         public YoutubeSource()
         {
-            YoutubeProcessor = new YoutubeApisProcessor();
-        }
+         }
 
         public void Initialize(PublishingModel model)
 		{
             this.Model= model;
-			YoutubeProcessor.Authorize(model.Videotheque.TempFolder);
-		}
+			}
 		public void Load(Item root)
 		{
             DataBinding<VideoItem>.PullFromLayer(root, Model.YoutubeClipData);
@@ -41,7 +37,7 @@ namespace Tuto.Publishing
 			List<YoutubeClip> clips = new List<YoutubeClip>();
 			try
 			{
-				clips = YoutubeProcessor.GetAllClips();
+                clips = YoutubeApisProcessor.Current.GetAllClips();
 				HeadedJsonFormat.Write(new DirectoryInfo(Environment.CurrentDirectory), clips);
 				return clips;
 			}
@@ -64,9 +60,9 @@ namespace Tuto.Publishing
 			var lectureHandler = new Matching.MatchItemHandler<VideoWrap>(z => z.Caption, z => z.Caption, z => { });
 			var updaters = new Matching.MatchUpdater<VideoWrap, YoutubeClip>(
 				(wrap, clip) => wrap.Store<YoutubeClip>(clip),
-				(clip, wrap) => { clip.UpdateGuid(wrap.Guid); YoutubeProcessor.UpdateVideo(clip); },
+				(clip, wrap) => { clip.UpdateGuid(wrap.Guid); YoutubeApisProcessor.Current.UpdateVideo(clip); },
 				wrap => wrap.Store<YoutubeClip>(null),
-				clip => { clip.UpdateGuid(null); YoutubeProcessor.UpdateVideo(clip); }
+                clip => { clip.UpdateGuid(null); YoutubeApisProcessor.Current.UpdateVideo(clip); }
 				);
 
 			var handlers = new Matching.MatchHandlers<VideoWrap, YoutubeClip>(lectureHandler, clipHandler);
@@ -87,7 +83,7 @@ namespace Tuto.Publishing
 
 		void PullPlaylists(Item root)
 		{
-			var playLists = YoutubeProcessor.GetAllPlaylists();
+            var playLists = YoutubeApisProcessor.Current.GetAllPlaylists();
 			var topics = root.Subtree().OfType<LectureWrap>().ToList();
 
 			var playListHandler = new Matching.MatchItemHandler<YoutubePlaylist>(
