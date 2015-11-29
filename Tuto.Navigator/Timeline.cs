@@ -38,28 +38,33 @@ namespace Editor
         }
 
 
-        protected IEnumerable<Rect> GetRects(StreamChunk chunk)
+
+        protected IEnumerable<Rect> GetRects(int startMS, int endMS, double relativeY0, double relativeY1)
         {
             double SWidth = ActualWidth / msInRow;
 
-            var start = chunk.StartTime;
-            var length = chunk.Length;
 
-            int x = start % msInRow;
-            int y = start / msInRow;
+            var length = endMS - startMS;
+
+            int x = startMS % msInRow;
+            int y = startMS / msInRow;
 
             while (true)
             {
                 if (x + length <= msInRow)
                 {
-                    yield return new Rect(x * SWidth, y * RowHeight, length * SWidth, RowHeight);
+                    yield return new Rect(x * SWidth, y * RowHeight*relativeY0, length * SWidth, RowHeight*(relativeY1-relativeY0));
                     yield break;
                 }
-                yield return new Rect(x * SWidth, y * RowHeight, (msInRow - x) * SWidth, RowHeight);
+                yield return new Rect(x * SWidth, y * RowHeight*relativeY0, (msInRow - x) * SWidth, RowHeight*(relativeY1-relativeY0));
                 length -= (msInRow - x);
                 x = 0;
                 y++;
             }
+        }
+        protected IEnumerable<Rect> GetRects(StreamChunk chunk)
+        {
+            return GetRects(chunk.StartTime, chunk.StartTime + chunk.Length, 0, 1);
         }
 
         public int MsAtPoint(Point point)
@@ -140,12 +145,14 @@ namespace Editor
                    }
                }
 
+
+           var soundBrush = new SolidColorBrush(Color.FromArgb(128, 0, 0, 0));
+            var soundPen = new Pen(soundBrush,0);
            if (model.SoundIntervals != null)
            {
-               foreach (var i in model.SoundIntervals)
+               foreach (var i in model.SoundIntervals.SelectMany(z=>GetRects(z.StartTime,z.EndTime,0,z.Volume*0.5))
                {
-                   if (!i.HasVoice)
-                       DrawLine(drawingContext, border, i.StartTime, i.EndTime, RowHeight - 3);
+                   drawingContext.DrawRectangle(soundBrush,soundPen,i);
                }
            }
 
