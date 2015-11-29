@@ -51,13 +51,10 @@ namespace Editor
 
             while (true)
             {
-                if (x + length <= msInRow)
-                {
-                    yield return new Rect(x * SWidth, y * RowHeight*relativeY0, length * SWidth, RowHeight*(relativeY1-relativeY0));
-                    yield break;
-                }
-                yield return new Rect(x * SWidth, y * RowHeight*relativeY0, (msInRow - x) * SWidth, RowHeight*(relativeY1-relativeY0));
+                var min = Math.Min(length, msInRow-x);
+                yield return new Rect(x * SWidth, y * RowHeight+RowHeight*relativeY0, min * SWidth, RowHeight*(relativeY1-relativeY0));
                 length -= (msInRow - x);
+                if (length <= 0) yield break;
                 x = 0;
                 y++;
             }
@@ -150,7 +147,7 @@ namespace Editor
             var soundPen = new Pen(soundBrush,0);
            if (model.SoundIntervals != null)
            {
-               foreach (var i in model.SoundIntervals.SelectMany(z=>GetRects(z.StartTime,z.EndTime,0,z.Volume*0.5))
+               foreach (var i in model.SoundIntervals.SelectMany(z=>GetRects(z.StartTime,z.EndTime,0,z.Volume*0.5)))
                {
                    drawingContext.DrawRectangle(soundBrush,soundPen,i);
                }
