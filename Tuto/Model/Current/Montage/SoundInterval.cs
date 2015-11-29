@@ -22,7 +22,7 @@ namespace Tuto.Model
         public bool HasVoice { get; set; }
 
         [DataMember]
-        public double Volume { get; set; }
+        public int Volume { get; set; }
         
         public int MiddleTime { get { return (StartTime + EndTime) / 2; } }
 

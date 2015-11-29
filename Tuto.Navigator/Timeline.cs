@@ -144,12 +144,12 @@ namespace Editor
             drawingContext.DrawGeometry(soundBrush, soundpen, streamGeometry);
         }
 
-        public IEnumerable<Tuple<int,double>> GetSoundPoints(IEnumerable<SoundInterval> soundIntervals)
+        public IEnumerable<Tuple<int,int,bool>> GetSoundPoints(IEnumerable<SoundInterval> soundIntervals)
         {
             foreach(var e in soundIntervals)
             {
-                yield return Tuple.Create(e.StartTime,e.Volume);
-                yield return Tuple.Create(e.EndTime,e.Volume);
+                yield return Tuple.Create(e.StartTime,e.Volume,e.HasVoice);
+                yield return Tuple.Create(e.EndTime,e.Volume,e.HasVoice);
             }
         }
 
@@ -187,7 +187,7 @@ namespace Editor
                        points.Clear();
                        continue;
                    }
-                   points.Add(new Point(c.X,c.Y+RowHeight-RowHeight*0.5*e.Item2));
+                   points.Add(new Point(c.X,c.Y+RowHeight-RowHeight*( (0.5*e.Item2/100) + (e.Item3?0.2:0))));
                }
                if (points.Count!=0) FlushSoundLine(drawingContext,points,baseline);
            }

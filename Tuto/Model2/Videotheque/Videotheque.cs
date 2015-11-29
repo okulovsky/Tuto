@@ -497,17 +497,7 @@ namespace Tuto.Model
 				LoadFiles(e, extension, list);
 		}
 
-        void RunUpdates(FileContainer container)
-        {
-            if (container.MontageModel.SoundIntervals!=null && container.MontageModel.SoundIntervals.Count>0)
-            {
-                if (container.MontageModel.SoundIntervals.All(z=>z.Volume<0.0001))
-                {
-                    foreach (var e in container.MontageModel.SoundIntervals)
-                        e.Volume = e.HasVoice ? 1 : 0;
-                }
-            }
-        }
+      
 
 		void LoadContainers(IVideothequeLoadingUI ui)
 		{
@@ -515,8 +505,6 @@ namespace Tuto.Model
             loadedContainer = new List<Tuple<FileContainer, FileInfo>>();
 			LoadFiles<FileContainer>(ModelsFolder, Names.ModelExtension, loadedContainer);
 
-            foreach (var e in loadedContainer)
-                RunUpdates(e.Item1);
             ui.CompletePOSTWork(true);
 		}
 

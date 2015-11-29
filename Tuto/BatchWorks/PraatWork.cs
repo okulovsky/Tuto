@@ -12,17 +12,17 @@ using Tuto.Model;
 
 namespace Tuto.BatchWorks
 {
-    public class PraatWork : BatchWork
+    public class SoundAnalysisWork : BatchWork
     {
 
-        const double samplesLength = 0.25;
+        const double samplesLength = 1;
         const double silenceTime = 3;
         const int ignoreRate = 5;
 
         FileInfo wav;
 
 
-        public PraatWork(EditorModel model)
+        public SoundAnalysisWork(EditorModel model)
         {
             Model = model;
             Name = "Praat working: " + model.Locations.FaceVideo.FullName;
@@ -94,7 +94,7 @@ namespace Tuto.BatchWorks
                 StartTime=(int)(z.Item1*1000),
                 EndTime=(int)(1000*(z.Item1+samplesLength)),
                 HasVoice=z.Item2>silenceLevel,
-                Volume=z.Item2/max
+                Volume=(int)(100*z.Item2/max)
             }).ToList();
 
             Model.Montage.SoundIntervals.Clear();
