@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
@@ -24,9 +26,20 @@ namespace TestProject
             double sumAmplitude = 0;
             double startTime = 0;
             var sampleStarts = true;
-            
-            foreach(var line in File.ReadLines(@"C:\Users\Yura\Desktop\TestMontage\Input\Hackerdom\09\09-2\voice.dat").Skip(2))
+
+            var process = new Process();
+            process.StartInfo.FileName = @"C:\sox\sox.exe";
+            process.StartInfo.Arguments = @"C:\Users\Yura\Desktop\TestMontage\Input\Hackerdom\09\09-2\voice.wav -t dat -";
+            process.StartInfo.RedirectStandardOutput = true;
+            process.StartInfo.UseShellExecute = false;
+            process.Start();
+            process.StandardOutput.ReadLine();
+            process.StandardOutput.ReadLine();
+            while(true)
             {
+                if (process.HasExited) break;
+                var line = process.StandardOutput.ReadLine();
+                var c = line[line.Length - 1];
                 var match = regex.Match(line);
                 if (!match.Success) 
                     continue;

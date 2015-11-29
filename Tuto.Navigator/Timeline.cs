@@ -127,6 +127,32 @@ namespace Editor
             };
         }
 
+
+        Brush soundBrush = new SolidColorBrush(Color.FromArgb(150, 0, 0, 0));
+        Pen soundpen = new Pen(Brushes.Transparent, 0);
+
+        void FlushSoundLine(DrawingContext drawingContext, List<Point> points, double baseLine)
+        {
+            points.Insert(0, new Point(points[0].X, baseLine+RowHeight));
+            points.Add(new Point(points[points.Count - 1].X, baseLine+RowHeight));
+            StreamGeometry streamGeometry = new StreamGeometry();
+            using (StreamGeometryContext geometryContext = streamGeometry.Open())
+            {
+                geometryContext.BeginFigure(points[0], true, true);
+                geometryContext.PolyLineTo(points, true, false);
+            }
+            drawingContext.DrawGeometry(soundBrush, soundpen, streamGeometry);
+        }
+
+        public IEnumerable<Tuple<int,double>> GetSoundPoints(IEnumerable<SoundInterval> soundIntervals)
+        {
+            foreach(var e in soundIntervals)
+            {
+                yield return Tuple.Create(e.StartTime,e.Volume);
+                yield return Tuple.Create(e.EndTime,e.Volume);
+            }
+        }
+
         protected override void OnRender(System.Windows.Media.DrawingContext drawingContext)
         {
             if (editorModel == null) return;
@@ -143,14 +169,27 @@ namespace Editor
                }
 
 
-           var soundBrush = new SolidColorBrush(Color.FromArgb(128, 0, 0, 0));
-            var soundPen = new Pen(soundBrush,0);
+           
            if (model.SoundIntervals != null)
            {
-               foreach (var i in model.SoundIntervals.SelectMany(z=>GetRects(z.StartTime,z.EndTime,0,z.Volume*0.5)))
+               var points=new List<Point>();
+               double baseline=0;
+               foreach(var e in GetSoundPoints(model.SoundIntervals))
                {
-                   drawingContext.DrawRectangle(soundBrush,soundPen,i);
+                   var c = GetCoordinate(e.Item1);
+                   if (points.Count==0)
+                   {
+                       baseline=c.Y;
+                   }
+                   if (Math.Abs(c.Y-baseline)>0.001)
+                   {
+                       FlushSoundLine(drawingContext,points,baseline);
+                       points.Clear();
+                       continue;
+                   }
+                   points.Add(new Point(c.X,c.Y+RowHeight-RowHeight*0.5*e.Item2));
                }
+               if (points.Count!=0) FlushSoundLine(drawingContext,points,baseline);
            }
 
             if (editorModel.WindowState.CurrentMode == EditorModes.Border && model.Borders!=null)
