@@ -51,14 +51,16 @@
             <Button Margin="10 5 0 5" Height="30" Content="Save" Width="47" HorizontalAlignment="Left" Name="Save" Click="Save_Click"></Button>
             <Button Margin="10 5 0 5" Height="30" Content="Subtitle" Width="50" Click="SubtitleProcess" HorizontalAlignment="Left" Name="Subtitle"></Button>
             <Button Margin="10 5 0 5" Height="30" Content="Refresh" Width="50" HorizontalAlignment="Left" Name="Refresh"></Button>
+            <Button Margin="10 5 0 5" Height="30" Content="IncSpace" Width="67" HorizontalAlignment="Left" Name="IncSpace"></Button>
+            <Button Margin="10 5 0 5" Height="30" Content="DecSpace" Width="60" HorizontalAlignment="Left" Name="DecSpace"></Button>
             <Slider Name="scaleSlider" IsSnapToTickEnabled="True" TickFrequency="1" Margin="10 8 0 5" Width="50" Minimum="1" Maximum="10" Interval="1" SmallChange="1" ValueChanged="Slider_ValueChanged" ></Slider>
         </StackPanel>
 
         <ScrollViewer Grid.ColumnSpan="3" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Stretch" Name="TimeScroll" Height="130" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Disabled">
 
             <WrapPanel RequestBringIntoView="WrapPanel_RequestBringIntoView">
-                <Canvas Name="Tracks" Width="{Binding DurationInPixels}"  HorizontalAlignment="Left">
-                    <Rectangle Name="TimeLine" Width="9000" Canvas.Top="5" Height="10" Stroke="Yellow" Fill="Yellow" MouseDown="TimeLine_MouseDown"></Rectangle>
+                <Canvas Name="Tracks" Width="{Binding WorkspaceWidth}"  HorizontalAlignment="Left">
+                    <Rectangle Name="TimeLine" Width="{Binding WorkspaceWidth}" Canvas.Top="5" Height="10" Stroke="Yellow" Fill="Yellow" MouseDown="TimeLine_MouseDown"></Rectangle>
                     <DesignInControl:RangeSlider Canvas.Left="0" Canvas.Top="15" x:Name="mainSlider" Height="25" Duration="{Binding DurationInPixels}" LeftShift="0" EndSecond="{Binding DurationInPixels}" Maximum="{Binding DurationInPixels}"></DesignInControl:RangeSlider>
                     <ItemsControl ItemsSource="{Binding MediaTracks}" Canvas.Top="45">
                         <ItemsControl.ItemTemplate>

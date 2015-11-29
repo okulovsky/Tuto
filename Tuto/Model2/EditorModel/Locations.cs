@@ -72,6 +72,7 @@ namespace Tuto.Model
         {
             get
             {
+                return new DirectoryInfo(Path.Combine(model.RawLocation.Parent.FullName, "Patches"));
                 throw new NotImplementedException();
                 //var relative = model.Global.Locations.RelativeTo(model.RawLocation.FullName, model.Global.Locations.InputFolder.FullName);
                 //var name = Path.Combine(model.Global.Locations.PatchesFolder.FullName, relative);
@@ -95,17 +96,6 @@ namespace Tuto.Model
         {
             if (episodeNumber < 0) throw new Exception();
             return new FileInfo(Path.Combine(model.TempFolder.FullName, "assembled-" + episodeNumber + ".avi"));
-            var fname = model.Montage.DisplayedRawLocation;
-            fname = MyPath.CreateHierarchicalName(fname);
-            fname += episodeNumber + " " + model.Montage.Information.Episodes[episodeNumber].Name+".avi";
-            var assembledDirectory = Path.Combine(model.Videotheque.TempFolder.FullName, model.RawLocation.Name, "Assembled");
-            if (!Directory.Exists(assembledDirectory))
-                Directory.CreateDirectory(assembledDirectory);
-            var file = new FileInfo(
-            Path.Combine(
-                   assembledDirectory,
-                   fname));
-            return file;
         }
 
         public FileInfo GetFinalOutputFile(int episodeNumber)
@@ -117,6 +107,14 @@ namespace Tuto.Model
             return new FileInfo(Path.Combine(model.Videotheque.OutputFolder.FullName, fname));
         }
 
+        public FileInfo GetFinalPatchFile(int episodeNumber)
+        {
+            var fname = model.Montage.DisplayedRawLocation;
+            fname = MyPath.CreateHierarchicalName(fname);
+            fname += "-" + episodeNumber + " " + model.Montage.Information.Episodes[episodeNumber].Name + ".avi";
+
+            return new FileInfo(Path.Combine(model.Locations.PatchesDirectory.FullName, fname));
+        }
 
         public FileInfo GetAvsStriptFile(int episodeNumber)
         {

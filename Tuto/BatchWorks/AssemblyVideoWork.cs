@@ -32,6 +32,8 @@ namespace Tuto.BatchWorks
             var episodeNumber = 0;
             foreach (var episode in episodes)
             {
+                if (Model.Montage.Information.Episodes[episodeNumber].OutputType == OutputTypes.None)
+                    continue;
                 var videoFile = Model.Locations.GetOutputFile(episodeNumber);
                 AfterWorks.Add(new NormalizeSoundWork(Model, videoFile));
                 episodeNumber++;
@@ -40,13 +42,15 @@ namespace Tuto.BatchWorks
 
         public override void Work()
         {
-            var episodeNumber = 0;
             var count = episodes.Count;
-            foreach (var episode in episodes)
+            for (var episodeNumber = 0; episodeNumber < episodes.Count; episodeNumber++)
             {
+                if (Model.Montage.Information.Episodes[episodeNumber].OutputType == OutputTypes.None)
+                    continue;
+
                 var args = @"-i ""{0}"" -q:v 0 -vf ""scale=1280:720, fps=25"" -q:v 0 -acodec libmp3lame -ac 2 -ar 44100 -ab 32k ""{1}""";
                 var avsContext = new AvsContext();
-                episode.SerializeToContext(avsContext);
+                episodes[episodeNumber].SerializeToContext(avsContext);
                 var avsScript = avsContext.Serialize(Model);
                 var avsFile = Model.Locations.GetAvsStriptFile(episodeNumber);
 
@@ -57,7 +61,6 @@ namespace Tuto.BatchWorks
 
                 args = string.Format(args, avsFile.FullName, videoFile.FullName);
                 filesToDelIfAborted.Add(videoFile.FullName);
-                episodeNumber++;
                 RunProcess(args, Model.Videotheque.Locations.FFmpegExecutable.FullName);
                 OnTaskFinished();
             }

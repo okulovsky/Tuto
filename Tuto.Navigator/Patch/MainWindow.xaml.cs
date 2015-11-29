@@ -53,6 +53,8 @@ namespace Tuto.Navigator
             Model.RefreshReferences();
             Model.WindowState.PropertyChanged += WindowState_PropertyChanged;
             Refresh.Click += (s, a) => { PreparePatchPicker(); };
+            DecSpace.Click += (s, a) => { model.WorkspaceWidth -= 100; };
+            IncSpace.Click += (s, a) => { model.WorkspaceWidth += 100; };
             PreparePatchPicker();
         }
 
@@ -60,6 +62,9 @@ namespace Tuto.Navigator
         public void PreparePatchPicker()
         {
             PatchPicker.Items.Clear();
+            if (!EModel.Locations.PatchesDirectory.Exists)
+                EModel.Locations.PatchesDirectory.Create();
+            Model.WorkspaceWidth = Model.WorkspaceWidth == 0 ? Model.Duration * scaleSlider.Maximum : Model.WorkspaceWidth;
             foreach (var f in EModel.Locations.PatchesDirectory.GetFiles())
             {
                 var item = new ListViewItem();
@@ -81,7 +86,7 @@ namespace Tuto.Navigator
 
         private void addTrack(string path)
         {
-            var seconds = ViewTimeline.Position.TotalSeconds;
+            var seconds = Model.WindowState.TimeSet;
             var track = new MediaTrack(path, Model.ScaleInfo);
             track.LeftShiftInSeconds = seconds;
             track.TopShift = Top;
@@ -279,6 +284,7 @@ namespace Tuto.Navigator
 
         private void mainwindow_Closing(object sender, CancelEventArgs e)
         {
+            Model.FontCoefficent = (Model.Width / Model.ActualWidth + Model.Height / Model.ActualHeight) / 2;
             //EModel.Save();
         }
 

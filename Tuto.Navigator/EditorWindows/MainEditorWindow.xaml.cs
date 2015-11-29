@@ -190,7 +190,7 @@ namespace Editor
                 if (videoFile.Exists)
                 {
                     var temp = model.Montage.Information.Episodes[episodeNumber];
-                    var m = temp.PatchModel != null ? temp.PatchModel : new PatchModel(videoFile.FullName);
+                    var m = temp.PatchModel != null ? temp.PatchModel : new PatchModel(videoFile.FullName, episodeNumber);
                     temp.PatchModel = m;
                     patchWindow.LoadModel(m, model);
                     patchWindow.Show();

@@ -20,8 +20,6 @@ namespace Tuto.Publishing
 
 		[DataMember]
 		public int NumberInTopic { get; set; }
-
-
 	}
 
 	[DataContract]
@@ -31,7 +29,7 @@ namespace Tuto.Publishing
 		public Topic RootTopic { get; set; }
 
 		[DataMember]
-		public List<VideoToTopicRelation> VideoToTopicRelations { get; set; }
+		public List< VideoToTopicRelation> VideoToTopicRelations { get; set; }
 
 		public CourseStructure()
 		{

@@ -95,6 +95,13 @@ namespace Tuto.Model
         
         public double DurationInPixels { get { return duration * Scale; } set { duration = value / Scale; NotifyPropertyChanged(); } }
 
+        [DataMember]
+        public double FontCoefficent { get; set; }
+
+        [DataMember]
+        private double workspaceWidth;
+
+        public double WorkspaceWidth { get { return workspaceWidth; } set { workspaceWidth = value; NotifyPropertyChanged(); } } 
         
 
         [DataMember]
@@ -108,6 +115,7 @@ namespace Tuto.Model
 
         public double ActualWidth { get; set; }
         public double ActualHeight { get; set; }
+        public int EpisodeNumber { get; set; }
 
         public int Scale
         {
@@ -119,7 +127,7 @@ namespace Tuto.Model
             }
         } //pixels per sec
 
-        public PatchModel(string sourcePath)
+        public PatchModel(string sourcePath, int episodeNumber)
         {
             SourceInfo = new FileInfo(sourcePath);
             MediaTracks = new ObservableCollection<MediaTrack>();
@@ -127,6 +135,7 @@ namespace Tuto.Model
             Duration = 10;
             ScaleInfo = new ScaleInfo(1);
             WindowState = new PatchWindowState();
+            EpisodeNumber = episodeNumber;
         }
 
         public void DeleteTrackAccordingPosition(int index, EditorModel m)

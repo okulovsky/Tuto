@@ -22,14 +22,33 @@ namespace Tuto.BatchWorks
 
             //с эпизодами надо что-то решить, в силу того, что эпизодинфо не знает нужной инфы, другого выхода не вижу
             //мы это уже обсуждали, но так и не пришли ни к чему ((
-            var episodeNumber = 0;
-            foreach (var episode in episodes)
+
+            for (int episodeNumber=0; episodeNumber < episodes.Count; episodeNumber++)
             {
+                if (model.Montage.Information.Episodes[episodeNumber].OutputType == OutputTypes.None)
+                    continue;
+
+                if (model.Montage.Information.Episodes[episodeNumber].PatchModel != null)
+                {
+                    BeforeWorks.Add(new PatchWork(model.Montage.Information.Episodes[episodeNumber].PatchModel,
+                                                  model.Videotheque.CrossFadesEnabled,
+                                                  model,
+                                                  true));
+                    var patchedLocation = model.Locations.GetFinalOutputFile(episodeNumber);
+                    AfterWorks.Add(new YoutubeWork(model, episodeNumber, patchedLocation));
+                    continue;
+                }
+
                 var from = model.Locations.GetOutputFile(episodeNumber);
                 var to = model.Locations.GetFinalOutputFile(episodeNumber); 
+
+                if (model.Montage.Information.Episodes[episodeNumber].OutputType == OutputTypes.Patch)
+                {
+                    to = model.Locations.GetFinalPatchFile(episodeNumber);
+                }
+
                 AfterWorks.Add(new MoveFile(from, to));
                 AfterWorks.Add(new YoutubeWork(model, episodeNumber, to));
-                episodeNumber++;
             }
         }
     }

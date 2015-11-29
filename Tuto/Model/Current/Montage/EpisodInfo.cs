@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 namespace Tuto.Model
 {
     public enum OutputTypes { Patch, Output, None};
+
     [DataContract]
     public class EpisodInfo
     {
@@ -26,6 +28,8 @@ namespace Tuto.Model
         [DataMember]
         public OutputTypes OutputType { get; set; }
 
+        public ObservableCollection<OutputTypes> Outputs { get { return new ObservableCollection<OutputTypes>() { OutputTypes.None,OutputTypes.Patch, OutputTypes.Output}; } }
+
         [DataMember]
         public bool Dirty { get; set; }
 
@@ -34,6 +38,7 @@ namespace Tuto.Model
 
         public EpisodInfo(Guid guid)
         {
+            OutputType = OutputTypes.Output;
             this.Guid = guid;
         }
     }

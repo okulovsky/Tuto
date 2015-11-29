@@ -419,7 +419,9 @@ namespace Tuto.Model
             ModelsFolder = CheckVideothequeSubdirectory(Data.PathsSettings.ModelPath, Names.DefaultModelFolder, ui, "Can't locate the folder where the markup (the result of your work) is stored)");
             OutputFolder = CheckVideothequeSubdirectory(Data.PathsSettings.OutputPath, Names.DefaultOutputFolder, ui, "Can't locate the folder with the output video will be stored");
             TempFolder = CheckVideothequeSubdirectory(Data.PathsSettings.TempPath, Names.DefaultTempFolder, ui, "Can't locate the folder with the temporary files");
-
+            var patchFolder = new DirectoryInfo(Path.Combine(RawFolder.FullName, "Patches"));
+            if (!patchFolder.Exists)
+                patchFolder.Create();
 		}
 		#endregion
 		#region Loading files
