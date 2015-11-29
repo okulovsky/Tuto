@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -19,14 +20,13 @@ namespace Tuto.BatchWorks
         const int ignoreRate = 5;
 
         FileInfo wav;
-        FileInfo dat;
+
 
         public PraatWork(EditorModel model)
         {
             Model = model;
             Name = "Praat working: " + model.Locations.FaceVideo.FullName;
             wav = new FileInfo(Path.Combine(Model.TempFolder.FullName, "voice.wav"));
-            dat = new FileInfo(Path.Combine(Model.TempFolder.FullName, "voice.dat"));
         }
 
         public event EventHandler PraatCreated;
@@ -35,13 +35,20 @@ namespace Tuto.BatchWorks
         {
             var ffmpegExecutable = Model.Videotheque.Locations.FFmpegExecutable;
             var args = string.Format("-i \"{0}\" -vn -q:a 0 \"{1}\" -y", Model.Locations.FaceVideo, Model.Locations.PraatVoice);
-            //RunProcess(args, ffmpegExecutable.ToString());
+            RunProcess(args, ffmpegExecutable.ToString());
 
             args = string.Format(@"-i ""{0}"" ""{1}"" -y",Model.Locations.PraatVoice.FullName,wav);
-            //RunProcess(args,ffmpegExecutable.ToString());
+            RunProcess(args,ffmpegExecutable.ToString());
 
-            args = string.Format(@"""{0}"" ""{1}""", wav, dat);
-            //RunProcess(args, Model.Videotheque.Locations.SoxExecutable.FullName);
+          
+            Process = new Process();
+            Process.StartInfo.FileName = Model.Videotheque.Locations.SoxExecutable.FullName;
+            Process.StartInfo.Arguments = @""""+wav.ToString()+@""" -t dat -";
+            Process.StartInfo.RedirectStandardOutput = true;
+            Process.StartInfo.UseShellExecute = false;
+            Process.Start();
+            Process.StandardOutput.ReadLine();
+            Process.StandardOutput.ReadLine();
 
             var numberPattern = @"\d\.eE\-\+";
             var regex = new Regex(@"([" + numberPattern + "]+)[ ]+([" + numberPattern + "]+)");
@@ -50,14 +57,14 @@ namespace Tuto.BatchWorks
             double startTime = 0;
             var sampleStarts = true;
 
-            var reader = new StreamReader(dat.FullName);
-            reader.ReadLine();
-            reader.ReadLine();
+            int countToIgnore = 0;
             while(true)
             {
-                for (int i = 0; i < ignoreRate; i++) reader.ReadLine();
-                var line = reader.ReadLine();
-                if (line == null) break;
+                if (Process.HasExited) break;
+                var line = Process.StandardOutput.ReadLine();
+                countToIgnore++;
+                if (countToIgnore < ignoreRate) continue;
+                countToIgnore = 0;
 
                 var match = regex.Match(line);
                 if (!match.Success) 
@@ -77,7 +84,7 @@ namespace Tuto.BatchWorks
                     sumAmplitude = 0;
                 }
             }
-            reader.Close();
+            
 
             var silenceLevel = result.Where(z => z.Item1 < silenceTime).Max(z => z.Item2);
             var max = result.Max(z => z.Item2);
@@ -93,8 +100,6 @@ namespace Tuto.BatchWorks
             Model.Montage.SoundIntervals.Clear();
             foreach (var e in output)
                 Model.Montage.SoundIntervals.Add(e);
-            //wav.Delete();
-            //dat.Delete();
             OnTaskFinished();
         }
 
@@ -105,7 +110,6 @@ namespace Tuto.BatchWorks
             if (Process != null && !Process.HasExited)
                 Process.Kill();
             TryToDelete(wav);
-            TryToDelete(dat);
         }
     }
 }
