@@ -101,7 +101,7 @@ namespace Tuto.Publishing
 			if (YoutubeClip == null) return;
 			if (Source.Model.Settings.ThumbnailImagePath == null) return;
             YoutubeApisProcessor.Current.UpdateVideoThumbnail(YoutubeClip,
-                new System.IO.FileInfo(Path.Combine(Source.Model.Settings.Location.FullName, Source.Model.Settings.ThumbnailImagePath)));
+                new System.IO.FileInfo(Path.Combine(Source.Model.Location.Directory.FullName, Source.Model.Settings.ThumbnailImagePath)));
 		}
 
 
