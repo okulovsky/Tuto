@@ -91,7 +91,7 @@ namespace Tuto.Navigator
             {
                 var works = new List<BatchWork>();
                 var e = m.Model;
-                if (e.InputFilesAreOK && !e.Locations.PraatVoice.Exists)
+                if (e.InputFilesAreOK && (!e.Locations.PraatVoice.Exists || m.Model.Montage.SoundIntervals.Count==0))
                 {
                     works.Add(new PraatWork(e));
                 }

@@ -9,7 +9,6 @@ using System.Windows.Controls;
 using Tuto;
 using Tuto.Model;
 using Tuto.Publishing.Youtube.Views;
-using Tuto.Publishing.YoutubeData;
 
 namespace Tuto.Publishing
 {
@@ -19,6 +18,8 @@ namespace Tuto.Publishing
         public Videotheque Videotheque { get; private set; }
 
         public Item[] Root { get; private set; }
+
+        public PublishingSettings Settings { get { return Model.Settings; } }
 
 		List<IMaterialSource> sources;
         Func<IEnumerable<IMaterialSource>> sourcesFactory;

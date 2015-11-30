@@ -12,7 +12,6 @@ using Google.Apis.Util.Store;
 using Google.Apis.YouTube.v3;
 using Google.Apis.YouTube.v3.Data;
 using Tuto.Publishing;
-using Tuto.Publishing.YoutubeData;
 
 namespace Tuto.Publishing.Youtube
 {
@@ -25,8 +24,34 @@ namespace Tuto.Publishing.Youtube
         }
     }
 
-    public class YoutubeApisProcessor : IYoutubeProcessor
+    public class YoutubeApisProcessor
     {
+
+        public static YoutubeApisProcessor Current { get; private set; }
+
+        public static void Initialize(DirectoryInfo directory)
+        {
+            var processor = new YoutubeApisProcessor();
+            var credentialsLocation = Path.Combine(directory.FullName, CredentialsForlderName);
+            var clientId = "329852726670-mlvs6ephqo2vngr04t9t6q1d33dbi1g0.apps.googleusercontent.com";
+            var clientSecret = "TVl9yVgWmsH5bfaB1jymooFV";
+
+            processor.credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+                new ClientSecrets {  ClientId=clientId, ClientSecret=clientSecret },
+                new[] { YouTubeService.Scope.Youtube },
+                "user",
+                CancellationToken.None,
+                new FileDataStore(credentialsLocation)).RunSync();
+
+            processor.service = new YouTubeService(new BaseClientService.Initializer()
+            {
+                HttpClientInitializer = processor.credential,
+                ApplicationName = "Tuto Editor"
+            });
+            Current = processor;
+
+        }
+
         YouTubeService service;
         UserCredential credential;
         const string CredentialsForlderName = "YoutubeApiCredentials";
@@ -138,7 +163,7 @@ namespace Tuto.Publishing.Youtube
             itemsRq.PlaylistId = list.PlaylistId;
             var items = itemsRq.Execute().Items;
             foreach (var e in items)
-                service.PlaylistItems.Delete(e.Id);
+                service.PlaylistItems.Delete(e.Id).Execute();
 
             foreach (var e in clips)
             {
@@ -158,24 +183,33 @@ namespace Tuto.Publishing.Youtube
             }
         }
 
-        public void Authorize(DirectoryInfo directory)
-        {
-            var credentialsLocation = Path.Combine(directory.FullName, CredentialsForlderName);
+		public void DeleteVideo(string id)
+		{
+			service.Videos.Delete(id).ExecuteAsync().RunSync();
+		}
 
-            credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
-                GoogleSecrets.Data,
-                new[] { YouTubeService.Scope.Youtube },
-                "user",
-                CancellationToken.None,
-                new FileDataStore(credentialsLocation)).RunSync();
+		public string UploadVideo(FileInfo path, string name, Guid guid)
+		{
+			var video = new Video();
+			video.Snippet = new VideoSnippet();
+			video.Snippet.Title = name;
+			//video.Snippet.Description = info.Guid.ToString(); //maybe description will be
+			//video.Snippet.Tags = new string[] { "tag1", "tag2" }; //maybe tags will be
+			video.Snippet.CategoryId = "22";
+			video.Snippet.Description = YoutubeClip.GuidMarker(guid);
+			video.Status = new VideoStatus();
+			video.Status.PrivacyStatus = "public";
+			var filePath = path.FullName;
 
-            service = new YouTubeService(new BaseClientService.Initializer()
-            {
-                HttpClientInitializer = credential,
-                ApplicationName = this.GetType().ToString()
-            });
+			string result = null;
 
-
-        }
+			using (var fileStream = new FileStream(filePath, FileMode.Open))
+			{
+				var videosInsertRequest = service.Videos.Insert(video, "snippet,status", fileStream, "video/*");
+				videosInsertRequest.ResponseReceived += v => { result = v.Id; };
+				videosInsertRequest.UploadAsync().RunSync();
+			}
+			return result;
+		}
     }
 }

@@ -37,7 +37,8 @@ namespace Tuto.Publishing
 			}
 
             videotheque = Videotheque.Load(args[0], null, true);
-            OpenModel("CS2");
+            OpenModel("Hackerdom");
+            YoutubeApisProcessor.Initialize(videotheque.TempFolder);
 			
             Application = new System.Windows.Application();
             var viewModel = new MainViewModel(videotheque,publishingModel,()=>SourcesFactory());

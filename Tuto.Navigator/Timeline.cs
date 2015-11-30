@@ -38,28 +38,30 @@ namespace Editor
         }
 
 
-        protected IEnumerable<Rect> GetRects(StreamChunk chunk)
+
+        protected IEnumerable<Rect> GetRects(int startMS, int endMS, double relativeY0, double relativeY1)
         {
             double SWidth = ActualWidth / msInRow;
 
-            var start = chunk.StartTime;
-            var length = chunk.Length;
 
-            int x = start % msInRow;
-            int y = start / msInRow;
+            var length = endMS - startMS;
+
+            int x = startMS % msInRow;
+            int y = startMS / msInRow;
 
             while (true)
             {
-                if (x + length <= msInRow)
-                {
-                    yield return new Rect(x * SWidth, y * RowHeight, length * SWidth, RowHeight);
-                    yield break;
-                }
-                yield return new Rect(x * SWidth, y * RowHeight, (msInRow - x) * SWidth, RowHeight);
+                var min = Math.Min(length, msInRow-x);
+                yield return new Rect(x * SWidth, y * RowHeight+RowHeight*relativeY0, min * SWidth, RowHeight*(relativeY1-relativeY0));
                 length -= (msInRow - x);
+                if (length <= 0) yield break;
                 x = 0;
                 y++;
             }
+        }
+        protected IEnumerable<Rect> GetRects(StreamChunk chunk)
+        {
+            return GetRects(chunk.StartTime, chunk.StartTime + chunk.Length, 0, 1);
         }
 
         public int MsAtPoint(Point point)
@@ -125,6 +127,32 @@ namespace Editor
             };
         }
 
+
+        Brush soundBrush = new SolidColorBrush(Color.FromArgb(150, 0, 0, 0));
+        Pen soundpen = new Pen(Brushes.Transparent, 0);
+
+        void FlushSoundLine(DrawingContext drawingContext, List<Point> points, double baseLine)
+        {
+            points.Insert(0, new Point(points[0].X, baseLine+RowHeight));
+            points.Add(new Point(points[points.Count - 1].X, baseLine+RowHeight));
+            StreamGeometry streamGeometry = new StreamGeometry();
+            using (StreamGeometryContext geometryContext = streamGeometry.Open())
+            {
+                geometryContext.BeginFigure(points[0], true, true);
+                geometryContext.PolyLineTo(points, true, false);
+            }
+            drawingContext.DrawGeometry(soundBrush, soundpen, streamGeometry);
+        }
+
+        public IEnumerable<Tuple<int,int,bool>> GetSoundPoints(IEnumerable<SoundInterval> soundIntervals)
+        {
+            foreach(var e in soundIntervals)
+            {
+                yield return Tuple.Create(e.StartTime,e.Volume,e.HasVoice);
+                yield return Tuple.Create(e.EndTime,e.Volume,e.HasVoice);
+            }
+        }
+
         protected override void OnRender(System.Windows.Media.DrawingContext drawingContext)
         {
             if (editorModel == null) return;
@@ -140,13 +168,28 @@ namespace Editor
                    }
                }
 
+
+           
            if (model.SoundIntervals != null)
            {
-               foreach (var i in model.SoundIntervals)
+               var points=new List<Point>();
+               double baseline=0;
+               foreach(var e in GetSoundPoints(model.SoundIntervals))
                {
-                   if (!i.HasVoice)
-                       DrawLine(drawingContext, border, i.StartTime, i.EndTime, RowHeight - 3);
+                   var c = GetCoordinate(e.Item1);
+                   if (points.Count==0)
+                   {
+                       baseline=c.Y;
+                   }
+                   if (Math.Abs(c.Y-baseline)>0.001)
+                   {
+                       FlushSoundLine(drawingContext,points,baseline);
+                       points.Clear();
+                       continue;
+                   }
+                   points.Add(new Point(c.X,c.Y+RowHeight-RowHeight*( (0.5*e.Item2/100) + (e.Item3?0.2:0))));
                }
+               if (points.Count!=0) FlushSoundLine(drawingContext,points,baseline);
            }
 
             if (editorModel.WindowState.CurrentMode == EditorModes.Border && model.Borders!=null)

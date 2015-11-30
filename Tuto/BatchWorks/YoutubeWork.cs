@@ -7,6 +7,7 @@ using System.IO;
 using Tuto.Model;
 using System.Threading;
 using Tuto.Publishing;
+using Tuto.Publishing.Youtube;
 
 namespace Tuto.BatchWorks
 {
@@ -16,6 +17,7 @@ namespace Tuto.BatchWorks
         int episodeNumber;
         EpisodInfo episode;
         FileInfo pathToFile;
+
 
         public YoutubeWork(EditorModel model, int number, FileInfo path)
         {
@@ -29,9 +31,10 @@ namespace Tuto.BatchWorks
 
         public override void Work()
         {
-            var w = new UploadVideo(editorModel, episodeNumber, pathToFile);
-            w.Uploaded += (s, a) => { OnTaskFinished(); };
-            w.Proceed();
+            var newId = YoutubeApisProcessor.Current.UploadVideo(pathToFile, episode.Name, episode.Guid);
+            if (episode.YoutubeId != null) YoutubeApisProcessor.Current.DeleteVideo(episode.YoutubeId);
+            episode.YoutubeId = newId;
+			editorModel.Save();
         }
 
         

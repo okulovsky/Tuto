@@ -22,17 +22,17 @@
                     </Grid.RowDefinitions>
             
                     <Label Grid.Column="0" Grid.Row="0">The course's abbreviation</Label>
-                    <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding CourseAbbreviation}"/>
+                    <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Settings.CourseAbbreviation}"/>
 
 
                     <Label Grid.Column="0" Grid.Row="1">The course's keywords</Label>
-                    <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Keywords}"/>
+                    <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Settings.Keywords}"/>
 
                     <Label Grid.Column="0" Grid.Row="2">The text to appear in Course Description</Label>
-                    <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding DescriptionPS}" TextWrapping="Wrap" AcceptsReturn="True" Height="100" />
+                    <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Settings.DescriptionPS}" TextWrapping="Wrap" AcceptsReturn="True" Height="100" />
 
                     <Label Grid.Column="0" Grid.Row="3">The name of the common thumbnail for all video</Label>
-                    <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding ThumbnailImagePath}"/>
+                    <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding Settings.ThumbnailImagePath}"/>
 
                 </Grid>
                 <Label>Specify the names of each level in your topic's tree: module, section, lecture, etc. Also specify how many digits should be reserved for each level, for example, MyCourse-1-01-1</Label>
@@ -44,23 +44,6 @@
                 </DataGrid>
             </StackPanel>
         </GroupBox>
-        <GroupBox Header="LaTeX settings">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Label Grid.Column="0" Grid.Row="0">Subdirectory with LaTeX files</Label>
-                <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding LatexSourceSubdirectory}"/>
-
-                <Label Grid.Column="0" Grid.Row="1">Subdirectory where compiled LaTeX slides will be placed (ignore it in Git)</Label>
-                <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding LatexCompiledSlidesSubdirectory}"/>
-            </Grid>
-        </GroupBox>
         <GroupBox Header="ULearn settings">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -71,9 +54,9 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Label Grid.Column="0" Grid.Row="0">Directory with Ulearn output</Label>
-                <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding UlearnCourseDirectory}"/>
+                <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Settings.UlearnCourseDirectory}"/>
             </Grid>
         </GroupBox>
-        <Button Command="{Binding SaveCommand}">Save settings</Button>
+        <Button Command="{Binding SaveCommand}">Save</Button>
     </StackPanel>
 </UserControl>

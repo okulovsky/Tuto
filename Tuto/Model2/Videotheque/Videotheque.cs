@@ -92,6 +92,11 @@ namespace Tuto.Model
 			}
 		}
 
+        public Tuple<EditorModel,EpisodInfo> FindEpisode(Guid guid)
+        {
+            return Episodes.Where(z => z.Item2.Guid == guid).FirstOrDefault();
+        }
+
         public PublishingModel CreateNewPublishingModel(string name)
         {
             var model = new PublishingModel();
@@ -494,12 +499,14 @@ namespace Tuto.Model
 				LoadFiles(e, extension, list);
 		}
 
+      
+
 		void LoadContainers(IVideothequeLoadingUI ui)
 		{
             ui.StartPOSTWork("Loading models");
             loadedContainer = new List<Tuple<FileContainer, FileInfo>>();
 			LoadFiles<FileContainer>(ModelsFolder, Names.ModelExtension, loadedContainer);
-			
+
             ui.CompletePOSTWork(true);
 		}
 
@@ -561,6 +568,14 @@ namespace Tuto.Model
 			foreach (var e in PublishingModels)
 				e.NonDistributedVideos = nonDistributed;
 			UpdateNonDistributedVideos();
+            
+            foreach(var e in PublishingModels.SelectMany(z=>z.YoutubeClipData.Records))
+            {
+                var ep = FindEpisode(e.Guid);
+                if (ep != null && ep.Item2.YoutubeId!=null)
+                    e.Data.Id = ep.Item2.YoutubeId;
+            }
+
 
 		}
 

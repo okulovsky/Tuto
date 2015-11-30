@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Media;
 using Tuto.Model;
 using Tuto;
-using Tuto.Publishing.YoutubeData;
+using Tuto.Publishing.Youtube;
 
 namespace Tuto.Publishing
 {
@@ -71,11 +71,12 @@ namespace Tuto.Publishing
 		void UpdatePlaylist()
 		{
 			var playlist = YoutubePlaylist;
-			if (playlist != null) Source.YoutubeProcessor.DeletePlaylist(playlist);
+            if (playlist == null)
+            {
+                playlist = YoutubeApisProcessor.Current.CreatePlaylist(dueTitle);
+            }
 
-			playlist = Source.YoutubeProcessor.CreatePlaylist(dueTitle);
-			Source.YoutubeProcessor.FillPlaylist(playlist, VideoData.Select(z => z.YoutubeClip).Where(z => z != null));
-
+            YoutubeApisProcessor.Current.FillPlaylist(playlist, VideoData.Select(z => z.YoutubeClip).Where(z => z != null));
 
 			Wrap.Store<YoutubePlaylist>(playlist);
 			this.NotifyByExpression(z => z.Status);

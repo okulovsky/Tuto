@@ -8,8 +8,8 @@ using System.Windows;
 using System.Windows.Media;
 using Tuto.Model;
 using Tuto;
-using Tuto.Publishing.YoutubeData;
 using System.IO;
+using Tuto.Publishing.Youtube;
 
 namespace Tuto.Publishing
 {
@@ -85,7 +85,7 @@ namespace Tuto.Publishing
 			clip.Name = dueTitle;
 			clip.Description = dueDescription;
 			clip.UpdateGuid(Wrap.Guid);
-			Source.YoutubeProcessor.UpdateVideo(clip);
+            YoutubeApisProcessor.Current.UpdateVideo(clip);
 			Wrap.Store<YoutubeClip>(clip);
             MakeChange();
 		}
@@ -100,7 +100,7 @@ namespace Tuto.Publishing
 		{
 			if (YoutubeClip == null) return;
 			if (Source.Model.Settings.ThumbnailImagePath == null) return;
-			Source.YoutubeProcessor.UpdateVideoThumbnail(YoutubeClip,
+            YoutubeApisProcessor.Current.UpdateVideoThumbnail(YoutubeClip,
                 new System.IO.FileInfo(Path.Combine(Source.Model.Settings.Location.FullName, Source.Model.Settings.ThumbnailImagePath)));
 		}
 
