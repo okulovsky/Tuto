@@ -122,7 +122,83 @@ namespace Tuto.Model
             OnMontageModelChanged();
         }
         
+        public void InsertDeletion(int time)
+        {
+            const int pauseSize = 1000;
+            var token = FindChunkIndex(time);
+            if (Tokens[token].Length<=pauseSize)
+            {
+                Tokens.Mark(time, ModeToBools(Mode.Drop), true);
+            }
+            else if (Tokens[token].EndTime>time+pauseSize)
+            {
+                var type = Tokens[token].Mode;
+                Tokens.Clear(token);
+                Tokens.Mark(time, ModeToBools(type), false);
+                Tokens.Mark(time + pauseSize, ModeToBools(Mode.Drop), false);
+                Tokens.Mark(time + pauseSize + 1, ModeToBools(type), true);
+            }
+            else
+            {
+                var type = Tokens[token].Mode;
+                var div = Tokens[token].EndTime - pauseSize;
+                Tokens.Clear(token);
+                Tokens.Mark(div, ModeToBools(type), false);
+                Tokens.Mark(div + 1, ModeToBools(Mode.Drop), true);
+            }
+            GenerateBorders();
+            OnMontageModelChanged();
+        }
+
         #endregion
+
+        #region Generating borders
+
+        const int Margin = 3000;
+        /*
+         * Левая граница - это когда предыдущий чанк другого типа. Играется с левой границы до +Margin
+         * Правая граница - это когда последующий чанк неактивен. Играется с -Margin до правой границы
+         * Если области левой и правой границ перекрываются, делается пополам
+         */
+        IEnumerable<Border> GenerateBordersPreview()
+        {
+            for (int i = 1; i < Montage.Chunks.Count; i++)
+            {
+                if (Montage.Chunks[i].Mode != Montage.Chunks[i - 1].Mode)
+                {
+                    if (Montage.Chunks[i - 1].IsActive)
+                    {
+                        yield return Border.Right(Montage.Chunks[i].StartTime, Margin, i - 1, i);
+                    }
+
+                    if (Montage.Chunks[i].IsActive)
+                    {
+                        yield return Border.Left(Montage.Chunks[i].StartTime, Margin, i - 1, i);
+                    }
+                }
+            }
+        }
+
+        public void GenerateBorders()
+        {
+            var borders = GenerateBordersPreview().ToList();
+            for (int i = 1; i < borders.Count; i++)
+            {
+                if (borders[i - 1].EndTime > borders[i].StartTime)
+                {
+                    var time = (borders[i - 1].EndTime + borders[i].StartTime) / 2;
+                    borders[i - 1].EndTime = time;
+                    borders[i].StartTime = time;
+                }
+            }
+            Montage.Borders = borders;
+
+        }
+
+        #endregion
+
+
+
         #region Algorithms using WindowState properies
 
         static public bool[] ModeToBools(Mode mode)

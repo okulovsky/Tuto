@@ -39,6 +39,8 @@ namespace Editor
             map[Key.P] = KeyboardCommands.RightToRight;
 
             map[Key.D9] = KeyboardCommands.NewEpisodeHere;
+
+            map[Key.B] = KeyboardCommands.InsertDeletion;
         }
 
 
