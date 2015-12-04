@@ -32,8 +32,9 @@ namespace Tuto.Navigator
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
 
-        public PatchModel Model;
-        public EditorModel EModel;
+        PatchModel Model { get; set; }
+        EditorModel EModel { get; set; }
+        DispatcherTimer MainTimer { get; set; }
 
         public MainWindow()
         {
@@ -141,15 +142,15 @@ namespace Tuto.Navigator
             PatchWindow.Pause();
         }
 
-        DispatcherTimer timer { get; set; }
+        
 
         private void doInitialLoad()
         {
             ViewTimeline.Source = new Uri(Model.SourceInfo.FullName);
             ViewTimeline.LoadedBehavior = MediaState.Manual;
-            timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromMilliseconds(100);
-            timer.Tick += (s, a) => { CheckPlayTime(); };
+            MainTimer = new DispatcherTimer();
+            MainTimer.Interval = TimeSpan.FromMilliseconds(100);
+            MainTimer.Tick += (s, a) => { CheckPlayTime(); };
             ViewTimeline.MediaOpened += SetMainVideo;
             ViewTimeline.Play();
             ViewTimeline.Pause();
@@ -194,7 +195,7 @@ namespace Tuto.Navigator
             ViewTimeline.UpdateLayout();
             Model.ActualHeight = ViewTimeline.ActualHeight;
             Model.ActualWidth = ViewTimeline.ActualWidth;
-            timer.Start();
+            MainTimer.Start();
             ViewTimeline.MediaOpened -= SetMainVideo; //should be once
         }
 
@@ -210,8 +211,7 @@ namespace Tuto.Navigator
         }
 
         private void CheckSubtitle(double pixelsRelativeToSeconds)
-        {
-            
+        {  
             var subtitleFound = false;
             foreach (var e in Model.Subtitles)
             {
@@ -337,19 +337,6 @@ namespace Tuto.Navigator
             }
         }
 
-
-        private void Subtitle_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            Model.WindowState.DragInProgress = false;
-            var shift = CurrentSubtitle.FontSize;
-            Model.WindowState.currentSubtitle.X = Canvas.GetLeft(CurrentSubtitleWraper);
-            Model.WindowState.currentSubtitle.Y = Canvas.GetTop(CurrentSubtitleWraper);
-            var pos = CurrentSubtitleWraper.TranslatePoint(new Point(0, 0), ViewTimeline);
-            Model.WindowState.currentSubtitle.Pos = pos;
-            Model.WindowState.currentSubtitle.HeightShift = shift;
-        }
-
-
         private bool IsInVideoField(double offsetX, double offsetY)
         {
             var v = ViewTimeline;
@@ -361,6 +348,17 @@ namespace Tuto.Navigator
             return VideoBoundingBox.Contains(SubBox);
 
 
+        }
+
+        private void Subtitle_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            Model.WindowState.DragInProgress = false;
+            var shift = CurrentSubtitle.FontSize;
+            Model.WindowState.currentSubtitle.X = Canvas.GetLeft(CurrentSubtitleWraper);
+            Model.WindowState.currentSubtitle.Y = Canvas.GetTop(CurrentSubtitleWraper);
+            var pos = CurrentSubtitleWraper.TranslatePoint(new Point(0, 0), ViewTimeline);
+            Model.WindowState.currentSubtitle.Pos = pos;
+            Model.WindowState.currentSubtitle.HeightShift = shift;
         }
 
         private void Subtitle_MouseMove(object sender, MouseEventArgs e)

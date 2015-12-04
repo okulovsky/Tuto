@@ -94,7 +94,7 @@ namespace Tuto.Model
         public double Duration
         {
             get { return duration; }
-            set { duration = value; NotifyPropertyChanged(); NotifyPropertyChanged("DurationInPixels"); }
+            set { duration = value; NotifyPropertyChanged(); NotifierModelExtensions.NotifyByExpression(this, x => x.DurationInPixels); }
         }
 
 
@@ -298,7 +298,7 @@ namespace Tuto.Model
         public double StartSecond
         {
             get { return startSecond; }
-            set { startSecond = value; NotifyPropertyChanged(); NotifyPropertyChanged("StartPixel"); }
+            set { startSecond = value; NotifyPropertyChanged(); NotifierModelExtensions.NotifyByExpression(this, x => x.StartPixel); }
         } //left border of chunk
 
 
@@ -315,7 +315,7 @@ namespace Tuto.Model
         public double EndSecond
         {
             get { return endSecond; }
-            set { endSecond = value; NotifyPropertyChanged(); NotifyPropertyChanged("EndPixel"); }
+            set { endSecond = value; NotifyPropertyChanged(); NotifierModelExtensions.NotifyByExpression(this, x => x.EndPixel); }
         } //right border of chunk
 
 
@@ -332,7 +332,7 @@ namespace Tuto.Model
         public double DurationInSeconds
         {
             get { return durationInSeconds; }
-            set { durationInSeconds = value; NotifyPropertyChanged(); NotifyPropertyChanged("DurationInPixels"); }
+            set { durationInSeconds = value; NotifyPropertyChanged(); NotifierModelExtensions.NotifyByExpression(this, x => x.DurationInPixels); }
         }
 
 
@@ -349,7 +349,7 @@ namespace Tuto.Model
         public double LeftShiftInSeconds
         {
             get { return leftShiftInSeconds; }
-            set { leftShiftInSeconds = value; NotifyPropertyChanged(); NotifyPropertyChanged("LeftShiftInPixels"); }
+            set { leftShiftInSeconds = value; NotifyPropertyChanged(); NotifierModelExtensions.NotifyByExpression(this, x => x.LeftShiftInPixels); }
         }//position of whole track relative to main track
 
 
@@ -365,11 +365,11 @@ namespace Tuto.Model
 
         public void NotifyScaleChanged()
         {
-            NotifyPropertyChanged("DurationInPixels");
-            NotifyPropertyChanged("StartPixel");
-            NotifyPropertyChanged("EndPixel");
-            NotifyPropertyChanged("LeftShiftInPixels");
-            NotifyPropertyChanged("Scale");
+            NotifierModelExtensions.NotifyByExpression(this, x => x.DurationInPixels);
+            NotifierModelExtensions.NotifyByExpression(this, x => x.StartPixel);
+            NotifierModelExtensions.NotifyByExpression(this, x => x.EndPixel);
+            NotifierModelExtensions.NotifyByExpression(this, x => x.LeftShiftInPixels);
+            NotifierModelExtensions.NotifyByExpression(this, x => x.Scale);
         }
 
     }
