@@ -105,7 +105,7 @@ namespace Tuto.Model
         }
 
         [DataMember]
-        public double FontCoefficent { get; set; }
+        public double FontCoefficent { get { return 2.18803418; } set { } }
 
         [DataMember]
         private double workspaceWidth;
@@ -198,11 +198,16 @@ namespace Tuto.Model
     [DataContract]
     public class MediaTrack : TrackInfo
     {
-        public MediaTrack(string path, ScaleInfo scale)
+
+        [DataMember]
+        public bool IsTutoPatch;
+
+        public MediaTrack(string path, ScaleInfo scale, bool isTutoPatch)
         {
             Path = new Uri(path);
             ConvertedName = Guid.NewGuid().ToString() + ".avi";
             ScaleInfo = scale;
+            IsTutoPatch = isTutoPatch;
         }
     }
 

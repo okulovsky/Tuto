@@ -86,13 +86,14 @@ namespace Tuto.Navigator
             var model = info.Item1;
             var index = info.Item2;
             var epInfo = model.Montage.Information.Episodes[index];
-            var assembledName = model.Locations.GetOutputFile(epInfo).FullName;
+            var assembledName = model.Locations.GetOutputFile(index).FullName;
             if (File.Exists(assembledName))
-                addTrack(assembledName);
+                addTrack(assembledName, true);
             else
             {
-                var work = new AssemblyVideoWork(model);
-                work.TaskFinished += (s, a) => { Dispatcher.Invoke(() => addTrack(assembledName));};
+                MessageBox.Show("Work in process. Track will be added after asssemblying");
+                var work = new AssemblyEpisodeWork(model,epInfo);
+                work.TaskFinished += (s, a) => { Dispatcher.Invoke(() => addTrack(assembledName, true));};
                 Program.WorkQueue.Run(work);
             }
 
@@ -119,14 +120,14 @@ namespace Tuto.Navigator
             var item = sender as ListViewItem;
             if (item != null)
             {
-                addTrack(item.Tag.ToString());
+                addTrack(item.Tag.ToString(), false);
             }
         }
 
-        private void addTrack(string path)
+        private void addTrack(string path, bool isTutoPatch)
         {
             var seconds = Model.WindowState.TimeSet;
-            var track = new MediaTrack(path, Model.ScaleInfo);
+            var track = new MediaTrack(path, Model.ScaleInfo, isTutoPatch);
             track.LeftShiftInSeconds = seconds;
             track.TopShift = Top;
             track.DurationInPixels = 10;
@@ -323,7 +324,6 @@ namespace Tuto.Navigator
 
         private void mainwindow_Closing(object sender, CancelEventArgs e)
         {
-            Model.FontCoefficent = (Model.Width / Model.ActualWidth + Model.Height / Model.ActualHeight) / 2;
             //EModel.Save();
         }
 

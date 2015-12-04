@@ -29,9 +29,12 @@ namespace Tuto.BatchWorks
             Name = "Patching: " + model.SourceInfo.Name;
             foreach (var ep in model.MediaTracks)
             {
-                var name = Path.Combine(Model.Locations.TemporalDirectory.FullName, ep.ConvertedName);
-                var fileInPatches = new FileInfo(Path.Combine(emodel.Locations.PatchesDirectory.FullName, new FileInfo(ep.Path.LocalPath).Name));
-                BeforeWorks.Add(new PreparePatchWork(emodel, fileInPatches, new FileInfo(name), false));
+                if (!ep.IsTutoPatch)
+                {
+                    var name = Path.Combine(Model.Locations.TemporalDirectory.FullName, ep.ConvertedName);
+                    var fileInPatches = new FileInfo(Path.Combine(emodel.Locations.PatchesDirectory.FullName, new FileInfo(ep.Path.LocalPath).Name));
+                    BeforeWorks.Add(new PreparePatchWork(emodel, fileInPatches, new FileInfo(name), false));
+                }
             }
         }
 
@@ -59,7 +62,7 @@ namespace Tuto.BatchWorks
                     mode = "patch";
                     continue;
                 }
-                var name = Path.Combine(Model.Locations.TemporalDirectory.FullName, tracks[index].ConvertedName);
+                var name = tracks[index].IsTutoPatch ? tracks[index].Path.LocalPath : Path.Combine(Model.Locations.TemporalDirectory.FullName, tracks[index].ConvertedName);
                 avs.Load(name, tracks[index].StartSecond, tracks[index].EndSecond);
                 chunks.Add(avs);
                 previous = tracks[index].EndSecond + tracks[index].LeftShiftInSeconds;
@@ -106,10 +109,11 @@ namespace Tuto.BatchWorks
             File.WriteAllText(newName + "test.avs", avsScript, Encoding.GetEncoding("Windows-1251"));
 
             //Патчер в аутпут все делает
+            var scriptFile = newName + "test.avs";
             var path = Model.Locations.GetFinalOutputFile(pmodel.EpisodeNumber).FullName;
-            args = string.Format(args, newName + "test.avs", path);
+            args = string.Format(args, scriptFile , path);
             RunProcess(args, Model.Videotheque.Locations.FFmpegExecutable.FullName);
-            File.Delete(newName + "test.avs");
+            File.Delete(scriptFile);
             OnTaskFinished();
             File.Move(newName, oldName);
         }

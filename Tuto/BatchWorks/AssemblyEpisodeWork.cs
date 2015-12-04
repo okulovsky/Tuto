@@ -10,60 +10,50 @@ using Tuto.TutoServices.Assembler;
 
 namespace Tuto.BatchWorks
 {
-    public class AssemblyVideoWork : BatchWork
+    public class AssemblyEpisodeWork : BatchWork
     {
 
         private List<string> filesToDelIfAborted { get; set; }
         private bool crossFades {get; set;}
-        private List<AvsNode> episodes { get; set; }
+        private EpisodInfo episodeInfo { get; set; }
+        private int episodeNumber { get; set; }
+        private AvsNode episodeNode { get; set; }
 
-        public AssemblyVideoWork (EditorModel model)
+        public AssemblyEpisodeWork(EditorModel model, EpisodInfo episodeInfo)
         {
             Model = model;
+            var videoFile = Model.Locations.GetOutputFile(episodeInfo);
             crossFades = model.Videotheque.CrossFadesEnabled;
-            Name = "Assembly video: " + model.Locations.FaceVideo.Directory.FullName;
+            Name = "Assembly episode: " + videoFile.FullName;
+            this.episodeInfo = episodeInfo;
+            this.episodeNode = episodeNode;
+            this.episodeNumber = Model.Montage.Information.Episodes.IndexOf(episodeInfo);
             filesToDelIfAborted = new List<string>();
+
+            episodeNode = new AssemblerService(crossFades).GetEpisodesNodes(model)[episodeNumber];
             BeforeWorks.Add(new ConvertDesktopWork(model, false));
             BeforeWorks.Add(new ConvertFaceWork(model, false));
             BeforeWorks.Add(new CreateCleanSoundWork(model.Locations.FaceVideo, model, false));
-
-            var service = new AssemblerService(crossFades);
-            episodes = service.GetEpisodesNodes(Model);
-            var episodeNumber = 0;
-            foreach (var episode in episodes)
-            {
-                if (Model.Montage.Information.Episodes[episodeNumber].OutputType == OutputTypes.None)
-                    continue;
-                var videoFile = Model.Locations.GetOutputFile(episodeNumber);
-                AfterWorks.Add(new NormalizeSoundWork(Model, videoFile));
-                episodeNumber++;
-            }
+            AfterWorks.Add(new NormalizeSoundWork(Model, videoFile));
+            AfterWorks[AfterWorks.Count - 1].TaskFinished += (s, a) => OnTaskFinished();
         }
 
         public override void Work()
         {
-            var count = episodes.Count;
-            for (var episodeNumber = 0; episodeNumber < episodes.Count; episodeNumber++)
-            {
-                if (Model.Montage.Information.Episodes[episodeNumber].OutputType == OutputTypes.None)
-                    continue;
-
                 var args = @"-i ""{0}"" -q:v 0 -vf ""scale=1280:720, fps=25"" -q:v 0 -acodec libmp3lame -ac 2 -ar 44100 -ab 32k ""{1}""";
                 var avsContext = new AvsContext();
-                episodes[episodeNumber].SerializeToContext(avsContext);
+                episodeNode.SerializeToContext(avsContext);
                 var avsScript = avsContext.Serialize(Model);
                 var avsFile = Model.Locations.GetAvsStriptFile(episodeNumber);
 
                 File.WriteAllText(avsFile.FullName, avsScript, Encoding.GetEncoding("Windows-1251"));
 
-                var videoFile = Model.Locations.GetOutputFile(episodeNumber);
+                var videoFile = Model.Locations.GetOutputFile(episodeInfo);
                 if (videoFile.Exists) videoFile.Delete();
 
                 args = string.Format(args, avsFile.FullName, videoFile.FullName);
                 filesToDelIfAborted.Add(videoFile.FullName);
                 RunProcess(args, Model.Videotheque.Locations.FFmpegExecutable.FullName);
-                OnTaskFinished();
-            }
         }
 
         public override void Clean()
