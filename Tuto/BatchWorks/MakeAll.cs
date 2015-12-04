@@ -40,12 +40,10 @@ namespace Tuto.BatchWorks
                 }
 
                 var from = model.Locations.GetOutputFile(episodeNumber);
-                var to = model.Locations.GetFinalOutputFile(episodeNumber); 
+                var to = model.Locations.GetFinalOutputFile(episodeNumber);
 
                 if (model.Montage.Information.Episodes[episodeNumber].OutputType == OutputTypes.Patch)
-                {
-                    to = model.Locations.GetFinalPatchFile(episodeNumber);
-                }
+                    continue;
 
                 AfterWorks.Add(new MoveFile(from, to));
                 AfterWorks.Add(new YoutubeWork(model, episodeNumber, to));

@@ -34,6 +34,7 @@ namespace Tuto.Navigator
 
         public PatchModel Model;
         public EditorModel EModel;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -56,8 +57,46 @@ namespace Tuto.Navigator
             DecSpace.Click += (s, a) => { model.WorkspaceWidth -= 100; };
             IncSpace.Click += (s, a) => { model.WorkspaceWidth += 100; };
             PreparePatchPicker();
+            PrepareTutoPatchPicker();
         }
 
+        public void PrepareTutoPatchPicker()
+        {
+            foreach (var m in EModel.Videotheque.EditorModels)
+            {
+                for (var i = 0; i < m.Montage.Information.Episodes.Count; i++)
+                {
+                    var epInfo = m.Montage.Information.Episodes[i];
+                    if (epInfo.OutputType != OutputTypes.Patch)
+                        continue;
+                    var item = new ListViewItem();
+                    item.Content = epInfo.Name;
+                    item.Tag = Tuple.Create(m, i);
+                    item.MouseDoubleClick += TutoPatchItemClick;
+                    TutoPatchesList.Items.Add(item);
+                }
+            }
+        }
+
+
+        public void TutoPatchItemClick(object sender, MouseButtonEventArgs e)
+        {
+            var item = sender as ListViewItem;
+            var info = (Tuple<EditorModel, int>)item.Tag;
+            var model = info.Item1;
+            var index = info.Item2;
+            var epInfo = model.Montage.Information.Episodes[index];
+            var assembledName = model.Locations.GetOutputFile(epInfo).FullName;
+            if (File.Exists(assembledName))
+                addTrack(assembledName);
+            else
+            {
+                var work = new AssemblyVideoWork(model);
+                work.TaskFinished += (s, a) => { Dispatcher.Invoke(() => addTrack(assembledName));};
+                Program.WorkQueue.Run(work);
+            }
+
+        }
 
         public void PreparePatchPicker()
         {
@@ -70,12 +109,12 @@ namespace Tuto.Navigator
                 var item = new ListViewItem();
                 item.Content = f.Name;
                 item.Tag = f.FullName;
-                item.MouseDoubleClick += item_MouseDoubleClick;
+                item.MouseDoubleClick += patchItemClick;
                 PatchPicker.Items.Add(item);
             }
         }
 
-        void item_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        void patchItemClick(object sender, MouseButtonEventArgs e)
         {
             var item = sender as ListViewItem;
             if (item != null)

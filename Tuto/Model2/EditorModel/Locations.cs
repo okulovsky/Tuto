@@ -72,7 +72,7 @@ namespace Tuto.Model
         {
             get
             {
-                return new DirectoryInfo(Path.Combine(model.RawLocation.Parent.FullName, "Patches"));
+                return new DirectoryInfo(Path.Combine(model.RawLocation.FullName, "Patches"));
                 throw new NotImplementedException();
                 //var relative = model.Global.Locations.RelativeTo(model.RawLocation.FullName, model.Global.Locations.InputFolder.FullName);
                 //var name = Path.Combine(model.Global.Locations.PatchesFolder.FullName, relative);
@@ -105,15 +105,6 @@ namespace Tuto.Model
             fname += "-" + episodeNumber + " " + model.Montage.Information.Episodes[episodeNumber].Name + ".avi";
 
             return new FileInfo(Path.Combine(model.Videotheque.OutputFolder.FullName, fname));
-        }
-
-        public FileInfo GetFinalPatchFile(int episodeNumber)
-        {
-            var fname = model.Montage.DisplayedRawLocation;
-            fname = MyPath.CreateHierarchicalName(fname);
-            fname += "-" + episodeNumber + " " + model.Montage.Information.Episodes[episodeNumber].Name + ".avi";
-
-            return new FileInfo(Path.Combine(model.Locations.PatchesDirectory.FullName, fname));
         }
 
         public FileInfo GetAvsStriptFile(int episodeNumber)

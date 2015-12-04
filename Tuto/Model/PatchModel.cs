@@ -83,17 +83,26 @@ namespace Tuto.Model
         [DataMember]
         public ObservableCollection<Subtitle> Subtitles { get; set; }
 
+
         [DataMember]
         public FileInfo SourceInfo { get; set; }
 
         [DataMember]
         private double duration;
 
-        
-        public double Duration { get { return duration; } set { duration = value; NotifyPropertyChanged(); NotifyPropertyChanged("DurationInPixels"); } }
 
-        
-        public double DurationInPixels { get { return duration * Scale; } set { duration = value / Scale; NotifyPropertyChanged(); } }
+        public double Duration
+        {
+            get { return duration; }
+            set { duration = value; NotifyPropertyChanged(); NotifyPropertyChanged("DurationInPixels"); }
+        }
+
+
+        public double DurationInPixels
+        {
+            get { return duration * Scale; }
+            set { duration = value / Scale; NotifyPropertyChanged(); }
+        }
 
         [DataMember]
         public double FontCoefficent { get; set; }
@@ -101,8 +110,12 @@ namespace Tuto.Model
         [DataMember]
         private double workspaceWidth;
 
-        public double WorkspaceWidth { get { return workspaceWidth; } set { workspaceWidth = value; NotifyPropertyChanged(); } } 
-        
+        public double WorkspaceWidth
+        {
+            get { return workspaceWidth; }
+            set { workspaceWidth = value; NotifyPropertyChanged(); }
+        }
+
 
         [DataMember]
         public ScaleInfo ScaleInfo; //to model
@@ -198,14 +211,22 @@ namespace Tuto.Model
     {
         [DataMember]
         private string _content;
-        public string Content { get { return _content; } set { _content = value; NotifyPropertyChanged(); } }
+        public string Content
+        {
+            get { return _content; }
+            set { _content = value; NotifyPropertyChanged(); }
+        }
 
         [DataMember]
         public double HeightShift { get; set; }
 
         [DataMember]
         private int fontsize { get; set; }
-        public int FontSize { get { return fontsize; } set { fontsize = value; NotifyPropertyChanged(); } }
+        public int FontSize
+        {
+            get { return fontsize; }
+            set { fontsize = value; NotifyPropertyChanged(); }
+        }
 
         [DataMember]
         public Point Pos { get; set; }
@@ -216,11 +237,19 @@ namespace Tuto.Model
 
         [DataMember]
         private string foreground;
-        public string Foreground { get { return foreground; } set { foreground = value; NotifyPropertyChanged(); } }
+        public string Foreground
+        {
+            get { return foreground; }
+            set { foreground = value; NotifyPropertyChanged(); }
+        }
 
         [DataMember]
         private string stroke;
-        public string Stroke { get { return stroke; } set { stroke = value; NotifyPropertyChanged(); } }
+        public string Stroke
+        {
+            get { return stroke; }
+            set { stroke = value; NotifyPropertyChanged(); }
+        }
 
         public Subtitle(string content, ScaleInfo scale, double leftShift)
         {
@@ -244,7 +273,7 @@ namespace Tuto.Model
         [DataMember]
         public ScaleInfo ScaleInfo;
 
-        
+
         public int Scale
         {
             get { return ScaleInfo.Scale; }
@@ -260,19 +289,31 @@ namespace Tuto.Model
         [DataMember]
         private double startSecond;
 
-        
-        public double StartSecond { get { return startSecond; } set { startSecond = value; NotifyPropertyChanged(); NotifyPropertyChanged("StartPixel"); } } //left border of chunk
 
-        
-        public double StartPixel { get { return StartSecond * Scale; } set { StartSecond = value / Scale; NotifyPropertyChanged(); } }
+        public double StartSecond
+        {
+            get { return startSecond; }
+            set { startSecond = value; NotifyPropertyChanged(); NotifyPropertyChanged("StartPixel"); }
+        } //left border of chunk
+
+
+        public double StartPixel
+        {
+            get { return StartSecond * Scale; }
+            set { StartSecond = value / Scale; NotifyPropertyChanged(); }
+        }
 
         [DataMember]
         private double endSecond { get; set; }
 
-        
-        public double EndSecond { get { return endSecond; } set { endSecond = value; NotifyPropertyChanged(); NotifyPropertyChanged("EndPixel"); } } //right border of chunk
 
-        
+        public double EndSecond
+        {
+            get { return endSecond; }
+            set { endSecond = value; NotifyPropertyChanged(); NotifyPropertyChanged("EndPixel"); }
+        } //right border of chunk
+
+
         public double EndPixel
         {
             get { return EndSecond * Scale; }
@@ -282,20 +323,36 @@ namespace Tuto.Model
         [DataMember]
         private double durationInSeconds { get; set; }
 
-        
-        public double DurationInSeconds { get { return durationInSeconds; } set { durationInSeconds = value; NotifyPropertyChanged(); NotifyPropertyChanged("DurationInPixels"); } }
 
-        
-        public double DurationInPixels { get { return DurationInSeconds * Scale; } set { DurationInSeconds = value / Scale; NotifyPropertyChanged(); } }
+        public double DurationInSeconds
+        {
+            get { return durationInSeconds; }
+            set { durationInSeconds = value; NotifyPropertyChanged(); NotifyPropertyChanged("DurationInPixels"); }
+        }
+
+
+        public double DurationInPixels
+        {
+            get { return DurationInSeconds * Scale; }
+            set { DurationInSeconds = value / Scale; NotifyPropertyChanged(); }
+        }
 
         [DataMember]
         private double leftShiftInSeconds { get; set; }
 
-        
-        public double LeftShiftInSeconds { get { return leftShiftInSeconds; } set { leftShiftInSeconds = value; NotifyPropertyChanged(); NotifyPropertyChanged("LeftShiftInPixels"); } }//position of whole track relative to main track
 
-        
-        public double LeftShiftInPixels { get { return leftShiftInSeconds * Scale; } set { leftShiftInSeconds = value / Scale; NotifyPropertyChanged(); } }
+        public double LeftShiftInSeconds
+        {
+            get { return leftShiftInSeconds; }
+            set { leftShiftInSeconds = value; NotifyPropertyChanged(); NotifyPropertyChanged("LeftShiftInPixels"); }
+        }//position of whole track relative to main track
+
+
+        public double LeftShiftInPixels
+        {
+            get { return leftShiftInSeconds * Scale; }
+            set { leftShiftInSeconds = value / Scale; NotifyPropertyChanged(); }
+        }
 
         [DataMember]
         public double TopShift { get; set; }
