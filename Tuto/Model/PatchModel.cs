@@ -123,11 +123,17 @@ namespace Tuto.Model
         [DataMember]
         public PatchWindowState WindowState { get; set; }
 
+        [DataMember]
         public double Width { get; set; }
+        [DataMember]
         public double Height { get; set; }
 
+        [DataMember]
         public double ActualWidth { get; set; }
+        [DataMember]
         public double ActualHeight { get; set; }
+
+        [DataMember]
         public int EpisodeNumber { get; set; }
 
         public int Scale
@@ -153,7 +159,7 @@ namespace Tuto.Model
 
         public void DeleteTrackAccordingPosition(int index, EditorModel m)
         {
-            var trackName = MediaTracks[index].ConvertedName;
+            var trackName = MediaTracks[index].FullName.Name;
             MediaTracks.RemoveAt(index);
             var name = System.IO.Path.Combine(m.Locations.TemporalDirectory.FullName, trackName);
             if (File.Exists(name))
@@ -202,10 +208,15 @@ namespace Tuto.Model
         [DataMember]
         public bool IsTutoPatch;
 
+        [DataMember]
+        public string ModelHash;
+
+        [DataMember]
+        public int EpisodeNumber;
+
         public MediaTrack(string path, ScaleInfo scale, bool isTutoPatch)
         {
             Path = new Uri(path);
-            ConvertedName = Guid.NewGuid().ToString() + ".avi";
             ScaleInfo = scale;
             IsTutoPatch = isTutoPatch;
         }
@@ -235,10 +246,16 @@ namespace Tuto.Model
 
         [DataMember]
         public Point Pos { get; set; }
+
         [DataMember]
-        public double X { get; set; }
+        private double x;
         [DataMember]
-        public double Y { get; set; }
+        private double y;
+
+
+        public double X { get { return x; } set { x = value; NotifierModelExtensions.NotifyByExpression(this, z => z.X); } }
+
+        public double Y { get { return y; } set { y = value; NotifierModelExtensions.NotifyByExpression(this, z => z.Y); } }
 
         [DataMember]
         private string foreground;
@@ -288,8 +305,7 @@ namespace Tuto.Model
         [DataMember]
         public Uri Path { get; set; }
 
-        [DataMember]
-        public string ConvertedName { get; set; }
+        public FileInfo FullName { get { return new FileInfo(Path.LocalPath); } }
 
         [DataMember]
         private double startSecond;

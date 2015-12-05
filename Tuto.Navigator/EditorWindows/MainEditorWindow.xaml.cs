@@ -175,27 +175,28 @@ namespace Editor
             Patch.Click += (s, a) =>
             {
                 //FOR DEBUGGING!
-                var patchWindow = new Tuto.Navigator.MainWindow();
+                
                 var serv = new AssemblerService(false);
                 var episodeNumber = 0;
                 var eps = model.Montage.Information.Episodes;
                 foreach (var c in model.Montage.Chunks)
-                {             
-                    if (c.StartsNewEpisode)
-                        episodeNumber++;
+                {
                     if (c.StartTime >= currentTime)
                         break;
+                    if (c.StartsNewEpisode)
+                        episodeNumber++;
+                    
                 }
+                var episodeInfo = model.Montage.Information.Episodes[episodeNumber];
                 var videoFile = model.Locations.GetOutputFile(episodeNumber);
                 if (videoFile.Exists)
                 {
-                    var temp = model.Montage.Information.Episodes[episodeNumber];
-                    var m = temp.PatchModel != null ? temp.PatchModel : new PatchModel(videoFile.FullName, episodeNumber);
-                    temp.PatchModel = m;
-                    patchWindow.LoadModel(m, model);
+                    var m = episodeInfo.PatchModel != null ? episodeInfo.PatchModel : new PatchModel(videoFile.FullName, episodeNumber);
+                    episodeInfo.PatchModel = m;
+                    var patchWindow = new Tuto.Navigator.PatcherWindow(m, model);
                     patchWindow.Show();
                 }
-                else Program.WorkQueue.Run(new AssemblyVideoWork(model));
+                else Program.WorkQueue.Run(new AssemblyEpisodeWork(model,episodeInfo));
             };
             GoTo.Click += (s, a) =>
                 {

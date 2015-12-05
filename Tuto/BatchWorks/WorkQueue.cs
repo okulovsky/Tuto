@@ -87,6 +87,12 @@ namespace Tuto.BatchWorks
             }
         }
 
+        private void FilteredAdd(List<BatchWork> allWorks, BatchWork work)
+        {
+            if (!(work is MakeAll) && !(work is AssemblyVideoWork))
+                    allWorks.Add(work);
+        }
+
         private List<BatchWork> GetFilteredWorks(BatchWork work)
         {
             if (work.Finished() && !work.Forced)
@@ -100,11 +106,10 @@ namespace Tuto.BatchWorks
                 if (WorkSettings.AudioCleanSettings.CurrentOption == Model.Options.Skip && e is CreateCleanSoundWork)
                     continue;
                 Run(e);
-                allWorks.Add(e);
+                FilteredAdd(allWorks, e);
             }
-            
-            if (!(work is MakeAll))
-                allWorks.Add(work);
+
+            FilteredAdd(allWorks, work);
 
             foreach (var e in work.AfterWorks)
             {

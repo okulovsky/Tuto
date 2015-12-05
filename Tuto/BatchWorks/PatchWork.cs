@@ -26,14 +26,23 @@ namespace Tuto.BatchWorks
             this.pmodel = model;
             this.Model = emodel;
             Forced = forced;
-            Name = "Patching: " + model.SourceInfo.Name;
+            Name = "Patching: " + model.SourceInfo.FullName;
             foreach (var ep in model.MediaTracks)
             {
                 if (!ep.IsTutoPatch)
                 {
-                    var name = Path.Combine(Model.Locations.TemporalDirectory.FullName, ep.ConvertedName);
-                    var fileInPatches = new FileInfo(Path.Combine(emodel.Locations.PatchesDirectory.FullName, new FileInfo(ep.Path.LocalPath).Name));
+                    var patchInfo = ep.FullName;
+                    var name = Path.Combine(Model.Locations.TemporalDirectory.FullName, patchInfo.Name);
+                    var fileInPatches = new FileInfo(ep.Path.LocalPath);
                     BeforeWorks.Add(new PreparePatchWork(emodel, fileInPatches, new FileInfo(name), false));
+                }
+                else if (!ep.FullName.Exists)
+                {
+                    
+                    var m = emodel.Videotheque.EditorModels.First(x => x.Montage.RawVideoHash == ep.ModelHash);   
+                    
+                    var epInfo = m.Montage.Information.Episodes[ep.EpisodeNumber];
+                    BeforeWorks.Add(new AssemblyEpisodeWork(m, epInfo));
                 }
             }
         }
@@ -42,7 +51,7 @@ namespace Tuto.BatchWorks
         {
             var src = pmodel.SourceInfo;
             List<AvsNode> chunks = new List<AvsNode>();
-            var tracks = pmodel.MediaTracks;
+            var tracks = pmodel.MediaTracks.OrderBy(x => x.LeftShiftInSeconds).ToList();
             oldName = pmodel.SourceInfo.FullName;
             newName = Path.Combine(pmodel.SourceInfo.Directory.FullName, Guid.NewGuid().ToString() + ".avi");
             File.Move(oldName, newName);
@@ -62,7 +71,7 @@ namespace Tuto.BatchWorks
                     mode = "patch";
                     continue;
                 }
-                var name = tracks[index].IsTutoPatch ? tracks[index].Path.LocalPath : Path.Combine(Model.Locations.TemporalDirectory.FullName, tracks[index].ConvertedName);
+                var name = tracks[index].IsTutoPatch ? tracks[index].Path.LocalPath : Path.Combine(Model.Locations.TemporalDirectory.FullName, tracks[index].FullName.Name);
                 avs.Load(name, tracks[index].StartSecond, tracks[index].EndSecond);
                 chunks.Add(avs);
                 previous = tracks[index].EndSecond + tracks[index].LeftShiftInSeconds;
