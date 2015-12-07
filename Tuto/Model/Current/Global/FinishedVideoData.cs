@@ -26,6 +26,7 @@ namespace Tuto.Model
         [DataMember]
         public TimeSpan Duration { get; private set; }
 
+
         [DataMember]
         public string RelativeFileLocation { get; private set; }
 

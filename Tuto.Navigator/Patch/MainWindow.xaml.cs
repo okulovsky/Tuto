@@ -29,15 +29,27 @@ namespace Tuto.Navigator
     /// 
 
     
-    public partial class MainWindow : Window, INotifyPropertyChanged
+    public partial class PatcherWindow : Window, INotifyPropertyChanged
     {
 
-        public PatchModel Model;
-        public EditorModel EModel;
-        public MainWindow()
+        PatchModel Model { get; set; }
+        EditorModel EModel { get; set; }
+        DispatcherTimer MainTimer { get; set; }
+
+        public PatcherWindow(PatchModel model, EditorModel em)
         {
             InitializeComponent();
             PatchWindow.LoadedBehavior = MediaState.Manual;
+            this.DataContext = model;
+            Model = model;
+            EModel = em;
+            Model.RefreshReferences();
+            Model.WindowState.PropertyChanged += WindowState_PropertyChanged;
+            Refresh.Click += (s, a) => { PreparePatchPicker(); };
+            DecSpace.Click += (s, a) => { model.WorkspaceWidth -= 100; };
+            IncSpace.Click += (s, a) => { model.WorkspaceWidth += 100; };
+            PreparePatchPicker();
+            PrepareTutoPatchPicker();
         }
 
         void WindowState_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -45,44 +57,77 @@ namespace Tuto.Navigator
             if (e.PropertyName == "Paused") PausedChanged();
         }
 
-        public void LoadModel(PatchModel model, EditorModel em)
+
+        public void PrepareTutoPatchPicker()
         {
-            this.DataContext = model;
-            Model = model;
-            EModel = em;
-            Model.RefreshReferences();
-            Model.WindowState.PropertyChanged += WindowState_PropertyChanged;
-            Refresh.Click += (s, a) => { PreparePatchPicker(); };
-            PreparePatchPicker();
+            foreach (var m in EModel.Videotheque.EditorModels)
+            {
+                for (var i = 0; i < m.Montage.Information.Episodes.Count; i++)
+                {
+                    var epInfo = m.Montage.Information.Episodes[i];
+                    if (epInfo.OutputType != OutputTypes.Patch)
+                        continue;
+                    var item = new ListViewItem();
+                    item.Content = epInfo.Name;
+                    item.Tag = Tuple.Create(m, i);
+                    item.MouseDoubleClick += TutoPatchItemClick;
+                    TutoPatchesList.Items.Add(item);
+                }
+            }
         }
 
+
+        public void TutoPatchItemClick(object sender, MouseButtonEventArgs e)
+        {
+            var item = sender as ListViewItem;
+            var info = (Tuple<EditorModel, int>)item.Tag;
+            var model = info.Item1;
+            var index = info.Item2;
+            var epInfo = model.Montage.Information.Episodes[index];
+            var assembledName = model.Locations.GetOutputFile(index).FullName;
+            if (File.Exists(assembledName))
+                addTrack(assembledName, true, index, model);
+            else
+            {
+                MessageBox.Show("Work in process. Track will be added after asssemblying");
+                var work = new AssemblyEpisodeWork(model,epInfo);
+                work.TaskFinished += (s, a) => { Dispatcher.Invoke(() => addTrack(assembledName, true, index, model));};
+                Program.WorkQueue.Run(work);
+            }
+
+        }
 
         public void PreparePatchPicker()
         {
             PatchPicker.Items.Clear();
+            if (!EModel.Locations.PatchesDirectory.Exists)
+                EModel.Locations.PatchesDirectory.Create();
+            Model.WorkspaceWidth = Model.WorkspaceWidth == 0 ? Model.Duration * scaleSlider.Maximum : Model.WorkspaceWidth;
             foreach (var f in EModel.Locations.PatchesDirectory.GetFiles())
             {
                 var item = new ListViewItem();
                 item.Content = f.Name;
                 item.Tag = f.FullName;
-                item.MouseDoubleClick += item_MouseDoubleClick;
+                item.MouseDoubleClick += patchItemClick;
                 PatchPicker.Items.Add(item);
             }
         }
 
-        void item_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        void patchItemClick(object sender, MouseButtonEventArgs e)
         {
             var item = sender as ListViewItem;
             if (item != null)
             {
-                addTrack(item.Tag.ToString());
+                addTrack(item.Tag.ToString(), false, 0, null);
             }
         }
 
-        private void addTrack(string path)
+        private void addTrack(string path, bool isTutoPatch, int episodeNumber, EditorModel model)
         {
-            var seconds = ViewTimeline.Position.TotalSeconds;
-            var track = new MediaTrack(path, Model.ScaleInfo);
+            var seconds = Model.WindowState.TimeSet;
+            var track = new MediaTrack(path, Model.ScaleInfo, isTutoPatch);
+            track.ModelHash = model == null ? "" : model.Montage.RawVideoHash;
+            track.EpisodeNumber = episodeNumber;
             track.LeftShiftInSeconds = seconds;
             track.TopShift = Top;
             track.DurationInPixels = 10;
@@ -96,15 +141,15 @@ namespace Tuto.Navigator
             PatchWindow.Pause();
         }
 
-        DispatcherTimer timer { get; set; }
+        
 
         private void doInitialLoad()
         {
             ViewTimeline.Source = new Uri(Model.SourceInfo.FullName);
             ViewTimeline.LoadedBehavior = MediaState.Manual;
-            timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromMilliseconds(100);
-            timer.Tick += (s, a) => { CheckPlayTime(); };
+            MainTimer = new DispatcherTimer();
+            MainTimer.Interval = TimeSpan.FromMilliseconds(100);
+            MainTimer.Tick += (s, a) => { CheckPlayTime(); };
             ViewTimeline.MediaOpened += SetMainVideo;
             ViewTimeline.Play();
             ViewTimeline.Pause();
@@ -135,7 +180,7 @@ namespace Tuto.Navigator
 
         private void AddEmptySubtitle()
         {
-            var sub = new Subtitle("Sample Text", Model.ScaleInfo, Canvas.GetLeft(CurrentTime) / Model.Scale);
+            var sub = new Subtitle("Sample Text", Model.ScaleInfo, Model.WindowState.TimeSet);
             Model.PropertyChanged += (s, a) => sub.NotifyScaleChanged();
             Model.Subtitles.Add(sub);
         }
@@ -149,7 +194,7 @@ namespace Tuto.Navigator
             ViewTimeline.UpdateLayout();
             Model.ActualHeight = ViewTimeline.ActualHeight;
             Model.ActualWidth = ViewTimeline.ActualWidth;
-            timer.Start();
+            MainTimer.Start();
             ViewTimeline.MediaOpened -= SetMainVideo; //should be once
         }
 
@@ -165,8 +210,7 @@ namespace Tuto.Navigator
         }
 
         private void CheckSubtitle(double pixelsRelativeToSeconds)
-        {
-            
+        {  
             var subtitleFound = false;
             foreach (var e in Model.Subtitles)
             {
@@ -270,11 +314,14 @@ namespace Tuto.Navigator
             var slider = (RangeSlider)sender;
             var tr = slider.DataContext as TrackInfo;
             if (tr is MediaTrack)
+            {
                 Model.MediaTracks.Remove((MediaTrack)tr);
+                PatchWindow.Stop();
+                PatchWindow.Source = null;
+            }
             else
                 Model.Subtitles.Remove((Subtitle)tr);
-            PatchWindow.Stop();
-            PatchWindow.Source = null;
+            
         }
 
         private void mainwindow_Closing(object sender, CancelEventArgs e)
@@ -292,19 +339,6 @@ namespace Tuto.Navigator
             }
         }
 
-
-        private void Subtitle_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            Model.WindowState.DragInProgress = false;
-            var shift = CurrentSubtitle.FontSize;
-            Model.WindowState.currentSubtitle.X = Canvas.GetLeft(CurrentSubtitleWraper);
-            Model.WindowState.currentSubtitle.Y = Canvas.GetTop(CurrentSubtitleWraper);
-            var pos = CurrentSubtitleWraper.TranslatePoint(new Point(0, 0), ViewTimeline);
-            Model.WindowState.currentSubtitle.Pos = pos;
-            Model.WindowState.currentSubtitle.HeightShift = shift;
-        }
-
-
         private bool IsInVideoField(double offsetX, double offsetY)
         {
             var v = ViewTimeline;
@@ -316,6 +350,17 @@ namespace Tuto.Navigator
             return VideoBoundingBox.Contains(SubBox);
 
 
+        }
+
+        private void Subtitle_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            Model.WindowState.DragInProgress = false;
+            var shift = CurrentSubtitle.FontSize;
+            Model.WindowState.currentSubtitle.X = Canvas.GetLeft(CurrentSubtitleWraper);
+            Model.WindowState.currentSubtitle.Y = Canvas.GetTop(CurrentSubtitleWraper);
+            var pos = CurrentSubtitleWraper.TranslatePoint(new Point(0, 0), ViewTimeline);
+            Model.WindowState.currentSubtitle.Pos = pos;
+            Model.WindowState.currentSubtitle.HeightShift = shift;
         }
 
         private void Subtitle_MouseMove(object sender, MouseEventArgs e)
@@ -331,8 +376,8 @@ namespace Tuto.Navigator
                 new_y += offset_y;
                 if (IsInVideoField(offset_x, offset_y))
                 {
-                    Canvas.SetLeft(CurrentSubtitleWraper, new_x);
-                    Canvas.SetTop(CurrentSubtitleWraper, new_y);
+                    Model.WindowState.currentSubtitle.X = new_x;
+                    Model.WindowState.currentSubtitle.Y = new_y;
                     Model.WindowState.LastPoint = point;
                 }
             }

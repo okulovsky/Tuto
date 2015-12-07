@@ -18,10 +18,6 @@ namespace Tuto.TutoServices
 		}
 		
 
-
-
-		
-
 		public List<AvsNode> GetEpisodesNodes(EditorModel model)
 		{
 			model.FormPreparedChunks();

@@ -26,12 +26,24 @@ namespace Tuto.BatchWorks
             this.pmodel = model;
             this.Model = emodel;
             Forced = forced;
-            Name = "Patching: " + model.SourceInfo.Name;
+            Name = "Patching: " + model.SourceInfo.FullName;
             foreach (var ep in model.MediaTracks)
             {
-                var name = Path.Combine(Model.Locations.TemporalDirectory.FullName, ep.ConvertedName);
-                var fileInPatches = new FileInfo(Path.Combine(emodel.Locations.PatchesDirectory.FullName, new FileInfo(ep.Path.LocalPath).Name));
-                BeforeWorks.Add(new PreparePatchWork(emodel, fileInPatches, new FileInfo(name), false));
+                if (!ep.IsTutoPatch)
+                {
+                    var patchInfo = ep.FullName;
+                    var name = Path.Combine(Model.Locations.TemporalDirectory.FullName, patchInfo.Name);
+                    var fileInPatches = new FileInfo(ep.Path.LocalPath);
+                    BeforeWorks.Add(new PreparePatchWork(emodel, fileInPatches, new FileInfo(name), false));
+                }
+                else if (!ep.FullName.Exists)
+                {
+                    
+                    var m = emodel.Videotheque.EditorModels.First(x => x.Montage.RawVideoHash == ep.ModelHash);   
+                    
+                    var epInfo = m.Montage.Information.Episodes[ep.EpisodeNumber];
+                    BeforeWorks.Add(new AssemblyEpisodeWork(m, epInfo));
+                }
             }
         }
 
@@ -39,7 +51,7 @@ namespace Tuto.BatchWorks
         {
             var src = pmodel.SourceInfo;
             List<AvsNode> chunks = new List<AvsNode>();
-            var tracks = pmodel.MediaTracks;
+            var tracks = pmodel.MediaTracks.OrderBy(x => x.LeftShiftInSeconds).ToList();
             oldName = pmodel.SourceInfo.FullName;
             newName = Path.Combine(pmodel.SourceInfo.Directory.FullName, Guid.NewGuid().ToString() + ".avi");
             File.Move(oldName, newName);
@@ -59,7 +71,7 @@ namespace Tuto.BatchWorks
                     mode = "patch";
                     continue;
                 }
-                var name = Path.Combine(Model.Locations.TemporalDirectory.FullName, tracks[index].ConvertedName);
+                var name = tracks[index].IsTutoPatch ? tracks[index].Path.LocalPath : Path.Combine(Model.Locations.TemporalDirectory.FullName, tracks[index].FullName.Name);
                 avs.Load(name, tracks[index].StartSecond, tracks[index].EndSecond);
                 chunks.Add(avs);
                 previous = tracks[index].EndSecond + tracks[index].LeftShiftInSeconds;
@@ -86,13 +98,12 @@ namespace Tuto.BatchWorks
                 {
                     currentSub = new AvsSub();
                     currentSub.Payload = payload;
-                    var fontCoefficent = (pmodel.Width / pmodel.ActualWidth + pmodel.Height / pmodel.ActualHeight) / 2;
                     currentSub.X = (int)(sub.Pos.X * pmodel.Width / pmodel.ActualWidth);
                     currentSub.Y = (int)(sub.Pos.Y * pmodel.Height / pmodel.ActualHeight + sub.HeightShift);
                     currentSub.Start = sub.LeftShiftInSeconds;
                     currentSub.End = sub.LeftShiftInSeconds + sub.EndSecond - sub.StartSecond;
                     currentSub.Content = sub.Content;
-                    currentSub.FontSize = (sub.FontSize * fontCoefficent).ToString();
+                    currentSub.FontSize = (sub.FontSize * pmodel.FontCoefficent).ToString();
                     currentSub.Stroke = sub.Stroke;
                     currentSub.Foreground = sub.Foreground;
                     payload = currentSub;
@@ -106,13 +117,12 @@ namespace Tuto.BatchWorks
             var avsScript = string.Format(@"import(""{0}"")", Model.Locations.AvsLibrary.FullName) + "\r\n" + avsContext.GetContent() + "var_0";
             File.WriteAllText(newName + "test.avs", avsScript, Encoding.GetEncoding("Windows-1251"));
 
-            //TODO: разобраться уже с правилами именования patched файлов. Тут опять какой-то позор.
-            var dir = Model.Locations.GetOutputFile(0).Directory.FullName;
-            var patchedName = GetTempFile(pmodel.SourceInfo, "-patched").FullName;
-            var path = Path.Combine(dir, patchedName);
-            args = string.Format(args, newName + "test.avs", path);
+            //Патчер в аутпут все делает
+            var scriptFile = newName + "test.avs";
+            var path = Model.Locations.GetFinalOutputFile(pmodel.EpisodeNumber).FullName;
+            args = string.Format(args, scriptFile , path);
             RunProcess(args, Model.Videotheque.Locations.FFmpegExecutable.FullName);
-            File.Delete(newName + "test.avs");
+            File.Delete(scriptFile);
             OnTaskFinished();
             File.Move(newName, oldName);
         }
