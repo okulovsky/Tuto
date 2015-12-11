@@ -52,12 +52,16 @@ namespace Tuto.Navigator
 
         void UpdateSubdirectories()
         {
+			var list = new List<SubfolderViewModel>();
             Subdirectories = new ObservableCollection<SubfolderViewModel>();
             foreach (var e in videotheque.EditorModels)
             {
                 var m = new SubfolderViewModel(e);
-                Subdirectories.Add(m);
+				list.Add(m);
             }
+			list = list.OrderByDescending(z => z.Model.Montage.ModificationTime).ToList();
+			foreach (var e in list)
+				Subdirectories.Add(e);
         }
 
         public void AssembleWithOptions()
