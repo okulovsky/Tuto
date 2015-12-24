@@ -67,9 +67,9 @@ namespace Tuto.Navigator.ViewModels
         private List<BatchWork> GetOptionsAccordingAllOption(EditorModel m)
         {
             var tasks = new List<BatchWork>();
-            if (m.Videotheque.WorkSettings.DesktopThumbSettings.CurrentOption != Options.Skip)
+            if (m.Videotheque.Data.WorkSettings.DesktopThumbSettings.CurrentOption != Options.Skip)
                 tasks.Add(new CreateThumbWork(m.Locations.DesktopVideo, m, true));
-            if (m.Videotheque.WorkSettings.FaceThumbSettings.CurrentOption != Options.Skip)
+            if (m.Videotheque.Data.WorkSettings.FaceThumbSettings.CurrentOption != Options.Skip)
                 tasks.Add(new CreateThumbWork(m.Locations.FaceVideo, m, true));
             tasks.Add(new AssemblyVideoWork(m));
             return tasks;

@@ -233,7 +233,7 @@ namespace Editor
 
         void AddDuringTasks()
         {
-            var toDo = model.Videotheque.WorkSettings.GetDuringWorks(model);
+            var toDo = model.Videotheque.Data.WorkSettings.GetDuringWorks(model);
             foreach (var t in toDo)
             {
                 if (t is CreateThumbWork && ((CreateThumbWork)t).Source == model.Locations.DesktopVideo)

@@ -20,7 +20,7 @@ namespace Tuto.BatchWorks
         public AssemblyVideoWork (EditorModel model)
         {
             Model = model;
-            crossFades = model.Videotheque.CrossFadesEnabled;
+            crossFades = model.Videotheque.Data.EditorSettings.CrossFadesEnabled;
             Name = "Assembly video: " + model.Locations.FaceVideo.Directory.FullName;
             filesToDelIfAborted = new List<string>();
             var service = new AssemblerService(crossFades);

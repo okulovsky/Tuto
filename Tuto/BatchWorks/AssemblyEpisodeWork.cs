@@ -23,7 +23,7 @@ namespace Tuto.BatchWorks
         {
             Model = model;
             var videoFile = Model.Locations.GetOutputFile(episodeInfo);
-            crossFades = model.Videotheque.CrossFadesEnabled;
+            crossFades = model.Videotheque.Data.EditorSettings.CrossFadesEnabled;
             Name = "Assembly episode: " + videoFile.FullName;
             this.episodeInfo = episodeInfo;
             this.episodeNode = episodeNode;

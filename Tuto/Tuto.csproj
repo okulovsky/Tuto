@@ -118,7 +118,7 @@
     <Compile Include="BatchWorks\MoveFile.cs" />
     <Compile Include="BatchWorks\MakeAll.cs" />
     <Compile Include="BatchWorks\NormalizeSoundWork.cs" />
-    <Compile Include="BatchWorks\OldPraatWork.cs" />
+    <Compile Include="BatchWorks\PraatWork.cs" />
     <Compile Include="BatchWorks\WorkQueue.cs" />
     <Compile Include="Model2\EditorModel\EditorModel.cs" />
     <Compile Include="Model2\EditorModel\Locations.cs" />
@@ -128,6 +128,7 @@
     <Compile Include="Model2\Publishing\PublishingSettings.cs" />
     <Compile Include="Model2\Videotheque\IVideothequeLoadingUI.cs" />
     <Compile Include="Model2\Videotheque\LoadingUIDecorator.cs" />
+    <Compile Include="Model2\Videotheque\Settings\VideothequeEditor.cs" />
     <Compile Include="Model2\Videotheque\VideothequeLoadingRequestItem.cs" />
     <Compile Include="Model\Current\FileContainer.cs" />
     <Compile Include="Model\Current\AllProjectData.cs" />
@@ -137,7 +138,7 @@
     <Compile Include="Model\Current\Global\VoiceSettings.cs" />
     <Compile Include="Model\Current\Montage\BorderListExtensions.cs" />
     <Compile Include="Model\Current\Montage\SubtitleFix.cs" />
-    <Compile Include="Model\Current\WorkSettings.cs" />
+    <Compile Include="Model2\Videotheque\Settings\WorkSettings.cs" />
     <Compile Include="Model\Current\WindowState\EditorModes.cs" />
     <Compile Include="Model\Current\WindowState\EnumName.cs" />
     <Compile Include="Model\Current\WindowState\WindowState.cs" />
@@ -198,13 +199,13 @@
     <Compile Include="BatchWorks\AssemblyVideoWork.cs" />
     <Compile Include="BatchWorks\CreateCleanSoundWork.cs" />
     <Compile Include="BatchWorks\CreateThumbWork.cs" />
-    <Compile Include="BatchWorks\PraatWork.cs" />
+    <Compile Include="BatchWorks\NewSoundAnalysisWork.cs" />
     <Compile Include="BatchWorks\RepairVideoWork.cs" />
     <Compile Include="Model2\Videotheque\PathesSettings.cs" />
     <Compile Include="Model2\Videotheque\Videotheque.cs" />
     <Compile Include="Model2\Videotheque\VideothequeEnvironmentSettings.cs" />
-    <Compile Include="Model2\Videotheque\VideothequeLocations.cs" />
-    <Compile Include="Model2\Videotheque\VideothequeSettings.cs" />
+    <Compile Include="Model2\Videotheque\Settings\VideothequeLocations.cs" />
+    <Compile Include="Model2\Videotheque\Settings\VideothequeSettings.cs" />
     <Compile Include="YoutubeProcessing\YoutubeProcessor.cs" />
   </ItemGroup>
   <ItemGroup>

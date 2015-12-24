@@ -11,21 +11,18 @@ namespace Editor
 
     public class BorderMode : IEditorMode
     {
-
-
-        double FastSpeed = 2;
-
         EditorModel model;
 
         public MontageModel montage { get { return model.Montage; } }
 
-
+        double FastSpeed;
    
 
         public BorderMode(EditorModel editorModel)
         {
             this.model = editorModel;
             model.GenerateBorders();
+            FastSpeed = model.Videotheque.Data.EditorSettings.DefaultFinalAcceleration;
         }
 
         public void CheckTime()

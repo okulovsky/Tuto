@@ -95,7 +95,7 @@ namespace Tuto.Navigator
             {
                 var works = new List<BatchWork>();
                 var e = m.Model;
-                if (e.InputFilesAreOK && (!e.Locations.PraatVoice.Exists || m.Model.Montage.SoundIntervals.Count==0))
+                if (videotheque.Data.WorkSettings.StartPraat && e.InputFilesAreOK && (!e.Locations.PraatVoice.Exists || m.Model.Montage.SoundIntervals.Count==0))
                 {
                     works.Add(new PraatWork(e));
                 }
@@ -122,29 +122,6 @@ namespace Tuto.Navigator
         public void Save()
         {
             videotheque.Save();
-            if (videotheque.RelativeVideoListPath != null)
-            {
-                var file = new FileInfo(Path.Combine(
-                    videotheque.VideothequeSettingsFile.Directory.FullName,
-                    videotheque.RelativeVideoListPath,
-                    Tuto.Model.Videotheque.VideoListName));
-                List<VideoPublishSummary> currentList = new List<VideoPublishSummary>();
-                if (file.Exists)
-                    currentList = HeadedJsonFormat.Read<List<VideoPublishSummary>>(file);
-
-                foreach (var e in models)
-                    for (int i = 0; i < e.Montage.Information.Episodes.Count; i++)
-                    {
-                        var alreadySaved = currentList.Where(z => z.Guid == e.Montage.Information.Episodes[i].Guid).FirstOrDefault();
-                        if (alreadySaved != null) currentList.Remove(alreadySaved);
-                        var fv = new FinishedVideo(e, i);
-                        var pv = new VideoPublishSummary { Guid = fv.Guid, Name = fv.Name, Duration = fv.Duration };
-                        pv.OrdinalSuffix = fv.RelativeSourceFolderLocation + "-" + fv.EpisodeNumber;
-                        currentList.Add(pv);
-                    }
-
-                HeadedJsonFormat.Write(file, currentList);
-            }
         }
 
         void Run(bool forceMontage)

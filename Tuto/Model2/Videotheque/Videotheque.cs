@@ -53,27 +53,6 @@ namespace Tuto.Model
 
 
 
-        #region Всякая старая дичь
-        [Obsolete]
-        public VoiceSettings VoiceSettings { get { return Data.VoiceSettings; } }
-        [Obsolete]
-        public WorkSettings WorkSettings { get { return Data.WorkSettings; } }
-        [Obsolete]
-        public bool ShowProcesses { get; set; }
-        [Obsolete]
-        public const string VideoListName = "VideoSummaries.txt";
-        [Obsolete]
-        public List<FinishedVideo> VideoData { get; set; }
-        [Obsolete]
-        public Topic TopicsRoot { get; set; }
-        [Obsolete]
-        public List<TopicLevel> TopicLevels { get; internal set; }
-        [Obsolete]
-        public bool CrossFadesEnabled { get; set; }
-        [Obsolete]
-        public string RelativeVideoListPath { get; set; }
-        #endregion
-
 
 
         Dictionary<string, DirectoryInfo> binaryHashes;
@@ -414,6 +393,7 @@ namespace Tuto.Model
 
 			VideothequeSettingsFile = vfinfo;
 			Data = HeadedJsonFormat.Read<VideothequeData>(VideothequeSettingsFile);
+            if (Data.EditorSettings == null) Data.EditorSettings = new VideothequeEditorSettings();
 		}
 
 		void CheckSubdirectories(IVideothequeLoadingUI ui)

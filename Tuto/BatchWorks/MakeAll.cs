@@ -31,7 +31,7 @@ namespace Tuto.BatchWorks
                 if (model.Montage.Information.Episodes[episodeNumber].PatchModel != null)
                 {
                     BeforeWorks.Add(new PatchWork(model.Montage.Information.Episodes[episodeNumber].PatchModel,
-                                                  model.Videotheque.CrossFadesEnabled,
+                                                  model.Videotheque.Data.EditorSettings.CrossFadesEnabled,
                                                   model,
                                                   true));
                     var patchedLocation = model.Locations.GetFinalOutputFile(episodeNumber);
