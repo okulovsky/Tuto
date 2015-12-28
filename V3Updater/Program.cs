@@ -80,12 +80,21 @@ namespace V3Updater
 					@"D:\Montage\Models\OldHackerdomLectures",
 					"Hackerdom\\");
 			}
-			if (true)
+			if (false)
 			{
 				ParsePublishing(
 					@"D:\hackerdom-publishing\VideoData",
 					@"D:\Montage\videotheque",
 					"Hackerdom"
+					);
+			}
+
+			if (true)
+			{
+				ParsePublishing(
+					@"D:\lhps-pub\VideoData",
+					@"D:\Montage\videotheque",
+					"LHPS"
 					);
 			}
 

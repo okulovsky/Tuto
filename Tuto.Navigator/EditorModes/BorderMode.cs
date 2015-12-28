@@ -11,59 +11,18 @@ namespace Editor
 
     public class BorderMode : IEditorMode
     {
-        const int Margin = 3000;
-
-        double FastSpeed = 2;
-
         EditorModel model;
 
         public MontageModel montage { get { return model.Montage; } }
 
-
-        /*
-         * Левая граница - это когда предыдущий чанк другого типа. Играется с левой границы до +Margin
-         * Правая граница - это когда последующий чанк неактивен. Играется с -Margin до правой границы
-         * Если области левой и правой границ перекрываются, делается пополам
-         */
-        IEnumerable<Border> GenerateBordersPreview()
-        {
-            for (int i = 1; i < montage.Chunks.Count; i++)
-            {
-                if (montage.Chunks[i].Mode != montage.Chunks[i-1].Mode)
-                {
-                    if (montage.Chunks[i - 1].IsActive)
-                    {
-                        yield return Border.Right(montage.Chunks[i].StartTime, Margin, i - 1, i);
-                    }
-                
-                    if (montage.Chunks[i].IsActive)
-                    {
-                        yield return Border.Left(montage.Chunks[i].StartTime, Margin, i - 1, i);
-                    }
-                }
-            }
-        }
-
-        void GenerateBorders()
-        {
-            var borders = GenerateBordersPreview().ToList();
-            for (int i = 1; i < borders.Count; i++)
-            {
-                if (borders[i - 1].EndTime > borders[i].StartTime)
-                {
-                    var time = (borders[i - 1].EndTime + borders[i].StartTime) / 2;
-                    borders[i - 1].EndTime = time;
-                    borders[i].StartTime = time;
-                }
-            }
-            montage.Borders = borders;
-         
-        }
+        double FastSpeed;
+   
 
         public BorderMode(EditorModel editorModel)
         {
             this.model = editorModel;
-            GenerateBorders();
+            model.GenerateBorders();
+            FastSpeed = model.Videotheque.Data.EditorSettings.DefaultFinalAcceleration;
         }
 
         public void CheckTime()
@@ -201,7 +160,7 @@ namespace Editor
             if (borderIndex == -1) return;
             var border = montage.Borders[borderIndex];
             model.ShiftLeftChunkBorder(border.RightChunk, shiftSize);
-            GenerateBorders();
+            model.GenerateBorders();
             model.WindowState.CurrentPosition = montage.Borders[borderIndex].StartTime;
             if (montage.Borders[borderIndex].IsLeftBorder) model.WindowState.SpeedRatio = 1;
             model.OnMontageModelChanged();

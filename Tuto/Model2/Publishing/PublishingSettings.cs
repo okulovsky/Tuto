@@ -30,9 +30,6 @@ namespace Tuto.Publishing
 		[DataMember]
 		public string UlearnCourseDirectory { get; set; }
 
-	   [DataMember]
-	   [Obsolete]
-		public DirectoryInfo Location { get; set; }
 
         public PublishingSettings()
         {

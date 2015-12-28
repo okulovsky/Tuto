@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Markup;
@@ -49,13 +50,26 @@ namespace Tuto.Model
         public override List<Options> PossibleOptions { get { return new List<Options>() { Options.Skip, Options.WithAssembly, Options.DuringEditing }; } }
     }
 
+    [DataContract]
     public class WorkSettings
     {
+        [DataMember]
         public ConversionSettings ConversionSettings { get; set; }
+        [DataMember]
         public AudioCleanSettings AudioCleanSettings { get; set; }
+        [DataMember]
         public FaceThumbSettings FaceThumbSettings { get; set; }
+        [DataMember]
         public DesktopThumbSettings DesktopThumbSettings { get; set; }
+        [DataMember]
         public bool AutoUploadVideo { get; set; }
+
+        [DataMember]
+        public bool ShowProcesses { get; set; }
+
+
+        [DataMember]
+        public bool StartPraat { get; set; }
 
         public WorkSettings()
         {
@@ -63,26 +77,27 @@ namespace Tuto.Model
             AudioCleanSettings = new AudioCleanSettings();
             FaceThumbSettings = new FaceThumbSettings();
             DesktopThumbSettings = new DesktopThumbSettings();
+            StartPraat = true;
         }
 
         public List<BatchWork> GetDuringWorks(EditorModel model)
         {
             var toDo = new List<BatchWork>();
-            if (model.Videotheque.WorkSettings.AudioCleanSettings.CurrentOption == Options.DuringEditing)
+            if (model.Videotheque.Data.WorkSettings.AudioCleanSettings.CurrentOption == Options.DuringEditing)
                 toDo.Add(new CreateCleanSoundWork(model.Locations.FaceVideo, model, false));
 
-            if (model.Videotheque.WorkSettings.ConversionSettings.CurrentOption == Options.DuringEditing)
+            if (model.Videotheque.Data.WorkSettings.ConversionSettings.CurrentOption == Options.DuringEditing)
             {
                 toDo.Add(new ConvertFaceWork(model, false));
                 toDo.Add(new ConvertDesktopWork(model, false));
             }
 
-            if (model.Videotheque.WorkSettings.FaceThumbSettings.CurrentOption == Options.DuringEditing)
+            if (model.Videotheque.Data.WorkSettings.FaceThumbSettings.CurrentOption == Options.DuringEditing)
             {
                 toDo.Add(new CreateThumbWork(model.Locations.FaceVideo, model, false));
             }
 
-            if (model.Videotheque.WorkSettings.DesktopThumbSettings.CurrentOption == Options.DuringEditing)
+            if (model.Videotheque.Data.WorkSettings.DesktopThumbSettings.CurrentOption == Options.DuringEditing)
             {
                 toDo.Add(new CreateThumbWork(model.Locations.DesktopVideo, model, false));
             }            
@@ -92,16 +107,16 @@ namespace Tuto.Model
         public List<BatchWork> GetBeforeEditingWorks(EditorModel model)
         {
             var works = new List<BatchWork>();
-            if (model.Videotheque.WorkSettings.FaceThumbSettings.CurrentOption == Options.BeforeEditing)
+            if (model.Videotheque.Data.WorkSettings.FaceThumbSettings.CurrentOption == Options.BeforeEditing)
                 works.Add(new CreateThumbWork(model.Locations.FaceVideo, model, false));
 
-            if (model.Videotheque.WorkSettings.DesktopThumbSettings.CurrentOption == Options.BeforeEditing)
+            if (model.Videotheque.Data.WorkSettings.DesktopThumbSettings.CurrentOption == Options.BeforeEditing)
                 works.Add(new CreateThumbWork(model.Locations.DesktopVideo, model, false));
 
-            if (model.Videotheque.WorkSettings.AudioCleanSettings.CurrentOption == Options.BeforeEditing)
+            if (model.Videotheque.Data.WorkSettings.AudioCleanSettings.CurrentOption == Options.BeforeEditing)
                 works.Add(new CreateCleanSoundWork(model.Locations.FaceVideo, model, false));
 
-            if (model.Videotheque.WorkSettings.ConversionSettings.CurrentOption == Options.BeforeEditing)
+            if (model.Videotheque.Data.WorkSettings.ConversionSettings.CurrentOption == Options.BeforeEditing)
             {
                 works.Add(new ConvertDesktopWork(model, false));
                 works.Add(new ConvertFaceWork(model, false));

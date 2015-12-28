@@ -38,7 +38,7 @@ namespace Tuto.BatchWorks
             var ffmpegExecutable = Model.Videotheque.Locations.FFmpegExecutable;
             var args = string.Format("-i \"{0}\" -vn -q:a 0 \"{1}\"", Model.Locations.FaceVideo, Model.Locations.PraatVoice);
             RunProcess(args, ffmpegExecutable.ToString());
-            var work = 
+            var work =
                 String.Format(
                     CultureInfo.InvariantCulture,
                     " --run \"{0}\" \"{1}\" \"{2}\" {3} {4} {5} {6} {7} {8} {9}",

@@ -5,7 +5,7 @@
         Title="Tasks queue" SizeToContent="WidthAndHeight" Closing="Window_Closing" Deactivated="Window_Deactivated">
     <StackPanel>
         <Button Content="Cancel" x:Name="CancelButton"/>
-        <DataGrid IsReadOnly="true" x:Name="Tasks" ItemsSource="{Binding}" AutoGenerateColumns="False">
+        <DataGrid IsReadOnly="true" x:Name="Tasks" ItemsSource="{Binding}" AutoGenerateColumns="False" VerticalScrollBarVisibility="Auto" MaxHeight="300">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
                 <DataGridTextColumn Header="Status" Binding="{Binding Status}"/>

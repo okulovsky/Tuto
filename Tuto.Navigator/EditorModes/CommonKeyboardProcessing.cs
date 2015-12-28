@@ -30,6 +30,10 @@ namespace Editor
                 case KeyboardCommands.PauseResume:
                     model.WindowState.Paused = !model.WindowState.Paused;
                     return true;
+                    
+                case KeyboardCommands.InsertDeletion:
+                    model.InsertDeletion(model.WindowState.CurrentPosition);
+                    return true;
             }
             return false;
         }

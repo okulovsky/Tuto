@@ -74,6 +74,8 @@ namespace Editor
 
         [OfGroup(KeyboardGroup.Other)]
         [CmdHelp("Specifies that the current fragment starts the new episode.")]
-        NewEpisodeHere
+        NewEpisodeHere,
+
+        InsertDeletion
     }
 }

@@ -20,8 +20,6 @@ namespace Tuto.Publishing
 
 		[DataMember]
 		public int NumberInTopic { get; set; }
-
-
 	}
 
 	[DataContract]
@@ -31,7 +29,7 @@ namespace Tuto.Publishing
 		public Topic RootTopic { get; set; }
 
 		[DataMember]
-		public List<VideoToTopicRelation> VideoToTopicRelations { get; set; }
+		public List< VideoToTopicRelation> VideoToTopicRelations { get; set; }
 
 		public CourseStructure()
 		{
@@ -42,6 +40,9 @@ namespace Tuto.Publishing
 
 	public class CourseTreeData
 	{
+
+        public const string VideoListName = "VideoSummaries.txt";
+
 		public List<VideoPublishSummary> Videos { get; set; }
 		public CourseStructure Structure { get; set; }
 		
@@ -51,7 +52,7 @@ namespace Tuto.Publishing
 		{
 			var result = new CourseTreeData();
 			result.Videos = HeadedJsonFormat.Read<List<VideoPublishSummary>>(
-				new FileInfo(Path.Combine(directory.FullName, Videotheque.VideoListName)));
+				new FileInfo(Path.Combine(directory.FullName, VideoListName)));
 			result.Structure = HeadedJsonFormat.Read<CourseStructure>(directory);
 			return result;
 		}

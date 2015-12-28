@@ -53,27 +53,6 @@ namespace Tuto.Model
 
 
 
-        #region Всякая старая дичь
-        [Obsolete]
-        public VoiceSettings VoiceSettings { get { return Data.VoiceSettings; } }
-        [Obsolete]
-        public WorkSettings WorkSettings { get { return Data.WorkSettings; } }
-        [Obsolete]
-        public bool ShowProcesses { get; set; }
-        [Obsolete]
-        public const string VideoListName = "VideoSummaries.txt";
-        [Obsolete]
-        public List<FinishedVideo> VideoData { get; set; }
-        [Obsolete]
-        public Topic TopicsRoot { get; set; }
-        [Obsolete]
-        public List<TopicLevel> TopicLevels { get; internal set; }
-        [Obsolete]
-        public bool CrossFadesEnabled { get; set; }
-        [Obsolete]
-        public string RelativeVideoListPath { get; set; }
-        #endregion
-
 
 
         Dictionary<string, DirectoryInfo> binaryHashes;
@@ -414,6 +393,7 @@ namespace Tuto.Model
 
 			VideothequeSettingsFile = vfinfo;
 			Data = HeadedJsonFormat.Read<VideothequeData>(VideothequeSettingsFile);
+            if (Data.EditorSettings == null) Data.EditorSettings = new VideothequeEditorSettings();
 		}
 
 		void CheckSubdirectories(IVideothequeLoadingUI ui)
@@ -424,7 +404,6 @@ namespace Tuto.Model
             ModelsFolder = CheckVideothequeSubdirectory(Data.PathsSettings.ModelPath, Names.DefaultModelFolder, ui, "Can't locate the folder where the markup (the result of your work) is stored)");
             OutputFolder = CheckVideothequeSubdirectory(Data.PathsSettings.OutputPath, Names.DefaultOutputFolder, ui, "Can't locate the folder with the output video will be stored");
             TempFolder = CheckVideothequeSubdirectory(Data.PathsSettings.TempPath, Names.DefaultTempFolder, ui, "Can't locate the folder with the temporary files");
-
 		}
 		#endregion
 		#region Loading files
@@ -497,12 +476,14 @@ namespace Tuto.Model
 				LoadFiles(e, extension, list);
 		}
 
+      
+
 		void LoadContainers(IVideothequeLoadingUI ui)
 		{
             ui.StartPOSTWork("Loading models");
             loadedContainer = new List<Tuple<FileContainer, FileInfo>>();
 			LoadFiles<FileContainer>(ModelsFolder, Names.ModelExtension, loadedContainer);
-			
+
             ui.CompletePOSTWork(true);
 		}
 

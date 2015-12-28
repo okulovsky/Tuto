@@ -20,54 +20,20 @@ namespace Tuto.BatchWorks
         public AssemblyVideoWork (EditorModel model)
         {
             Model = model;
-            crossFades = model.Videotheque.CrossFadesEnabled;
+            crossFades = model.Videotheque.Data.EditorSettings.CrossFadesEnabled;
             Name = "Assembly video: " + model.Locations.FaceVideo.Directory.FullName;
             filesToDelIfAborted = new List<string>();
-            BeforeWorks.Add(new ConvertDesktopWork(model, false));
-            BeforeWorks.Add(new ConvertFaceWork(model, false));
-            BeforeWorks.Add(new CreateCleanSoundWork(model.Locations.FaceVideo, model, false));
-
             var service = new AssemblerService(crossFades);
             episodes = service.GetEpisodesNodes(Model);
-            var episodeNumber = 0;
-            foreach (var episode in episodes)
+
+            for (var episodeNumber = 0; episodeNumber < episodes.Count; episodeNumber++)
             {
-                var videoFile = Model.Locations.GetOutputFile(episodeNumber);
-                AfterWorks.Add(new NormalizeSoundWork(Model, videoFile));
-                episodeNumber++;
+                if (Model.Montage.Information.Episodes[episodeNumber].OutputType == OutputTypes.None)
+                    continue;
+                var episodeInfo = model.Montage.Information.Episodes[episodeNumber];
+                BeforeWorks.Add(new AssemblyEpisodeWork(model,episodeInfo));
             }
-        }
-
-        public override void Work()
-        {
-            var episodeNumber = 0;
-            var count = episodes.Count;
-            foreach (var episode in episodes)
-            {
-                var args = @"-i ""{0}"" -q:v 0 -vf ""scale=1280:720, fps=25"" -q:v 0 -acodec libmp3lame -ac 2 -ar 44100 -ab 32k ""{1}""";
-                var avsContext = new AvsContext();
-                episode.SerializeToContext(avsContext);
-                var avsScript = avsContext.Serialize(Model);
-                var avsFile = Model.Locations.GetAvsStriptFile(episodeNumber);
-
-                File.WriteAllText(avsFile.FullName, avsScript, Encoding.GetEncoding("Windows-1251"));
-
-                var videoFile = Model.Locations.GetOutputFile(episodeNumber);
-                if (videoFile.Exists) videoFile.Delete();
-
-                args = string.Format(args, avsFile.FullName, videoFile.FullName);
-                filesToDelIfAborted.Add(videoFile.FullName);
-                episodeNumber++;
-                RunProcess(args, Model.Videotheque.Locations.FFmpegExecutable.FullName);
-                OnTaskFinished();
-            }
-        }
-
-        public override void Clean()
-        {
-            FinishProcess();
-            foreach (var e in filesToDelIfAborted)
-                TryToDelete(e);
+            var test = 5;
         }
     }
 }
