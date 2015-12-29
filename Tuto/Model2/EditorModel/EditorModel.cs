@@ -50,6 +50,7 @@ namespace Tuto.Model
 
         public void OnNonSignificantChanged()
         {
+
             if (MontageModelChanged != null)
                 MontageModelChanged(this, EventArgs.Empty);
         }
@@ -70,6 +71,7 @@ namespace Tuto.Model
         {
 			Montage = montage;
 			WindowState = windowState;
+			windowState.EditorModel = this;
 			Videotheque = videotheque;
 			RawLocation = raw;
 			ModelFileLocation = model;

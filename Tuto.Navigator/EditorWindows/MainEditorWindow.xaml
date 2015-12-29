@@ -60,7 +60,8 @@
             
             <Button Content="Tools" x:Name="Tools" Height="50" Width="50" Click="Tools_Click"/>
         </StackPanel>
-            <Label Content="{Binding WindowState.CurrentPosition}" DockPanel.Dock="Top"/>
+        <Label Content="{Binding WindowState.CurrentPositionAbsolute}" DockPanel.Dock="Top"/>
+        <Label Content="{Binding WindowState.CurrentPositionRelative}" DockPanel.Dock="Top"/>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
             <MediaElement 
                     Width="500"

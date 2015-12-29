@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,8 +10,19 @@ using System.Threading.Tasks;
 namespace Tuto.Model
 {
     [DataContract]
-    public class   WindowState
+    public class   WindowState : NotifierModel
     {
+		internal EditorModel EditorModel;
+
+		void SetAndNotify<T>(ref T field, T value, [CallerMemberName] string propertyName=null)
+		{
+			if (!field.Equals(value))
+			{
+				field = value;
+				NotifyPropertyChanged(propertyName);
+			}
+		}
+
         [DataMember]
         EditorModes currentMode;
         public EditorModes CurrentMode
@@ -18,16 +30,10 @@ namespace Tuto.Model
             get { return currentMode; }
             set
             {
-                if (currentMode != value)
-                {
-                    currentMode = value;
-                    if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("CurrentMode"));
-                    if (CurrentModeChanged != null) CurrentModeChanged(this, EventArgs.Empty);
-                }
+				SetAndNotify(ref currentMode, value);
             }
         }
-        public event EventHandler CurrentModeChanged;
-
+       
         [DataMember]
         int currentPosition;
         public int CurrentPosition
@@ -35,16 +41,47 @@ namespace Tuto.Model
             get { return currentPosition; }
             set
             {
-                if (currentPosition != value)
-                {
-                    currentPosition = value;
-                    if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("CurrentPosition"));
-                    if (CurrentPositionChanged != null) CurrentPositionChanged(this, EventArgs.Empty);
-                }
+				SetAndNotify(ref currentPosition, value);
+				UpdatePositions();
             }
         }
-        public event EventHandler CurrentPositionChanged;
 
+		public string CurrentPositionAbsolute { get; private set; }
+		public string CurrentPositionRelative { get; private set; }
+
+		void UpdatePositions()
+		{
+			var span = TimeSpan.FromMilliseconds(CurrentPosition);
+			CurrentPositionAbsolute = string.Format("{0:D2}:{1:D2}:{2:D2}'{3:D3}", span.Hours, span.Minutes, span.Seconds, span.Milliseconds);
+			var msFromStart=0;
+			var episode = 0;
+			foreach(var e in EditorModel.Montage.Chunks)
+			{
+				if (e.StartsNewEpisode) 
+				{
+					msFromStart = 0;
+					episode++;
+				}
+				bool ends = e.EndTime>CurrentPosition;
+				if (e.Mode != Editor.Mode.Drop)
+				{
+					if (ends) 
+						msFromStart+=CurrentPosition-e.StartTime;
+					else 
+						msFromStart+=e.Length;
+				}
+				if (ends) break;
+			}
+			span = TimeSpan.FromMilliseconds(msFromStart);
+			CurrentPositionRelative=string.Format("Episode-{0}:{1:D2}:{2:D2}'{3:D3}",
+				episode,
+				span.Minutes,
+				span.Seconds,
+				span.Milliseconds);
+			this.NotifyByExpression(z => z.CurrentPositionAbsolute);
+			this.NotifyByExpression(z=>z.CurrentPositionRelative);
+		}
+       
         [DataMember]
         bool paused;
         public bool Paused
@@ -52,15 +89,10 @@ namespace Tuto.Model
             get { return paused; }
             set
             {
-                if (paused != value)
-                {
-                    paused = value;
-                    if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("Paused"));
-                    if (PausedChanged != null) PausedChanged(this, EventArgs.Empty);
-                }
+				SetAndNotify(ref paused, value);
             }
         }
-        public event EventHandler PausedChanged;
+       
 
         [DataMember]
         double speedRatio;
@@ -69,12 +101,7 @@ namespace Tuto.Model
             get { return speedRatio; }
             set
             {
-                if (speedRatio != value)
-                {
-                    speedRatio = value;
-                    if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("SpeedRatio"));
-                    if (SpeedRatioChanged != null) SpeedRatioChanged(this, EventArgs.Empty);
-                }
+				SetAndNotify(ref speedRatio, value);
             }
         }
         public event EventHandler SpeedRatioChanged;
@@ -86,16 +113,10 @@ namespace Tuto.Model
             get { return faceVideoIsVisible; }
             set
             {
-                if (faceVideoIsVisible != value)
-                {
-                    faceVideoIsVisible = value;
-                    if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("FaceVideoIsVisible"));
-                    if (FaceVideoIsVisibleChanged != null) FaceVideoIsVisibleChanged(this, EventArgs.Empty);
-                }
+				SetAndNotify(ref faceVideoIsVisible, value);
             }
         }
-        public event EventHandler FaceVideoIsVisibleChanged;
-
+    
         [DataMember]
         bool desktopVideoIsVisible;
         public bool DesktopVideoIsVisible
@@ -103,33 +124,22 @@ namespace Tuto.Model
             get { return desktopVideoIsVisible; }
             set
             {
-                if (desktopVideoIsVisible != value)
-                {
-                    desktopVideoIsVisible = value;
-                    if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("DesktopVideoIsVisible"));
-                    if (DesktopVideoIsVisibleChanged != null) DesktopVideoIsVisibleChanged(this, EventArgs.Empty);
-                }
+				SetAndNotify(ref desktopVideoIsVisible, value);
             }
         }
         [DataMember]
         string currentSubtitle;
+
+		[Obsolete]
         public string CurrentSubtitle
         {
             get { return currentSubtitle; }
             set
             {
-                if (currentSubtitle != value)
-                {
-                    currentSubtitle = value;
-                    PropertyChanged(this, new PropertyChangedEventArgs("CurrentSubtitle"));
-                }
+				SetAndNotify(ref currentSubtitle, value);
             }
         }
 
-
-        public event EventHandler DesktopVideoIsVisibleChanged;
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         public WindowState()
         {
