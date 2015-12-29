@@ -33,7 +33,6 @@ namespace Tuto.BatchWorks
                 var episodeInfo = model.Montage.Information.Episodes[episodeNumber];
                 BeforeWorks.Add(new AssemblyEpisodeWork(model,episodeInfo));
             }
-            var test = 5;
         }
     }
 }

@@ -46,7 +46,7 @@ namespace Tuto.Navigator
 				return;
 			}
 
-            YoutubeApisProcessor.Initialize(videotheque.TempFolder);
+            //YoutubeApisProcessor.Initialize(videotheque.TempFolder);
 
             var mainWindow = new MainNavigatorWindow();
             var globalModel = new VideothequeModel(videotheque);
