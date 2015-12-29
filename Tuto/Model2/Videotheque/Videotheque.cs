@@ -96,9 +96,10 @@ namespace Tuto.Model
 
         public void Reload()
         {
-            LoadBinaryHashes(null);
-            LoadContainers(null);
-            CreateModels(null);
+			var ui = new LoadingUIDecorator(null);
+            LoadBinaryHashes(ui);
+            LoadContainers(ui);
+            CreateModels(ui);
         }
 
 		public static Videotheque Load(string videothequeFileName, IVideothequeLoadingUI ui, bool ignoreExternalSoftware)
