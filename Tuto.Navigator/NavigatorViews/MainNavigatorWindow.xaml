@@ -17,9 +17,9 @@
             <Button Command="{Binding SaveCommand}" Height="40" Width="40">Save</Button>
        </StackPanel>
 
+        <navigator:BatchWorkPanel DataContext="{Binding Queue}" DockPanel.Dock="Bottom"/>
+        
         <TabControl Grid.Row="1" HorizontalAlignment="Stretch" Height="auto" VerticalAlignment="Stretch" Width="auto">
-
-
             <TabItem Header="Overview">
                 <DockPanel>
                     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
@@ -104,6 +104,7 @@
             </TabItem>-->
         </TabControl>
 
+        
 
     </DockPanel>
 

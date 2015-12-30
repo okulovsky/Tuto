@@ -22,11 +22,16 @@ namespace Tuto.Navigator
     {
         public SearchViewModel Search { get; private set; }
         List<SubfolderViewModel> allModels;
+        List<EditorModel> models { get; set; }
+        public BatchWorkQueueViewModel Queue { get; private set; }
        
         public VideothequeModel(Videotheque videotheque)
         {
 
             this.videotheque = videotheque;
+
+            Queue = new BatchWorkQueueViewModel(Program.WorkQueue);
+
             Search = new SearchViewModel();
             Search.PropertyChanged += (s, a) => Filter();
             UpdateSubdirectories();
@@ -103,8 +108,6 @@ namespace Tuto.Navigator
         }
 
 
-        List<EditorModel> models { get; set; }
-        public BatchWorkWindow queueWindow = new BatchWorkWindow();
 
 
         

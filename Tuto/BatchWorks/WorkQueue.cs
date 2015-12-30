@@ -14,10 +14,8 @@ using Tuto.Model;
 
 namespace Tuto.BatchWorks
 {
-    /// <summary>
-    /// Interaction logic for BatchWorkWindow.xaml
-    /// </summary>
-    public partial class WorkQueue
+
+    public class WorkQueue
     {
         public WorkQueue(WorkSettings settings)
         {
@@ -152,6 +150,16 @@ namespace Tuto.BatchWorks
                 }
             }
             
+        }
+
+        public void RemoveOldTasks()
+        {
+            for (int i = 0; i < Work.Count; i++)
+                if (Work[i].Status != BatchWorkStatus.Pending && Work[i].Status != BatchWorkStatus.Running)
+                {
+                    Work.RemoveAt(i);
+                    i--;
+                }
         }
 
         public void CancelTask(int index)

@@ -1,0 +1,43 @@
+﻿<UserControl x:Class="Tuto.Navigator.BatchWorkPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="400">
+    <Expander>
+        <Expander.Header>
+            <DockPanel>
+                <Grid Visibility="{Binding ErrorVisible}" DockPanel.Dock="Left">
+                    <Ellipse Width="20" Height="20" Fill="DarkRed" Stroke="Transparent"/>
+                    <TextBlock FontSize="20" Foreground="White" HorizontalAlignment="Center">!</TextBlock>
+                </Grid>
+                <TextBlock Text="{Binding TotalWorks}" DockPanel.Dock="Left"/>
+                <TextBlock  xml:space="preserve" DockPanel.Dock="Left"> in queue, </TextBlock>
+                <TextBlock Text="{Binding CompletedWorks}" DockPanel.Dock="Left"/>
+                <TextBlock  xml:space="preserve" DockPanel.Dock="Left"> completed</TextBlock>
+                <Rectangle/>
+            </DockPanel>
+        </Expander.Header>
+        <DockPanel>
+            <DockPanel DockPanel.Dock="Bottom">
+                <Button DockPanel.Dock="Right" Width="100" Content="Cancel" Command="{Binding Cancel}"/>
+                <Button DockPanel.Dock="Right" Width="100" Content="Clear" Command="{Binding Clear}"/>
+                <Rectangle/>
+            </DockPanel>
+            <DataGrid IsReadOnly="true" x:Name="Tasks" ItemsSource="{Binding Works}" AutoGenerateColumns="False" VerticalScrollBarVisibility="Auto" MaxHeight="300">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+                    <DataGridTextColumn Header="Status" Binding="{Binding Status}"/>
+                    <DataGridTemplateColumn Header="Exception">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox TextWrapping="Wrap" Text="{Binding ExceptionMessage}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </DockPanel>
+    </Expander>
+</UserControl>

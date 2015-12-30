@@ -49,15 +49,10 @@ namespace Tuto.Navigator
             //YoutubeApisProcessor.Initialize(videotheque.TempFolder);
 
             var mainWindow = new MainNavigatorWindow();
+            WorkQueue = new WorkQueue(videotheque.Data.WorkSettings);
+            WorkQueue.Dispatcher = mainWindow.Dispatcher;
             var globalModel = new VideothequeModel(videotheque);
-
-            WorkQueue = new WorkQueue(globalModel.Videotheque.Data.WorkSettings);
-            var queueWindow = new BatchWorkWindow();
-            queueWindow.AssignCancelOperation(WorkQueue.CancelTask);
-            queueWindow.DataContext = WorkQueue.Work;
-            WorkQueue.Dispatcher = queueWindow.Dispatcher;
             globalModel.FillQueue();
-            queueWindow.Show();
 
             mainWindow.DataContext = globalModel;
             mainWindow.WindowState = System.Windows.WindowState.Maximized;
