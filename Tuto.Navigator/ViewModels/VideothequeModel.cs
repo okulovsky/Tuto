@@ -22,6 +22,8 @@ namespace Tuto.Navigator
     {
         public SearchViewModel Search { get; private set; }
         List<SubfolderViewModel> allModels;
+        List<EditorModel> models { get; set; }
+        public WorkQueue WorkQueue { get { return Program.WorkQueue; } }
        
         public VideothequeModel(Videotheque videotheque)
         {
@@ -103,8 +105,6 @@ namespace Tuto.Navigator
         }
 
 
-        List<EditorModel> models { get; set; }
-        public BatchWorkWindow queueWindow = new BatchWorkWindow();
 
 
         
