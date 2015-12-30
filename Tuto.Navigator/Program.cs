@@ -49,10 +49,9 @@ namespace Tuto.Navigator
             //YoutubeApisProcessor.Initialize(videotheque.TempFolder);
 
             var mainWindow = new MainNavigatorWindow();
-            var globalModel = new VideothequeModel(videotheque);
-
-            WorkQueue = new WorkQueue(globalModel.Videotheque.Data.WorkSettings);
+            WorkQueue = new WorkQueue(videotheque.Data.WorkSettings);
             WorkQueue.Dispatcher = mainWindow.Dispatcher;
+            var globalModel = new VideothequeModel(videotheque);
             globalModel.FillQueue();
 
             mainWindow.DataContext = globalModel;

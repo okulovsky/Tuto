@@ -17,9 +17,7 @@
             <Button Command="{Binding SaveCommand}" Height="40" Width="40">Save</Button>
        </StackPanel>
 
-        <Expander DockPanel.Dock="Bottom">
-            <navigator:BatchWorkPanel DataContext="{Binding WorkQueue.Work}"/>
-        </Expander>
+        <navigator:BatchWorkPanel DataContext="{Binding Queue}" DockPanel.Dock="Bottom"/>
         
         <TabControl Grid.Row="1" HorizontalAlignment="Stretch" Height="auto" VerticalAlignment="Stretch" Width="auto">
             <TabItem Header="Overview">
