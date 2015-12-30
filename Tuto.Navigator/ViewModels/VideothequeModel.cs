@@ -20,11 +20,15 @@ namespace Tuto.Navigator
 {
     public class VideothequeModel: NotifierModel
     {
+        public SearchViewModel Search { get; private set; }
+        List<SubfolderViewModel> allModels;
        
         public VideothequeModel(Videotheque videotheque)
         {
 
             this.videotheque = videotheque;
+            Search = new SearchViewModel();
+            Search.PropertyChanged += (s, a) => Filter();
             UpdateSubdirectories();
 
             PreWorks = new AssemblySettings();
@@ -50,18 +54,34 @@ namespace Tuto.Navigator
             UploadSelectedClipsCommand = new RelayCommand(UploadClips);
         }
 
+
+
+        void Filter()
+        {
+
+            IEnumerable<SubfolderViewModel> en = allModels;
+            if (!string.IsNullOrWhiteSpace(Search.TextSearch))
+            {
+                var keyword = Search.TextSearch.ToLower();
+                en = en
+                .Select(z => new { VM = z, Rate = z.GetTextInfo().Select(x => (double)NameMatchAlgorithm.MatchNames(x.ToLower(), keyword) / keyword.Length).Max() })
+                .Where(z => z.Rate > 0.8)
+                .OrderByDescending(z => z.Rate)
+                .Select(z => z.VM);           
+            }
+
+            Subdirectories = new ObservableCollection<SubfolderViewModel>(en);
+        }
+
         void UpdateSubdirectories()
         {
-			var list = new List<SubfolderViewModel>();
-            Subdirectories = new ObservableCollection<SubfolderViewModel>();
+            allModels = new List<SubfolderViewModel>();
             foreach (var e in videotheque.EditorModels)
             {
                 var m = new SubfolderViewModel(e);
-				list.Add(m);
+				allModels.Add(m);
             }
-			list = list.OrderByDescending(z => z.Model.Montage.ModificationTime).ToList();
-			foreach (var e in list)
-				Subdirectories.Add(e);
+            Filter();
         }
 
         public void AssembleWithOptions()

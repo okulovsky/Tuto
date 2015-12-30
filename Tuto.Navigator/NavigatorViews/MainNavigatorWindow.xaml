@@ -82,6 +82,7 @@
 
                         <!--<Button Content="Batch remontage" Command="{Binding RemontageSelectedCommand}"/>-->
                     </StackPanel>
+                    <navigator:SearchPanel DockPanel.Dock="Top"  DataContext="{Binding Search}"/>
                     <navigator:SubfoldersDataGrid DataContext="{Binding Subdirectories}"/>
                 </DockPanel>
             </TabItem>

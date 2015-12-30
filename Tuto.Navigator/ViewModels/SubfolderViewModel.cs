@@ -94,5 +94,13 @@ namespace Tuto.Navigator
         }
 
         public RelayCommand OpenFolderCommand { get; private set; }
+
+      public  IEnumerable<string> GetTextInfo()
+        {
+            yield return Model.Montage.DisplayedRawLocation;
+            if (Model.Montage.Information != null)
+                foreach (var e in Model.Montage.Information.Episodes)
+                    yield return e.Name;
+        }
     }
 } 
