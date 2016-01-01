@@ -180,6 +180,9 @@
     <Compile Include="NavigatorViews\SearchPanel.xaml.cs">
       <DependentUpon>SearchPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="NavigatorViews\VideoPanel.xaml.cs">
+      <DependentUpon>VideoPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="NewLook\EditorViewModel.cs" />
     <Compile Include="NewLook\EpisodeViewModel.cs" />
     <Compile Include="NewLook\MainViewModel.cs" />
@@ -277,6 +280,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="NavigatorViews\VideoPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="NewLook\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -351,6 +358,10 @@
     <Resource Include="Icons\silence.png" />
     <Resource Include="Icons\montage.png" />
     <Resource Include="Icons\youtube.gif" />
+    <Resource Include="Icons\open.png" />
+    <Resource Include="Icons\openTemp.png" />
+    <Resource Include="Icons\openSource.png" />
+    <Resource Include="Icons\edit.png" />
     <Content Include="NoiseReduction\cleared.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

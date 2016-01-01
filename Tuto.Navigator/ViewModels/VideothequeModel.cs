@@ -126,10 +126,9 @@ namespace Tuto.Navigator
                 if (works.Count() != 0)
                 {
                     var t = works.Last();
-                    t.TaskFinished += (s, a) => { m.ReadyToEdit = true; e.Save(); };
+                    t.TaskFinished += (s, a) => {e.Save(); };
                     tasks.AddRange(works);
                 }
-                else m.ReadyToEdit = true;
             }
             if (tasks.Count != 0)
                 Program.WorkQueue.Run(tasks);

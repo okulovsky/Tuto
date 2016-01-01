@@ -83,7 +83,21 @@
                         <!--<Button Content="Batch remontage" Command="{Binding RemontageSelectedCommand}"/>-->
                     </StackPanel>
                     <navigator:SearchPanel DockPanel.Dock="Top"  DataContext="{Binding Search}"/>
-                    <navigator:SubfoldersDataGrid DataContext="{Binding Subdirectories}"/>
+                    <!--<navigator:SubfoldersDataGrid DataContext="{Binding Subdirectories}"/>-->
+                    <ScrollViewer>
+                    <ItemsControl ItemsSource="{Binding Subdirectories}">
+                            <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <navigator:VideoPanel DataContext="{Binding}"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                            <ItemsControl.Template>
+                            <ControlTemplate>
+                                <WrapPanel IsItemsHost="True"/>
+                            </ControlTemplate>
+                        </ItemsControl.Template>
+                    </ItemsControl>
+                    </ScrollViewer>
                 </DockPanel>
             </TabItem>
 
