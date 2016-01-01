@@ -74,7 +74,7 @@ namespace Tuto.Navigator
 
         #endregion
 
-
+        
 
 
         public event PropertyChangedEventHandler PropertyChanged;

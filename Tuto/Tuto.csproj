@@ -122,6 +122,7 @@
     <Compile Include="BatchWorks\WorkQueue.cs" />
     <Compile Include="Model2\EditorModel\EditorModel.cs" />
     <Compile Include="Model2\EditorModel\Locations.cs" />
+    <Compile Include="Model2\EditorModel\Statuses.cs" />
     <Compile Include="Model2\MyPath.cs" />
     <Compile Include="Model2\Names.cs" />
     <Compile Include="Model2\Publishing\PublishingModel.cs" />

@@ -118,7 +118,7 @@ namespace Tuto.Navigator
             {
                 var works = new List<BatchWork>();
                 var e = m.Model;
-                if (videotheque.Data.WorkSettings.StartPraat && e.InputFilesAreOK && (!e.Locations.PraatVoice.Exists || m.Model.Montage.SoundIntervals.Count==0))
+                if (videotheque.Data.WorkSettings.StartPraat && e.Statuses.SourceIsPresent && (!e.Locations.PraatVoice.Exists || m.Model.Montage.SoundIntervals.Count==0))
                 {
                     works.Add(new PraatWork(e));
                 }

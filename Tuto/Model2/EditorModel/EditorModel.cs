@@ -21,8 +21,7 @@ namespace Tuto.Model
         public WindowState WindowState { get; private set; }
 		public readonly FileInfo ModelFileLocation;
 		public readonly DirectoryInfo RawLocation;
-        public readonly bool InputFilesAreOK;
-
+        public Statuses Statuses { get; private set; }
 
 		public DirectoryInfo TempFolder
 		{
@@ -76,7 +75,7 @@ namespace Tuto.Model
 			RawLocation = raw;
 			ModelFileLocation = model;
 			Locations = new Locations(this);
-            InputFilesAreOK = raw.Exists;
+            Statuses = new Statuses(this);
         }
 
 

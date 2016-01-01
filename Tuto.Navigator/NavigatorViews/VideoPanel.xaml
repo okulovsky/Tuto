@@ -7,8 +7,13 @@
              mc:Ignorable="d" 
              Width="300" Height="150">
     <UserControl.Resources>
+        <navigator:BoolToVisibilityConverter x:Key="BTV"/>
         <navigator:SubfolderViewModel x:Key="DVM"/>
         <Style TargetType="Button" x:Key="CmdButton">
+            <Setter Property="Width" Value="24"/>
+            <Setter Property="Height" Value="24"/>
+        </Style>
+        <Style TargetType="Image" x:Key="Status">
             <Setter Property="Width" Value="24"/>
             <Setter Property="Height" Value="24"/>
         </Style>
@@ -16,6 +21,21 @@
     <Border BorderThickness="1" BorderBrush="Gray" Margin="5">
         <DockPanel d:DataContext="{Binding Source={StaticResource DVM}}">
            
+            <WrapPanel DockPanel.Dock="Top">
+                <Image 
+                       Source="/Icons/fileBroken.png" 
+                       Style="{StaticResource Status}" 
+                       Visibility="{Binding Model.Statuses.SourceIsNotPresent,Converter={StaticResource BTV}}"
+                       ToolTip="No source files for this video is found"
+                       />
+                <Image 
+                       Source="/Icons/silence.png" 
+                       Style="{StaticResource Status}" 
+                       Visibility="{Binding Model.Statuses.VoiceIsNotAnalyzed, Converter={StaticResource BTV}}"
+                       ToolTip="Sound for this video has not been yet analyzed"
+                       />
+            </WrapPanel>
+            
             <Label DockPanel.Dock="Top" FontFamily="Arial" FontSize="18" Foreground="Black" Content="{Binding Name}"/>
             
             <DockPanel DockPanel.Dock="Bottom">
