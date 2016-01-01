@@ -4,9 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="100" d:DesignWidth="500">
-    <DockPanel>
-        <Label DockPanel.Dock="Left" Content="Search"/>    
-        <TextBox Text="{Binding TextSearch,UpdateSourceTrigger=PropertyChanged}"/>
-    </DockPanel>
+             d:DesignHeight="30" d:DesignWidth="500">
+    <StackPanel Orientation="Horizontal">
+        <Label Content="Search"/>    
+        <TextBox Text="{Binding TextSearch,UpdateSourceTrigger=PropertyChanged}" Width="100"/>
+        <Rectangle Width="20"/>
+        <CheckBox Content="Only with source" IsChecked="{Binding OnlyWithSource}"/>
+    </StackPanel>
 </UserControl>

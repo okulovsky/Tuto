@@ -203,6 +203,7 @@
     </Compile>
     <Compile Include="RelayCommand.cs" />
     <Compile Include="ViewModels\BatchWorkQueueViewModel.cs" />
+    <Compile Include="ViewModels\OptionViewModel.cs" />
     <Compile Include="ViewModels\SearchViewModel.cs" />
     <Compile Include="ViewModels\SubfolderViewModel.cs" />
     <Compile Include="NavigatorViews\FinishedVideoPanel.xaml.cs">

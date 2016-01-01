@@ -74,6 +74,10 @@ namespace Tuto.Navigator
                 .OrderByDescending(z => z.Rate)
                 .Select(z => z.VM);           
             }
+            if (Search.OnlyWithSource)
+            {
+                en = en.Where(z => z.Model.Statuses.SourceIsPresent);
+            }
 
             Subdirectories = new ObservableCollection<SubfolderViewModel>(en);
         }

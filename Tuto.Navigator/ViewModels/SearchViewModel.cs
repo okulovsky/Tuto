@@ -12,9 +12,22 @@ namespace Tuto.Navigator.ViewModels
         public string TextSearch
         {
             get { return textSearch; }
-            set { 
-                textSearch = value; 
-                NotifyPropertyChanged(); }
+            set
+            {
+                textSearch = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        bool onlyWithSource;
+        public bool OnlyWithSource
+        {
+            get { return onlyWithSource; }
+            set
+            {
+                onlyWithSource = value;
+                NotifyPropertyChanged();
+            }
         }
     }
 }
