@@ -184,6 +184,9 @@
     <Compile Include="NavigatorViews\VideoPanel.xaml.cs">
       <DependentUpon>VideoPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="NavigatorViews\VideothequePanel.xaml.cs">
+      <DependentUpon>VideothequePanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Patch\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -275,6 +278,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="NavigatorViews\VideoPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NavigatorViews\VideothequePanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

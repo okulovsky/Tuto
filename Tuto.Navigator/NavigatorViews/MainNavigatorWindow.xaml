@@ -14,49 +14,6 @@
     </Window.Resources>
     <DockPanel>
         <navigator:BatchWorkPanel DataContext="{Binding Queue}" DockPanel.Dock="Bottom"/>
-        
-        <StackPanel DockPanel.Dock="Right" Width="400">
-            <Expander Header="Settings">
-                <StackPanel>
-                    <navigator:GlobalSettingsPanel DataContext="{Binding Videotheque.Data}"/>
-                    <Button Command="{Binding SaveCommand}" Width="40">Save</Button>
-                </StackPanel>
-            </Expander>
-            
-            <Expander Header="Custom works" IsExpanded="True">
-                <StackPanel Orientation="Vertical" Name="BatchWithOptions">
-                    <CheckBox Content="Create face thumb" IsChecked="{Binding PreWorks.FaceThumb}"></CheckBox>
-                    <CheckBox Content="Create desktop thumb" IsChecked="{Binding PreWorks.DesktopThumb}" ></CheckBox>
-                    <CheckBox Content="Clear sound" IsChecked="{Binding PreWorks.CleanSound}"></CheckBox>
-                    <CheckBox Content="Convert" IsChecked="{Binding PreWorks.ConvertNeeded}"></CheckBox>
-                    <CheckBox Content="Repair face video" IsChecked="{Binding PreWorks.RepairFace}"></CheckBox>
-                    <CheckBox Content="Repair desktop video" IsChecked="{Binding PreWorks.RepairDesktop}"></CheckBox>
-                    <CheckBox Content="Assemble result" IsChecked="{Binding PreWorks.AssemblyNeeded}"></CheckBox>
-                    <CheckBox Content="Upload to youtube" IsChecked="{Binding PreWorks.UploadSelected}"></CheckBox>
-                    <CheckBox Content="Make all works" IsChecked="{Binding PreWorks.All}"></CheckBox>
-                    <Button Content="Do works" Width="40" Command="{Binding AssembleSelectedWithOptionsCommand}"/>
-                </StackPanel>
-            </Expander>
-        </StackPanel>
-        
-        <DockPanel>
-            <navigator:SearchPanel DockPanel.Dock="Top"  DataContext="{Binding Search}"/>
-
-            <ScrollViewer>
-                <ItemsControl ItemsSource="{Binding Subdirectories}">
-                        <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <navigator:VideoPanel DataContext="{Binding}"/>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                        <ItemsControl.Template>
-                        <ControlTemplate>
-                            <WrapPanel IsItemsHost="True"/>
-                        </ControlTemplate>
-                    </ItemsControl.Template>
-                </ItemsControl>
-            </ScrollViewer>
-            
-        </DockPanel>
+        <navigator:VideothequePanel/>
     </DockPanel>
 </Window>
