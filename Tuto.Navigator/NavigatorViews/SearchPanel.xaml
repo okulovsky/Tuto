@@ -14,5 +14,7 @@
         <TextBox Text="{Binding TextSearch,UpdateSourceTrigger=PropertyChanged}" Width="100" VerticalAlignment="Center"/>
         <Rectangle Width="50"/>
         <CheckBox Content="Only with source" IsChecked="{Binding OnlyWithSource}" VerticalAlignment="Center"/>
+        <Rectangle Width="50"/>
+        <Button Command="{Binding SelectAll}" Content="De/select all"/>
     </StackPanel>
 </UserControl>

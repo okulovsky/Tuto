@@ -27,6 +27,15 @@ namespace Tuto.Navigator
 
         public StatisticsViewModel Statistics { get; private set; }
 
+        public ObservableCollection<SubfolderViewModel> Subdirectories
+        {
+            get { return subdirectories; }
+            private set
+            {
+                subdirectories = value;
+                NotifyPropertyChanged();
+            }
+        }
        
         public VideothequeModel(Videotheque videotheque)
         {
@@ -38,6 +47,7 @@ namespace Tuto.Navigator
             Search = new SearchViewModel();
             Search.PropertyChanged += (s, a) => Filter();
             Search.RefreshRequested+=() => { videotheque.Reload(); UpdateSubdirectories(); };
+            Search.SelectAllRequested += SelectAll;
             UpdateSubdirectories();
 
             PreWorks = new AssemblySettings();
@@ -121,6 +131,17 @@ namespace Tuto.Navigator
             }
             if (tasks.Count != 0)
                 Program.WorkQueue.Run(tasks);
+        }
+
+        void SelectAll()
+        {
+            bool select = Subdirectories.Any(z => !z.Selected);
+            if (select)
+                foreach (var e in Subdirectories)
+                    e.Selected = true;
+            else
+                foreach (var e in allModels)
+                    e.Selected = false;
         }
 
         public void UploadClips()
@@ -224,14 +245,7 @@ namespace Tuto.Navigator
         }
 
 
-        public ObservableCollection<SubfolderViewModel> Subdirectories {
-            get { return subdirectories; }
-            private set
-            {
-                subdirectories = value;
-                NotifyPropertyChanged();
-            }
-        }
+       
 
         public AssemblySettings PreWorks{get; set;}
 
@@ -251,72 +265,6 @@ namespace Tuto.Navigator
         public Videotheque Videotheque { get { return videotheque; } }
         //private FileSystemWatcher watcher;
 
-
-        #region Unused file commands
-        //public void New()
-        //{
-        //    var dialog = new SaveFileDialog
-        //    {
-        //        Filter = "Tuto project|project.tuto",
-        //        FilterIndex = 0,
-        //        OverwritePrompt = true,
-        //        AddExtension = false,
-        //        FileName = "Filename will be ignored",
-        //        CheckFileExists = false
-        //    };
-        //    var result = dialog.ShowDialog();
-        //    if (!(result.HasValue && result.Value))
-        //        return;
-        //    var path = Path.GetDirectoryName(dialog.FileName);
-        //    var file = new FileInfo(Path.Combine(path, "project.tuto"));
-        //    if (file.Exists)
-        //    {
-        //        var overwriteResult = MessageBox.Show("Project file exists, overwrite?", "Warning", MessageBoxButton.OKCancel);
-        //        if (overwriteResult != MessageBoxResult.OK)
-        //            return;
-        //    }
-        //    file.Delete();
-        //    file.Create().Close();
-
-        //    GlobalFileIO.Save(new GlobalData(), file);
-
-        //    Load(file);
-        //}
-
-        //public void Open()
-        //{
-        //    var dialog = new OpenFileDialog
-        //    {
-        //        Filter = "Tuto project|project.tuto",
-        //        FilterIndex = 0,
-        //    };
-        //    var result = dialog.ShowDialog();
-        //    if (!(result.HasValue && result.Value))
-        //        return;
-        //    var file = new FileInfo(dialog.FileName);
-        //    Load(file);
-        //}
-
-
-
-
-
-        //public void Close()
-        //{
-        //    LoadedFile = null;
-        //    GlobalData = null;
-        //    Subdirectories.Clear();
-        //    //watcher.EnableRaisingEvents = false;
-        //}
-
-
-
-        //public RelayCommand NewCommand { get; private set; }
-        //public RelayCommand OpenCommand { get; private set; }
-        //public RelayCommand CloseCommand { get; private set; }
-     
-
-        #endregion
 
     }
 }
