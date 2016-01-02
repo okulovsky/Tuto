@@ -71,6 +71,8 @@ namespace Tuto.Navigator
         public RelayCommand OpenSource { get; private set; }
         public RelayCommand OpenTemp { get; private set; }
 
+        public RelayCommand MakeAll { get; private set; }
+
 
         #endregion
 
@@ -106,7 +108,11 @@ namespace Tuto.Navigator
                 ()=>Process.Start(Model.Locations.TemporalDirectory.FullName),
                 () => Model != null && Model.Locations.TemporalDirectory.Exists
                 );
-            
+
+            MakeAll = new RelayCommand(
+                ()=>Program.WorkQueue.Run(new MakeAll(Model)),
+                ()=>Model.Statuses.SourceIsPresent
+                );
         }
         public bool Selected { get; set; }
 

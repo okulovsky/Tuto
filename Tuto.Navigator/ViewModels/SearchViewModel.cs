@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tuto.Navigator.ViewModels
 {
+
     public class SearchViewModel : NotifierModel
     {
         string textSearch;
@@ -28,6 +29,15 @@ namespace Tuto.Navigator.ViewModels
                 onlyWithSource = value;
                 NotifyPropertyChanged();
             }
+        }
+
+        public event Action RefreshRequested;
+
+        public RelayCommand Refresh;
+
+        public SearchViewModel()
+        {
+            Refresh = new RelayCommand(() => { if (RefreshRequested != null) RefreshRequested(); });
         }
     }
 }

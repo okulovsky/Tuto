@@ -203,7 +203,6 @@
     </Compile>
     <Compile Include="RelayCommand.cs" />
     <Compile Include="ViewModels\BatchWorkQueueViewModel.cs" />
-    <Compile Include="ViewModels\OptionViewModel.cs" />
     <Compile Include="ViewModels\SearchViewModel.cs" />
     <Compile Include="ViewModels\SubfolderViewModel.cs" />
     <Compile Include="NavigatorViews\FinishedVideoPanel.xaml.cs">
@@ -353,6 +352,8 @@
     <Resource Include="Icons\openTemp.png" />
     <Resource Include="Icons\openSource.png" />
     <Resource Include="Icons\edit.png" />
+    <Resource Include="Icons\processing.png" />
+    <Resource Include="Icons\refresh.png" />
     <Content Include="NoiseReduction\cleared.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

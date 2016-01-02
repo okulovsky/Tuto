@@ -34,11 +34,11 @@ namespace Tuto.Navigator
 
             Search = new SearchViewModel();
             Search.PropertyChanged += (s, a) => Filter();
+            Search.RefreshRequested+=() => { videotheque.Reload(); UpdateSubdirectories(); };
             UpdateSubdirectories();
 
             PreWorks = new AssemblySettings();
             SaveCommand = new RelayCommand(Save, () => true);
-            RefreshCommand = new RelayCommand(() => { videotheque.Reload(); UpdateSubdirectories(); }, () => true);
             MakeAllCommand = new RelayCommand(() =>
                 {
                     var work = Subdirectories.Where(z => z.Selected);
@@ -183,8 +183,7 @@ namespace Tuto.Navigator
         #region commands
 
         public RelayCommand SaveCommand { get; private set; }
-        public RelayCommand RefreshCommand { get; private set; }
-        public RelayCommand MakeAllCommand { get; private set; }
+         public RelayCommand MakeAllCommand { get; private set; }
         public RelayCommand AssembleSelectedCommand { get; private set; }
         public RelayCommand AssembleSelectedWithOptionsCommand { get; private set; }
         public RelayCommand RemontageSelectedCommand { get; private set; }

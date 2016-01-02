@@ -6,9 +6,13 @@
              mc:Ignorable="d" 
              d:DesignHeight="30" d:DesignWidth="500">
     <StackPanel Orientation="Horizontal">
-        <Label Content="Search"/>    
-        <TextBox Text="{Binding TextSearch,UpdateSourceTrigger=PropertyChanged}" Width="100"/>
-        <Rectangle Width="20"/>
-        <CheckBox Content="Only with source" IsChecked="{Binding OnlyWithSource}"/>
+        <Button Command="{Binding Refresh}">
+            <Image Width="20" Height="20" Source="/Icons/refresh.png"/>
+        </Button>
+        <Rectangle Width="50"/>
+        <Label Content="Search" VerticalAlignment="Center"/>
+        <TextBox Text="{Binding TextSearch,UpdateSourceTrigger=PropertyChanged}" Width="100" VerticalAlignment="Center"/>
+        <Rectangle Width="50"/>
+        <CheckBox Content="Only with source" IsChecked="{Binding OnlyWithSource}" VerticalAlignment="Center"/>
     </StackPanel>
 </UserControl>

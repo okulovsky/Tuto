@@ -46,6 +46,17 @@ namespace Tuto.Model
             }
         }
 
+        bool inQueue;
+        public bool InQueue
+        {
+            get { return inQueue; }
+            set
+            {
+                inQueue = value;
+                NotifyAll();
+            }
+        }
+
         public void Update()
         {
             base.NotifyAll();

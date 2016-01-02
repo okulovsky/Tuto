@@ -34,6 +34,12 @@
                        Visibility="{Binding Model.Statuses.VoiceIsNotAnalyzed, Converter={StaticResource BTV}}"
                        ToolTip="Sound for this video has not been yet analyzed"
                        />
+                <Image 
+                       Source="/Icons/processing.png" 
+                       Style="{StaticResource Status}" 
+                       Visibility="{Binding Model.Statuses.InQueue, Converter={StaticResource BTV}}"
+                       ToolTip="This video is currently being processed"
+                       />
             </WrapPanel>
             
             <Label DockPanel.Dock="Top" FontFamily="Arial" FontSize="18" Foreground="Black" Content="{Binding Name}"/>
@@ -54,6 +60,9 @@
                 </Button>
                 <Button Style="{StaticResource CmdButton}" Command="{Binding OpenTemp}">
                     <Image Source="/Icons/openSource.png"/>
+                </Button>
+                <Button Style="{StaticResource CmdButton}" Command="{Binding MakeAll}">
+                    <Image Source="/Icons/montage.png"/>
                 </Button>
             </WrapPanel>
 
