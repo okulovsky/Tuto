@@ -28,6 +28,29 @@
                     <Button Content="Do works" Width="40" Command="{Binding AssembleSelectedWithOptionsCommand}"/>
                 </StackPanel>
             </Expander>
+            
+            <Expander Header="Statistics on selected videos">
+                <Grid DataContext="{Binding Statistics}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50*"/>
+                        <ColumnDefinition Width="50*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Column="0" Grid.Row="0" Content="Episodes count"/>
+                    <Label Grid.Column="1" Grid.Row="0" Content="{Binding EpisodesCount}"/>
+                    <Label Grid.Column="0" Grid.Row="1" Content="Source length, m"/>
+                    <Label Grid.Column="1" Grid.Row="1" Content="{Binding TotalDirty}"/>
+                    <Label Grid.Column="0" Grid.Row="2" Content="Product length, m"/>
+                    <Label Grid.Column="1" Grid.Row="2" Content="{Binding TotalClean}"/>
+                    <Label Grid.Column="0" Grid.Row="3" Content="Outtakes percentage"/>
+                    <Label Grid.Column="1" Grid.Row="3" Content="{Binding Percentage}"/>
+                </Grid>
+            </Expander>
         </StackPanel>
 
         <navigator:SearchPanel DockPanel.Dock="Top"  DataContext="{Binding Search}"/>

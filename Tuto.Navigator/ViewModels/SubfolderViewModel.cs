@@ -15,7 +15,7 @@ namespace Tuto.Navigator
 {
 
 
-    public class SubfolderViewModel : INotifyPropertyChanged
+    public class SubfolderViewModel : NotifierModel
     {
         public EditorModel Model { get; private set; }
 
@@ -76,15 +76,18 @@ namespace Tuto.Navigator
 
         #endregion
 
-        
+        #region Controlled properties
 
+        bool selected;
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged(string propertyName)
+        public bool Selected
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            get { return selected; }
+            set { selected = value; NotifyPropertyChanged(); }
         }
+
+        #endregion
+
 
         internal SubfolderViewModel() { }
 
@@ -114,8 +117,7 @@ namespace Tuto.Navigator
                 ()=>Model.Statuses.SourceIsPresent
                 );
         }
-        public bool Selected { get; set; }
-
+       
 
 
       public  IEnumerable<string> GetTextInfo()

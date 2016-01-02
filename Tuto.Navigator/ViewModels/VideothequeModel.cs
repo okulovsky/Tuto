@@ -24,6 +24,9 @@ namespace Tuto.Navigator
         List<SubfolderViewModel> allModels;
         List<EditorModel> models { get; set; }
         public BatchWorkQueueViewModel Queue { get; private set; }
+
+        public StatisticsViewModel Statistics { get; private set; }
+
        
         public VideothequeModel(Videotheque videotheque)
         {
@@ -88,9 +91,23 @@ namespace Tuto.Navigator
             foreach (var e in videotheque.EditorModels)
             {
                 var m = new SubfolderViewModel(e);
+                m.SubsrcibeByExpression(z => z.Selected, UpdateStatistics);
 				allModels.Add(m);
             }
             Filter();
+        }
+
+        void UpdateStatistics()
+        {
+            StatisticsViewModel stat = new StatisticsViewModel();
+            foreach(var e in allModels.Where(z=>z.Selected))
+            {
+                stat.EpisodesCount += e.Model.Montage.Information.Episodes.Count;
+                stat.TotalClean += (int)e.Model.Montage.Information.Episodes.Sum(z => z.Duration.TotalMinutes);
+                stat.TotalDirty += e.Model.Montage.Chunks.Where(z => z.Mode != Editor.Mode.Undefined).Sum(z=>z.Length) / 60000;
+            }
+            Statistics = stat;
+            this.NotifyByExpression(z => z.Statistics);
         }
 
         public void AssembleWithOptions()

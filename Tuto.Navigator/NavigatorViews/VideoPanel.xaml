@@ -41,8 +41,11 @@
                        ToolTip="This video is currently being processed"
                        />
             </WrapPanel>
-            
-            <Label DockPanel.Dock="Top" FontFamily="Arial" FontSize="18" Foreground="Black" Content="{Binding Name}"/>
+
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                <CheckBox VerticalAlignment="Center" IsChecked="{Binding Selected}"/>
+                <Label FontFamily="Arial" FontSize="16" Foreground="Black" Content="{Binding Name}"/>
+            </StackPanel>
             
             <DockPanel DockPanel.Dock="Bottom">
                 <Label DockPanel.Dock="Right">m</Label>
