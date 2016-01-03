@@ -36,7 +36,7 @@ namespace Tuto.BatchWorks
 
             var convert = "";
             var ffmpegExecutable = Model.Videotheque.Locations.FFmpegExecutable;
-            var args = string.Format("-i \"{0}\" -vn -q:a 0 \"{1}\"", Model.Locations.FaceVideo, Model.Locations.PraatVoice);
+            var args = string.Format("-i \"{0}\" -vn -q:a 0 \"{1}\" -y", Model.Locations.FaceVideo, Model.Locations.PraatVoice);
             RunProcess(args, ffmpegExecutable.ToString());
             var work =
                 String.Format(
