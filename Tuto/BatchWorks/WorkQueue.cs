@@ -41,7 +41,7 @@ namespace Tuto.BatchWorks
 
         private void Execute()
         {
-            while (currentIndex != this.Work.Count && queueWorking)
+            while (currentIndex < this.Work.Count && queueWorking)
             {
                 BatchWork e = Work[currentIndex];
                 if (e.Status == BatchWorkStatus.Cancelled)
