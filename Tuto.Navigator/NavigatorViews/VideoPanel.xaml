@@ -58,10 +58,10 @@
                 <Button  Style="{StaticResource CmdButton}" Command="{Binding Edit}">
                     <Image Source="/Icons/edit.png"/>
                 </Button>
-                <Button Style="{StaticResource CmdButton}" Command="{Binding OpenSource}">
+                <Button Style="{StaticResource CmdButton}" Command="{Binding OpenTemp}">
                     <Image Source="/Icons/openTemp.png"/>
                 </Button>
-                <Button Style="{StaticResource CmdButton}" Command="{Binding OpenTemp}">
+                <Button Style="{StaticResource CmdButton}" Command="{Binding OpenSource}">
                     <Image Source="/Icons/openSource.png"/>
                 </Button>
                 <Button Style="{StaticResource CmdButton}" Command="{Binding MakeAll}">
