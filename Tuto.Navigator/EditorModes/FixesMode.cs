@@ -47,7 +47,7 @@ namespace Editor
 
                 model.Montage.SubtitleFixes.Insert(position, new SubtitleFix { StartTime = model.WindowState.CurrentPosition, Length = 2000 });
 
-                model.OnNonSignificantChanged();
+                model.OnMarkupChanged();
                 return;
             }
 
@@ -64,26 +64,26 @@ namespace Editor
                 case KeyboardCommands.LeftToLeft:
                     fix.StartTime -= delta;
                     fix.Length += delta;
-                    model.OnNonSignificantChanged();
+                    model.OnMarkupChanged();
                     return;
 
                 case KeyboardCommands.LeftToRight:
                     fix.StartTime += delta;
                     fix.Length -= delta;
-                    model.OnNonSignificantChanged();
+                    model.OnMarkupChanged();
                     return;
 
                 case KeyboardCommands.RightToLeft:
                     fix.Length -= delta;
-                    model.OnNonSignificantChanged();
+                    model.OnMarkupChanged();
                     return;
                 case KeyboardCommands.RightToRight:
                     fix.Length += delta;
-                    model.OnNonSignificantChanged();
+                    model.OnMarkupChanged();
                     return;
                 case KeyboardCommands.Drop:
                     model.Montage.SubtitleFixes.Remove(fix);
-                    model.OnNonSignificantChanged();
+                    model.OnMarkupChanged();
                     return;
                 case KeyboardCommands.Desktop:
                     fix.Text = FixWindow.EnterText(fix.Text);

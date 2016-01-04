@@ -163,7 +163,7 @@ namespace Editor
             model.GenerateBorders();
             model.WindowState.CurrentPosition = montage.Borders[borderIndex].StartTime;
             if (montage.Borders[borderIndex].IsLeftBorder) model.WindowState.SpeedRatio = 1;
-            model.OnMontageModelChanged();
+            model.OnMarkupChanged();
         }
     }
 }

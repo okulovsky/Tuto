@@ -59,7 +59,7 @@ namespace Tuto.Navigator
             get
             {
                 if (Model != null)
-                    return string.Format("{0:dd.MM.yy hh:mm}", Model.Montage.ModificationTime);
+                    return string.Format("{0:dd.MM.yy hh:mm}", Model.Montage.Information.LastModificationTime);
                 return "23.12.15 16:00";
             }
         }
