@@ -1,0 +1,74 @@
+﻿<UserControl x:Class="Tuto.Navigator.VideothequePanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:navigator="clr-namespace:Tuto.Navigator"
+             mc:Ignorable="d">
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Right" Width="400">
+            <Expander Header="Settings">
+                <StackPanel>
+                    <navigator:GlobalSettingsPanel DataContext="{Binding Videotheque.Data}"/>
+                    <Button Command="{Binding SaveCommand}" Width="40">Save</Button>
+                </StackPanel>
+            </Expander>
+
+            <Expander Header="Custom works">
+                <StackPanel Orientation="Vertical" Name="BatchWithOptions">
+                    <CheckBox Content="Create face thumb" IsChecked="{Binding PreWorks.FaceThumb}"></CheckBox>
+                    <CheckBox Content="Create desktop thumb" IsChecked="{Binding PreWorks.DesktopThumb}" ></CheckBox>
+                    <CheckBox Content="Clear sound" IsChecked="{Binding PreWorks.CleanSound}"></CheckBox>
+                    <CheckBox Content="Convert" IsChecked="{Binding PreWorks.ConvertNeeded}"></CheckBox>
+                    <CheckBox Content="Repair face video" IsChecked="{Binding PreWorks.RepairFace}"></CheckBox>
+                    <CheckBox Content="Repair desktop video" IsChecked="{Binding PreWorks.RepairDesktop}"></CheckBox>
+                    <CheckBox Content="Assemble result" IsChecked="{Binding PreWorks.AssemblyNeeded}"></CheckBox>
+                    <CheckBox Content="Upload to youtube" IsChecked="{Binding PreWorks.UploadSelected}"></CheckBox>
+                    <CheckBox Content="Make all works" IsChecked="{Binding PreWorks.All}"></CheckBox>
+                    <Button Content="Do works" Width="40" Command="{Binding AssembleSelectedWithOptionsCommand}"/>
+                </StackPanel>
+            </Expander>
+            
+            <Expander Header="Statistics on selected videos">
+                <Grid DataContext="{Binding Statistics}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50*"/>
+                        <ColumnDefinition Width="50*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Column="0" Grid.Row="0" Content="Episodes count"/>
+                    <Label Grid.Column="1" Grid.Row="0" Content="{Binding EpisodesCount}"/>
+                    <Label Grid.Column="0" Grid.Row="1" Content="Source length, m"/>
+                    <Label Grid.Column="1" Grid.Row="1" Content="{Binding TotalDirty}"/>
+                    <Label Grid.Column="0" Grid.Row="2" Content="Product length, m"/>
+                    <Label Grid.Column="1" Grid.Row="2" Content="{Binding TotalClean}"/>
+                    <Label Grid.Column="0" Grid.Row="3" Content="Outtakes percentage"/>
+                    <Label Grid.Column="1" Grid.Row="3" Content="{Binding Percentage}"/>
+                </Grid>
+            </Expander>
+        </StackPanel>
+
+        <navigator:SearchPanel DockPanel.Dock="Top"  DataContext="{Binding Search}"/>
+
+        <ScrollViewer>
+            <ItemsControl ItemsSource="{Binding Subdirectories}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <navigator:VideoPanel DataContext="{Binding}"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+                <ItemsControl.Template>
+                    <ControlTemplate>
+                        <WrapPanel IsItemsHost="True"/>
+                    </ControlTemplate>
+                </ItemsControl.Template>
+            </ItemsControl>
+        </ScrollViewer>
+
+    </DockPanel>
+</UserControl>

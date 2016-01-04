@@ -12,14 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Tuto.Navigator.NewLook
+namespace Tuto.Navigator
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for VideothequePanel.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class VideothequePanel : UserControl
     {
-        public MainWindow()
+        public VideothequePanel()
         {
             InitializeComponent();
         }

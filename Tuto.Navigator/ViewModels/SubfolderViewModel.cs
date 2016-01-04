@@ -9,91 +9,116 @@ using Editor;
 using Tuto.BatchWorks;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Windows;
 
 namespace Tuto.Navigator
 {
 
 
-    public class SubfolderViewModel : INotifyPropertyChanged
+    public class SubfolderViewModel : NotifierModel
     {
         public EditorModel Model { get; private set; }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged(string propertyName)
+        #region Displayed data
+        public string Name
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            get
+            {
+                if (Model != null) return Model.Montage.DisplayedRawLocation;
+                return "Hackerdom\\Lecture09\\01";
+            }
         }
+
+        public IEnumerable<string> EpisodesNames
+        {
+            get
+            {
+                if (Model != null)
+                    if (Model.Montage.Information != null)
+                        return Model.Montage.Information.Episodes.Select(z => z.Name);
+                return new[] { "јрхитектура биткоинов", "Ёкономика биткоинов" };
+            }
+        }
+
+        public int? TotalDuration
+        {
+            get
+            {
+                if (Model != null)
+                {
+                    if (Model.Montage.Information != null)
+                        return (int)Model.Montage.Information.Episodes.Sum(z => z.Duration.TotalMinutes);
+                    return null;
+                }
+                return 17;
+            }
+        }
+
+        public string ModificationDate
+        {
+            get
+            {
+                if (Model != null)
+                    return string.Format("{0:dd.MM.yy hh:mm}", Model.Montage.Information.LastModificationTime);
+                return "23.12.15 16:00";
+            }
+        }
+
+        #endregion 
+
+        #region Commands
+        public RelayCommand Edit { get; private set; }
+        public RelayCommand OpenSource { get; private set; }
+        public RelayCommand OpenTemp { get; private set; }
+
+        public RelayCommand MakeAll { get; private set; }
+
+
+        #endregion
+
+        #region Controlled properties
+
+        bool selected;
+
+        public bool Selected
+        {
+            get { return selected; }
+            set { selected = value; NotifyPropertyChanged(); }
+        }
+
+        #endregion
+
+
+        internal SubfolderViewModel() { }
 
         public SubfolderViewModel(EditorModel model)
         {
             this.Model = model;
-            StartEditorCommand = new RelayCommand(StartEditor);
-            ResetMontageCommand = new RelayCommand(ResetMontage);
-            OpenFolderCommand = new RelayCommand(OpenFolder);
-            FullPath = model.Locations.LocalFilePath.Directory.FullName;
-            if (model.Montage.Chunks != null && model.Montage.Chunks.Count > 3)
-                Marked = true;
 
-            if (model.Montage.Information != null && model.Montage.Information.Episodes.Count>0)
-            {
-                TotalDuration = model.Montage.Information.Episodes.Sum(z => z.Duration.TotalMinutes);
-                int index = 0;
-                EpisodesNames = model.Montage.Information.Episodes
-                    .Select(z => 
-                    {
-                        var info = new EpisodeBindingInfo();
-                        info.EpisodeInfo = z;
-                        info.FullName = model.Montage.DisplayedRawLocation + "-" + (index++) ;
-                        info.Model = model;
-                        return info;
-                    }).ToList();
-            }
+            Edit = new RelayCommand(
+                () =>
+                {
+                    var window = new MainEditorWindow();
+                    window.DataContext = Model;
+                    window.Show();
+                });
+
+            OpenSource = new RelayCommand(
+                ()=>Process.Start(Model.Locations.FaceVideo.Directory.FullName),
+                ()=>Model != null && Model.Locations.FaceVideo.Exists);
+
+            OpenTemp = new RelayCommand(
+                ()=>Process.Start(Model.Locations.TemporalDirectory.FullName),
+                () => Model != null && Model.Locations.TemporalDirectory.Exists
+                );
+
+            MakeAll = new RelayCommand(
+                ()=>Program.WorkQueue.Run(new MakeAll(Model)),
+                ()=>Model.Statuses.SourceIsPresent
+                );
         }
-        public bool Selected { get; set; }
+       
 
-        public bool Marked { get; private set; }
-
-        private bool _readyToEdit;
-        public bool ReadyToEdit
-        {
-            get { return _readyToEdit; }
-            set { _readyToEdit = value; OnPropertyChanged("ReadyToEdit"); }
-        }
-
-        public string FullPath { get; private set; }
-
-        public string Name {get { return Model.Montage.DisplayedRawLocation; }}
-
-        public List<EpisodeBindingInfo> EpisodesNames { get; private set; }
-
-        public double? TotalDuration { get; private set; }
-
-        public void StartEditor()
-        {
-            var window = new MainEditorWindow();
-            window.DataContext = Model;
-            window.Show();
-        }
-
-        public RelayCommand StartEditorCommand { get; private set; }
-
-        public void ResetMontage()
-        {
-            var ok = MessageBox.Show("This action only makes sense if you corrected an internal error in Tuto. Have you done it?", "Tuto.Navigator", MessageBoxButtons.YesNoCancel);
-            if (ok != DialogResult.Yes) return;
-            Model.Montage.ReadyToEdit = false;
-            Model.Save();
-        }
-
-        public RelayCommand ResetMontageCommand { get; private set; }
-
-        public void OpenFolder()
-        {
-            Process.Start(FullPath);
-        }
-
-        public RelayCommand OpenFolderCommand { get; private set; }
 
       public  IEnumerable<string> GetTextInfo()
         {

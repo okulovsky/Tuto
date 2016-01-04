@@ -11,13 +11,7 @@ using System.Windows;
 
 namespace Tuto.Model
 {
-    public class EpisodeBindingInfo
-    {
-        public bool Checked { get; set; }
-        public EpisodInfo EpisodeInfo { get; set; }
-        public string FullName { get; set; }
-        public EditorModel Model { get; set; }
-    }
+
 
     [DataContract]
     public class PatchWindowState : NotifierModel

@@ -488,6 +488,35 @@ namespace Tuto.Model
             ui.CompletePOSTWork(true);
 		}
 
+
+        EditorModel LoadExistingModel(FileContainer container, FileInfo file, DirectoryInfo rawLocation)
+        {
+            if (rawLocation!=null)
+            {
+                container.MontageModel.DisplayedRawLocation = MyPath.RelativeTo(rawLocation.FullName, RawFolder.FullName);
+            }
+            else
+            {
+               container.MontageModel.DisplayedRawLocation = file.Name;
+               rawLocation = new DirectoryInfo("Z:\\");
+            }
+            var model = new EditorModel(file, rawLocation, this, container.MontageModel, container.WindowState);
+            SaveEditorModel(model);
+            return model;
+        }
+
+        EditorModel CreateNewModel(DirectoryInfo location, string hash)
+        {
+            var path = MyPath.RelativeTo(location.FullName, RawFolder.FullName);
+            path = MyPath.CreateHierarchicalName(path);
+            var finfo = new FileInfo(Path.Combine(ModelsFolder.FullName, path + "." + Names.ModelExtension));
+            var model = new EditorModel(finfo, location, this, new MontageModel(3600000, hash), new WindowState());
+            model.Montage.DisplayedRawLocation = path;
+            model.Montage.Information.CreationTime = DateTime.Now;
+            model.Montage.Information.LastModificationTime = DateTime.Now;
+            return model;
+        }
+
         void CreateModels(IVideothequeLoadingUI ui)
         {
             ui.StartPOSTWork("Creating models");
@@ -496,29 +525,16 @@ namespace Tuto.Model
             {
                 var hash = e.Item1.MontageModel.RawVideoHash; 
                 if (hash == null) throw new Exception("No reference to video is specified in the model");
-                DirectoryInfo rawDirectory = new DirectoryInfo("Z:\\");
+                DirectoryInfo rawDirectory = null;
                 if (binaryHashes.ContainsKey(hash))
-                {
-                    rawDirectory=binaryHashes[hash];
-                    e.Item1.MontageModel.DisplayedRawLocation = MyPath.RelativeTo(rawDirectory.FullName, RawFolder.FullName);
-                }
-                else if (string.IsNullOrEmpty(e.Item1.MontageModel.DisplayedRawLocation))
-                {
-                    e.Item1.MontageModel.DisplayedRawLocation = e.Item2.Name;
-                }
-                e.Item1.MontageModel.ModificationTime = e.Item2.LastWriteTime;
-                var model = new EditorModel(e.Item2, rawDirectory, this, e.Item1.MontageModel, e.Item1.WindowState);
+                    rawDirectory = binaryHashes[hash];
+                var model = LoadExistingModel(e.Item1, e.Item2, rawDirectory);
                 binaryHashes.Remove(hash);
                 models.Add(model);
             }
             foreach(var e in binaryHashes)
             {
-                var path = MyPath.RelativeTo(e.Value.FullName,RawFolder.FullName);
-                path = MyPath.CreateHierarchicalName(path);
-                var finfo=new FileInfo(Path.Combine(ModelsFolder.FullName,path+"."+Names.ModelExtension));
-                var model = new EditorModel(finfo, e.Value, this, new MontageModel(3600000, e.Key), new WindowState());
-                model.Montage.DisplayedRawLocation = path;
-                model.Montage.ModificationTime = DateTime.Now;
+                var model = CreateNewModel(e.Value,e.Key);
                 models.Add(model);
             }
             ui.CompletePOSTWork(true);

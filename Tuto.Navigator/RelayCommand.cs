@@ -97,6 +97,7 @@ namespace Tuto.Navigator
 
         public void Execute(object parameter)
         {
+            if (_canExecute != null && !_canExecute()) return;
             _execute();
         }
 

@@ -21,8 +21,7 @@ namespace Tuto.Model
         public WindowState WindowState { get; private set; }
 		public readonly FileInfo ModelFileLocation;
 		public readonly DirectoryInfo RawLocation;
-        public readonly bool InputFilesAreOK;
-
+        public Statuses Statuses { get; private set; }
 
 		public DirectoryInfo TempFolder
 		{
@@ -44,21 +43,14 @@ namespace Tuto.Model
         }
 
       
-        public event EventHandler MontageModelChanged;
+        public event EventHandler MarkupChanged;
 
 
-
-        public void OnNonSignificantChanged()
+        public void OnMarkupChanged()
         {
-
-            if (MontageModelChanged != null)
-                MontageModelChanged(this, EventArgs.Empty);
-        }
-
-        public void OnMontageModelChanged()
-        {
-            OnNonSignificantChanged();
-            //Montage.Montaged = false;
+            if (MarkupChanged != null)
+                MarkupChanged(this, EventArgs.Empty);
+            Montage.Information.LastModificationTime = DateTime.Now;
         }
 
 
@@ -76,7 +68,7 @@ namespace Tuto.Model
 			RawLocation = raw;
 			ModelFileLocation = model;
 			Locations = new Locations(this);
-            InputFilesAreOK = raw.Exists;
+            Statuses = new Statuses(this);
         }
 
 
@@ -98,14 +90,14 @@ namespace Tuto.Model
         {
             if (index == 0) return;
             Tokens.MoveToken(index, newTime);
-            OnMontageModelChanged();
+            OnMarkupChanged();
         }
 
         public void MoveRightChunkBorder(int index, int newTime)
         {
             if (index == Tokens.Count - 1) return;
             Tokens.MoveToken(index + 1, newTime);
-            OnMontageModelChanged();
+            OnMarkupChanged();
 
         }
 
@@ -113,7 +105,7 @@ namespace Tuto.Model
         {
             if (index == 0) return;
             Tokens.MoveToken(index, Tokens[index].StartTime + deltaTime);
-            OnMontageModelChanged();
+            OnMarkupChanged();
 
         }
 
@@ -121,7 +113,7 @@ namespace Tuto.Model
         {
             if (index == Tokens.Count - 1) return;
             Tokens.MoveToken(index + 1, Tokens[index].EndTime + deltaTime);
-            OnMontageModelChanged();
+            OnMarkupChanged();
         }
         
         public void InsertDeletion(int time)
@@ -149,11 +141,10 @@ namespace Tuto.Model
                 Tokens.Mark(div + 1, ModeToBools(Mode.Drop), true);
             }
             GenerateBorders();
-            OnMontageModelChanged();
+            OnMarkupChanged();
         }
 
         #endregion
-
         #region Generating borders
 
         const int Margin = 3000;
@@ -198,9 +189,6 @@ namespace Tuto.Model
         }
 
         #endregion
-
-
-
         #region Algorithms using WindowState properies
 
         static public bool[] ModeToBools(Mode mode)
@@ -219,7 +207,7 @@ namespace Tuto.Model
             var index = Tokens.FindIndex(time);
             CorrectBorderBetweenChunksBySound(index - 1);
             CorrectBorderBetweenChunksBySound(index);
-            OnMontageModelChanged();
+            OnMarkupChanged();
         }
 
         public void RemoveChunkHere()
@@ -227,7 +215,7 @@ namespace Tuto.Model
             var position = WindowState.CurrentPosition;
             var index = Tokens.FindIndex(position);
             Tokens.Clear(index);
-            OnMontageModelChanged();
+            OnMarkupChanged();
         }
 
         
@@ -237,7 +225,7 @@ namespace Tuto.Model
             if (index != -1)
             {
                 Tokens.NewEpisode(index);
-                OnMontageModelChanged();
+                OnMarkupChanged();
             }
         }
         #endregion

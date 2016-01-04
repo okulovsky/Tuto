@@ -29,8 +29,6 @@ namespace Tuto.Model
 		[DataMember]
 		public bool CrossfadesEnabled { get; set; }
 
-        public DateTime ModificationTime { get; set; }
-
         /// <summary>
         /// Tokens of the episode
         /// </summary>

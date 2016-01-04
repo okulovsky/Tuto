@@ -22,6 +22,40 @@ namespace Tuto.Model
         /// </summary>
         [DataMember]
         public List<EpisodInfo> Episodes { get;  private set; }
+
+        [DataMember]
+        long CreationTimeTicks { get; set; }
+
+        [DataMember]
+        long LastModificationTimeTicks { get; set; }
+
+        public DateTime CreationTime
+        {
+            get
+            {
+                return new DateTime(CreationTimeTicks);
+            }
+            set
+            {
+                CreationTimeTicks = value.Ticks;
+            }
+        }
+
+        public DateTime LastModificationTime
+        {
+            get
+            {
+                return new DateTime(LastModificationTimeTicks);
+            }
+            set
+            {
+                LastModificationTimeTicks = value.Ticks;
+            }
+        }
+
+
+      
+
         public VideoInformation()
         {
             Episodes = new List<EpisodInfo>();

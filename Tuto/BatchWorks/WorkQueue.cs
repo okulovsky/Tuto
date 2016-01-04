@@ -33,9 +33,15 @@ namespace Tuto.BatchWorks
         private Process currentProcess;
         public Dispatcher Dispatcher { get; set; }
 
+
+        bool ModelInQueue(EditorModel model)
+        {
+            return Work.Any(z => z.Model == model && z.Status == BatchWorkStatus.Pending || z.Status == BatchWorkStatus.Running);
+        }
+
         private void Execute()
         {
-            while (currentIndex != this.Work.Count && queueWorking)
+            while (currentIndex < this.Work.Count && queueWorking)
             {
                 BatchWork e = Work[currentIndex];
                 if (e.Status == BatchWorkStatus.Cancelled)
@@ -66,6 +72,7 @@ namespace Tuto.BatchWorks
                     wasException = true;
                     CancelTasksAfterException();
                 };
+                e.Model.Statuses.InQueue = ModelInQueue(e.Model);
             }
             queueWorking = false;
             if (!wasException)
@@ -140,6 +147,7 @@ namespace Tuto.BatchWorks
                     if (worksIdentifiers.Contains(e.Name))
                         continue;
                     this.Work.Add(e);
+                    e.Model.Statuses.InQueue = true;
                 }
 
                 if (!queueWorking && Work.Count != 0)

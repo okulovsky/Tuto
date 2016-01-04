@@ -24,6 +24,18 @@ namespace Tuto.Navigator
         List<SubfolderViewModel> allModels;
         List<EditorModel> models { get; set; }
         public BatchWorkQueueViewModel Queue { get; private set; }
+
+        public StatisticsViewModel Statistics { get; private set; }
+
+        public ObservableCollection<SubfolderViewModel> Subdirectories
+        {
+            get { return subdirectories; }
+            private set
+            {
+                subdirectories = value;
+                NotifyPropertyChanged();
+            }
+        }
        
         public VideothequeModel(Videotheque videotheque)
         {
@@ -34,11 +46,12 @@ namespace Tuto.Navigator
 
             Search = new SearchViewModel();
             Search.PropertyChanged += (s, a) => Filter();
+            Search.RefreshRequested+=() => { videotheque.Reload(); UpdateSubdirectories(); };
+            Search.SelectAllRequested += SelectAll;
             UpdateSubdirectories();
 
             PreWorks = new AssemblySettings();
             SaveCommand = new RelayCommand(Save, () => true);
-            RefreshCommand = new RelayCommand(() => { videotheque.Reload(); UpdateSubdirectories(); }, () => true);
             MakeAllCommand = new RelayCommand(() =>
                 {
                     var work = Subdirectories.Where(z => z.Selected);
@@ -74,6 +87,17 @@ namespace Tuto.Navigator
                 .OrderByDescending(z => z.Rate)
                 .Select(z => z.VM);           
             }
+            if (Search.OnlyWithSource)
+            {
+                en = en.Where(z => z.Model.Statuses.SourceIsPresent);
+            }
+
+            switch(Search.SortType.Value)
+            {
+                case SortType.CreationTime: en = en.OrderByDescending(z => z.Model.Montage.Information.CreationTime); break;
+                case SortType.ModificationTime: en = en.OrderByDescending(z => z.Model.Montage.Information.LastModificationTime); break;
+                default: en = en.OrderBy(z => z.Model.Montage.DisplayedRawLocation); break;
+            }
 
             Subdirectories = new ObservableCollection<SubfolderViewModel>(en);
         }
@@ -84,9 +108,23 @@ namespace Tuto.Navigator
             foreach (var e in videotheque.EditorModels)
             {
                 var m = new SubfolderViewModel(e);
+                m.SubsrcibeByExpression(z => z.Selected, UpdateStatistics);
 				allModels.Add(m);
             }
             Filter();
+        }
+
+        void UpdateStatistics()
+        {
+            StatisticsViewModel stat = new StatisticsViewModel();
+            foreach(var e in allModels.Where(z=>z.Selected))
+            {
+                stat.EpisodesCount += e.Model.Montage.Information.Episodes.Count;
+                stat.TotalClean += (int)e.Model.Montage.Information.Episodes.Sum(z => z.Duration.TotalMinutes);
+                stat.TotalDirty += e.Model.Montage.Chunks.Where(z => z.Mode != Editor.Mode.Undefined).Sum(z=>z.Length) / 60000;
+            }
+            Statistics = stat;
+            this.NotifyByExpression(z => z.Statistics);
         }
 
         public void AssembleWithOptions()
@@ -100,6 +138,17 @@ namespace Tuto.Navigator
             }
             if (tasks.Count != 0)
                 Program.WorkQueue.Run(tasks);
+        }
+
+        void SelectAll()
+        {
+            bool select = Subdirectories.Any(z => !z.Selected);
+            if (select)
+                foreach (var e in Subdirectories)
+                    e.Selected = true;
+            else
+                foreach (var e in allModels)
+                    e.Selected = false;
         }
 
         public void UploadClips()
@@ -118,7 +167,7 @@ namespace Tuto.Navigator
             {
                 var works = new List<BatchWork>();
                 var e = m.Model;
-                if (videotheque.Data.WorkSettings.StartPraat && e.InputFilesAreOK && (!e.Locations.PraatVoice.Exists || m.Model.Montage.SoundIntervals.Count==0))
+                if (videotheque.Data.WorkSettings.StartPraat && e.Statuses.SourceIsPresent && (!e.Locations.PraatVoice.Exists || m.Model.Montage.SoundIntervals.Count==0))
                 {
                     works.Add(new PraatWork(e));
                 }
@@ -126,10 +175,9 @@ namespace Tuto.Navigator
                 if (works.Count() != 0)
                 {
                     var t = works.Last();
-                    t.TaskFinished += (s, a) => { m.ReadyToEdit = true; e.Save(); };
+                    t.TaskFinished += (s, a) => {e.Save(); };
                     tasks.AddRange(works);
                 }
-                else m.ReadyToEdit = true;
             }
             if (tasks.Count != 0)
                 Program.WorkQueue.Run(tasks);
@@ -180,8 +228,7 @@ namespace Tuto.Navigator
         #region commands
 
         public RelayCommand SaveCommand { get; private set; }
-        public RelayCommand RefreshCommand { get; private set; }
-        public RelayCommand MakeAllCommand { get; private set; }
+         public RelayCommand MakeAllCommand { get; private set; }
         public RelayCommand AssembleSelectedCommand { get; private set; }
         public RelayCommand AssembleSelectedWithOptionsCommand { get; private set; }
         public RelayCommand RemontageSelectedCommand { get; private set; }
@@ -205,14 +252,7 @@ namespace Tuto.Navigator
         }
 
 
-        public ObservableCollection<SubfolderViewModel> Subdirectories {
-            get { return subdirectories; }
-            private set
-            {
-                subdirectories = value;
-                NotifyPropertyChanged();
-            }
-        }
+       
 
         public AssemblySettings PreWorks{get; set;}
 
@@ -232,72 +272,6 @@ namespace Tuto.Navigator
         public Videotheque Videotheque { get { return videotheque; } }
         //private FileSystemWatcher watcher;
 
-
-        #region Unused file commands
-        //public void New()
-        //{
-        //    var dialog = new SaveFileDialog
-        //    {
-        //        Filter = "Tuto project|project.tuto",
-        //        FilterIndex = 0,
-        //        OverwritePrompt = true,
-        //        AddExtension = false,
-        //        FileName = "Filename will be ignored",
-        //        CheckFileExists = false
-        //    };
-        //    var result = dialog.ShowDialog();
-        //    if (!(result.HasValue && result.Value))
-        //        return;
-        //    var path = Path.GetDirectoryName(dialog.FileName);
-        //    var file = new FileInfo(Path.Combine(path, "project.tuto"));
-        //    if (file.Exists)
-        //    {
-        //        var overwriteResult = MessageBox.Show("Project file exists, overwrite?", "Warning", MessageBoxButton.OKCancel);
-        //        if (overwriteResult != MessageBoxResult.OK)
-        //            return;
-        //    }
-        //    file.Delete();
-        //    file.Create().Close();
-
-        //    GlobalFileIO.Save(new GlobalData(), file);
-
-        //    Load(file);
-        //}
-
-        //public void Open()
-        //{
-        //    var dialog = new OpenFileDialog
-        //    {
-        //        Filter = "Tuto project|project.tuto",
-        //        FilterIndex = 0,
-        //    };
-        //    var result = dialog.ShowDialog();
-        //    if (!(result.HasValue && result.Value))
-        //        return;
-        //    var file = new FileInfo(dialog.FileName);
-        //    Load(file);
-        //}
-
-
-
-
-
-        //public void Close()
-        //{
-        //    LoadedFile = null;
-        //    GlobalData = null;
-        //    Subdirectories.Clear();
-        //    //watcher.EnableRaisingEvents = false;
-        //}
-
-
-
-        //public RelayCommand NewCommand { get; private set; }
-        //public RelayCommand OpenCommand { get; private set; }
-        //public RelayCommand CloseCommand { get; private set; }
-     
-
-        #endregion
 
     }
 }

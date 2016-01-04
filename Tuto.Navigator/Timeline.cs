@@ -123,7 +123,7 @@ namespace Editor
         {
             this.DataContextChanged += (s, a) => { 
                 InvalidateVisual();
-                editorModel.MontageModelChanged += (ss, aa) => InvalidateVisual();
+                editorModel.MarkupChanged += (ss, aa) => InvalidateVisual();
             };
         }
 
