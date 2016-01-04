@@ -92,6 +92,13 @@ namespace Tuto.Navigator
                 en = en.Where(z => z.Model.Statuses.SourceIsPresent);
             }
 
+            switch(Search.SortType.Value)
+            {
+                case SortType.CreationTime: en = en.OrderByDescending(z => z.Model.Montage.Information.CreationTime); break;
+                case SortType.ModificationTime: en = en.OrderByDescending(z => z.Model.Montage.Information.LastModificationTime); break;
+                default: en = en.OrderBy(z => z.Model.Montage.DisplayedRawLocation); break;
+            }
+
             Subdirectories = new ObservableCollection<SubfolderViewModel>(en);
         }
 
