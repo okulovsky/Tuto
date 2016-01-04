@@ -500,12 +500,6 @@ namespace Tuto.Model
                container.MontageModel.DisplayedRawLocation = file.Name;
                rawLocation = new DirectoryInfo("Z:\\");
             }
-
-            if (container.MontageModel.Information.CreationTime==default(DateTime))
-            {
-                container.MontageModel.Information.CreationTime = file.CreationTime;
-                container.MontageModel.Information.LastModificationTime = file.LastWriteTime;
-            }
             var model = new EditorModel(file, rawLocation, this, container.MontageModel, container.WindowState);
             SaveEditorModel(model);
             return model;

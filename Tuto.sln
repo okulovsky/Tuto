@@ -29,6 +29,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "V3Updater", "V3Updater\V3Up
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject", "TestProject\TestProject.csproj", "{D63804F0-A392-4CE0-8AC7-7841997E1438}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Updaters", "Updaters", "{CBF12AB2-49C3-4B3B-8071-193516DD4EEB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeByGitUpdater", "TimeByGitUpdater\TimeByGitUpdater.csproj", "{DE45F750-D886-4CE8-9C1F-75D237BC57E9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -89,12 +93,24 @@ Global
 		{D63804F0-A392-4CE0-8AC7-7841997E1438}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{D63804F0-A392-4CE0-8AC7-7841997E1438}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{D63804F0-A392-4CE0-8AC7-7841997E1438}.Release|x86.ActiveCfg = Release|Any CPU
+		{DE45F750-D886-4CE8-9C1F-75D237BC57E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE45F750-D886-4CE8-9C1F-75D237BC57E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE45F750-D886-4CE8-9C1F-75D237BC57E9}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{DE45F750-D886-4CE8-9C1F-75D237BC57E9}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{DE45F750-D886-4CE8-9C1F-75D237BC57E9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DE45F750-D886-4CE8-9C1F-75D237BC57E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE45F750-D886-4CE8-9C1F-75D237BC57E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE45F750-D886-4CE8-9C1F-75D237BC57E9}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{DE45F750-D886-4CE8-9C1F-75D237BC57E9}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{DE45F750-D886-4CE8-9C1F-75D237BC57E9}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{DE3470BC-8CE1-4F5E-BA45-2118846740B2} = {4BF4A651-C8C0-4B86-89F5-B3FC3034EBF7}
+		{91DC5E44-FF03-460A-B09E-73DC1AF8F166} = {CBF12AB2-49C3-4B3B-8071-193516DD4EEB}
+		{DE45F750-D886-4CE8-9C1F-75D237BC57E9} = {CBF12AB2-49C3-4B3B-8071-193516DD4EEB}
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Video.vsmdi
