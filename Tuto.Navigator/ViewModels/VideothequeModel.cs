@@ -82,7 +82,7 @@ namespace Tuto.Navigator
             {
                 var keyword = Search.TextSearch.ToLower();
                 en = en
-                .Select(z => new { VM = z, Rate = z.GetTextInfo().Select(x => (double)NameMatchAlgorithm.MatchNames(x.ToLower(), keyword) / keyword.Length).Max() })
+                .Select(z => new { VM = z, Rate = z.GetTextInfo().Where(x=>x!=null).Select(x => (double)NameMatchAlgorithm.MatchNames(x.ToLower(), keyword) / keyword.Length).Max() })
                 .Where(z => z.Rate > 0.8)
                 .OrderByDescending(z => z.Rate)
                 .Select(z => z.VM);           
