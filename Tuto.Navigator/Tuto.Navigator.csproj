@@ -174,20 +174,20 @@
       <DependentUpon>RequestItemControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Initialization\VideothequeRequestViewModel.cs" />
-    <Compile Include="NavigatorViews\BatchWorkPanel.xaml.cs">
+    <Compile Include="Views\BatchWorkPanel.xaml.cs">
       <DependentUpon>BatchWorkPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="NavigatorViews\BoolToVisibilityConverter.cs" />
-    <Compile Include="NavigatorViews\EditorPanel.xaml.cs">
+    <Compile Include="Views\BoolToVisibilityConverter.cs" />
+    <Compile Include="Views\EditorPanel.xaml.cs">
       <DependentUpon>EditorPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="NavigatorViews\SearchPanel.xaml.cs">
+    <Compile Include="Views\SearchPanel.xaml.cs">
       <DependentUpon>SearchPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="NavigatorViews\VideoPanel.xaml.cs">
+    <Compile Include="Views\VideoPanel.xaml.cs">
       <DependentUpon>VideoPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="NavigatorViews\VideothequePanel.xaml.cs">
+    <Compile Include="Views\VideothequePanel.xaml.cs">
       <DependentUpon>VideothequePanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Patch\MainWindow.xaml.cs">
@@ -203,7 +203,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Timeline.cs" />
     <Compile Include="ViewModels\AssemblySettings.cs" />
-    <Compile Include="NavigatorViews\Old\FilePickerControl.xaml.cs">
+    <Compile Include="Views\Old\FilePickerControl.xaml.cs">
       <DependentUpon>FilePickerControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="RelayCommand.cs" />
@@ -213,10 +213,10 @@
     <Compile Include="ViewModels\SearchViewModel.cs" />
     <Compile Include="ViewModels\StatisticsViewModel.cs" />
     <Compile Include="ViewModels\SubfolderViewModel.cs" />
-    <Compile Include="NavigatorViews\Old\FinishedVideoPanel.xaml.cs">
+    <Compile Include="Views\Old\FinishedVideoPanel.xaml.cs">
       <DependentUpon>FinishedVideoPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="NavigatorViews\Old\SubfoldersDataGrid.xaml.cs">
+    <Compile Include="Views\Old\SubfoldersDataGrid.xaml.cs">
       <DependentUpon>SubfoldersDataGrid.xaml</DependentUpon>
     </Compile>
     <Page Include="EditorWindows\FixWindow.xaml">
@@ -243,54 +243,54 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="NavigatorViews\BatchWorkPanel.xaml">
+    <Page Include="Views\BatchWorkPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="NavigatorViews\EditorPanel.xaml">
+    <Page Include="Views\EditorPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="NavigatorViews\Old\FilePickerControl.xaml">
+    <Page Include="Views\Old\FilePickerControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="NavigatorViews\Old\FinishedVideoPanel.xaml">
+    <Page Include="Views\Old\FinishedVideoPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="NavigatorViews\GlobalSettingsPanel.xaml">
+    <Page Include="Views\GlobalSettingsPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="NavigatorViews\MainNavigatorWindow.xaml">
+    <Page Include="Views\MainNavigatorWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="NavigatorViews\GlobalSettingsPanel.xaml.cs">
+    <Compile Include="Views\GlobalSettingsPanel.xaml.cs">
       <DependentUpon>GlobalSettingsPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="NavigatorViews\MainNavigatorWindow.xaml.cs">
+    <Compile Include="Views\MainNavigatorWindow.xaml.cs">
       <DependentUpon>MainNavigatorWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="NavigatorViews\Old\Resources.xaml">
+    <Page Include="Views\Old\Resources.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="NavigatorViews\SearchPanel.xaml">
+    <Page Include="Views\SearchPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="NavigatorViews\Old\SubfoldersDataGrid.xaml">
+    <Page Include="Views\Old\SubfoldersDataGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="NavigatorViews\VideoPanel.xaml">
+    <Page Include="Views\VideoPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="NavigatorViews\VideothequePanel.xaml">
+    <Page Include="Views\VideothequePanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
