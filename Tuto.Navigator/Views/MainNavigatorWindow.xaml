@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:model="clr-namespace:Tuto.Model;assembly=Tuto"
         xmlns:views="clr-namespace:Tuto.Navigator.Views"
+        xmlns:editor="clr-namespace:Editor"
         Title="{Binding WindowTitle}" Height="350" Width="800"
         >
     <Window.Resources>
@@ -14,7 +15,7 @@
             DockPanel.Dock="Bottom"/>
         <Grid>
             <Grid Visibility="{Binding EditorVisible, Converter={StaticResource BTV}}">
-                <views:EditorPanel DataContext="{Binding CurrentVideo}"
+                <editor:MainEditorWindow DataContext="{Binding CurrentVideo}"
                 />
             </Grid>
             <Grid Visibility="{Binding VideothequeVisible, Converter={StaticResource BTV}}" >

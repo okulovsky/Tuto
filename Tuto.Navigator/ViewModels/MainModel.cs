@@ -21,7 +21,7 @@ namespace Tuto.Navigator.ViewModels
         public BatchWorkQueueViewModel Queue { get; private set; }
         public VideothequeModel VideothequeModel { get; private set; }
 
-        public VideoViewModel CurrentVideo { get; private set; }
+        public EditorModel CurrentVideo { get; private set; }
 
         
         MainMode mode;
@@ -48,8 +48,8 @@ namespace Tuto.Navigator.ViewModels
 
         void OpenEditor(VideoViewModel obj)
         {
-            CurrentVideo = obj;
-            obj.Back+=BackToNavigator;
+            CurrentVideo = obj.Model;
+            obj.Model.WindowState.GetBack+=BackToNavigator;
             Mode = MainMode.Video;
         }
 

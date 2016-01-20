@@ -178,9 +178,6 @@
       <DependentUpon>BatchWorkPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\BoolToVisibilityConverter.cs" />
-    <Compile Include="Views\EditorPanel.xaml.cs">
-      <DependentUpon>EditorPanel.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\SearchPanel.xaml.cs">
       <DependentUpon>SearchPanel.xaml</DependentUpon>
     </Compile>
@@ -244,10 +241,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\BatchWorkPanel.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\EditorPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

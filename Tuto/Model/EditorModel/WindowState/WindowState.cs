@@ -140,6 +140,8 @@ namespace Tuto.Model
             }
         }
 
+        public Action GetBack;
+
 
         public WindowState()
         {

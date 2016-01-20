@@ -30,97 +30,90 @@ namespace Editor
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainEditorWindow : Window
+    public partial class MainEditorWindow : UserControl
     {
         private double currentTime;
         EditorModel model;
 
+        public event Action GetBack;
+
+        DispatcherTimer timer;
+
         public MainEditorWindow()
 
         {
-            Loaded += MainWindow_Initialized;
             InitializeComponent();
             FaceVideo.LoadedBehavior = MediaState.Manual;
             ScreenVideo.LoadedBehavior = MediaState.Manual;
-
-        }
-
-        void MainWindow_Initialized(object sender, EventArgs e)
-        {
-            model = (EditorModel)DataContext;
-            model.WindowState.PropertyChanged += WindowState_PropertyChanged;
-
-            var face = model.Locations.FaceVideoThumb.Exists ? model.Locations.FaceVideoThumb : model.Locations.FaceVideo;
-            var desk = model.Locations.DesktopVideoThumb.Exists ? model.Locations.DesktopVideoThumb : model.Locations.DesktopVideo;
-            FaceVideo.Source = new Uri(face.FullName);
-            ScreenVideo.Source = new Uri(desk.FullName);
-
-            FaceVideo.LoadedBehavior = MediaState.Manual;
-            ScreenVideo.LoadedBehavior = MediaState.Manual;
-			ScreenVideo.Volume = 0;
-
-            
-            ModeChanged();
-            PositionChanged();
-            PausedChanged();
-            RatioChanged();
-            videoAvailable = model.Locations.FaceVideo.Exists;
-			desktopVideoAvailable = model.Locations.DesktopVideo.Exists;
-
-
-            DispatcherTimer timer = new DispatcherTimer();
+            DataContextChanged+=MainEditorWindow_DataContextChanged;
+            timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(timerInterval);
             timer.Tick += (s, a) => { CheckPlayTime(); };
-            timer.Start();
 
             PreviewKeyDown += MainWindow_KeyDown;
             ModelView.MouseDown += Timeline_MouseDown;
             Slider.MouseDown += Timeline_MouseDown;
 
 
+
+            Back.Click += (s, a) =>
+            {
+                if (model == null) return;
+                model.Save();
+                if (model.WindowState.GetBack != null)
+                    model.WindowState.GetBack();
+            };
+
             Save.Click += (s, a) =>
             {
+                if (model == null) return;
                 model.Save();
             };
 
 
             Montage.Click += (s, a) =>
-                {
-                    model.Save();
-                    var task = new ConvertDesktopWork(model, true);
-                    Program.WorkQueue.Run(task);
-                    var task2 = new ConvertFaceWork(model, true);
-                    Program.WorkQueue.Run(task2);
-                };
+            {
+                if (model == null) return;
+                model.Save();
+                var task = new ConvertDesktopWork(model, true);
+                Program.WorkQueue.Run(task);
+                var task2 = new ConvertFaceWork(model, true);
+                Program.WorkQueue.Run(task2);
+            };
 
             Assembly.Click += (s, a) =>
-                {
-                    model.Save();
-                    Program.WorkQueue.Run(new AssemblyVideoWork(model));
-                };
+            {
+                if (model == null) return;
+                model.Save();
+                Program.WorkQueue.Run(new AssemblyVideoWork(model));
+            };
 
             RepairFace.Click += (s, a) =>
-                {
-                    model.Save();
-                    var task = new RepairVideoWork(model, model.Locations.FaceVideo, true);
-                    Program.WorkQueue.Run(task);
-                };
+            {
+                if (model == null) return;
+                model.Save();
+                var task = new RepairVideoWork(model, model.Locations.FaceVideo, true);
+                Program.WorkQueue.Run(task);
+            };
 
             MakeAll.Click += (s, a) =>
-                {
-                    model.Save();
-                    Program.WorkQueue.Run(new MakeAll(model));
-                };
+            {
+                if (model == null) return;
+                model.Save();
+                Program.WorkQueue.Run(new MakeAll(model));
+            };
 
             NoiseReduction.Click += (s, a) =>
             {
-               model.Save();
+                if (model == null) return;
+                model.Save();
                 var task = new CreateCleanSoundWork(model.Locations.FaceVideo, model, true);
                 Program.WorkQueue.Run(task);
             };
 
             RepairDesktop.Click += (s, a) =>
             {
+                if (model == null) return;
                 model.Save();
                 var task = new RepairVideoWork(model, model.Locations.DesktopVideo, true);
                 Program.WorkQueue.Run(task);
@@ -128,54 +121,59 @@ namespace Editor
 
 
             ThumbFace.Click += (s, a) =>
+            {
+                if (model == null) return;
+                model.Save();
+                var task = new CreateThumbWork(model.Locations.FaceVideo, model, true);
+                Program.WorkQueue.Run(task);
+                task.TaskFinished += (z, x) =>
                 {
-                    model.Save();
-                        var task = new CreateThumbWork(model.Locations.FaceVideo, model, true);
-                        Program.WorkQueue.Run(task);
-                        task.TaskFinished += (z, x) =>
-                        {
-                            Action t = () => { FaceVideo.Source = new Uri(((CreateThumbWork)z).ThumbName.FullName); };
-                            this.Dispatcher.BeginInvoke((Delegate)t);
-                        };
+                    Action t = () => { FaceVideo.Source = new Uri(((CreateThumbWork)z).ThumbName.FullName); };
+                    this.Dispatcher.BeginInvoke((Delegate)t);
                 };
+            };
 
             Upload.Click += (s, a) =>
+            {
+                if (model == null) return;
+                model.Save();
+                for (var i = 0; i < model.Montage.Information.Episodes.Count; i++)
                 {
-                    model.Save();
-                    for (var i = 0; i < model.Montage.Information.Episodes.Count; i++)
-                    {
-                        var episode = model.Locations.GetOutputFile(i);
-                        if (!episode.Exists)
-                            episode = new FileInfo(System.IO.Path.Combine(model.Videotheque.OutputFolder.FullName, episode.Name));
-                        Program.WorkQueue.Run(new YoutubeWork(model, i, episode));
-                    }
+                    var episode = model.Locations.GetOutputFile(i);
+                    if (!episode.Exists)
+                        episode = new FileInfo(System.IO.Path.Combine(model.Videotheque.OutputFolder.FullName, episode.Name));
+                    Program.WorkQueue.Run(new YoutubeWork(model, i, episode));
+                }
 
-                };
-            
+            };
+
             ThumbDesktop.Click += (s, a) =>
+            {
+                if (model == null) return;
+                model.Save();
+                var task = new CreateThumbWork(model.Locations.DesktopVideo, model, true);
+                Program.WorkQueue.Run(task);
+                task.TaskFinished += (z, x) =>
                 {
-                    model.Save();
-                        var task = new CreateThumbWork(model.Locations.DesktopVideo, model, true);
-                        Program.WorkQueue.Run(task);
-                        task.TaskFinished += (z, x) =>
-                            {
-                                Action t = () => { ScreenVideo.Source = new Uri(((CreateThumbWork)z).ThumbName.FullName); };
-                                this.Dispatcher.BeginInvoke((Delegate)t);
-                            };
+                    Action t = () => { ScreenVideo.Source = new Uri(((CreateThumbWork)z).ThumbName.FullName); };
+                    this.Dispatcher.BeginInvoke((Delegate)t);
                 };
+            };
 
             Help.Click += (s, a) =>
-                {
-                    var data = HelpCreator.CreateModeHelp();
-                    var wnd = new HelpWindow();
-                    wnd.DataContext = data;
-                    wnd.Show();
-                };
+            {
+                if (model == null) return;
+                var data = HelpCreator.CreateModeHelp();
+                var wnd = new HelpWindow();
+                wnd.DataContext = data;
+                wnd.Show();
+            };
 
             Patch.Click += (s, a) =>
             {
+                if (model == null) return;
                 //FOR DEBUGGING!
-                
+
                 var serv = new AssemblerService(false);
                 var episodeNumber = 0;
                 var eps = model.Montage.Information.Episodes;
@@ -185,7 +183,7 @@ namespace Editor
                         break;
                     if (c.StartsNewEpisode)
                         episodeNumber++;
-                    
+
                 }
                 var episodeInfo = model.Montage.Information.Episodes[episodeNumber];
                 var videoFile = model.Locations.GetOutputFile(episodeNumber);
@@ -196,39 +194,78 @@ namespace Editor
                     var patchWindow = new Tuto.Navigator.PatcherWindow(m, model);
                     patchWindow.Show();
                 }
-                else Program.WorkQueue.Run(new AssemblyEpisodeWork(model,episodeInfo));
+                else Program.WorkQueue.Run(new AssemblyEpisodeWork(model, episodeInfo));
             };
             GoTo.Click += (s, a) =>
+            {
+                if (model == null) return;
+                var wnd = new FixWindow();
+                wnd.Title = "Enter time";
+                var result = wnd.ShowDialog();
+                if (!result.HasValue || !result.Value) return;
+                var parts = wnd.Text.Text.Split(',', '.', '-', ' ');
+                int time = 0;
+                try
                 {
-                    var wnd = new FixWindow();
-                    wnd.Title = "Enter time";
-                    var result = wnd.ShowDialog();
-                    if (!result.HasValue || !result.Value) return;
-                    var parts = wnd.Text.Text.Split(',', '.', '-', ' ');
-                    int time = 0;
-                    try
-                    {
-                        time = int.Parse(parts[0]) * 60 + int.Parse(parts[1]);
-                    }
-                    catch
-                    {
-                        MessageBox.Show("Incorrect string. Expected format is '5-14'");
-                        return;
-                    }
-                    time *= 1000;
-                    int current = 0;
-                    foreach (var z in model.Montage.Chunks)
-                    {
-                        if (z.IsNotActive) time += z.Length;
-                        current += z.Length;
-                        if (current > time) break;
-                    }
-                    model.WindowState.CurrentPosition = time;
-                };
+                    time = int.Parse(parts[0]) * 60 + int.Parse(parts[1]);
+                }
+                catch
+                {
+                    MessageBox.Show("Incorrect string. Expected format is '5-14'");
+                    return;
+                }
+                time *= 1000;
+                int current = 0;
+                foreach (var z in model.Montage.Chunks)
+                {
+                    if (z.IsNotActive) time += z.Length;
+                    current += z.Length;
+                    if (current > time) break;
+                }
+                model.WindowState.CurrentPosition = time;
+            };
 
             Synchronize.Click += Synchronize_Click;
             Infos.Click += Infos_Click;
-            AddDuringTasks(); 
+        }
+
+        void MainEditorWindow_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (DataContext == null)
+            {
+                if (model!=null)
+                {
+                    model.WindowState.PropertyChanged -= WindowState_PropertyChanged;
+                    FaceVideo.Stop();
+                    ScreenVideo.Stop();
+                }
+                timer.Stop();
+                return;
+            }
+
+            model = (EditorModel)DataContext;
+            model.WindowState.PropertyChanged += WindowState_PropertyChanged;
+
+            var face = model.Locations.FaceVideoThumb.Exists ? model.Locations.FaceVideoThumb : model.Locations.FaceVideo;
+            var desk = model.Locations.DesktopVideoThumb.Exists ? model.Locations.DesktopVideoThumb : model.Locations.DesktopVideo;
+            FaceVideo.Source = new Uri(face.FullName);
+            ScreenVideo.Source = new Uri(desk.FullName);
+
+            FaceVideo.LoadedBehavior = MediaState.Manual;
+            ScreenVideo.LoadedBehavior = MediaState.Manual;
+            ScreenVideo.Volume = 0;
+
+
+            ModeChanged();
+            PositionChanged();
+            PausedChanged();
+            RatioChanged();
+            videoAvailable = model.Locations.FaceVideo.Exists;
+            desktopVideoAvailable = model.Locations.DesktopVideo.Exists;
+
+
+            timer.Start();
+            AddDuringTasks();
         }
 
         void AddDuringTasks()

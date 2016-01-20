@@ -103,7 +103,8 @@ namespace Editor
     {
         public Slider()
         {
-            this.DataContextChanged += (s, a) => { 
+            this.DataContextChanged += (s, a) => {
+                if (editorModel == null) return;
                 InvalidateVisual();
                 editorModel.WindowState.PropertyChanged += (ss, aa) => InvalidateVisual();
             };
@@ -121,7 +122,8 @@ namespace Editor
     {
         public ModelView()
         {
-            this.DataContextChanged += (s, a) => { 
+            this.DataContextChanged += (s, a) => {
+                if (editorModel == null) return;
                 InvalidateVisual();
                 editorModel.MarkupChanged += (ss, aa) => InvalidateVisual();
             };
