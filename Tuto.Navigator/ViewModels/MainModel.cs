@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Editor;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,7 +18,14 @@ namespace Tuto.Navigator.ViewModels
         {
             Queue = new BatchWorkQueueViewModel(Program.WorkQueue);
             VideothequeModel = new VideothequeModel(videotheque);
-                
+            VideothequeModel.OpenEditor += VideothequeModel_OpenEditor;
+        }
+
+        void VideothequeModel_OpenEditor(VideoViewModel obj)
+        {
+            var window = new MainEditorWindow();
+            window.DataContext = obj.Model;
+            window.Show();
         }
 
 

@@ -9,7 +9,7 @@
              Width="300" Height="150">
     <UserControl.Resources>
         <views:BoolToVisibilityConverter x:Key="BTV"/>
-        <viewModels:SubfolderViewModel x:Key="DVM"/>
+        <viewModels:VideoViewModel x:Key="DVM"/>
         <Style TargetType="Button" x:Key="CmdButton">
             <Setter Property="Width" Value="24"/>
             <Setter Property="Height" Value="24"/>

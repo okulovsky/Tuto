@@ -15,9 +15,11 @@ namespace Tuto.Navigator.ViewModels
 {
 
 
-    public class SubfolderViewModel : NotifierModel
+    public class VideoViewModel : NotifierModel
     {
         public EditorModel Model { get; private set; }
+
+        public event Action<VideoViewModel> OpenMe;
 
         #region Displayed data
         public string Name
@@ -89,18 +91,17 @@ namespace Tuto.Navigator.ViewModels
         #endregion
 
 
-        internal SubfolderViewModel() { }
+        internal VideoViewModel() { }
 
-        public SubfolderViewModel(EditorModel model)
+        public VideoViewModel(EditorModel model)
         {
             this.Model = model;
 
             Edit = new RelayCommand(
                 () =>
                 {
-                    var window = new MainEditorWindow();
-                    window.DataContext = Model;
-                    window.Show();
+                    if (OpenMe != null)
+                        OpenMe(this);
                 });
 
             OpenSource = new RelayCommand(

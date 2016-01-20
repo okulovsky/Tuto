@@ -21,13 +21,14 @@ namespace Tuto.Navigator.ViewModels
     public class VideothequeModel: NotifierModel
     {
         public SearchViewModel Search { get; private set; }
-        List<SubfolderViewModel> allModels;
+        List<VideoViewModel> allModels;
         List<EditorModel> models { get; set; }
 
+        public event Action<VideoViewModel> OpenEditor;
 
         public StatisticsViewModel Statistics { get; private set; }
 
-        public ObservableCollection<SubfolderViewModel> Subdirectories
+        public ObservableCollection<VideoViewModel> Subdirectories
         {
             get { return subdirectories; }
             private set
@@ -77,7 +78,7 @@ namespace Tuto.Navigator.ViewModels
         void Filter()
         {
 
-            IEnumerable<SubfolderViewModel> en = allModels;
+            IEnumerable<VideoViewModel> en = allModels;
             if (!string.IsNullOrWhiteSpace(Search.TextSearch))
             {
                 var keyword = Search.TextSearch.ToLower();
@@ -99,19 +100,26 @@ namespace Tuto.Navigator.ViewModels
                 default: en = en.OrderBy(z => z.Model.Montage.DisplayedRawLocation); break;
             }
 
-            Subdirectories = new ObservableCollection<SubfolderViewModel>(en);
+            Subdirectories = new ObservableCollection<VideoViewModel>(en);
         }
 
         void UpdateSubdirectories()
         {
-            allModels = new List<SubfolderViewModel>();
+            allModels = new List<VideoViewModel>();
             foreach (var e in videotheque.EditorModels)
             {
-                var m = new SubfolderViewModel(e);
+                var m = new VideoViewModel(e);
+                m.OpenMe += OpenVideoViewModel;
                 m.SubsrcibeByExpression(z => z.Selected, UpdateStatistics);
 				allModels.Add(m);
             }
             Filter();
+        }
+
+        void OpenVideoViewModel(VideoViewModel obj)
+        {
+            if (OpenEditor != null)
+                OpenEditor(obj);
         }
 
         void UpdateStatistics()
@@ -268,7 +276,7 @@ namespace Tuto.Navigator.ViewModels
 
         private FileInfo loadedFile;
         private Videotheque videotheque;
-        private ObservableCollection<SubfolderViewModel> subdirectories;
+        private ObservableCollection<VideoViewModel> subdirectories;
         public Videotheque Videotheque { get { return videotheque; } }
         //private FileSystemWatcher watcher;
 
