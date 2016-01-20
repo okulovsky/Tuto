@@ -9,23 +9,54 @@ using Tuto.Navigator.ViewModels;
 
 namespace Tuto.Navigator.ViewModels
 {
+
+    public enum MainMode
+    {
+        Videotheque,
+        Video
+    }
+
     public class MainModel : NotifierModel
     {
         public BatchWorkQueueViewModel Queue { get; private set; }
         public VideothequeModel VideothequeModel { get; private set; }
 
+        public VideoViewModel CurrentVideo { get; private set; }
+
+        
+        MainMode mode;
+        public MainMode Mode 
+        { 
+            get { return mode;}
+            set 
+            {
+                mode=value;
+                NotifyAll();
+            }
+        }
+
+        public bool VideothequeVisible { get { return mode == MainMode.Videotheque;  } }
+        public bool EditorVisible { get { return mode == MainMode.Video; } }
+
         public MainModel(Videotheque videotheque)
         {
             Queue = new BatchWorkQueueViewModel(Program.WorkQueue);
             VideothequeModel = new VideothequeModel(videotheque);
-            VideothequeModel.OpenEditor += VideothequeModel_OpenEditor;
+            VideothequeModel.OpenEditor += OpenEditor;
+            Mode = MainMode.Videotheque;
         }
 
-        void VideothequeModel_OpenEditor(VideoViewModel obj)
+        void OpenEditor(VideoViewModel obj)
         {
-            var window = new MainEditorWindow();
-            window.DataContext = obj.Model;
-            window.Show();
+            CurrentVideo = obj;
+            obj.Back+=BackToNavigator;
+            Mode = MainMode.Video;
+        }
+
+        void BackToNavigator()
+        {
+            CurrentVideo = null;
+            Mode = MainMode.Videotheque;
         }
 
 

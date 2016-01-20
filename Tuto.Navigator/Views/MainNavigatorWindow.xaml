@@ -5,8 +5,21 @@
         xmlns:views="clr-namespace:Tuto.Navigator.Views"
         Title="{Binding WindowTitle}" Height="350" Width="800"
         >
+    <Window.Resources>
+        <views:BoolToVisibilityConverter x:Key="BTV"/>
+    </Window.Resources>
     <DockPanel>
-        <views:BatchWorkPanel DataContext="{Binding Queue}" DockPanel.Dock="Bottom"/>
-        <views:VideothequePanel DataContext="{Binding VideothequeModel}"/>
+        <views:BatchWorkPanel 
+            DataContext="{Binding Queue}" 
+            DockPanel.Dock="Bottom"/>
+        <Grid>
+            <Grid Visibility="{Binding EditorVisible, Converter={StaticResource BTV}}">
+                <views:EditorPanel DataContext="{Binding CurrentVideo}"
+                />
+            </Grid>
+            <Grid Visibility="{Binding VideothequeVisible, Converter={StaticResource BTV}}" >
+                <views:VideothequePanel DataContext="{Binding VideothequeModel}"/>
+            </Grid>
+        </Grid>
     </DockPanel>
 </Window>

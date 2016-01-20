@@ -20,6 +20,7 @@ namespace Tuto.Navigator.ViewModels
         public EditorModel Model { get; private set; }
 
         public event Action<VideoViewModel> OpenMe;
+        public event Action Back;
 
         #region Displayed data
         public string Name
@@ -75,6 +76,7 @@ namespace Tuto.Navigator.ViewModels
 
         public RelayCommand MakeAll { get; private set; }
 
+        public RelayCommand BackToNavigator { get; private set; }
 
         #endregion
 
@@ -117,6 +119,10 @@ namespace Tuto.Navigator.ViewModels
                 ()=>Program.WorkQueue.Run(new MakeAll(Model)),
                 ()=>Model.Statuses.SourceIsPresent
                 );
+
+            BackToNavigator = new RelayCommand(
+                () => { if (Back != null) Back(); }
+            );
         }
        
 

@@ -16,7 +16,7 @@ using System.Windows.Shapes;
 namespace Tuto.Navigator.Views
 {
     /// <summary>
-    /// Interaction logic for EditorPanel.xaml
+    /// Interaction logic for EditorView.xaml
     /// </summary>
     public partial class EditorPanel : UserControl
     {
