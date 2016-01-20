@@ -122,6 +122,7 @@ namespace Tuto.Navigator
 
       public  IEnumerable<string> GetTextInfo()
         {
+		  if (Model.Montage.DisplayedRawLocation!=null)
             yield return Model.Montage.DisplayedRawLocation;
             if (Model.Montage.Information != null)
                 foreach (var e in Model.Montage.Information.Episodes)
