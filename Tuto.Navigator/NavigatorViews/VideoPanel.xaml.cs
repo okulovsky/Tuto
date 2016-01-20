@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Tuto.Navigator
+namespace Tuto.Navigator.Views
 {
     /// <summary>
     /// Interaction logic for VideoPanel.xaml

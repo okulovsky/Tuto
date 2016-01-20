@@ -1,15 +1,15 @@
-﻿<UserControl x:Class="Tuto.Navigator.VideothequePanel"
+﻿<UserControl x:Class="Tuto.Navigator.Views.VideothequePanel"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:navigator="clr-namespace:Tuto.Navigator"
+             xmlns:views="clr-namespace:Tuto.Navigator.Views"
              mc:Ignorable="d">
     <DockPanel>
         <StackPanel DockPanel.Dock="Right" Width="400">
             <Expander Header="Settings">
                 <StackPanel>
-                    <navigator:GlobalSettingsPanel DataContext="{Binding Videotheque.Data}"/>
+                    <views:GlobalSettingsPanel DataContext="{Binding Videotheque.Data}"/>
                     <Button Command="{Binding SaveCommand}" Width="40">Save</Button>
                 </StackPanel>
             </Expander>
@@ -53,13 +53,13 @@
             </Expander>
         </StackPanel>
 
-        <navigator:SearchPanel DockPanel.Dock="Top"  DataContext="{Binding Search}"/>
+        <views:SearchPanel DockPanel.Dock="Top"  DataContext="{Binding Search}"/>
 
         <ScrollViewer>
             <ItemsControl ItemsSource="{Binding Subdirectories}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <navigator:VideoPanel DataContext="{Binding}"/>
+                        <views:VideoPanel DataContext="{Binding}"/>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
                 <ItemsControl.Template>

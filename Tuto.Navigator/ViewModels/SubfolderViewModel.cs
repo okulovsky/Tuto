@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 
-namespace Tuto.Navigator
+namespace Tuto.Navigator.ViewModels
 {
 
 

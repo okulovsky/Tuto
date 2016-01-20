@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 
-namespace Tuto.Navigator
+namespace Tuto.Navigator.Views
 {
     public class BoolToVisibilityConverter : IValueConverter
     {

@@ -11,6 +11,8 @@ using Editor;
 using System.Threading;
 using Tuto.BatchWorks;
 using Tuto.Publishing.Youtube;
+using Tuto.Navigator.ViewModels;
+using Tuto.Navigator.Views;
 
 namespace Tuto.Navigator
 {
@@ -44,8 +46,8 @@ namespace Tuto.Navigator
             var mainWindow = new MainNavigatorWindow();
             WorkQueue = new WorkQueue(videotheque.Data.WorkSettings);
             WorkQueue.Dispatcher = mainWindow.Dispatcher;
-            var globalModel = new VideothequeModel(videotheque);
-            globalModel.FillQueue();
+            var globalModel = new MainModel(videotheque);
+            globalModel.VideothequeModel.FillQueue();
 
             mainWindow.DataContext = globalModel;
             mainWindow.WindowState = System.Windows.WindowState.Maximized;

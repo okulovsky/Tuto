@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tuto.Navigator
+namespace Tuto.Navigator.ViewModels
 {
     public class StatisticsViewModel : NotifierModel
     {

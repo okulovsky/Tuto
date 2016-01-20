@@ -17,7 +17,7 @@ using Microsoft.Win32;
 using Path = System.IO.Path;
 
 
-namespace Tuto.Navigator
+namespace Tuto.Navigator.Views
 {
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml

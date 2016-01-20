@@ -10,16 +10,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Tuto.Navigator.Views
 {
     /// <summary>
-    /// Interaction logic for VideothequePanel.xaml
+    /// Interaction logic for EditorPanel.xaml
     /// </summary>
-    public partial class VideothequePanel : UserControl
+    public partial class EditorPanel : UserControl
     {
-        public VideothequePanel()
+        public EditorPanel()
         {
             InitializeComponent();
         }

@@ -16,14 +16,14 @@ using Tuto.Navigator.ViewModels;
 using Tuto.Publishing;
 using Tuto.BatchWorks;
 
-namespace Tuto.Navigator
+namespace Tuto.Navigator.ViewModels
 {
     public class VideothequeModel: NotifierModel
     {
         public SearchViewModel Search { get; private set; }
         List<SubfolderViewModel> allModels;
         List<EditorModel> models { get; set; }
-        public BatchWorkQueueViewModel Queue { get; private set; }
+
 
         public StatisticsViewModel Statistics { get; private set; }
 
@@ -42,7 +42,7 @@ namespace Tuto.Navigator
 
             this.videotheque = videotheque;
 
-            Queue = new BatchWorkQueueViewModel(Program.WorkQueue);
+            
 
             Search = new SearchViewModel();
             Search.PropertyChanged += (s, a) => Filter();
