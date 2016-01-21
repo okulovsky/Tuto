@@ -23,7 +23,6 @@ namespace Tuto.Model
         public VideothequeEditorSettings EditorSettings { get; set; }
 
 
-
         public VideothequeData()
 		{
 			VoiceSettings = new VoiceSettings();

@@ -113,7 +113,7 @@ namespace Tuto.Navigator
                 );
 
             MakeAll = new RelayCommand(
-                ()=>Program.WorkQueue.Run(new MakeAll(Model)),
+                () => { Program.WorkQueue.Run(new MakeAll(Model)); },
                 ()=>Model.Statuses.SourceIsPresent
                 );
         }

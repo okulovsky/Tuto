@@ -16,7 +16,7 @@ namespace Tuto.Navigator
 {
     public static class Program
     {
-
+        static Videotheque videotheque;
 
         [STAThread]
         public static void Main(string[] args)
@@ -32,13 +32,14 @@ namespace Tuto.Navigator
             Func<Videotheque> start = () => Videotheque.Load(fname, wnd, false);
             var token = start.BeginInvoke(null, null);
             wnd.ShowDialog();
-            var videotheque = start.EndInvoke(token);
+            videotheque = start.EndInvoke(token);
 			if (videotheque == null)
 			{
 				MessageBox.Show("Cannot initialize Tuto");
 				return;
 			}
 
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             //YoutubeApisProcessor.Initialize(videotheque.TempFolder);
 
             var mainWindow = new MainNavigatorWindow();
@@ -59,6 +60,29 @@ namespace Tuto.Navigator
             application.ShutdownMode = ShutdownMode.OnMainWindowClose;    
             application.Run(mainWindow);
             application.Shutdown();
+        }
+
+        static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            var exception = e.ExceptionObject as Exception;
+            StringBuilder message=new StringBuilder();
+            message.AppendLine(DateTime.Now.ToString());
+            message.AppendLine();
+            while(exception!=null)
+            {
+                message.AppendLine(exception.GetType().FullName);
+                message.AppendLine(exception.Message);
+                message.AppendLine(exception.StackTrace);
+                message.AppendLine();
+                exception=exception.InnerException;
+            }
+
+            File.WriteAllText(
+                System.IO.Path.Combine(videotheque.VideothequeSettingsFile.Directory.FullName, "error.txt"),
+                message.ToString());
+
+            MessageBox.Show("An error has occured. Please send the error.txt to the developer.", "Tuto", MessageBoxButton.OK, MessageBoxImage.Error);
+
         }
 
         public static string MontageFile="montage.editor";
