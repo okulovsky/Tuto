@@ -64,14 +64,15 @@
         <Label Content="{Binding WindowState.CurrentPositionRelative}" DockPanel.Dock="Top"/>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
             <MediaElement 
-                    Width="500"
-                    x:Name="FaceVideo" 
-                    Grid.Column="0"/>
-            <MediaElement 
-                    Width="500"
+                    Width="800"
                     x:Name="ScreenVideo"  
-                    Grid.Column="1"/>
-            <TextBlock x:Name="Subtitles" Width="400" TextWrapping="Wrap" FontSize="18"/>
+                    />
+            <MediaElement 
+                 HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                    Width="300"
+                     x:Name="FaceVideo" 
+                    />
         </StackPanel>
         <StackPanel Orientation="Vertical">
             <Grid>
