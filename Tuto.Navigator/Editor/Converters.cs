@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Data;
 using Tuto.Model;
 
-namespace Editor
+namespace Tuto.Navigator.Editor
 {
 
     public class EditorModeConverter : IValueConverter

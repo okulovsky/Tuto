@@ -63,7 +63,7 @@ namespace Tuto.Model
 					episode++;
 				}
 				bool ends = e.EndTime>CurrentPosition;
-				if (e.Mode != Editor.Mode.Drop)
+				if (e.Mode != Mode.Drop)
 				{
 					if (ends) 
 						msFromStart+=CurrentPosition-e.StartTime;
@@ -125,18 +125,6 @@ namespace Tuto.Model
             set
             {
 				SetAndNotify(ref desktopVideoIsVisible, value);
-            }
-        }
-        [DataMember]
-        string currentSubtitle;
-
-		[Obsolete]
-        public string CurrentSubtitle
-        {
-            get { return currentSubtitle; }
-            set
-            {
-				SetAndNotify(ref currentSubtitle, value);
             }
         }
 

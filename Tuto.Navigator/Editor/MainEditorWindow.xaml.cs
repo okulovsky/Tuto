@@ -369,8 +369,6 @@ namespace Editor
                 currentMode = new BorderMode(model);
             if (model.WindowState.CurrentMode == EditorModes.General)
                 currentMode = new GeneralMode(model);
-            if (model.WindowState.CurrentMode == Tuto.Model.EditorModes.Fixes)
-                currentMode = new FixesMode(model);
 
         }
 
@@ -412,11 +410,6 @@ namespace Editor
                 ScreenVideo.Visibility = model.WindowState.DesktopVideoIsVisible? Visibility.Visible : Visibility.Collapsed;
             }
 
-            if (e.PropertyName == "CurrentSubtitle")
-            {
-
-                Subtitles.Text = model.WindowState.CurrentSubtitle;
-            }
         }
 
 

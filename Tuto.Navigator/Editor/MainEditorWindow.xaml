@@ -1,7 +1,7 @@
 ﻿<UserControl x:Class="Editor.MainEditorWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:ed="clr-namespace:Editor"
+        xmlns:ed="clr-namespace:Tuto.Navigator.Editor"
         Width="1089.463" Height="687.825">
     <UserControl.Resources>
         <ed:EditorModeConverter x:Key="EditorModeCnv"/>

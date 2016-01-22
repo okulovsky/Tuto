@@ -1,4 +1,4 @@
-﻿using Editor;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +21,7 @@ namespace Tuto.Model
         public readonly bool StartsNewEpisode;
 
         public int Length { get { return EndTime - StartTime; } }
-        public bool IsActive { get { return Mode != Editor.Mode.Undefined && Mode != Editor.Mode.Drop; } }
+		public bool IsActive { get { return Mode != Tuto.Model.Mode.Undefined && Mode != Tuto.Model.Mode.Drop; } }
         public bool IsNotActive { get { return !IsActive; } } 
 
    

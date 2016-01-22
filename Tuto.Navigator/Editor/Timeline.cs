@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Media;
 using Tuto.Model;
 
-namespace Editor
+namespace Tuto.Navigator.Editor
 {
     public class TimelineBase : FrameworkElement
     {
@@ -199,11 +199,6 @@ namespace Editor
                 {
                     DrawLine(drawingContext, border, e.StartTime, e.EndTime, 3);
                 }
-
-            if (editorModel.WindowState.CurrentMode == EditorModes.Fixes)
-                foreach (var e in model.SubtitleFixes)
-                    DrawLine(drawingContext, fixes, e.StartTime, e.StartTime + e.Length, RowHeight / 2);
-
           
         }
     }

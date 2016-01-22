@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
         xmlns:DesignInControl="clr-namespace:Tuto.Navigator"
         Title="Patcher"  Name="mainwindow" Loaded="mainwindow_Loaded" Closing="mainwindow_Closing" SizeChanged="mainwindow_SizeChanged"
-        xmlns:ed="clr-namespace:Editor">
+        xmlns:ed="clr-namespace:Tuto.Navigator.Editor">
     <Window.Resources>
         <ed:PausedToStringConverter x:Key="PausedCnv"/>
     </Window.Resources>

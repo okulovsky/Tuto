@@ -129,7 +129,7 @@ namespace Tuto.Navigator.ViewModels
             {
                 stat.EpisodesCount += e.Model.Montage.Information.Episodes.Count;
                 stat.TotalClean += (int)e.Model.Montage.Information.Episodes.Sum(z => z.Duration.TotalMinutes);
-                stat.TotalDirty += e.Model.Montage.Chunks.Where(z => z.Mode != Editor.Mode.Undefined).Sum(z=>z.Length) / 60000;
+                stat.TotalDirty += e.Model.Montage.Chunks.Where(z => z.Mode != Mode.Undefined).Sum(z=>z.Length) / 60000;
             }
             Statistics = stat;
             this.NotifyByExpression(z => z.Statistics);
