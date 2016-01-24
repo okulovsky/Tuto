@@ -35,6 +35,12 @@ namespace Tuto.Navigator.Editor
 			model.WindowState.SubsrcibeByExpression(z => z.FaceVideoIsVisible, VideoVisibilityChanged);
 			model.WindowState.SubsrcibeByExpression(z => z.DesktopVideoIsVisible, VideoVisibilityChanged);
 
+            ModeChanged();
+            RatioChanged();
+            VideoVisibilityChanged();
+            PositionChanged();
+            PauseChanged();
+
             if (model.Locations.FaceVideoThumb.Exists)
             {
                 panel.Face.SetFile(model.Locations.FaceVideoThumb);
@@ -83,6 +89,8 @@ namespace Tuto.Navigator.Editor
 				model.WindowState.UnsubscribeAll(this);
 				panel.KeyDown -= panel_KeyDown;
 				panel.TimelineMouseDown -= panel_TimelineMouseDown;
+                panel.Face.Stop();
+                panel.Desktop.Stop();
 				isDisposed = true;
 			}
 		}

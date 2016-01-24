@@ -27,6 +27,10 @@ namespace Tuto.Navigator.Editor
             Desktop = new VideoPlayerPanelVideoWrap(DesktopVideo);
             ModelView.MouseDown += Timeline_MouseDown;
             Slider.MouseDown += Timeline_MouseDown;
+            FaceVideo.LoadedBehavior = MediaState.Manual;
+            DesktopVideo.LoadedBehavior = MediaState.Manual;
+            DesktopVideo.Volume = 0;
+
 		}
 
 

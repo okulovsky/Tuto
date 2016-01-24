@@ -50,5 +50,10 @@ namespace Tuto.Navigator
             if (pause) wrappedOver.Pause();
             else wrappedOver.Play();
         }
+
+        public void Stop()
+        {
+            wrappedOver.Stop();
+        }
     }
 }

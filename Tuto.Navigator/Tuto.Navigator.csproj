@@ -153,6 +153,9 @@
     <Compile Include="EditorModes\Keyboard\KeyMap.cs" />
     <Compile Include="Editor\Converters.cs" />
     <Compile Include="Editor\EditorController.cs" />
+    <Compile Include="Editor\EditorPanel.xaml.cs">
+      <DependentUpon>EditorPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Editor\FixWindow.xaml.cs">
       <DependentUpon>FixWindow.xaml</DependentUpon>
     </Compile>
@@ -178,7 +181,7 @@
       <DependentUpon>RequestItemControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Initialization\VideothequeRequestViewModel.cs" />
-    <Compile Include="VideoPlayerPanelVideoWrap.cs" />
+    <Compile Include="Editor\VideoPlayerPanelVideoWrap.cs" />
     <Compile Include="Views\BatchWorkPanel.xaml.cs">
       <DependentUpon>BatchWorkPanel.xaml</DependentUpon>
     </Compile>
@@ -221,6 +224,10 @@
     <Compile Include="Views\Old\SubfoldersDataGrid.xaml.cs">
       <DependentUpon>SubfoldersDataGrid.xaml</DependentUpon>
     </Compile>
+    <Page Include="Editor\EditorPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Editor\FixWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -371,6 +378,7 @@
     <Resource Include="Icons\edit.png" />
     <Resource Include="Icons\processing.png" />
     <Resource Include="Icons\refresh.png" />
+    <Resource Include="Icons\back.png" />
     <Content Include="NoiseReduction\cleared.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

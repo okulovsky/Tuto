@@ -29,5 +29,7 @@ namespace Tuto.Navigator.Editor
         void SetFile(FileInfo location);
         bool Visibility { get; set; }
         void PlayPause(bool pause);
+
+        void Stop();
     }
 }
