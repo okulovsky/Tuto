@@ -43,6 +43,7 @@ namespace Tuto.Navigator.Editor
             if (DataContext!=null)
             {
                 controller = new EditorController(this.player, model);
+         
             }
         }
 

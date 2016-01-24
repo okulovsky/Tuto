@@ -16,7 +16,7 @@ namespace Tuto.Navigator.Editor
 
 	public interface IEditorInterface
 	{
-		event KeyEventHandler KeyDown;
+		event KeyEventHandler ControlKeyDown;
 		event Action<int, MouseButtonEventArgs> TimelineMouseDown;
         void SetRatio(double ratio);
         IVideoInterface Face { get; }

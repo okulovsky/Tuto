@@ -7,9 +7,9 @@
              xmlns:ed="clr-namespace:Tuto.Navigator.Editor"
              d:DesignHeight="300" d:DesignWidth="300">
     <DockPanel>
-        <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
+        <StackPanel Orientation="Vertical" DockPanel.Dock="Left" Margin="10">
             <Button x:Name="backButton">
-                <Image Width="32" Source="Icons/back.png"/>
+                <Image Width="32" Height="32" Source="/Icons/back.png"/>
             </Button> 
         </StackPanel>
         <Border>

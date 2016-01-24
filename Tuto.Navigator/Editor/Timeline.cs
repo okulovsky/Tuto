@@ -12,6 +12,7 @@ namespace Tuto.Navigator.Editor
 {
     public class TimelineBase : FrameworkElement
     {
+
         protected EditorModel editorModel { get { return (EditorModel)DataContext; } }
         protected MontageModel model { get { return editorModel.Montage; } }
 
@@ -158,6 +159,8 @@ namespace Tuto.Navigator.Editor
         protected override void OnRender(System.Windows.Media.DrawingContext drawingContext)
         {
             if (editorModel == null) return;
+
+           
 
            foreach (var c in model.Chunks)
                foreach (var r in GetRects(c))

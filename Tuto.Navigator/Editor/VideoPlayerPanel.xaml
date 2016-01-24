@@ -7,17 +7,18 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel>
-        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50*"/>
+                <ColumnDefinition Width="50*"/>
+            </Grid.ColumnDefinitions>
             <MediaElement 
-                    Width="500"
                     x:Name="FaceVideo" 
                     Grid.Column="0"/>
             <MediaElement 
-                    Width="500"
                     x:Name="DesktopVideo"  
                     Grid.Column="1"/>
-            <TextBlock x:Name="Subtitles" Width="400" TextWrapping="Wrap" FontSize="18"/>
-        </StackPanel>
+        </Grid>
         <StackPanel Orientation="Vertical">
             <Grid>
                 <ed:ModelView x:Name="ModelView" DataContext="{Binding}"/>

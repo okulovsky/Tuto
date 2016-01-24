@@ -25,7 +25,7 @@ namespace Tuto.Navigator.Editor
 			this.panel = panel;
 			this.model = model;
 
-			panel.KeyDown += panel_KeyDown;
+			panel.ControlKeyDown += panel_KeyDown;
 			panel.TimelineMouseDown += panel_TimelineMouseDown;
 
 			model.WindowState.SubsrcibeByExpression(z => z.Paused, PauseChanged);
@@ -60,11 +60,10 @@ namespace Tuto.Navigator.Editor
             }
             else if (model.Locations.DesktopVideo.Exists)
             {
-                panel.Desktop.SetFile(model.Locations.DesktopVideoThumb);
+                panel.Desktop.SetFile(model.Locations.DesktopVideo);
                 desktopAvailable = true;
             }
             else desktopAvailable = true;
-
 
 
 			timer = new DispatcherTimer();
@@ -87,7 +86,7 @@ namespace Tuto.Navigator.Editor
 			{
 				timer.Stop();
 				model.WindowState.UnsubscribeAll(this);
-				panel.KeyDown -= panel_KeyDown;
+				panel.ControlKeyDown -= panel_KeyDown;
 				panel.TimelineMouseDown -= panel_TimelineMouseDown;
                 panel.Face.Stop();
                 panel.Desktop.Stop();

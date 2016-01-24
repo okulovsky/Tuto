@@ -30,8 +30,9 @@ namespace Tuto.Navigator.Editor
             FaceVideo.LoadedBehavior = MediaState.Manual;
             DesktopVideo.LoadedBehavior = MediaState.Manual;
             DesktopVideo.Volume = 0;
-
 		}
+
+
 
 
         public event Action<int, MouseButtonEventArgs> TimelineMouseDown;
@@ -62,6 +63,8 @@ namespace Tuto.Navigator.Editor
             get;
             private set;
         }
+
+        public event KeyEventHandler ControlKeyDown;
     }
 
 

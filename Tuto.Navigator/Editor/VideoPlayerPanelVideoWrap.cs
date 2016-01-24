@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Threading;
 using Tuto.Navigator.Editor;
 
 namespace Tuto.Navigator
@@ -24,6 +25,7 @@ namespace Tuto.Navigator
             }
             set
             {
+
                 wrappedOver.Position = TimeSpan.FromMilliseconds(value);
             }
         }
@@ -41,7 +43,7 @@ namespace Tuto.Navigator
             }
             set
             {
-                wrappedOver.Visibility = System.Windows.Visibility.Collapsed;
+                wrappedOver.Visibility = value?System.Windows.Visibility.Visible :  System.Windows.Visibility.Collapsed;
             }
         }
 
@@ -53,7 +55,11 @@ namespace Tuto.Navigator
 
         public void Stop()
         {
-            wrappedOver.Stop();
+            try
+            {
+                wrappedOver.Dispatcher.Invoke(new Action(wrappedOver.Stop));
+            }
+            catch { }
         }
     }
 }
