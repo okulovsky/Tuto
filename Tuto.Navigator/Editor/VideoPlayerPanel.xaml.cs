@@ -18,11 +18,47 @@ namespace Tuto.Navigator.Editor
 	/// <summary>
 	/// Interaction logic for VideoPlayerPanel.xaml
 	/// </summary>
-	public partial class VideoPlayerPanel : UserControl
+	public partial class VideoPlayerPanel : UserControl, IEditorInterface
 	{
 		public VideoPlayerPanel()
 		{
 			InitializeComponent();
+            Face = new VideoPlayerPanelVideoWrap(FaceVideo);
+            Desktop = new VideoPlayerPanelVideoWrap(DesktopVideo);
+            ModelView.MouseDown += Timeline_MouseDown;
+            Slider.MouseDown += Timeline_MouseDown;
 		}
-	}
+
+
+        public event Action<int, MouseButtonEventArgs> TimelineMouseDown;
+
+        void Timeline_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (TimelineMouseDown != null)
+            {
+                var time = Slider.MsAtPoint(e.GetPosition(Slider));
+                TimelineMouseDown(time, e);
+            }
+        }
+
+        public void SetRatio(double ratio)
+        {
+            FaceVideo.SpeedRatio = ratio;
+            DesktopVideo.SpeedRatio = ratio;
+        }
+
+        public IVideoInterface Face
+        {
+            get;
+            private set;
+        }
+
+        public IVideoInterface Desktop
+        {
+            get;
+            private set;
+        }
+    }
+
+
 }

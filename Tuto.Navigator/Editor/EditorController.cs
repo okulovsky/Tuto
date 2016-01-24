@@ -17,6 +17,8 @@ namespace Tuto.Navigator.Editor
 		EditorModel model;
 		DispatcherTimer timer;
 		const int timerInterval = 1;
+        readonly bool faceAvailable;
+        readonly bool desktopAvailable;
 
 		public EditorController(IEditorInterface panel, EditorModel model)
 		{
@@ -33,6 +35,29 @@ namespace Tuto.Navigator.Editor
 			model.WindowState.SubsrcibeByExpression(z => z.FaceVideoIsVisible, VideoVisibilityChanged);
 			model.WindowState.SubsrcibeByExpression(z => z.DesktopVideoIsVisible, VideoVisibilityChanged);
 
+            if (model.Locations.FaceVideoThumb.Exists)
+            {
+                panel.Face.SetFile(model.Locations.FaceVideoThumb);
+                faceAvailable = true;
+            }
+            else if (model.Locations.FaceVideo.Exists)
+            {
+                panel.Face.SetFile(model.Locations.FaceVideo);
+                faceAvailable = true;
+            }
+            else faceAvailable = false;
+
+            if (model.Locations.DesktopVideoThumb.Exists)
+            {
+                panel.Desktop.SetFile(model.Locations.DesktopVideoThumb);
+                desktopAvailable = true;
+            }
+            else if (model.Locations.DesktopVideo.Exists)
+            {
+                panel.Desktop.SetFile(model.Locations.DesktopVideoThumb);
+                desktopAvailable = true;
+            }
+            else desktopAvailable = true;
 
 
 
@@ -69,14 +94,14 @@ namespace Tuto.Navigator.Editor
 		void CheckPlayTime()
 		{
 			supressPositionChanged = true;
-			if (panel.FaceVideoAvailable)
+			if (faceAvailable)
 			{
-				model.WindowState.CurrentPosition = panel.FaceVideoPosition;
-				if (panel.DesktopVideoAvailable)
+                model.WindowState.CurrentPosition = panel.Face.Position;
+				if (desktopAvailable)
 				{
-					var desktopVideoPosition = panel.DesktopVideoPosition + model.Montage.SynchronizationShift;
+					var desktopVideoPosition = panel.Desktop.Position + model.Montage.SynchronizationShift;
 					if (Math.Abs(desktopVideoPosition - model.WindowState.CurrentPosition) > 50)
-						panel.DesktopVideoPosition = model.WindowState.CurrentPosition - model.Montage.SynchronizationShift;
+						panel.Desktop.Position = model.WindowState.CurrentPosition - model.Montage.SynchronizationShift;
 				}
 				else
 				{
@@ -118,7 +143,8 @@ namespace Tuto.Navigator.Editor
 
 		void PauseChanged()
 		{
-			panel.PlayPause(model.WindowState.Paused);
+			panel.Desktop.PlayPause(model.WindowState.Paused);
+            panel.Face.PlayPause(model.WindowState.Paused);
 		}
 
 		void ModeChanged()
@@ -143,14 +169,14 @@ namespace Tuto.Navigator.Editor
 				model.WindowState.Paused = false;
 				pauseRequested = true;
 			}
-			panel.FaceVideoPosition = model.WindowState.CurrentPosition;
-			panel.DesktopVideoPosition = model.WindowState.CurrentPosition - model.Montage.SynchronizationShift;
+			panel.Face.Position = model.WindowState.CurrentPosition;
+			panel.Desktop.Position = model.WindowState.CurrentPosition - model.Montage.SynchronizationShift;
 		}
 
 		void VideoVisibilityChanged()
 		{
-			panel.FaceVisible = model.WindowState.FaceVideoIsVisible;
-			panel.DesktopVisible = model.WindowState.DesktopVideoIsVisible;
+			panel.Face.Visibility = model.WindowState.FaceVideoIsVisible;
+			panel.Desktop.Visibility = model.WindowState.DesktopVideoIsVisible;
 		}
 		#endregion
 	}

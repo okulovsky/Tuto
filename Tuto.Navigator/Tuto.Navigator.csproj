@@ -178,6 +178,7 @@
       <DependentUpon>RequestItemControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Initialization\VideothequeRequestViewModel.cs" />
+    <Compile Include="VideoPlayerPanelVideoWrap.cs" />
     <Compile Include="Views\BatchWorkPanel.xaml.cs">
       <DependentUpon>BatchWorkPanel.xaml</DependentUpon>
     </Compile>

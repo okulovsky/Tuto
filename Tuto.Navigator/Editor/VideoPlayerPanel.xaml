@@ -3,8 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                xmlns:ed="clr-namespace:Tuto.Navigator.Editor"
-   
+             xmlns:ed="clr-namespace:Tuto.Navigator.Editor"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel>
@@ -15,7 +14,7 @@
                     Grid.Column="0"/>
             <MediaElement 
                     Width="500"
-                    x:Name="ScreenVideo"  
+                    x:Name="DesktopVideo"  
                     Grid.Column="1"/>
             <TextBlock x:Name="Subtitles" Width="400" TextWrapping="Wrap" FontSize="18"/>
         </StackPanel>
@@ -24,7 +23,6 @@
                 <ed:ModelView x:Name="ModelView" DataContext="{Binding}"/>
                 <ed:Slider x:Name="Slider" DataContext="{Binding}"/>
             </Grid>
-
         </StackPanel>
     </StackPanel>
 </UserControl>
