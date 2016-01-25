@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -18,6 +19,9 @@ using Tuto.Model;
 
 namespace Tuto.Navigator.Editor
 {
+
+	 
+
     /// <summary>
     /// Interaction logic for EditorPanel.xaml
     /// </summary>
@@ -59,9 +63,21 @@ namespace Tuto.Navigator.Editor
 					if (model != null) model.WindowState.Paused = true;
 				};
 
+			previewMode.Click += (s, a) =>
+				{
+					if (model != null) model.WindowState.CurrentMode = EditorModes.General;
+				};
+
+			borderMode.Click += (s, a) =>
+				{
+					if (model != null) model.WindowState.CurrentMode = EditorModes.Border;
+				};
+
 			titles.Click += titles_Click;
+			sync.Click += sync_Click;
         }
 
+	
 		void titles_Click(object sender, RoutedEventArgs e)
 		{
 	        var times = new List<int>();
@@ -117,17 +133,44 @@ namespace Tuto.Navigator.Editor
             {
                 controller = new EditorController(this.player, model);
 				model.WindowState.SubsrcibeByExpression(z => z.Paused, PlayPause);
+				model.WindowState.SubsrcibeByExpression(z => z.CurrentMode, CheckMode);
 				PlayPause();
+				CheckMode();
 				player.Focus();
             }
         }
 
 		void PlayPause()
 		{
-			if (model==null) return;
-			play.Visibility = model.WindowState.Paused ? Visibility.Visible : Visibility.Hidden;
-			pause.Visibility = !model.WindowState.Paused ? Visibility.Visible : Visibility.Hidden;
+			if (model == null) return;
+			play.Set(!model.WindowState.Paused);
+			pause.Set(model.WindowState.Paused);
+		}
+
+		void CheckMode()
+		{
+			previewMode.Set(model.WindowState.CurrentMode == EditorModes.General);
+			borderMode.Set(model.WindowState.CurrentMode == EditorModes.Border);
+		}
+
+		void sync_Click(object sender, RoutedEventArgs e)
+		{
+			
+			model.Montage.SynchronizationShift = model.WindowState.CurrentPosition;
+			model.WindowState.CurrentPosition = model.WindowState.CurrentPosition + 1;
+			model.OnMarkupChanged();
+			model.Save();
 		}
 
     }
+
+	public static class ToggleButtonExtensions
+	{
+		public static void Set(this ToggleButton button, bool value)
+		{
+			button.IsChecked = value;
+			button.IsEnabled = !value;
+
+		}
+	}
 }

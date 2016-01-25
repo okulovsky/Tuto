@@ -5,37 +5,56 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              xmlns:ed="clr-namespace:Tuto.Navigator.Editor"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="400" d:DesignWidth="300">
     <UserControl.Resources>
         <Style TargetType="Button">
             <Setter Property="Width" Value="32"/>
             <Setter Property="Height" Value="32"/>
             <Setter Property="Margin" Value="5"/>
         </Style>
+        <Style TargetType="ToggleButton">
+            <Setter Property="Width" Value="32"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+        
     </UserControl.Resources>
     <DockPanel>
         <StackPanel Orientation="Vertical" DockPanel.Dock="Left" Margin="10">
-            <Button x:Name="backButton">
+            <Button x:Name="backButton" ToolTip="Back to videos' list">
                 <Image Source="/Icons/back.png"/>
             </Button> 
-            <Button x:Name="saveButton">
+            <Button x:Name="saveButton" ToolTip="Save changes">
                 <Image Source="/Icons/save.png"/>
             </Button>
-            <Grid>
-                <Button x:Name="play">
-                    <Image Source="/Icons/play.png"/>
-                </Button>
-                <Button x:Name="pause">
-                    <Image Source="/Icons/pause.png"/>
-                </Button>
-            </Grid>
-            <Button x:Name="titles">
+            <Rectangle Height="20"/>
+          
+            <ToggleButton x:Name="play" ToolTip="Play videos">
+                <Image Source="/Icons/play.png"/>
+            </ToggleButton>
+            <ToggleButton x:Name="pause" ToolTip="Pause videos">
+                <Image Source="/Icons/pause.png"/>
+            </ToggleButton>
+
+            <Rectangle Height="20"/>
+            <ToggleButton x:Name="previewMode" ToolTip="Mode for rough markup of the video">
+                <Image Source="/Icons/hammer.png"/>
+            </ToggleButton>
+            <ToggleButton x:Name="borderMode" ToolTip="Mode for precise movings of the borders">
+                <Image Source="/Icons/microscope.png"/>
+            </ToggleButton>
+            
+            <Rectangle Height="20"/>
+            <Button x:Name="sync" ToolTip="Synchronize videos">
+                <Image Source="/Icons/sync.png"/>
+            </Button>
+            <Button x:Name="titles" ToolTip="Name episodes">
                 <Image Source="/Icons/titles.png"/>
             </Button>
-            <Button x:Name="makeall">
+            <Button x:Name="makeall" ToolTip="Start videos assembly">
                 <Image Source="/Icons/montage.png"/>
             </Button>
-            <Button x:Name="help">
+            <Button x:Name="help" ToolTip="Get the help about hotkeys for editing">
                 <Image Source="/Icons/help.png"/>
             </Button>
         </StackPanel>
