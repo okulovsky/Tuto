@@ -30,6 +30,15 @@ namespace Tuto.Navigator.Editor
             FaceVideo.LoadedBehavior = MediaState.Manual;
             DesktopVideo.LoadedBehavior = MediaState.Manual;
             DesktopVideo.Volume = 0;
+			MouseDown+=(s,a)=>Focus();
+			KeyDown += VideoPlayerPanel_KeyDown;
+		}
+
+		void VideoPlayerPanel_KeyDown(object sender, KeyEventArgs e)
+		{
+
+			if (ControlKeyDown != null)
+				ControlKeyDown(sender, e);
 		}
 
 
