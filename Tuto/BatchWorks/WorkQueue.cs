@@ -72,7 +72,8 @@ namespace Tuto.BatchWorks
                     wasException = true;
                     CancelTasksAfterException();
                 };
-                e.Model.Statuses.InQueue = ModelInQueue(e.Model);
+				if (e.Model!=null)
+					e.Model.Statuses.InQueue = ModelInQueue(e.Model);
             }
             queueWorking = false;
             if (!wasException)
@@ -147,7 +148,8 @@ namespace Tuto.BatchWorks
                     if (worksIdentifiers.Contains(e.Name))
                         continue;
                     this.Work.Add(e);
-                    e.Model.Statuses.InQueue = true;
+					if (e.Model!=null)
+						e.Model.Statuses.InQueue = true;
                 }
 
                 if (!queueWorking && Work.Count != 0)
