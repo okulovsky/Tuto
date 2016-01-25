@@ -128,8 +128,13 @@ namespace Tuto.Model
             }
         }
 
-        public Action GetBack;
+        public event Action GetBack;
 
+		public void OnGetBack()
+		{
+			if (GetBack != null)
+				GetBack();
+		}
 
         public WindowState()
         {

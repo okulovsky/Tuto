@@ -83,9 +83,8 @@ namespace Tuto.Navigator.ViewModels
             {
                 var keyword = Search.TextSearch.ToLower();
                 en = en
-                .Select(z => new { VM = z, Rate = z.GetTextInfo().Where(x=>x!=null).Select(x => (double)NameMatchAlgorithm.MatchNames(x.ToLower(), keyword) / keyword.Length).Max() })
-                .Where(z => z.Rate > 0.8)
-                .OrderByDescending(z => z.Rate)
+                .Select(z => new { VM = z, Include = z.GetTextInfo().Where(x=>x!=null).Where(x=>x.ToLower().Contains(keyword)).Any() })
+                .Where(z => z.Include)
                 .Select(z => z.VM);           
             }
             if (Search.OnlyWithSource)

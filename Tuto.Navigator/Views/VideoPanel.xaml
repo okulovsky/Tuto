@@ -9,6 +9,7 @@
              Width="300" Height="150">
     <UserControl.Resources>
         <views:BoolToVisibilityConverter x:Key="BTV"/>
+        <views:OutputTypeToBrushConverter x:Key="OT2B"/>
         <viewModels:VideoViewModel x:Key="DVM"/>
         <Style TargetType="Button" x:Key="CmdButton">
             <Setter Property="Width" Value="24"/>
@@ -70,7 +71,7 @@
                 </Button>
             </WrapPanel>
 
-            <ItemsControl ItemsSource="{Binding EpisodesNames}">
+            <ItemsControl ItemsSource="{Binding Episodes}">
                 <ItemsControl.Template>
                     <ControlTemplate>
                         <WrapPanel IsItemsHost="True"/>
@@ -78,7 +79,9 @@
                 </ItemsControl.Template>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Label Content="{Binding}" Background="LightGray" Margin="2"/>
+                        <Label 
+                            Content="{Binding Name}" 
+                            Background="{Binding OutputType, Converter={StaticResource OT2B}}" Margin="2"/>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

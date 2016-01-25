@@ -32,14 +32,22 @@ namespace Tuto.Navigator.ViewModels
             }
         }
 
-        public IEnumerable<string> EpisodesNames
+        public IEnumerable<EpisodInfo> Episodes
         {
             get
             {
-                if (Model != null)
-                    if (Model.Montage.Information != null)
-                        return Model.Montage.Information.Episodes.Select(z => z.Name);
-                return new[] { "Архитектура биткоинов", "Экономика биткоинов" };
+				if (Model != null)
+				{
+					if (Model.Montage.Information != null)
+						return Model.Montage.Information.Episodes;
+					return null;
+				}
+				return new[]
+				{
+					new EpisodInfo(Guid.NewGuid()) { Name="Экономика биткоинов", OutputType = OutputTypes.Output },
+					new EpisodInfo(Guid.NewGuid()) { Name="Патч", OutputType = OutputTypes.Patch},
+					new EpisodInfo(Guid.NewGuid()) { Name="Факап", OutputType = OutputTypes.None }
+				};
             }
         }
 

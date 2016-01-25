@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Win32;
 using Path = System.IO.Path;
+using Tuto.Navigator.ViewModels;
 
 
 namespace Tuto.Navigator.Views
@@ -28,6 +29,17 @@ namespace Tuto.Navigator.Views
         {
             InitializeComponent();
         }
+
+		protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+		{
+			var MainModel = (MainModel)DataContext;
+			if (MainModel == null) return;
+			if (MainModel.EditorVisible)
+			{
+				e.Cancel = true;
+				MainModel.CurrentVideo.WindowState.OnGetBack();
+			}
+		}
 
 
     }

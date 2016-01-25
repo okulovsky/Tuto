@@ -6,11 +6,38 @@
              mc:Ignorable="d" 
              xmlns:ed="clr-namespace:Tuto.Navigator.Editor"
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Width" Value="32"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+    </UserControl.Resources>
     <DockPanel>
         <StackPanel Orientation="Vertical" DockPanel.Dock="Left" Margin="10">
             <Button x:Name="backButton">
-                <Image Width="32" Height="32" Source="/Icons/back.png"/>
+                <Image Source="/Icons/back.png"/>
             </Button> 
+            <Button x:Name="saveButton">
+                <Image Source="/Icons/save.png"/>
+            </Button>
+            <Grid>
+                <Button x:Name="play">
+                    <Image Source="/Icons/play.png"/>
+                </Button>
+                <Button x:Name="pause">
+                    <Image Source="/Icons/pause.png"/>
+                </Button>
+            </Grid>
+            <Button x:Name="titles">
+                <Image Source="/Icons/titles.png"/>
+            </Button>
+            <Button x:Name="makeall">
+                <Image Source="/Icons/montage.png"/>
+            </Button>
+            <Button x:Name="help">
+                <Image Source="/Icons/help.png"/>
+            </Button>
         </StackPanel>
         <Border>
             <ed:VideoPlayerPanel x:Name="player"/>

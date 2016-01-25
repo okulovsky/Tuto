@@ -43,6 +43,7 @@ namespace Tuto
 			foreach(var e in Subscribers.Keys.ToList())
 			{
 				var value = Subscribers[e];
+				if (value == null) continue;
 				foreach(var x in value.GetInvocationList())
 				{
 					if (x.Target == obj)

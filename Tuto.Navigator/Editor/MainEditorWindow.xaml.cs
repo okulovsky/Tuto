@@ -24,6 +24,7 @@ using Tuto.Navigator;
 using Tuto.BatchWorks;
 using System.ComponentModel;
 using Tuto.Model;
+using Tuto.Navigator.Editor;
 
 namespace Editor
 {
@@ -60,8 +61,7 @@ namespace Editor
             {
                 if (model == null) return;
                 model.Save();
-                if (model.WindowState.GetBack != null)
-                    model.WindowState.GetBack();
+				model.WindowState.OnGetBack();
             };
 
             Save.Click += (s, a) =>
