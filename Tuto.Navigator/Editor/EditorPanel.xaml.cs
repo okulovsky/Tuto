@@ -60,8 +60,10 @@ namespace Tuto.Navigator.Editor
 				};
 
 			titles.Click += titles_Click;
+			sync.Click += sync_Click;
         }
 
+	
 		void titles_Click(object sender, RoutedEventArgs e)
 		{
 	        var times = new List<int>();
@@ -127,6 +129,18 @@ namespace Tuto.Navigator.Editor
 			if (model==null) return;
 			play.Visibility = model.WindowState.Paused ? Visibility.Visible : Visibility.Hidden;
 			pause.Visibility = !model.WindowState.Paused ? Visibility.Visible : Visibility.Hidden;
+		}
+
+		void sync_Click(object sender, RoutedEventArgs e)
+		{
+			if (model.Montage.SynchronizationShift != 0)
+			{
+				var response = MessageBox.Show("Вы уже синхронизировали это видео. Точно хотите пересинхронизировать?", "", MessageBoxButton.YesNoCancel);
+				if (response != MessageBoxResult.Yes) return;
+			}
+			model.Montage.SynchronizationShift = model.WindowState.CurrentPosition;
+			model.WindowState.CurrentPosition = model.WindowState.CurrentPosition + 1;
+			model.Save();
 		}
 
     }

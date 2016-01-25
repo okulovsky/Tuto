@@ -563,7 +563,9 @@ namespace Tuto.Model
 				e.NonDistributedVideos = nonDistributed;
 			UpdateNonDistributedVideos();
             
-            foreach(var e in PublishingModels.SelectMany(z=>z.YoutubeClipData.Records))
+            foreach(var e in PublishingModels
+								.Where(z=>z.YoutubeClipData!=null)
+								.SelectMany(z=>z.YoutubeClipData.Records))
             {
                 var ep = FindEpisode(e.Guid);
                 if (ep != null && ep.Item2.YoutubeId!=null)

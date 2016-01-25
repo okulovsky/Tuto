@@ -385,6 +385,7 @@
     <Resource Include="Icons\play.png" />
     <Resource Include="Icons\save.png" />
     <Resource Include="Icons\titles.png" />
+    <Resource Include="Icons\sync.png" />
     <Content Include="NoiseReduction\cleared.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

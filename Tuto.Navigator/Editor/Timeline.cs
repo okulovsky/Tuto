@@ -133,6 +133,8 @@ namespace Tuto.Navigator.Editor
 
         Brush soundBrush = new SolidColorBrush(Color.FromArgb(150, 0, 0, 0));
         Pen soundpen = new Pen(Brushes.Transparent, 0);
+		Pen sync = new Pen(Brushes.Red,2);
+
 
         void FlushSoundLine(DrawingContext drawingContext, List<Point> points, double baseLine)
         {
@@ -160,8 +162,7 @@ namespace Tuto.Navigator.Editor
         {
             if (editorModel == null) return;
 
-           
-
+		
            foreach (var c in model.Chunks)
                foreach (var r in GetRects(c))
                {
@@ -197,11 +198,22 @@ namespace Tuto.Navigator.Editor
                if (points.Count!=0) FlushSoundLine(drawingContext,points,baseline);
            }
 
-            if (editorModel.WindowState.CurrentMode == EditorModes.Border && model.Borders!=null)
-                foreach (var e in model.Borders)
-                {
-                    DrawLine(drawingContext, border, e.StartTime, e.EndTime, 3);
-                }
+		   var ps = GetCoordinate(model.SynchronizationShift);
+			StreamGeometry streamGeometry = new StreamGeometry();
+            using (StreamGeometryContext geometryContext = streamGeometry.Open())
+            {
+                geometryContext.BeginFigure(new Point(ps.X-5,ps.Y),true,true);
+				geometryContext.LineTo(new Point(ps.X+5,ps.Y),false,false);
+				geometryContext.LineTo(new Point(ps.X,ps.Y+RowHeight/2),false,false);
+			}
+            drawingContext.DrawGeometry(Brushes.Red, soundpen, streamGeometry);
+
+
+			//if (editorModel.WindowState.CurrentMode == EditorModes.Border && model.Borders!=null)
+			//	foreach (var e in model.Borders)
+			//	{
+			//		DrawLine(drawingContext, border, e.StartTime, e.EndTime, 3);
+			//	}
           
         }
     }
