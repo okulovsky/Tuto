@@ -37,7 +37,11 @@ namespace Tuto.Navigator.Editor
 			backButton.Click += (s, a) =>
 				{
 					if (model != null)
+					{
+						model.Save();
 						model.WindowState.OnGetBack();
+					}
+						
 				};
 
 			help.Click += (s, a) =>
@@ -170,6 +174,7 @@ namespace Tuto.Navigator.Editor
 		{
 			button.IsChecked = value;
 			button.IsEnabled = !value;
+				 
 
 		}
 	}

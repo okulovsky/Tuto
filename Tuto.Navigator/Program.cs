@@ -20,6 +20,25 @@ namespace Tuto.Navigator
     {
         static Videotheque videotheque;
 
+		static bool Backdoor()
+		{
+			return false;
+			foreach (var e in videotheque.EditorModels)
+				if (e.Montage.Information != null)
+				{
+					bool found = false;
+					foreach (var i in e.Montage.Information.Episodes)
+						if (i.OutputType == OutputTypes.Patch)
+						{
+							found = true;
+							i.OutputType = OutputTypes.Output;
+						}
+					if (found)
+						e.Save();
+				}
+			return true;
+		}
+
         [STAThread]
         public static void Main(string[] args)
         {
@@ -40,6 +59,9 @@ namespace Tuto.Navigator
 				MessageBox.Show("Cannot initialize Tuto");
 				return;
 			}
+
+			if (Backdoor()) return;
+
 
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             //YoutubeApisProcessor.Initialize(videotheque.TempFolder);

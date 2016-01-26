@@ -71,6 +71,7 @@ namespace Tuto.Navigator
         {
         }
 
+
         public RelayCommand(Action execute, Func<bool> canExecute)
         {
             if (execute == null)

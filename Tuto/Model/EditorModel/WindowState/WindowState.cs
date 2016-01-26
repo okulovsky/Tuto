@@ -46,6 +46,9 @@ namespace Tuto.Model
             }
         }
 
+		[DataMember]
+		string currentSubtitle;
+
 		public string CurrentPositionAbsolute { get; private set; }
 		public string CurrentPositionRelative { get; private set; }
 

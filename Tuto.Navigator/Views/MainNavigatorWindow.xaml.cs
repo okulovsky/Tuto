@@ -37,6 +37,7 @@ namespace Tuto.Navigator.Views
 			if (MainModel.EditorVisible)
 			{
 				e.Cancel = true;
+				MainModel.CurrentVideo.Save();
 				MainModel.CurrentVideo.WindowState.OnGetBack();
 			}
 		}

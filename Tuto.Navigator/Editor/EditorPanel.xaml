@@ -20,7 +20,7 @@
         
     </UserControl.Resources>
     <DockPanel>
-        <StackPanel Orientation="Vertical" DockPanel.Dock="Left" Margin="10">
+        <StackPanel Orientation="Vertical" DockPanel.Dock="Left" Margin="10" x:Name="Buttons">
             <Button x:Name="backButton" ToolTip="Back to videos' list">
                 <Image Source="/Icons/back.png"/>
             </Button> 
