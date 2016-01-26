@@ -35,6 +35,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeByGitUpdater", "TimeByG
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Delfu", "Delfu\Delfu.csproj", "{6AE1CF1E-1971-4DB5-8C3B-00843080F67D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tuto.Publisher", "Tuto.Publisher\Tuto.Publisher.csproj", "{7E217709-A22E-4E5F-A62E-FB8DCDE2B063}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -115,6 +117,16 @@ Global
 		{6AE1CF1E-1971-4DB5-8C3B-00843080F67D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{6AE1CF1E-1971-4DB5-8C3B-00843080F67D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{6AE1CF1E-1971-4DB5-8C3B-00843080F67D}.Release|x86.ActiveCfg = Release|Any CPU
+		{7E217709-A22E-4E5F-A62E-FB8DCDE2B063}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E217709-A22E-4E5F-A62E-FB8DCDE2B063}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E217709-A22E-4E5F-A62E-FB8DCDE2B063}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7E217709-A22E-4E5F-A62E-FB8DCDE2B063}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7E217709-A22E-4E5F-A62E-FB8DCDE2B063}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7E217709-A22E-4E5F-A62E-FB8DCDE2B063}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E217709-A22E-4E5F-A62E-FB8DCDE2B063}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E217709-A22E-4E5F-A62E-FB8DCDE2B063}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{7E217709-A22E-4E5F-A62E-FB8DCDE2B063}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{7E217709-A22E-4E5F-A62E-FB8DCDE2B063}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
