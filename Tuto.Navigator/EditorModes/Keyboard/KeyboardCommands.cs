@@ -76,6 +76,7 @@ namespace Editor
         [CmdHelp("Specifies that the current fragment starts the new episode.")]
         NewEpisodeHere,
 
-        InsertDeletion
+        InsertDeletion,
+		Sign
     }
 }

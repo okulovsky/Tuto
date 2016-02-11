@@ -28,6 +28,8 @@ namespace Tuto.Model
 		public int SynchronizationShift { get; set; }
 		[DataMember]
 		public bool CrossfadesEnabled { get; set; }
+		[DataMember]
+		public List<Sign> Signs { get; internal set; }
 
         /// <summary>
         /// Tokens of the episode
@@ -72,6 +74,7 @@ namespace Tuto.Model
             SoundIntervals = new List<SoundInterval>();
             SubtitleFixes = new List<SubtitleFix>();
             CrossfadesEnabled = true;
+			Signs = new List<Sign>();
         }
 
 		[Obsolete("Костыль. Убрать, когда заночу с Updater-ом")]
