@@ -32,10 +32,11 @@ namespace Tuto.BatchWorks
             var soxExe = Model.Videotheque.Locations.SoxExecutable;
             var loc = Model.Locations.FaceVideo;
             var temp = Model.Locations.TemporalDirectory;
-
+            Progress = 0;
             RunProcess(string.Format(@"-i ""{0}"" -y ""{1}\input.wav""", loc, temp), ffExe.FullName);
+            Progress = 10;
             RunProcess(string.Format(@"""{0}\input.wav"" ""{0}\temp.wav"" --norm", temp), soxExe.FullName);
-
+            Progress = 20;
             //profile for noise creation
             if (!File.Exists(string.Format("{0}\\noise", temp)))
             {
@@ -44,7 +45,9 @@ namespace Tuto.BatchWorks
                 File.Delete(Path.Combine(temp.FullName, "sample.wav"));
 
             }
+            Progress = 30;
             RunProcess(string.Format(@"""{0}\temp.wav"" ""{0}\noise"" ""{0}\result.wav""", temp), Path.Combine(progPath.FullName, "nr"));
+            Progress = 80;
             RunProcess(string.Format(@"-i ""{0}\result.wav"" -ar 44100 -ac 2 -ab 192k -f mp3 -qscale 0 ""{1}\cleaned-tmp.mp3"" -y", temp.FullName, Model.Locations.FaceVideo.Directory.FullName), ffExe.FullName);
             Thread.Sleep(500);
             var file = Model.Locations.ClearedSound;
@@ -53,6 +56,7 @@ namespace Tuto.BatchWorks
             Thread.Sleep(200);
             File.Move(GetTempFile(file).FullName, file.FullName);
             DeleteTemps(temp);
+            Progress = 100;
             OnTaskFinished();
 
         }

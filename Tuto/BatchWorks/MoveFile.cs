@@ -27,6 +27,7 @@ namespace Tuto.BatchWorks
             if (File.Exists(to.FullName))
                 to.Delete();
             File.Move(from.FullName, to.FullName);
+            OnTaskFinished();
         }
     }
 }

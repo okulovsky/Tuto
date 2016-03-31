@@ -100,6 +100,7 @@ namespace Tuto.BatchWorks
         public event EventHandler TaskFinished;
         public void OnTaskFinished()
         {
+            Progress = 100;
             if (TaskFinished != null)
                 TaskFinished(this, EventArgs.Empty);
         }
