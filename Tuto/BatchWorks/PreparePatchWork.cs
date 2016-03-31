@@ -9,7 +9,7 @@ using System.Threading;
 
 namespace Tuto.BatchWorks
 {
-    public class PreparePatchWork : ProcessBatchWork
+    public class PreparePatchWork : FFmpegWork
     {
         public PreparePatchWork(EditorModel model, FileInfo source, FileInfo to, bool forced)
         {

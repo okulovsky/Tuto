@@ -39,8 +39,7 @@ namespace Tuto.BatchWorks
                 else if (!ep.FullName.Exists)
                 {
                     
-                    var m = emodel.Videotheque.EditorModels.First(x => x.Montage.RawVideoHash == ep.ModelHash);   
-                    
+                    var m = emodel.Videotheque.EditorModels.First(x => x.Montage.RawVideoHash == ep.ModelHash);             
                     var epInfo = m.Montage.Information.Episodes[ep.EpisodeNumber];
                     BeforeWorks.Add(new AssemblyEpisodeWork(m, epInfo));
                 }

@@ -10,7 +10,7 @@ using Tuto.TutoServices.Assembler;
 
 namespace Tuto.BatchWorks
 {
-    public class AssemblyEpisodeWork : ProcessBatchWork
+    public class AssemblyEpisodeWork : FFmpegWork
     {
         private List<string> filesToDelIfAborted { get; set; }
         private bool crossFades {get; set;}

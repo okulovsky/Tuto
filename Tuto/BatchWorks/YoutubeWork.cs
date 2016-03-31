@@ -11,7 +11,7 @@ using Tuto.Publishing.Youtube;
 
 namespace Tuto.BatchWorks
 {
-    public class YoutubeWork : ProcessBatchWork
+    public class YoutubeWork : BatchWork
     {
         EditorModel editorModel;
         int episodeNumber;
@@ -35,12 +35,6 @@ namespace Tuto.BatchWorks
             if (episode.YoutubeId != null) YoutubeApisProcessor.Current.DeleteVideo(episode.YoutubeId);
             episode.YoutubeId = newId;
 			editorModel.Save();
-        }
-
-        
-        public override void Clean()
-        {
-            FinishProcess();
         }
     }
 }
