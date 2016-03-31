@@ -35,6 +35,7 @@ namespace Tuto.BatchWorks
             if (Process.ExitCode != 0)
                 throw new ArgumentException(
                     string.Format("Process' exit code not equals zero. \n Exe: \"{0}\" \n Args: {1} \n Full: \"{0}\" {1}", path, args));
+            Progress = 100;
         }
 
         private void DataReceived(object sender, DataReceivedEventArgs e)

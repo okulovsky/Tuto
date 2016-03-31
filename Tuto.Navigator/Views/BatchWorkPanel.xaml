@@ -29,6 +29,7 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
                     <DataGridTextColumn Header="Status" Binding="{Binding Status}"/>
+                    <DataGridTextColumn Header="Progress" Binding="{Binding Progress}"/>
                     <DataGridTemplateColumn Header="Exception">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>

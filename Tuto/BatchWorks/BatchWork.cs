@@ -31,7 +31,7 @@ namespace Tuto.BatchWorks
         public virtual void Work() { }
         public virtual void Clean() { }
         public virtual bool WorkIsRequired() { return true; }
-        public virtual short Progress { get; set; }
+        
 
         public FileInfo GetTempFile(FileInfo info, string suffix)
         {
@@ -54,6 +54,14 @@ namespace Tuto.BatchWorks
         public bool Forced { get; set; }
 
         public string Name { get; set; }
+
+        private short progress;
+        public short Progress
+        {
+            get { return progress; }
+            set { progress = value; NotifyPropertyChanged();}
+        }
+
         BatchWorkStatus status;
         public BatchWorkStatus Status
         {
