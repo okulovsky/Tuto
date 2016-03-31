@@ -10,7 +10,7 @@ using System.Threading;
 
 namespace Tuto.BatchWorks
 {
-    public class CreateThumbWork : BatchWork
+    public class CreateThumbWork : ProcessBatchWork
     {
         public CreateThumbWork(FileInfo source, EditorModel model, bool forced)
         {

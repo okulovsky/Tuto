@@ -10,7 +10,7 @@ using Tuto.TutoServices.Assembler;
 
 namespace Tuto.BatchWorks
 {
-    public class AssemblyEpisodeWork : BatchWork
+    public class AssemblyEpisodeWork : ProcessBatchWork
     {
 
         private List<string> filesToDelIfAborted { get; set; }

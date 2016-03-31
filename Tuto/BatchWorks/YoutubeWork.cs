@@ -11,7 +11,7 @@ using Tuto.Publishing.Youtube;
 
 namespace Tuto.BatchWorks
 {
-    public class YoutubeWork : BatchWork
+    public class YoutubeWork : ProcessBatchWork
     {
         EditorModel editorModel;
         int episodeNumber;

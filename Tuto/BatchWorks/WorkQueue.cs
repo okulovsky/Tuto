@@ -52,7 +52,7 @@ namespace Tuto.BatchWorks
                 e.Status = BatchWorkStatus.Running;
                 try
                 {
-                    currentProcess = e.Process;
+                    currentProcess = (e is ProcessBatchWork) ? (e as ProcessBatchWork).Process : null;
                     e.Work();
                     e.Status = BatchWorkStatus.Success;
                     currentIndex++;

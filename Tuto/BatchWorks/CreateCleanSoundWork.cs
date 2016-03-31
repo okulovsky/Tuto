@@ -11,7 +11,7 @@ using System.Threading;
 
 namespace Tuto.BatchWorks
 {
-    public class CreateCleanSoundWork : BatchWork
+    public class CreateCleanSoundWork : ProcessBatchWork
     {
 
         public CreateCleanSoundWork(FileInfo source, EditorModel model, bool forced)

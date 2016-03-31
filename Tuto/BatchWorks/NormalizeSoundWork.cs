@@ -10,7 +10,7 @@ using Tuto.TutoServices.Assembler;
 
 namespace Tuto.BatchWorks
 {
-    public class NormalizeSoundWork : BatchWork
+    public class NormalizeSoundWork : ProcessBatchWork
     {
         private List<string> filesToDelIfAborted { get; set; }
         private FileInfo videoFile { get; set; }

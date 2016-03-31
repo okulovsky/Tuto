@@ -11,7 +11,7 @@ using System.Threading;
 
 namespace Tuto.BatchWorks
 {
-    public class PatchWork : BatchWork
+    public class PatchWork : ProcessBatchWork
     {
 
         private List<string> filesToDelIfAborted { get; set; }

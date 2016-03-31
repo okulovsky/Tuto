@@ -24,27 +24,14 @@ namespace Tuto.BatchWorks
 
     public abstract class BatchWork : NotifierModel
     {
-        public virtual Process Process { get; set; }
         public virtual EditorModel Model { get; set; }
         public bool NeedToRewrite { get; set; }
 
-        protected void RunProcess(string args, string path)
-        {
-            Process = new Process();
-            Process.StartInfo.FileName = path;
-            Process.StartInfo.Arguments = args;
-            Process.StartInfo.UseShellExecute = Model.Videotheque.Data.WorkSettings.ShowProcesses;
-            Process.StartInfo.CreateNoWindow = !Model.Videotheque.Data.WorkSettings.ShowProcesses;
-            Process.Start();
-            Process.WaitForExit();
-            if (Process.ExitCode != 0)
-                throw new ArgumentException(
-                    string.Format("Process' exit code not equals zero. \n Exe: \"{0}\" \n Args: {1} \n Full: \"{0}\" {1}", path, args));
-        }
 
         public virtual void Work() { }
         public virtual void Clean() { }
         public virtual bool WorkIsRequired() { return true; }
+        public virtual short Progress { get; set; }
 
         public FileInfo GetTempFile(FileInfo info, string suffix)
         {
@@ -92,12 +79,6 @@ namespace Tuto.BatchWorks
                 }
                 catch { }
             }
-        }
-
-        public void FinishProcess()
-        {
-            if (Process != null && !Process.HasExited)
-                Process.Kill();
         }
 
         string exceptionMessage;
