@@ -68,16 +68,7 @@ namespace Tuto.BatchWorks
             if (match.Success)
             {
                 string duration = match.Groups[1].Value;
-                string[] timePieces = duration.Split(new char[] { ':', '.' });
-                if (timePieces.Length == 4)
-                {
-                    timeSpan = new TimeSpan(
-                        0,
-                        Convert.ToInt16(timePieces[0]),
-                        Convert.ToInt16(timePieces[1]),
-                        Convert.ToInt16(timePieces[2]),
-                        Convert.ToInt16(timePieces[3]));
-                }
+                timeSpan = TimeSpan.Parse(duration);
             }
             return timeSpan;
         }
