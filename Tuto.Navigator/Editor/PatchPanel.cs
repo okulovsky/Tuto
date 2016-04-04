@@ -67,7 +67,7 @@ namespace Tuto.Navigator.Editor
             if (!drag || selection == null) return;
             if (e.LeftButton!= System.Windows.Input.MouseButtonState.Pressed)
             {
-                drag = false;
+                StopDrag();
                 return;
             }
             var thisMs = MsAtPoint(e.GetPosition(this));
@@ -94,15 +94,22 @@ namespace Tuto.Navigator.Editor
             InvalidateVisual();
         }
 
+        void StopDrag()
+        {
+             drag = false;
+             ReleaseMouseCapture();
+        }
+
         void PatchPanel_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            drag = false;
+            StopDrag();
         }
 
         void PatchPanel_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             selection = FindSelection(e.GetPosition(this));
             drag = selection != null;
+            if (selection != null) CaptureMouse();
             InvalidateVisual();
         }
 
