@@ -28,29 +28,82 @@ namespace Tuto.Navigator.Editor
         }
     }
 
+
+ public enum SelectionType
+    {
+        Drag,
+        LeftDrag,
+        RightDrag
+    }
+
+    public class PatchPanelSelection
+    {
+        public readonly PatchData Item;
+        public readonly SelectionType Type;
+        public Point SelectionStart;
+        public PatchPanelSelection(SelectionType type, PatchData item, Point selectionStart)
+        {
+            this.Item=item;
+            this.Type=type;
+            this.SelectionStart = selectionStart;
+        }
+    }
+
     public class PatchPanel : TimelineBase
     {
         TempModel model = new TempModel();
-        PatchData selectedPatch;
+        PatchPanelSelection selection;
+        bool drag;
 
         public PatchPanel()
         {
             MouseDown += PatchPanel_MouseDown;
+            MouseUp += PatchPanel_MouseUp;
+            MouseMove += PatchPanel_MouseMove;
+        }
+
+        void PatchPanel_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if (!drag || selection == null) return;
+            if (e.LeftButton!= System.Windows.Input.MouseButtonState.Pressed)
+            {
+                drag = false;
+                return;
+            }
+            var thisMs = MsAtPoint(e.GetPosition(this));
+            var oldMs = MsAtPoint(selection.SelectionStart);
+            var delta = thisMs - oldMs;
+            selection.SelectionStart=e.GetPosition(this);
+            switch(selection.Type)
+            {
+                case SelectionType.Drag:
+                    selection.Item.Begin += delta;
+                    selection.Item.End += delta;
+                    break;
+                case SelectionType.LeftDrag:
+                    selection.Item.Begin += delta;
+                    if (selection.Item.Begin > selection.Item.End)
+                        selection.Item.Begin = selection.Item.End;
+                    break;
+                case SelectionType.RightDrag:
+                    selection.Item.End += delta;
+                    if (selection.Item.End < selection.Item.Begin)
+                        selection.Item.End = selection.Item.Begin;
+                    break;
+            }
+            InvalidateVisual();
+        }
+
+        void PatchPanel_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            drag = false;
         }
 
         void PatchPanel_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            var toDo = FindPatch(e.GetPosition(this));
-            if (toDo == null) return;
-            selectedPatch = toDo.Item2;
+            selection = FindSelection(e.GetPosition(this));
+            drag = selection != null;
             InvalidateVisual();
-        }
-
-        enum ActionType
-        {
-            Drag,
-            LeftDrag,
-            RightDrag
         }
 
 
@@ -67,29 +120,26 @@ namespace Tuto.Navigator.Editor
             return false;
         }
 
-        Tuple<ActionType,PatchData> FindPatch(Point p)
+        PatchPanelSelection FindSelection(Point p)
         {
             foreach(var e in model.Patches)
             {
                 foreach (var r in GetRects(e.Begin, e.End, 0, 1))
                     if (r.Contains(p))
-                        return Tuple.Create(ActionType.Drag, e);
+                        return new PatchPanelSelection(SelectionType.Drag, e, p);
 
 
-                ActionType? type = null;
+                SelectionType? type = null;
                 double delta = 0;
-                if (TestEdge(p, e.Begin, -EdgeWidth, ref delta)) type = ActionType.LeftDrag;
-                if (TestEdge(p, e.End, EdgeWidth, ref delta)) type = ActionType.RightDrag;
+                if (TestEdge(p, e.Begin, -EdgeWidth, ref delta)) type = SelectionType.LeftDrag;
+                if (TestEdge(p, e.End, EdgeWidth, ref delta)) type = SelectionType.RightDrag;
 
                 if (type == null) continue;
 
-                if (e.End - e.Begin > 100)
-                    return Tuple.Create(type.Value, e);
+                if (e.End - e.Begin < 100 && delta > EdgeHalf)
+                    type = SelectionType.Drag;
 
-                if (delta < EdgeHalf)
-                    return Tuple.Create(type.Value, e);
-
-                return Tuple.Create(ActionType.Drag, e);
+                return new PatchPanelSelection(type.Value, e, p);
 
             }
             return null;
@@ -146,7 +196,9 @@ namespace Tuto.Navigator.Editor
         void DrawPatch(DrawingContext context, PatchData data)
         {
 
-            var pen = data == selectedPatch ? SelectedPen : Pen;
+            var pen = Pen;
+            if (selection != null && selection.Item == data) pen = SelectedPen;
+
             foreach (var e in GetRects(data.Begin, data.End, 0, 1))
             {
                 context.DrawRectangle(Brush, Pen, e);
