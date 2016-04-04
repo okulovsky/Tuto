@@ -25,6 +25,7 @@
             <Grid>
                 <ed:ModelView x:Name="ModelView" DataContext="{Binding}"/>
                 <ed:Slider x:Name="Slider" DataContext="{Binding}"/>
+                <ed:PatchPanel x:Name="Patches"/>
             </Grid>
         </StackPanel>
     </StackPanel>

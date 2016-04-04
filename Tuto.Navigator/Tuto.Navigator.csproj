@@ -182,6 +182,7 @@
     </Compile>
     <Compile Include="Initialization\VideothequeRequestViewModel.cs" />
     <Compile Include="Editor\VideoPlayerPanelVideoWrap.cs" />
+    <Compile Include="Editor\PatchPanel.cs" />
     <Compile Include="Views\BatchWorkPanel.xaml.cs">
       <DependentUpon>BatchWorkPanel.xaml</DependentUpon>
     </Compile>

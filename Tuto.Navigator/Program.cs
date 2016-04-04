@@ -75,6 +75,9 @@ namespace Tuto.Navigator
             mainWindow.DataContext = globalModel;
             mainWindow.WindowState = System.Windows.WindowState.Maximized;
 
+            if (args.Length > 1)
+                mainWindow.RequestedModel = args[1];
+
 			string directoryName = args[0];
 			if (File.Exists(args[0]))
 			{

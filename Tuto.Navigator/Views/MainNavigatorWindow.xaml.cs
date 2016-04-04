@@ -28,7 +28,21 @@ namespace Tuto.Navigator.Views
         public MainNavigatorWindow()
         {
             InitializeComponent();
+            Loaded+=MainNavigatorWindow_Loaded;
         }
+
+        void MainNavigatorWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (RequestedModel != null)
+            {
+                var model = (MainModel)DataContext;
+                var video = model.VideothequeModel.AllModels.Where(z => z.Name == RequestedModel).FirstOrDefault();
+                video.Edit.Execute(null);
+            }
+        }
+
+
+        public string RequestedModel;
 
 		protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
 		{
