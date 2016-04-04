@@ -5,12 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using Tuto.Model;
 
 namespace Tuto.Navigator.Editor
 {
-    public class TimelineBase : FrameworkElement
+    public class TimelineBase : UserControl
     {
 
         protected EditorModel editorModel { get { return (EditorModel)DataContext; } }

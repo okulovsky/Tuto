@@ -32,7 +32,7 @@ namespace Editor
 
         public void CheckTime(int ms)
         {
-
+            model.WindowState.ArrangeMode = ArrangeModes.Overlay;
             var index = montage.Chunks.FindIndex(ms);
             if (index == -1)
             {
@@ -109,6 +109,22 @@ namespace Editor
                     FastSpeed += 0.5;
 					FastSpeed = Math.Min(3, FastSpeed);
                     return;
+                case KeyboardCommands.Face:
+                    model.MarkHere(Mode.Face, key.Ctrl);
+                    return;
+
+                case KeyboardCommands.Desktop:
+                    model.MarkHere(Mode.Desktop, key.Ctrl);
+                    return;
+
+                case KeyboardCommands.Drop:
+                    model.MarkHere(Mode.Drop, key.Ctrl);
+                    return;
+
+                case KeyboardCommands.Clear:
+                    model.RemoveChunkHere();
+                    return;
+
             }
 
 

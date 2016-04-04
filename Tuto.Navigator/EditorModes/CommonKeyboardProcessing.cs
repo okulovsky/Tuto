@@ -46,22 +46,7 @@ namespace Editor
             switch (key.Command)
             {
                
-                case KeyboardCommands.Face:
-                    model.MarkHere(Mode.Face, key.Ctrl);
-                    return true;
-
-                case KeyboardCommands.Desktop:
-                    model.MarkHere(Mode.Desktop, key.Ctrl);
-                    return true;
-
-                case KeyboardCommands.Drop:
-                    model.MarkHere(Mode.Drop, key.Ctrl);
-                    return true;
-
-                case KeyboardCommands.Clear:
-                    model.RemoveChunkHere();
-                    return true;
-
+                
               
 
                 case KeyboardCommands.NewEpisodeHere:

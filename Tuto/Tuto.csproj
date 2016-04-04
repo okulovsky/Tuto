@@ -106,6 +106,7 @@
     <Compile Include="Model\EditorModel\EditorModel.cs" />
     <Compile Include="Model\EditorModel\Locations.cs" />
     <Compile Include="Model\EditorModel\Statuses.cs" />
+    <Compile Include="Model\EditorModel\WindowState\ArrangeModes.cs" />
     <Compile Include="Model\MyPath.cs" />
     <Compile Include="Model\Names.cs" />
     <Compile Include="Model\Publishing\PublishingModel.cs" />

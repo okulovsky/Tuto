@@ -34,9 +34,11 @@ namespace Tuto.Navigator.Editor
 			model.WindowState.SubsrcibeByExpression(z => z.CurrentPosition, PositionChanged);
 			model.WindowState.SubsrcibeByExpression(z => z.FaceVideoIsVisible, VideoVisibilityChanged);
 			model.WindowState.SubsrcibeByExpression(z => z.DesktopVideoIsVisible, VideoVisibilityChanged);
+            model.WindowState.SubsrcibeByExpression(z => z.ArrangeMode, ArrangeModeChanged);
 
             ModeChanged();
             RatioChanged();
+            ArrangeModeChanged();
             VideoVisibilityChanged();
             PositionChanged();
             PauseChanged();
@@ -185,6 +187,11 @@ namespace Tuto.Navigator.Editor
 			panel.Face.Visibility = model.WindowState.FaceVideoIsVisible;
 			panel.Desktop.Visibility = model.WindowState.DesktopVideoIsVisible;
 		}
+
+        void ArrangeModeChanged()
+        {
+            panel.SetArrangeMode(model.WindowState.ArrangeMode);
+        }
 		#endregion
 	}
 }

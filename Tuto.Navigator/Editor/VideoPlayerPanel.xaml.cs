@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Tuto.Model;
 
 namespace Tuto.Navigator.Editor
 {
@@ -41,6 +42,37 @@ namespace Tuto.Navigator.Editor
 				ControlKeyDown(sender, e);
 		}
 
+        void SetBothMode(int faceColumn, int faceSize)
+        {
+            Grid.SetColumn(FaceVideo, faceColumn);
+            videoGrid.ColumnDefinitions[faceColumn].Width = new GridLength(faceSize, GridUnitType.Star);
+
+            Grid.SetColumn(DesktopVideo,1- faceColumn);
+            videoGrid.ColumnDefinitions[1-faceColumn].Width = new GridLength(100 - faceSize, GridUnitType.Star);
+
+        }
+
+        public void SetArrangeMode(ArrangeModes mode)
+        {
+            switch(mode)
+            {
+                case ArrangeModes.BothEqual:
+                    SetBothMode(0,50);
+                    break;
+                case ArrangeModes.BothDesktopBigger:
+                    SetBothMode(1,25);
+                    break;
+                case ArrangeModes.BothFaceBigger:
+                    SetBothMode(0,75);
+                    break;
+                case ArrangeModes.Overlay:
+                    Grid.SetColumn(DesktopVideo, 0);
+                    Grid.SetColumn(FaceVideo, 0);
+                    videoGrid.ColumnDefinitions[0].Width = new GridLength(100, GridUnitType.Star);
+                    videoGrid.ColumnDefinitions[1].Width = new GridLength(0, GridUnitType.Star);
+                    break;
+            }
+        }
 
 
 

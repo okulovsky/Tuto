@@ -8,8 +8,13 @@
              IsTabStop="True"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <StackPanel>
-        <Grid>
+    <DockPanel>
+        <Grid DockPanel.Dock="Bottom">
+            <ed:ModelView x:Name="ModelView" DataContext="{Binding}"/>
+            <ed:Slider x:Name="Slider" DataContext="{Binding}"/>
+        </Grid>
+
+        <Grid x:Name="videoGrid">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50*"/>
                 <ColumnDefinition Width="50*"/>
@@ -21,12 +26,5 @@
                     x:Name="DesktopVideo"  
                     Grid.Column="1"/>
         </Grid>
-        <StackPanel Orientation="Vertical">
-            <Grid>
-                <ed:ModelView x:Name="ModelView" DataContext="{Binding}"/>
-                <ed:Slider x:Name="Slider" DataContext="{Binding}"/>
-                <ed:PatchPanel x:Name="Patches"/>
-            </Grid>
-        </StackPanel>
-    </StackPanel>
+    </DockPanel>
 </UserControl>

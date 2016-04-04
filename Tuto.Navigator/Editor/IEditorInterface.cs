@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Tuto.Model;
 
 namespace Tuto.Navigator.Editor
 {
@@ -13,6 +14,8 @@ namespace Tuto.Navigator.Editor
         Face,
         Desktop,
     }
+    
+   
 
 	public interface IEditorInterface
 	{
@@ -21,6 +24,8 @@ namespace Tuto.Navigator.Editor
         void SetRatio(double ratio);
         IVideoInterface Face { get; }
         IVideoInterface Desktop { get; }
+        void SetArrangeMode(ArrangeModes mode);
+
 	}
 
     public interface IVideoInterface

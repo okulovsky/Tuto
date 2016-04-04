@@ -5,43 +5,60 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace Tuto.Navigator.Editor
 {
-   public class PatchData
+    public enum PatchType
+    {
+        Subtitles,
+        Image,
+        Video
+    }
+
+    public enum MediaPatchMode
+    {
+        Replace,
+        VideoOnlyAddSilence,
+        VideoOnlyTruncateToFit
+    }
+
+
+
+   
+    public class Patch
     {
         public int Begin { get; set; }
         public int End { get; set; }
-        public string Text { get; set; }
     }
 
     public class TempModel
     {
-        public ObservableCollection<PatchData> Patches { get; private set; }
+        public ObservableCollection<Patch> Patches { get; private set; }
 
         public TempModel() { 
-            Patches = new ObservableCollection<PatchData>();
-            Patches.Add(new PatchData { Begin = 1000, End = 10000, Text = "A" });
-            Patches.Add(new PatchData { Begin = 40000, End = 40000, Text = "B" });
-            Patches.Add(new PatchData { Begin = 100000, End = 700000, Text = "C" });
+            Patches = new ObservableCollection<Patch>();
+            Patches.Add(new Patch { Begin = 1000, End = 10000 });
+            Patches.Add(new Patch { Begin = 40000, End = 40000 });
+            Patches.Add(new Patch { Begin = 100000, End = 700000 });
         }
     }
 
 
- public enum SelectionType
-    {
-        Drag,
-        LeftDrag,
-        RightDrag
-    }
+     public enum SelectionType
+     {
+            Drag,
+            LeftDrag,
+            RightDrag
+     }
 
     public class PatchPanelSelection
     {
-        public readonly PatchData Item;
+        public readonly Patch Item;
         public readonly SelectionType Type;
         public Point SelectionStart;
-        public PatchPanelSelection(SelectionType type, PatchData item, Point selectionStart)
+        public PatchPanelSelection(SelectionType type, Patch item, Point selectionStart)
         {
             this.Item=item;
             this.Type=type;
@@ -60,7 +77,13 @@ namespace Tuto.Navigator.Editor
             MouseDown += PatchPanel_MouseDown;
             MouseUp += PatchPanel_MouseUp;
             MouseMove += PatchPanel_MouseMove;
+          
+            Background = new SolidColorBrush(Colors.Transparent);
+            
         }
+
+        ContextMenu forExisted;
+        ContextMenu forNew;
 
         void PatchPanel_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
@@ -97,7 +120,6 @@ namespace Tuto.Navigator.Editor
         void StopDrag()
         {
              drag = false;
-             ReleaseMouseCapture();
         }
 
         void PatchPanel_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -107,6 +129,7 @@ namespace Tuto.Navigator.Editor
 
         void PatchPanel_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
+            
             selection = FindSelection(e.GetPosition(this));
             drag = selection != null;
             if (selection != null) CaptureMouse();
@@ -200,18 +223,19 @@ namespace Tuto.Navigator.Editor
 
         }
 
-        void DrawPatch(DrawingContext context, PatchData data)
+        void DrawPatch(DrawingContext context, Patch data)
         {
 
             var pen = Pen;
             if (selection != null && selection.Item == data) pen = SelectedPen;
 
+            
             foreach (var e in GetRects(data.Begin, data.End, 0, 1))
             {
                 context.DrawRectangle(Brush, Pen, e);
                 context.DrawLine(pen, e.TopLeft, e.TopRight);
                 context.DrawLine(pen, e.BottomLeft, e.BottomRight);
-
+                
             }
             var point = GetCoordinate(data.Begin);
             point.X -= EdgeWidth-1;
@@ -219,6 +243,8 @@ namespace Tuto.Navigator.Editor
             point = GetCoordinate(data.End);
             point.X -= 1;
             DrawGeometry(context, point, GetRightGeometry, pen);
+
+         
         }
 
         protected override void OnRender(DrawingContext drawingContext)

@@ -22,6 +22,10 @@ namespace Editor
 
         public void CheckTime()
         {
+            var index = montage.Chunks.FindIndex(model.WindowState.CurrentPosition);
+            if (montage.Chunks[index].Mode == Mode.Face) model.WindowState.ArrangeMode = ArrangeModes.BothFaceBigger;
+            if (montage.Chunks[index].Mode == Mode.Desktop) model.WindowState.ArrangeMode = ArrangeModes.BothDesktopBigger;
+
         }
 
 
@@ -38,7 +42,6 @@ namespace Editor
                 model.WindowState.CurrentPosition=selectedLocation;
             }
         }
-
 
         public void ProcessKey(KeyboardCommandData key)
         {
@@ -83,6 +86,25 @@ namespace Editor
                     model.WindowState.SpeedRatio -= 0.5;
 					 model.WindowState.SpeedRatio = Math.Max(0.5, model.WindowState.SpeedRatio);
                   return;
+
+                case KeyboardCommands.Face:
+                  model.MarkHere(Mode.Face, key.Ctrl);
+                  model.WindowState.ArrangeMode = ArrangeModes.BothFaceBigger;
+                  return;
+
+                case KeyboardCommands.Desktop:
+                  model.MarkHere(Mode.Desktop, key.Ctrl);
+                  model.WindowState.ArrangeMode = ArrangeModes.BothDesktopBigger;
+                  return;
+
+                case KeyboardCommands.Drop:
+                  model.MarkHere(Mode.Drop, key.Ctrl);
+                  return;
+
+                case KeyboardCommands.Clear:
+                  model.RemoveChunkHere();
+                  return;
+
             }
 
         }

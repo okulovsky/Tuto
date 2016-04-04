@@ -131,6 +131,15 @@ namespace Tuto.Model
             }
         }
 
+        [DataMember]
+        ArrangeModes arrangeMode;
+
+        public ArrangeModes ArrangeMode
+        {
+            get { return arrangeMode; }
+            set { SetAndNotify(ref arrangeMode, value); }
+        }
+
         public event Action GetBack;
 
 		public void OnGetBack()

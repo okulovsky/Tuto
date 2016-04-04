@@ -167,9 +167,6 @@
     <Compile Include="Editor\InfoWindow.xaml.cs">
       <DependentUpon>InfoWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Editor\MainEditorWindow.xaml.cs">
-      <DependentUpon>MainEditorWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Editor\VideoPlayerPanel.xaml.cs">
       <DependentUpon>VideoPlayerPanel.xaml</DependentUpon>
     </Compile>
@@ -239,10 +236,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Editor\InfoWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Editor\MainEditorWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
