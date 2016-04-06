@@ -18,9 +18,13 @@ namespace Tuto.Publishing
         [DataMember]
         public string Keywords { get; set; }
         [DataMember]
-        public string DescriptionPS { get; set; }
-	    [DataMember]
-		public string ThumbnailImagePath { get; set; }
+        public string Description { get; set; }
+        [DataMember]
+        public bool EnableDescriptionContents { get; set; }
+        [DataMember]
+        public string ULearnUrlPrefix { get; set; }
+		[DataMember]
+       public string ThumbnailImagePath { get; set; }
         [DataMember]
         public List<TopicLevel> TopicLevels { get; private set; }
         [DataMember]
@@ -39,7 +43,7 @@ namespace Tuto.Publishing
             LatexCompiledSlidesSubdirectory = "LatexCompiledSlides";
             CourseAbbreviation = "";
             Keywords = "";
-            DescriptionPS = "";
+            Description = "";
         }
     }
 }
