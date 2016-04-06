@@ -11,10 +11,11 @@
     <DockPanel>
         <Grid DockPanel.Dock="Bottom">
             <ed:ModelView x:Name="ModelView" DataContext="{Binding}"/>
+            <ed:PatchPanel x:Name="PatchView" DataContext="{Binding}"/>
             <ed:Slider x:Name="Slider" DataContext="{Binding}"/>
         </Grid>
 
-        <Grid x:Name="videoGrid">
+        <Grid x:Name="videoGrid" DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50*"/>
                 <ColumnDefinition Width="50*"/>
@@ -25,6 +26,8 @@
             <MediaElement 
                     x:Name="DesktopVideo"  
                     Grid.Column="1"/>
+            <ed:PatchUIContainer x:Name="PatchContainer"/>
         </Grid>
+        <Rectangle/>
     </DockPanel>
 </UserControl>

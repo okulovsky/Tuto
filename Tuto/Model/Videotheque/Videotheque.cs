@@ -500,6 +500,10 @@ namespace Tuto.Model
                container.MontageModel.DisplayedRawLocation = file.Name;
                rawLocation = new DirectoryInfo("Z:\\");
             }
+
+            if (container.MontageModel.Patches == null)
+                container.MontageModel.Patches = new List<Patch>();
+
             var model = new EditorModel(file, rawLocation, this, container.MontageModel, container.WindowState);
             SaveEditorModel(model);
             return model;

@@ -107,8 +107,12 @@
     <Compile Include="Model\EditorModel\Locations.cs" />
     <Compile Include="Model\EditorModel\Statuses.cs" />
     <Compile Include="Model\EditorModel\WindowState\ArrangeModes.cs" />
+    <Compile Include="Model\EditorModel\WindowState\PatchSelection.cs" />
+    <Compile Include="Model\EditorModel\WindowState\PatchSelectionType.cs" />
     <Compile Include="Model\MyPath.cs" />
     <Compile Include="Model\Names.cs" />
+    <Compile Include="Model\Patching\Patch.cs" />
+    <Compile Include="Model\Patching\SubtitlePatch.cs" />
     <Compile Include="Model\Publishing\PublishingModel.cs" />
     <Compile Include="Model\Publishing\PublishingSettings.cs" />
     <Compile Include="Model\Videotheque\IVideothequeLoadingUI.cs" />

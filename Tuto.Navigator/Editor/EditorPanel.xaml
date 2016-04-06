@@ -43,6 +43,9 @@
             <ToggleButton x:Name="borderMode" ToolTip="Mode for precise movings of the borders">
                 <Image Source="/Icons/microscope.png"/>
             </ToggleButton>
+            <ToggleButton x:Name="patchMode" ToolTip="Mode for adding subtitles, replace fragments etc">
+                <Image Source="/Icons/patch.png"/>
+            </ToggleButton>
             
             <Rectangle Height="20"/>
             <Button x:Name="sync" ToolTip="Synchronize videos">

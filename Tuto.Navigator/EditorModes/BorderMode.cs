@@ -32,7 +32,6 @@ namespace Editor
 
         public void CheckTime(int ms)
         {
-            model.WindowState.ArrangeMode = ArrangeModes.Overlay;
             var index = montage.Chunks.FindIndex(ms);
             if (index == -1)
             {
@@ -77,7 +76,7 @@ namespace Editor
         }
 
 
-        public void MouseClick(int selectedLocation, MouseButtonEventArgs button)
+        public void MouseClick(int selectedLocation, bool button)
         {
             model.WindowState.CurrentPosition = selectedLocation;
             CheckTime(selectedLocation);

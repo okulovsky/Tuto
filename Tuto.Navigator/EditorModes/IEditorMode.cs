@@ -10,7 +10,7 @@ namespace Editor
     public interface IEditorMode
     {
         void CheckTime();
-        void MouseClick(int SelectedLocation, MouseButtonEventArgs button);
+        void MouseClick(int SelectedLocation, bool button);
         void ProcessKey(KeyboardCommandData key);
     }
 }

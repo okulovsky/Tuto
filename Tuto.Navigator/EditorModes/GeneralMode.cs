@@ -29,9 +29,9 @@ namespace Editor
         }
 
 
-        public void MouseClick(int selectedLocation, MouseButtonEventArgs e)
+        public void MouseClick(int selectedLocation, bool alternative)
         {
-            if (e.LeftButton == MouseButtonState.Pressed)
+            if (!alternative)
             {
                 var index = montage.Chunks.FindIndex(selectedLocation);
                 if (index == -1) return;

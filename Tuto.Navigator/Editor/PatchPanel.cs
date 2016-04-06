@@ -7,86 +7,58 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using Tuto.Model;
 
 namespace Tuto.Navigator.Editor
 {
-    public enum PatchType
-    {
-        Subtitles,
-        Image,
-        Video
-    }
-
-    public enum MediaPatchMode
-    {
-        Replace,
-        VideoOnlyAddSilence,
-        VideoOnlyTruncateToFit
-    }
-
-
-
-   
-    public class Patch
-    {
-        public int Begin { get; set; }
-        public int End { get; set; }
-    }
-
-    public class TempModel
-    {
-        public ObservableCollection<Patch> Patches { get; private set; }
-
-        public TempModel() { 
-            Patches = new ObservableCollection<Patch>();
-            Patches.Add(new Patch { Begin = 1000, End = 10000 });
-            Patches.Add(new Patch { Begin = 40000, End = 40000 });
-            Patches.Add(new Patch { Begin = 100000, End = 700000 });
-        }
-    }
-
-
-     public enum SelectionType
-     {
-            Drag,
-            LeftDrag,
-            RightDrag
-     }
-
-    public class PatchPanelSelection
-    {
-        public readonly Patch Item;
-        public readonly SelectionType Type;
-        public Point SelectionStart;
-        public PatchPanelSelection(SelectionType type, Patch item, Point selectionStart)
-        {
-            this.Item=item;
-            this.Type=type;
-            this.SelectionStart = selectionStart;
-        }
-    }
 
     public class PatchPanel : TimelineBase
     {
-        TempModel model = new TempModel();
-        PatchPanelSelection selection;
         bool drag;
+        Point menuCalled;
+        PatchSelection selection
+        {
+            get { return editorModel.WindowState.PatchSelection; }
+            set { editorModel.WindowState.PatchSelection = value; }
+        }
 
-        public PatchPanel()
+        public PatchPanel() 
         {
             MouseDown += PatchPanel_MouseDown;
             MouseUp += PatchPanel_MouseUp;
             MouseMove += PatchPanel_MouseMove;
           
             Background = new SolidColorBrush(Colors.Transparent);
-            
+
+            var delete = new MenuItem { Header = "Delete" };
+            delete.Click += delete_Click;
+            var create = new MenuItem { Header = "Create" };
+            create.Click += create_Click;
+
+            forExisting = new ContextMenu { Items = { delete } };
+            forEmpty = new ContextMenu { Items = { create } };
         }
 
-        ContextMenu forExisted;
-        ContextMenu forNew;
+        void create_Click(object sender, RoutedEventArgs e)
+        {
+            var ms = MsAtPoint(menuCalled);
+            model.Patches.Add(new Patch { Begin = ms, End = ms + 1000, Subtitles = new SubtitlePatch { Text = "AAAAAAAAA!" } });
+        }
+
+        void delete_Click(object sender, RoutedEventArgs e)
+        {
+            if (selection != null)
+                editorModel.Montage.Patches.Remove(selection.Item);
+            selection = null;
+            InvalidateVisual();
+        }
+
+        ContextMenu forExisting, forEmpty;
 
         void PatchPanel_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
+            if (editorModel == null) return;
+
             if (!drag || selection == null) return;
             if (e.LeftButton!= System.Windows.Input.MouseButtonState.Pressed)
             {
@@ -94,9 +66,12 @@ namespace Tuto.Navigator.Editor
                 return;
             }
             var thisMs = MsAtPoint(e.GetPosition(this));
-            var oldMs = MsAtPoint(selection.SelectionStart);
+            var oldMs = MsAtPoint(new Point(selection.SelectionStartX,selection.SelectionStartY));
             var delta = thisMs - oldMs;
-            selection.SelectionStart=e.GetPosition(this);
+            var p=e.GetPosition(this);
+            selection.SelectionStartX = p.X;
+            selection.SelectionStartY = p.Y;
+
             switch(selection.Type)
             {
                 case SelectionType.Drag:
@@ -124,16 +99,29 @@ namespace Tuto.Navigator.Editor
 
         void PatchPanel_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
+
+            if (editorModel == null) return;
             StopDrag();
         }
 
         void PatchPanel_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            
+
+            if (editorModel == null) return;
             selection = FindSelection(e.GetPosition(this));
             drag = selection != null;
-            if (selection != null) CaptureMouse();
             InvalidateVisual();
+
+            if (selection == null && e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
+                OnTimeSelected(MsAtPoint(e.GetPosition(this)), false);
+
+
+            if (e.RightButton== System.Windows.Input.MouseButtonState.Pressed)
+            {
+                menuCalled = e.GetPosition(this);
+                ContextMenu=selection==null?forEmpty:forExisting;
+                ContextMenu.IsOpen=true;
+            }
         }
 
 
@@ -150,13 +138,13 @@ namespace Tuto.Navigator.Editor
             return false;
         }
 
-        PatchPanelSelection FindSelection(Point p)
+        PatchSelection FindSelection(Point p)
         {
             foreach(var e in model.Patches)
             {
-                foreach (var r in GetRects(e.Begin, e.End, 0, 1))
+                foreach (var r in GetRects(e.Begin, e.End, 0, RelativeBarHeight))
                     if (r.Contains(p))
-                        return new PatchPanelSelection(SelectionType.Drag, e, p);
+                        return new PatchSelection(SelectionType.Drag, e, p.X,p.Y);
 
 
                 SelectionType? type = null;
@@ -169,7 +157,7 @@ namespace Tuto.Navigator.Editor
                 if (e.End - e.Begin < 100 && delta > EdgeHalf)
                     type = SelectionType.Drag;
 
-                return new PatchPanelSelection(type.Value, e, p);
+                return new PatchSelection(type.Value, e, p.X,p.Y);
 
             }
             return null;
@@ -208,6 +196,8 @@ namespace Tuto.Navigator.Editor
         int EdgeWidth { get { return RowHeight / 2; } }
         int EdgeHalf { get { return RowHeight / 2; } }
 
+        double RelativeBarHeight { get { return 0.6; } }
+
         SolidColorBrush Brush = Brushes.Blue;
         Pen Pen = new Pen(Brushes.Transparent, 0);
         Pen SelectedPen = new Pen(Brushes.Gold, 2);
@@ -230,7 +220,7 @@ namespace Tuto.Navigator.Editor
             if (selection != null && selection.Item == data) pen = SelectedPen;
 
             
-            foreach (var e in GetRects(data.Begin, data.End, 0, 1))
+            foreach (var e in GetRects(data.Begin, data.End, 0, RelativeBarHeight))
             {
                 context.DrawRectangle(Brush, Pen, e);
                 context.DrawLine(pen, e.TopLeft, e.TopRight);
@@ -249,6 +239,7 @@ namespace Tuto.Navigator.Editor
 
         protected override void OnRender(DrawingContext drawingContext)
         {
+            if (editorModel == null) return;
             base.OnRender(drawingContext);
             foreach (var e in model.Patches)
                 DrawPatch(drawingContext, e);

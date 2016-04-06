@@ -34,6 +34,16 @@ namespace Tuto.Navigator.Editor
             return new Size(availableSize.Width, rows * RowHeight + 5);
         }
 
+        protected TimelineBase()
+        {
+            this.DataContextChanged += (s, a) =>
+            {
+                if (editorModel == null) return;
+                InvalidateVisual();
+                editorModel.WindowState.PropertyChanged += (ss, aa) => InvalidateVisual();
+            };
+        }
+
         protected override Size ArrangeOverride(Size finalSize)
         {
             return base.ArrangeOverride(finalSize);
@@ -98,6 +108,14 @@ namespace Tuto.Navigator.Editor
                 context.DrawLine(pen, new Point(0, end.Y), end);
             }
         }
+
+        public event Action<int, bool> TimeSelected;
+
+        protected void OnTimeSelected(int ms, bool alternative)
+        {
+            if (TimeSelected != null)
+                TimeSelected(ms, alternative);
+        }
     }
 
 
@@ -105,11 +123,13 @@ namespace Tuto.Navigator.Editor
     {
         public Slider()
         {
-            this.DataContextChanged += (s, a) => {
-                if (editorModel == null) return;
-                InvalidateVisual();
-                editorModel.WindowState.PropertyChanged += (ss, aa) => InvalidateVisual();
-            };
+            MouseDown += Slider_MouseDown;
+        }
+
+        void Slider_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (editorModel==null) return;
+            OnTimeSelected(MsAtPoint(e.GetPosition(this)),e.RightButton == System.Windows.Input.MouseButtonState.Pressed);
         }
 
         protected override void OnRender(DrawingContext drawingContext)
@@ -124,13 +144,14 @@ namespace Tuto.Navigator.Editor
     {
         public ModelView()
         {
-            this.DataContextChanged += (s, a) => {
-                if (editorModel == null) return;
-                InvalidateVisual();
-                editorModel.MarkupChanged += (ss, aa) => InvalidateVisual();
-            };
+            MouseDown += ModelView_MouseDown;
         }
 
+        void ModelView_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (editorModel == null) return;
+            OnTimeSelected(MsAtPoint(e.GetPosition(this)), e.RightButton == System.Windows.Input.MouseButtonState.Pressed);
+        }
 
         Brush soundBrush = new SolidColorBrush(Color.FromArgb(150, 0, 0, 0));
         Pen soundpen = new Pen(Brushes.Transparent, 0);

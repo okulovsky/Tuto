@@ -14,14 +14,20 @@ namespace Tuto.Model
     {
 		internal EditorModel EditorModel;
 
-		void SetAndNotify<T>(ref T field, T value, [CallerMemberName] string propertyName=null)
-		{
-			if (!field.Equals(value))
-			{
-				field = value;
-				NotifyPropertyChanged(propertyName);
-			}
-		}
+        void SetAndNotify<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
+        {
+            if (field == null)
+            {
+                if (value == null) return;
+            }
+            else
+            {
+                if (field.Equals(value)) return;
+            }
+
+            field = value;
+            NotifyPropertyChanged(propertyName);
+        }
 
         [DataMember]
         EditorModes currentMode;
@@ -46,8 +52,7 @@ namespace Tuto.Model
             }
         }
 
-		[DataMember]
-		string currentSubtitle;
+		
 
 		public string CurrentPositionAbsolute { get; private set; }
 		public string CurrentPositionRelative { get; private set; }
@@ -147,6 +152,23 @@ namespace Tuto.Model
 			if (GetBack != null)
 				GetBack();
 		}
+
+        SubtitlePatch currentSubtitles;
+
+        public SubtitlePatch CurrentSubtitles
+        {
+            get { return currentSubtitles; }
+            set { SetAndNotify(ref currentSubtitles, value); }
+        }
+
+
+
+
+        public PatchSelection PatchSelection
+        {
+            get;
+            set;
+        }
 
         public WindowState()
         {

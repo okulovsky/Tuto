@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace Tuto.Model
 {
-    public enum ArrangeModes
+    public enum SelectionType
     {
-        BothEqual,
-        BothDesktopBigger,
-        BothFaceBigger,
-        Overlay,
-        Patching
+        Drag,
+        LeftDrag,
+        RightDrag
     }
+
 }

@@ -76,6 +76,10 @@ namespace Tuto.Navigator.Editor
 				{
 					if (model != null) model.WindowState.CurrentMode = EditorModes.Border;
 				};
+            patchMode.Click += (s, a) =>
+                {
+                    if (model != null) model.WindowState.CurrentMode = EditorModes.Patch;
+                };
 
 			titles.Click += titles_Click;
 			sync.Click += sync_Click;
@@ -155,6 +159,7 @@ namespace Tuto.Navigator.Editor
 		{
 			previewMode.Set(model.WindowState.CurrentMode == EditorModes.General);
 			borderMode.Set(model.WindowState.CurrentMode == EditorModes.Border);
+            patchMode.Set(model.WindowState.CurrentMode == EditorModes.Patch);
 		}
 
 		void sync_Click(object sender, RoutedEventArgs e)

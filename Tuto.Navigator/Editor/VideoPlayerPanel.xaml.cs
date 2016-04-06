@@ -24,16 +24,25 @@ namespace Tuto.Navigator.Editor
 		public VideoPlayerPanel()
 		{
 			InitializeComponent();
+            
             Face = new VideoPlayerPanelVideoWrap(FaceVideo);
             Desktop = new VideoPlayerPanelVideoWrap(DesktopVideo);
-            ModelView.MouseDown += Timeline_MouseDown;
-            Slider.MouseDown += Timeline_MouseDown;
+            ModelView.TimeSelected += OnTimeSelected;
+            Slider.TimeSelected += OnTimeSelected;
+            PatchView.TimeSelected += OnTimeSelected;
             FaceVideo.LoadedBehavior = MediaState.Manual;
             DesktopVideo.LoadedBehavior = MediaState.Manual;
             DesktopVideo.Volume = 0;
 			MouseDown+=(s,a)=>Focus();
 			KeyDown += VideoPlayerPanel_KeyDown;
 		}
+
+        void OnTimeSelected(int ms, bool alt)
+        {
+            if (TimeSelected != null)
+                TimeSelected(ms, alt);
+        }
+
 
 		void VideoPlayerPanel_KeyDown(object sender, KeyEventArgs e)
 		{
@@ -66,25 +75,47 @@ namespace Tuto.Navigator.Editor
                     SetBothMode(0,75);
                     break;
                 case ArrangeModes.Overlay:
+                case ArrangeModes.Patching:
                     Grid.SetColumn(DesktopVideo, 0);
                     Grid.SetColumn(FaceVideo, 0);
                     videoGrid.ColumnDefinitions[0].Width = new GridLength(100, GridUnitType.Star);
                     videoGrid.ColumnDefinitions[1].Width = new GridLength(0, GridUnitType.Star);
                     break;
             }
+
+            bool patching = mode == ArrangeModes.Patching;
+            PatchContainer.Visibility = patching ? Visibility.Visible : Visibility.Hidden;
+            PatchView.Visibility = patching ? Visibility.Visible : Visibility.Hidden;
+            if (patching)
+            {
+                Grid.SetZIndex(PatchContainer, 1);
+                Grid.SetZIndex(FaceVideo, 0);
+                Grid.SetZIndex(DesktopVideo, 0);
+                UpdateLayout();
+                PatchContainer.Container.Width = FaceVideo.ActualWidth;
+                PatchContainer.Container.Height = FaceVideo.ActualHeight;
+            }
         }
 
-
-
-        public event Action<int, MouseButtonEventArgs> TimelineMouseDown;
-
-        void Timeline_MouseDown(object sender, MouseButtonEventArgs e)
+        public void Refresh()
         {
-            if (TimelineMouseDown != null)
+            InvalidateVisual();
+            PatchView.InvalidateVisual();
+        }
+
+        public event Action<int, bool> TimeSelected;
+
+        void Timeline_MouseDown(int ms, bool e)
+        {
+            if (TimeSelected != null)
             {
-                var time = Slider.MsAtPoint(e.GetPosition(Slider));
-                TimelineMouseDown(time, e);
+                 TimeSelected(ms, e);
             }
+        }
+
+        public void SetSubtitles(SubtitlePatch patch)
+        {
+            PatchContainer.Subtitles.DataContext = patch;
         }
 
         public void SetRatio(double ratio)

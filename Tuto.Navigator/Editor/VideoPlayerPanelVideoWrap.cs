@@ -43,7 +43,7 @@ namespace Tuto.Navigator
             }
             set
             {
-                wrappedOver.Visibility = value?System.Windows.Visibility.Visible :  System.Windows.Visibility.Collapsed;
+                wrappedOver.Visibility = value?System.Windows.Visibility.Visible :  System.Windows.Visibility.Hidden;
             }
         }
 

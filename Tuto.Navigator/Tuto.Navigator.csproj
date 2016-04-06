@@ -151,6 +151,7 @@
     <Compile Include="EditorModes\Keyboard\KeyboardCommandHelp.cs" />
     <Compile Include="EditorModes\Keyboard\KeyboardCommands.cs" />
     <Compile Include="EditorModes\Keyboard\KeyMap.cs" />
+    <Compile Include="EditorModes\PatchMode.cs" />
     <Compile Include="Editor\Converters.cs" />
     <Compile Include="Editor\EditorController.cs" />
     <Compile Include="Editor\EditorPanel.xaml.cs">
@@ -166,6 +167,12 @@
     <Compile Include="Editor\IEditorInterface.cs" />
     <Compile Include="Editor\InfoWindow.xaml.cs">
       <DependentUpon>InfoWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Editor\PatchUIContainer.xaml.cs">
+      <DependentUpon>PatchUIContainer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Editor\SubtitlesPanel.xaml.cs">
+      <DependentUpon>SubtitlesPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Editor\VideoPlayerPanel.xaml.cs">
       <DependentUpon>VideoPlayerPanel.xaml</DependentUpon>
@@ -238,6 +245,14 @@
     <Page Include="Editor\InfoWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Editor\PatchUIContainer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Editor\SubtitlesPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Editor\VideoPlayerPanel.xaml">
       <SubType>Designer</SubType>
@@ -382,6 +397,7 @@
     <Resource Include="Icons\sync.png" />
     <Resource Include="Icons\hammer.png" />
     <Resource Include="Icons\microscope.png" />
+    <Resource Include="Icons\patch.png" />
     <Content Include="NoiseReduction\cleared.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

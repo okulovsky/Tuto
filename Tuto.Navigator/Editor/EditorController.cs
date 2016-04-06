@@ -26,7 +26,7 @@ namespace Tuto.Navigator.Editor
 			this.model = model;
 
 			panel.ControlKeyDown += panel_KeyDown;
-			panel.TimelineMouseDown += panel_TimelineMouseDown;
+			panel.TimeSelected += panel_TimeSelected;
 
 			model.WindowState.SubsrcibeByExpression(z => z.Paused, PauseChanged);
 			model.WindowState.SubsrcibeByExpression(z => z.CurrentMode, ModeChanged);
@@ -35,6 +35,7 @@ namespace Tuto.Navigator.Editor
 			model.WindowState.SubsrcibeByExpression(z => z.FaceVideoIsVisible, VideoVisibilityChanged);
 			model.WindowState.SubsrcibeByExpression(z => z.DesktopVideoIsVisible, VideoVisibilityChanged);
             model.WindowState.SubsrcibeByExpression(z => z.ArrangeMode, ArrangeModeChanged);
+            model.WindowState.SubsrcibeByExpression(z => z.CurrentSubtitles, SubtitlesChanged);
 
             ModeChanged();
             RatioChanged();
@@ -89,7 +90,7 @@ namespace Tuto.Navigator.Editor
 				timer.Stop();
 				model.WindowState.UnsubscribeAll(this);
 				panel.ControlKeyDown -= panel_KeyDown;
-				panel.TimelineMouseDown -= panel_TimelineMouseDown;
+				panel.TimeSelected -= panel_TimeSelected;
                 panel.Face.Stop();
                 panel.Desktop.Stop();
 				isDisposed = true;
@@ -132,7 +133,7 @@ namespace Tuto.Navigator.Editor
 			currentMode.CheckTime();
 		}
 
-		void panel_TimelineMouseDown(int arg1, MouseButtonEventArgs arg2)
+		void panel_TimeSelected(int arg1, bool arg2)
 		{
 			currentMode.MouseClick(arg1, arg2);
 		}
@@ -159,9 +160,20 @@ namespace Tuto.Navigator.Editor
 		void ModeChanged()
 		{
 			if (model.WindowState.CurrentMode == EditorModes.Border)
+            {
 				currentMode = new BorderMode(model);
+                model.WindowState.ArrangeMode = ArrangeModes.Overlay;
+            }
 			if (model.WindowState.CurrentMode == EditorModes.General)
-				currentMode = new GeneralMode(model);
+            {
+                currentMode = new GeneralMode(model);
+            }
+            if (model.WindowState.CurrentMode == EditorModes.Patch)
+            {
+                currentMode = new PatchMode(model);
+                model.WindowState.ArrangeMode = ArrangeModes.Patching;
+            }
+            panel.Refresh();
 		}
 
 		void RatioChanged()
@@ -191,6 +203,11 @@ namespace Tuto.Navigator.Editor
         void ArrangeModeChanged()
         {
             panel.SetArrangeMode(model.WindowState.ArrangeMode);
+        }
+
+        void SubtitlesChanged()
+        {
+            panel.SetSubtitles(model.WindowState.CurrentSubtitles);
         }
 		#endregion
 	}
