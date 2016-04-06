@@ -32,7 +32,7 @@ namespace Tuto.Navigator.Editor
 
             var delete = new MenuItem { Header = "Delete" };
             delete.Click += delete_Click;
-            var create = new MenuItem { Header = "Create" };
+            var create = new MenuItem { Header = "Add subtitles" };
             create.Click += create_Click;
 
             forExisting = new ContextMenu { Items = { delete } };
@@ -142,7 +142,7 @@ namespace Tuto.Navigator.Editor
         {
             foreach(var e in model.Patches)
             {
-                foreach (var r in GetRects(e.Begin, e.End, 0, RelativeBarHeight))
+                foreach (var r in GetRects(e.Begin, e.End, RelativeBarHeight,1))
                     if (r.Contains(p))
                         return new PatchSelection(SelectionType.Drag, e, p.X,p.Y);
 
@@ -169,8 +169,9 @@ namespace Tuto.Navigator.Editor
            using (StreamGeometryContext geometryContext = rightEdge.Open())
             {
                 geometryContext.BeginFigure(new Point(p.X+EdgeWidth, p.Y+0), true, true);
-                geometryContext.LineTo(new Point(p.X + 0, p.Y + EdgeHalf), true, false);
-                geometryContext.LineTo(new Point(p.X + 0, p.Y + RowHeight), true, false);
+				geometryContext.LineTo(new Point(p.X + EdgeWidth / 2, p.Y + EdgeHalf), true, false);
+				geometryContext.LineTo(new Point(p.X + 0, p.Y + EdgeHalf), true, false);
+				geometryContext.LineTo(new Point(p.X + 0, p.Y + RowHeight), true, false);
                 geometryContext.LineTo(new Point(p.X + EdgeWidth, p.Y + RowHeight), true, false);
                 geometryContext.LineTo(new Point(p.X + EdgeWidth, p.Y + 0), false, false);
             }
@@ -183,8 +184,9 @@ namespace Tuto.Navigator.Editor
             using (StreamGeometryContext geometryContext = leftEdge.Open())
             {
                 geometryContext.BeginFigure(new Point(p.X+0, p.Y+0), true, true);
-                geometryContext.LineTo(new Point(p.X + EdgeWidth, p.Y + EdgeHalf), true, false);
-                geometryContext.LineTo(new Point(p.X + EdgeWidth, p.Y + RowHeight), true, false);
+				geometryContext.LineTo(new Point(p.X + EdgeWidth / 2, p.Y + EdgeHalf), true, false);
+				geometryContext.LineTo(new Point(p.X + EdgeWidth, p.Y + EdgeHalf), true, false);
+				geometryContext.LineTo(new Point(p.X + EdgeWidth, p.Y + RowHeight), true, false);
                 geometryContext.LineTo(new Point(p.X + 0, p.Y + RowHeight), true, false);
                 geometryContext.LineTo(new Point(p.X + 0, p.Y + 0), false, false);
             }
@@ -196,7 +198,7 @@ namespace Tuto.Navigator.Editor
         int EdgeWidth { get { return RowHeight / 2; } }
         int EdgeHalf { get { return RowHeight / 2; } }
 
-        double RelativeBarHeight { get { return 0.6; } }
+		double RelativeBarHeight { get { return (double)EdgeHalf / RowHeight; } }
 
         SolidColorBrush Brush = Brushes.Blue;
         Pen Pen = new Pen(Brushes.Transparent, 0);
@@ -220,7 +222,7 @@ namespace Tuto.Navigator.Editor
             if (selection != null && selection.Item == data) pen = SelectedPen;
 
             
-            foreach (var e in GetRects(data.Begin, data.End, 0, RelativeBarHeight))
+            foreach (var e in GetRects(data.Begin, data.End, RelativeBarHeight, 1))
             {
                 context.DrawRectangle(Brush, Pen, e);
                 context.DrawLine(pen, e.TopLeft, e.TopRight);
