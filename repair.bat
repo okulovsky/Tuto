@@ -1,0 +1,1 @@
+C:\ffmpeg\bin\ffmpeg -i %1.avi -vf scale=1280:720 -r 25 -q:v 0 -vcodec libxvid -acodec libmp3lame -ar 44100 -ab 32k %1.repaired.avi 

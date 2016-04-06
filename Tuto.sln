@@ -37,6 +37,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Delfu", "Delfu\Delfu.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tuto.Publisher", "Tuto.Publisher\Tuto.Publisher.csproj", "{7E217709-A22E-4E5F-A62E-FB8DCDE2B063}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diff", "Diff\Diff.csproj", "{B73C9CBE-395C-4147-A717-BF541BF0A0BA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -127,6 +129,16 @@ Global
 		{7E217709-A22E-4E5F-A62E-FB8DCDE2B063}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{7E217709-A22E-4E5F-A62E-FB8DCDE2B063}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{7E217709-A22E-4E5F-A62E-FB8DCDE2B063}.Release|x86.ActiveCfg = Release|Any CPU
+		{B73C9CBE-395C-4147-A717-BF541BF0A0BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B73C9CBE-395C-4147-A717-BF541BF0A0BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B73C9CBE-395C-4147-A717-BF541BF0A0BA}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{B73C9CBE-395C-4147-A717-BF541BF0A0BA}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{B73C9CBE-395C-4147-A717-BF541BF0A0BA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B73C9CBE-395C-4147-A717-BF541BF0A0BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B73C9CBE-395C-4147-A717-BF541BF0A0BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B73C9CBE-395C-4147-A717-BF541BF0A0BA}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{B73C9CBE-395C-4147-A717-BF541BF0A0BA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{B73C9CBE-395C-4147-A717-BF541BF0A0BA}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
