@@ -26,7 +26,6 @@ namespace Tuto.Publishing.Youtube
 
     public class YoutubeApisProcessor
     {
-
         public static YoutubeApisProcessor Current { get; private set; }
 
         public static void Initialize(DirectoryInfo directory)
@@ -49,7 +48,6 @@ namespace Tuto.Publishing.Youtube
                 ApplicationName = "Tuto Editor"
             });
             Current = processor;
-
         }
 
         YouTubeService service;
@@ -96,9 +94,6 @@ namespace Tuto.Publishing.Youtube
                     nextPageToken = playlistItemsListResponse.NextPageToken;
                 }
             }
-
-			
-
             return videos;
         }
 
@@ -185,10 +180,17 @@ namespace Tuto.Publishing.Youtube
 
 		public void DeleteVideo(string id)
 		{
-			service.Videos.Delete(id).ExecuteAsync().RunSync();
+            try
+            {
+                service.Videos.Delete(id).ExecuteAsync().RunSync(); //если видео нет, то упадет, надо проверить существование
+            }
+            catch { }
 		}
 
-		public string UploadVideo(FileInfo path, string name, Guid guid)
+        private long fileSize;
+        private Action<int> percentageUpdate;
+
+        public string UploadVideo(FileInfo path, string name, Guid guid, Action<int> percentageUpdate)
 		{
 			var video = new Video();
 			video.Snippet = new VideoSnippet();
@@ -201,15 +203,29 @@ namespace Tuto.Publishing.Youtube
 			video.Status.PrivacyStatus = "public";
 			var filePath = path.FullName;
 
-			string result = null;
+            fileSize = path.Length; //нужно для расчета прогресса
+            this.percentageUpdate = percentageUpdate; //"обновлятель" свойства
 
-			using (var fileStream = new FileStream(filePath, FileMode.Open))
+			string result = null;
+            
+            using (var fileStream = new FileStream(filePath, FileMode.Open))
 			{
 				var videosInsertRequest = service.Videos.Insert(video, "snippet,status", fileStream, "video/*");
+                videosInsertRequest.ProgressChanged += OnProgressChanged;
 				videosInsertRequest.ResponseReceived += v => { result = v.Id; };
-				videosInsertRequest.UploadAsync().RunSync();
+                videosInsertRequest.UploadAsync().RunSync();
 			}
 			return result;
 		}
+
+
+        private void OnProgressChanged(Google.Apis.Upload.IUploadProgress obj)
+        {
+            if (percentageUpdate != null)
+            {
+                var percentage = (int)((double)obj.BytesSent / fileSize * 100);
+                percentageUpdate(percentage);
+            }
+        }
     }
 }

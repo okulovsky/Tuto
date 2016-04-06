@@ -31,7 +31,9 @@ namespace Tuto.BatchWorks
 
         public override void Work()
         {
-            var newId = YoutubeApisProcessor.Current.UploadVideo(pathToFile, episode.Name, episode.Guid);
+            if (YoutubeApisProcessor.Current == null) YoutubeApisProcessor.Initialize(this.editorModel.Videotheque.TempFolder);
+            Action<int> percentageUpdate = (int percentage) => { Progress = Math.Min(100, percentage); };
+            var newId = YoutubeApisProcessor.Current.UploadVideo(pathToFile, episode.Name, episode.Guid, percentageUpdate);
             if (episode.YoutubeId != null) YoutubeApisProcessor.Current.DeleteVideo(episode.YoutubeId);
             episode.YoutubeId = newId;
 			editorModel.Save();

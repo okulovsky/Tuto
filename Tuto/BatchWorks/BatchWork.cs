@@ -55,11 +55,11 @@ namespace Tuto.BatchWorks
 
         public string Name { get; set; }
 
-        private short progress;
-        public short Progress
+        private int progress;
+        public int Progress
         {
             get { return progress; }
-            set { progress = value; NotifyPropertyChanged();}
+            set { progress = Math.Min(100, Math.Max(0,value)); NotifyPropertyChanged();}
         }
 
         BatchWorkStatus status;
