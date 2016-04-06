@@ -146,6 +146,7 @@
     <Compile Include="EditorModes\CommonKeyboardProcessing.cs" />
     <Compile Include="EditorModes\GeneralMode.cs" />
     <Compile Include="EditorModes\IEditorMode.cs" />
+    <Compile Include="EditorModes\IEditorModeExtensions.cs" />
     <Compile Include="EditorModes\Keyboard\KeyboardCommandData.cs" />
     <Compile Include="EditorModes\Keyboard\KeyboardCommandGroup.cs" />
     <Compile Include="EditorModes\Keyboard\KeyboardCommandHelp.cs" />

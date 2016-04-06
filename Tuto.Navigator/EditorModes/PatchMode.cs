@@ -9,17 +9,20 @@ namespace Editor
 {
     public class PatchMode : IEditorMode
     {
-        EditorModel model;
+        public EditorModel Model { get; private set; }
+
         public PatchMode(EditorModel model)
         {
-            this.model = model;
+            this.Model = model;
         }
 
 
         public void CheckTime()
         {
-            int ms = model.WindowState.CurrentPosition;
-            model.WindowState.CurrentSubtitles = model.Montage.Patches
+            this.PlayWithoutDeletions();
+
+            int ms = Model.WindowState.CurrentPosition;
+            Model.WindowState.CurrentSubtitles = Model.Montage.Patches
                 .Where(z => z.Subtitles!=null && z.Begin <= ms && z.End >= ms )
                 .Select(z=>z.Subtitles)
                 .FirstOrDefault();
@@ -27,7 +30,8 @@ namespace Editor
 
         public void MouseClick(int SelectedLocation, bool alternative)
         {
-            model.WindowState.CurrentPosition = SelectedLocation;
+            Model.WindowState.CurrentPosition = SelectedLocation;
+            CheckTime();
         }
 
         public void ProcessKey(KeyboardCommandData key)

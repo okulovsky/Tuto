@@ -13,6 +13,6 @@
             Foreground="White" 
             Background="Transparent" 
             Content="{Binding Text}"/>
-        <Rectangle Fill="Red"/>
+        <Rectangle Fill="Transparent"/>
     </DockPanel>
 </UserControl>

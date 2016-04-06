@@ -35,7 +35,18 @@ namespace Tuto.Navigator.Editor
             DesktopVideo.Volume = 0;
 			MouseDown+=(s,a)=>Focus();
 			KeyDown += VideoPlayerPanel_KeyDown;
+            var timer = new System.Windows.Threading.DispatcherTimer();
+            timer.Interval = TimeSpan.FromMilliseconds(500);
+            timer.Tick += (_, __) => SetPatchUISize();
+            timer.Start();
 		}
+
+        void SetPatchUISize()
+        {
+            PatchContainer.Container.Width = FaceVideo.ActualWidth;
+            PatchContainer.Container.Height = FaceVideo.ActualHeight;
+
+        }
 
         void OnTimeSelected(int ms, bool alt)
         {
@@ -83,19 +94,13 @@ namespace Tuto.Navigator.Editor
                     break;
             }
 
+            
             bool patching = mode == ArrangeModes.Patching;
             PatchContainer.Visibility = patching ? Visibility.Visible : Visibility.Hidden;
             PatchView.Visibility = patching ? Visibility.Visible : Visibility.Hidden;
-            if (patching)
-            {
-                Grid.SetZIndex(PatchContainer, 1);
-                Grid.SetZIndex(FaceVideo, 0);
-                Grid.SetZIndex(DesktopVideo, 0);
-                UpdateLayout();
-                PatchContainer.Container.Width = FaceVideo.ActualWidth;
-                PatchContainer.Container.Height = FaceVideo.ActualHeight;
-            }
+            
         }
+
 
         public void Refresh()
         {
