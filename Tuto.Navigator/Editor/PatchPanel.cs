@@ -120,7 +120,7 @@ namespace Tuto.Navigator.Editor
             {
                 menuCalled = e.GetPosition(this);
                 ContextMenu=selection==null?forEmpty:forExisting;
-                ContextMenu.IsOpen=true;
+                //ContextMenu.IsOpen=true;
             }
         }
 

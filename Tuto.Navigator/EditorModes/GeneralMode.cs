@@ -47,8 +47,10 @@ namespace Editor
         {
             var shiftValue = 200;
             if (key.Shift || key.Ctrl) shiftValue = 50;
-            if (CommonKeyboardProcessing.ProcessCommonKeys(Model, key)) return;
-           
+
+            if (this.ProcessNavigationKey(key)) return;
+            if (this.ProcessCommonMarkupKey(key)) return;
+            if (this.DefaultSpeedKey(key)) return;
           
             switch (key.Command)
             {
@@ -77,15 +79,7 @@ namespace Editor
                     ShiftRight(shiftValue);
                     return;
 
-                case KeyboardCommands.SpeedUp:
-                    Model.WindowState.SpeedRatio+=0.5;
-					Model.WindowState.SpeedRatio = Math.Min(3, Model.WindowState.SpeedRatio);
-                     return;
-
-                case KeyboardCommands.SpeedDown:
-                    Model.WindowState.SpeedRatio -= 0.5;
-					 Model.WindowState.SpeedRatio = Math.Max(0.5, Model.WindowState.SpeedRatio);
-                  return;
+               
 
                 case KeyboardCommands.Face:
                   Model.MarkHere(Mode.Face, key.Ctrl);

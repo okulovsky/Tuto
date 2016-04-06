@@ -64,8 +64,8 @@ namespace Editor
 
         public void ProcessKey(KeyboardCommandData key)
         {
-            if (CommonKeyboardProcessing.ProcessCommonKeys(Model, key)) return;
-
+            if (this.ProcessNavigationKey(key)) return;
+            if (this.ProcessCommonMarkupKey(key)) return;
 
             switch (key.Command)
             {
