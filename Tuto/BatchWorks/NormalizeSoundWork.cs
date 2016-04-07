@@ -10,7 +10,7 @@ using Tuto.TutoServices.Assembler;
 
 namespace Tuto.BatchWorks
 {
-    public class NormalizeSoundWork : BatchWork
+    public class NormalizeSoundWork : ProcessBatchWork
     {
         private List<string> filesToDelIfAborted { get; set; }
         private FileInfo videoFile { get; set; }
@@ -34,9 +34,13 @@ namespace Tuto.BatchWorks
                 var normSound = Path.Combine(Model.Locations.TemporalDirectory.FullName, "norm.wav");
                 filesToDelIfAborted.Add(tempSound);
                 filesToDelIfAborted.Add(normSound);
+                Progress = 0;
                 RunProcess(string.Format(@" -i ""{0}"" ""{1}"" -y", videoFile.FullName, tempSound), ffmpeg.FullName);
+                Progress = 25;
                 RunProcess(string.Format(@"""{0}"" ""{1}"" --norm", tempSound, normSound), soxExe.FullName);
+                Progress = 50;
                 RunProcess(string.Format(@"-i ""{0}"" -ar 44100 -ac 2 -ab 192k -f mp3 -qscale 0 ""{1}"" -y", normSound, tempSound), ffmpeg.FullName);
+                Progress = 80;
                 var tempVideo = GetTempFile(videoFile).FullName;
                 filesToDelIfAborted.Add(tempVideo);
                 var arguments = string.Format(
@@ -46,6 +50,7 @@ namespace Tuto.BatchWorks
                     tempVideo
                     );
                 RunProcess(arguments, ffmpeg.FullName);
+                Progress = 100;
                 File.Delete(tempSound);
                 File.Delete(videoFile.FullName);
                 File.Delete(normSound);

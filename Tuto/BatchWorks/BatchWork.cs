@@ -24,27 +24,14 @@ namespace Tuto.BatchWorks
 
     public abstract class BatchWork : NotifierModel
     {
-        public virtual Process Process { get; set; }
         public virtual EditorModel Model { get; set; }
         public bool NeedToRewrite { get; set; }
 
-        protected void RunProcess(string args, string path)
-        {
-            Process = new Process();
-            Process.StartInfo.FileName = path;
-            Process.StartInfo.Arguments = args;
-            Process.StartInfo.UseShellExecute = Model.Videotheque.Data.WorkSettings.ShowProcesses;
-            Process.StartInfo.CreateNoWindow = !Model.Videotheque.Data.WorkSettings.ShowProcesses;
-            Process.Start();
-            Process.WaitForExit();
-            if (Process.ExitCode != 0)
-                throw new ArgumentException(
-                    string.Format("Process' exit code not equals zero. \n Exe: \"{0}\" \n Args: {1} \n Full: \"{0}\" {1}", path, args));
-        }
 
         public virtual void Work() { }
         public virtual void Clean() { }
         public virtual bool WorkIsRequired() { return true; }
+        
 
         public FileInfo GetTempFile(FileInfo info, string suffix)
         {
@@ -67,6 +54,14 @@ namespace Tuto.BatchWorks
         public bool Forced { get; set; }
 
         public string Name { get; set; }
+
+        private int progress;
+        public int Progress
+        {
+            get { return progress; }
+            set { progress = Math.Min(100, Math.Max(0,value)); NotifyPropertyChanged();}
+        }
+
         BatchWorkStatus status;
         public BatchWorkStatus Status
         {
@@ -94,12 +89,6 @@ namespace Tuto.BatchWorks
             }
         }
 
-        public void FinishProcess()
-        {
-            if (Process != null && !Process.HasExited)
-                Process.Kill();
-        }
-
         string exceptionMessage;
         public string ExceptionMessage
         {
@@ -111,6 +100,7 @@ namespace Tuto.BatchWorks
         public event EventHandler TaskFinished;
         public void OnTaskFinished()
         {
+            Progress = 100;
             if (TaskFinished != null)
                 TaskFinished(this, EventArgs.Empty);
         }
