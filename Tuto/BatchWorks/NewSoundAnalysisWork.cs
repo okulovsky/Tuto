@@ -12,7 +12,7 @@ using Tuto.Model;
 
 namespace Tuto.BatchWorks
 {
-    public class SoundAnalysisWork : BatchWork
+    public class SoundAnalysisWork : ProcessBatchWork
     {
 
         const double samplesLength = 1;

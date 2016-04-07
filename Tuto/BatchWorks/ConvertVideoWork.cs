@@ -9,7 +9,7 @@ using System.Threading;
 
 namespace Tuto.BatchWorks
 {
-    public class ConvertVideoWork : BatchWork
+    public class ConvertVideoWork : FFmpegWork
     {
         public ConvertVideoWork() { }
 

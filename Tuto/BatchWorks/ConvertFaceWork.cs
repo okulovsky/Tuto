@@ -11,6 +11,7 @@ namespace Tuto.BatchWorks
 {
     public class ConvertFaceWork : ConvertVideoWork
     {
+
         public ConvertFaceWork(EditorModel model, bool forced)
         {
             Model = model;

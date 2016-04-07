@@ -10,7 +10,7 @@ using Tuto.Model;
 
 namespace Tuto.BatchWorks
 {
-    public class PraatWork : BatchWork
+    public class PraatWork : ProcessBatchWork
     {
         public PraatWork(EditorModel model)
         {

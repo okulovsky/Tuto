@@ -41,6 +41,8 @@ namespace Editor
             map[Key.D9] = KeyboardCommands.NewEpisodeHere;
 
             map[Key.B] = KeyboardCommands.InsertDeletion;
+
+			map[Key.F8] = KeyboardCommands.Sign;
         }
 
 

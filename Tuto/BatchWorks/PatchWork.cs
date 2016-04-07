@@ -11,7 +11,7 @@ using System.Threading;
 
 namespace Tuto.BatchWorks
 {
-    public class PatchWork : BatchWork
+    public class PatchWork : ProcessBatchWork
     {
 
         private List<string> filesToDelIfAborted { get; set; }
@@ -39,8 +39,7 @@ namespace Tuto.BatchWorks
                 else if (!ep.FullName.Exists)
                 {
                     
-                    var m = emodel.Videotheque.EditorModels.First(x => x.Montage.RawVideoHash == ep.ModelHash);   
-                    
+                    var m = emodel.Videotheque.EditorModels.First(x => x.Montage.RawVideoHash == ep.ModelHash);             
                     var epInfo = m.Montage.Information.Episodes[ep.EpisodeNumber];
                     BeforeWorks.Add(new AssemblyEpisodeWork(m, epInfo));
                 }

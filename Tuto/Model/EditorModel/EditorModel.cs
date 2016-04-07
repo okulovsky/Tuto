@@ -313,7 +313,20 @@ namespace Tuto.Model
 
       
         #endregion
+		#region Signs
 
-    }
+		public void SignHere()
+		{
+			var time = WindowState.CurrentPosition;
+			var existedSign = Montage.Signs.Where(z => Math.Abs(z.Time - time) < 500).FirstOrDefault();
+			if (existedSign != null)
+				Montage.Signs.Remove(existedSign);
+			else
+				Montage.Signs.Add(new Sign { Time = time });
+			OnMarkupChanged();
+		}
+
+		#endregion
+	}
 }
 

@@ -503,6 +503,8 @@ namespace Tuto.Model
 
             if (container.MontageModel.Patches == null)
                 container.MontageModel.Patches = new List<Patch>();
+			if (container.MontageModel.Signs == null)
+				container.MontageModel.Signs = new List<Sign>();
 
             var model = new EditorModel(file, rawLocation, this, container.MontageModel, container.WindowState);
             SaveEditorModel(model);
