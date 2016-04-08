@@ -203,9 +203,6 @@ namespace Tuto.Navigator.Editor
 
 
 
-        int EdgeWidth { get { return RowHeight / 2; } }
-        int EdgeHalf { get { return RowHeight / 2; } }
-
 		double RelativeBarHeight { get { return (double)EdgeHalf / RowHeight; } }
 
         SolidColorBrush SubtitlesBrush = Brushes.Blue;

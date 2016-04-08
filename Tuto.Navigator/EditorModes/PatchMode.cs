@@ -33,7 +33,7 @@ namespace Editor
                     else
                     {
                         double k = ((double)(Model.WindowState.CurrentPosition - p.Begin)) / (p.End - p.Begin);
-                        Model.WindowState.VideoPatchPosition = (int)(k * p.Video.Duration);
+                        Model.WindowState.VideoPatchPosition= (int)(k * p.Video.Duration);
                     }
                 }
             }
@@ -45,7 +45,7 @@ namespace Editor
         void ProcessWhenVideoPatchIsPlaying()
         {
             Model.WindowState.PatchPlaying = PatchPlayingType.PatchOnly;
-            if (Model.WindowState.VideoPatchPosition == Model.WindowState.CurrentVideoPatch.Duration)
+            if (Model.WindowState.CurrentVideoPatch.Duration>0 && Model.WindowState.VideoPatchPosition == Model.WindowState.CurrentVideoPatch.Duration)
             {
                 Model.WindowState.CurrentPosition=Model.WindowState.CurrentPatch.End+1;
                 Model.WindowState.PatchPlaying = PatchPlayingType.NoPatch;

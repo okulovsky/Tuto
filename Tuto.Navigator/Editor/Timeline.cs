@@ -19,6 +19,11 @@ namespace Tuto.Navigator.Editor
 
         protected readonly int RowHeight = 20;
         protected readonly int msInRow = 300000;
+        protected readonly int EdgeWidth = 20;
+
+        protected int EdgeInMS { get { return (int)(msInRow * EdgeWidth / ActualWidth); } }
+
+        protected const int EdgeHalf = 10;
 
         protected readonly Brush[] fills = new Brush[] { Brushes.White, Brushes.MistyRose, Brushes.LightGreen, Brushes.LightBlue };
         protected readonly Pen borderPen = new Pen(Brushes.Black, 1);
@@ -135,8 +140,36 @@ namespace Tuto.Navigator.Editor
         protected override void OnRender(DrawingContext drawingContext)
         {
             if (editorModel == null) return;
-            var point = GetCoordinate(editorModel.WindowState.CurrentPosition);
-            drawingContext.DrawLine(currentPen, point, new Point(point.X, point.Y + RowHeight));
+
+            if (editorModel.WindowState.PatchPlaying != PatchPlayingType.PatchOnly)
+            {
+                var point = GetCoordinate(editorModel.WindowState.CurrentPosition);
+                drawingContext.DrawLine(currentPen, point, new Point(point.X, point.Y + RowHeight));
+            }
+
+            if (editorModel.WindowState.PatchPlaying != PatchPlayingType.NoPatch 
+                && editorModel.WindowState.CurrentPatch!=null 
+                && editorModel.WindowState.CurrentVideoPatch!=null
+                )
+            {
+                var current = editorModel.WindowState.VideoPatchPosition;
+                var availableLength = editorModel.WindowState.CurrentPatch.End - editorModel.WindowState.CurrentPatch.Begin + 2 * EdgeInMS;
+                int whereSlider=0;
+                
+                if (editorModel.WindowState.CurrentVideoPatch.Duration>0)
+                {
+                    double k = ((double)current) / editorModel.WindowState.CurrentVideoPatch.Duration;
+                    whereSlider = (int)(k * availableLength);
+                }
+                else
+                {
+                    whereSlider = current;
+                }
+                var  point = GetCoordinate(editorModel.WindowState.CurrentPatch.Begin-EdgeInMS+whereSlider);
+                point.Y += RowHeight;
+                drawingContext.DrawLine(currentPen, point, new Point(point.X, point.Y - EdgeHalf));
+
+            }
         }
     }
 
