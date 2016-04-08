@@ -127,6 +127,7 @@
     <Compile Include="Model\Names.cs" />
     <Compile Include="Model\Patching\Patch.cs" />
     <Compile Include="Model\Patching\SubtitlePatch.cs" />
+    <Compile Include="Model\Patching\VideoPatch.cs" />
     <Compile Include="Model\Publishing\PublishingModel.cs" />
     <Compile Include="Model\Publishing\PublishingSettings.cs" />
     <Compile Include="Model\Videotheque\IVideothequeLoadingUI.cs" />

@@ -33,13 +33,21 @@ namespace Tuto.Navigator.Editor
             var delete = new MenuItem { Header = "Delete" };
             delete.Click += delete_Click;
             var create = new MenuItem { Header = "Add subtitles" };
-            create.Click += create_Click;
+            create.Click += AddSubtitles;
+            create = new MenuItem { Header = "Add video" };
+            create.Click += AddVideo;
 
             forExisting = new ContextMenu { Items = { delete } };
             forEmpty = new ContextMenu { Items = { create } };
         }
 
-        void create_Click(object sender, RoutedEventArgs e)
+        void AddVideo(object sender, RoutedEventArgs e)
+        {
+            var ms = MsAtPoint(menuCalled);
+            model.Patches.Add(new Patch { Begin = ms, End = ms + 1000, Video = new VideoPatch { RelativeFileName = "test.mp4" } });
+        }
+
+        void AddSubtitles(object sender, RoutedEventArgs e)
         {
             var ms = MsAtPoint(menuCalled);
             model.Patches.Add(new Patch { Begin = ms, End = ms + 1000, Subtitles = new SubtitlePatch { Text = "AAAAAAAAA!" } });
@@ -200,12 +208,13 @@ namespace Tuto.Navigator.Editor
 
 		double RelativeBarHeight { get { return (double)EdgeHalf / RowHeight; } }
 
-        SolidColorBrush Brush = Brushes.Blue;
+        SolidColorBrush SubtitlesBrush = Brushes.Blue;
+        SolidColorBrush VideoBrush = Brushes.Green;
         Pen Pen = new Pen(Brushes.Transparent, 0);
         Pen SelectedPen = new Pen(Brushes.Gold, 2);
 
 
-        void DrawGeometry(DrawingContext context, Point p, Func<Point,Geometry> geometry, Pen pen)
+        void DrawGeometry(DrawingContext context, Point p, Func<Point,Geometry> geometry, Brush Brush, Pen pen)
         {
             context.DrawGeometry(Brush, pen, geometry(p));
             if (p.X + EdgeWidth > Width)
@@ -221,20 +230,28 @@ namespace Tuto.Navigator.Editor
             var pen = Pen;
             if (selection != null && selection.Item == data) pen = SelectedPen;
 
+            var brush = SubtitlesBrush;
+            switch(data.Type)
+            {
+                case  PatchType.Video:
+                    brush = VideoBrush;
+                    break;
+            }
+
             
             foreach (var e in GetRects(data.Begin, data.End, RelativeBarHeight, 1))
             {
-                context.DrawRectangle(Brush, Pen, e);
+                context.DrawRectangle(brush, Pen, e);
                 context.DrawLine(pen, e.TopLeft, e.TopRight);
                 context.DrawLine(pen, e.BottomLeft, e.BottomRight);
                 
             }
             var point = GetCoordinate(data.Begin);
             point.X -= EdgeWidth-1;
-            DrawGeometry(context, point, GetLeftGeometry, pen);
+            DrawGeometry(context, point, GetLeftGeometry, brush, pen);
             point = GetCoordinate(data.End);
             point.X -= 1;
-            DrawGeometry(context, point, GetRightGeometry, pen);
+            DrawGeometry(context, point, GetRightGeometry, brush, pen);
 
          
         }

@@ -7,6 +7,13 @@ using System.Threading.Tasks;
 
 namespace Tuto.Model
 {
+    public enum PatchType
+    {
+        Empty,
+        Subtitles,
+        Video
+    }
+
     [DataContract]
     public class Patch
     {
@@ -16,5 +23,17 @@ namespace Tuto.Model
         public int End { get; set; }
         [DataMember]
         public SubtitlePatch Subtitles { get; set; }
+        [DataMember]
+        public VideoPatch Video { get; set; }
+
+        public PatchType Type
+        {
+            get
+            {
+                if (Subtitles != null) return PatchType.Subtitles;
+                if (Video != null) return PatchType.Video;
+                return PatchType.Empty;
+            }
+        }
     }
 }
