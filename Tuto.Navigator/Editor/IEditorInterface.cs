@@ -40,8 +40,12 @@ namespace Tuto.Navigator.Editor
         int Position { get; set; }
         void SetFile(FileInfo location);
         bool Visibility { get; set; }
-        void PlayPause(bool pause);
 
-        void Stop();
+        bool Paused { get; set; }
+
+        int GetDuration();
+
+        void Die();
+        bool Loaded { get; }
     }
 }

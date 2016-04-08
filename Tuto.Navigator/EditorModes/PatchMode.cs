@@ -21,19 +21,36 @@ namespace Editor
         {
             this.PlayWithoutDeletions();
 
-            int ms = Model.WindowState.CurrentPosition;
-            var actualPatches = Model.Montage.Patches
-                .Where(z=>z.Begin <= ms && z.End >= ms );
+            var MS = Model.WindowState.CurrentPosition;
 
-            Model.WindowState.CurrentSubtitles=actualPatches
-                .Where(z=>z.Subtitles!=null)
-                .Select(z=>z.Subtitles)
-                .FirstOrDefault();
+            if (Model.WindowState.PatchPlaying == PatchPlayingType.NoPatch)
+            {
+                Model.WindowState.CurrentPatch = Model.Montage.Patches.Where(z => z.Begin <= MS && z.End >= MS).FirstOrDefault();
+                var p= Model.WindowState.CurrentPatch;
+                if(p!=null && p.Video!=null)
+                {
+                    if (p.Begin == p.End || p.Video.Duration <= 0) Model.WindowState.VideoPatchPosition = 0;
+                    else
+                    {
+                        double k = ((double)(Model.WindowState.CurrentPosition - p.Begin)) / (p.End - p.Begin);
+                        Model.WindowState.CurrentPosition = (int)(k * p.Video.Duration);
+                    }
+                }
+            }
 
-            Model.WindowState.CurrentVideoPatch = actualPatches
-                .Where(z => z.Video != null)
-                .Select(z => z.Video)
-                .FirstOrDefault();
+            if (Model.WindowState.CurrentVideoPatch != null)
+                ProcessWhenVideoPatchIsPlaying();
+            
+        }
+        void ProcessWhenVideoPatchIsPlaying()
+        {
+            if (Model.WindowState.CurrentVideoPatch.Duration <= 0) return;
+            if (Model.WindowState.VideoPatchPosition == Model.WindowState.CurrentVideoPatch.Duration)
+            {
+                Model.WindowState.CurrentPosition=Model.WindowState.CurrentPatch.End;
+                Model.WindowState.CurrentPatch = null;
+
+            }
         }
 
         public void MouseClick(int SelectedLocation, bool alternative)

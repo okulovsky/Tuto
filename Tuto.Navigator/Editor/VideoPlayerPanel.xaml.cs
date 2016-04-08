@@ -44,7 +44,7 @@ namespace Tuto.Navigator.Editor
         {
             PatchContainer.Container.Width = FaceVideo.ActualWidth;
             PatchContainer.Container.Height = FaceVideo.ActualHeight;
-
+   
         }
 
         void OnTimeSelected(int ms, bool alt)

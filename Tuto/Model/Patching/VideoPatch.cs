@@ -12,5 +12,7 @@ namespace Tuto.Model
     {
         [DataMember]
         public string RelativeFileName { get; set; }
+        [DataMember]
+        public int Duration { get; set; }
     }
 }

@@ -7,5 +7,6 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <MediaElement x:Name="patch" x:FieldModifier="public"/>
+        <!--<Rectangle Fill="Red"/>-->
     </Grid>
 </UserControl>

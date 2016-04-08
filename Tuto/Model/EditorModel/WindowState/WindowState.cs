@@ -9,6 +9,14 @@ using System.Threading.Tasks;
 
 namespace Tuto.Model
 {
+
+    public enum PatchPlayingType
+    {
+        NoPatch,
+        PatchOnly,
+        PatchAlong
+    }
+
     [DataContract]
     public class   WindowState : NotifierModel
     {
@@ -153,13 +161,7 @@ namespace Tuto.Model
 				GetBack();
 		}
 
-        SubtitlePatch currentSubtitles;
 
-        public SubtitlePatch CurrentSubtitles
-        {
-            get { return currentSubtitles; }
-            set { SetAndNotify(ref currentSubtitles, value); }
-        }
 
         int videoPatchPosition;
         public int VideoPatchPosition
@@ -168,16 +170,30 @@ namespace Tuto.Model
             set { SetAndNotify(ref videoPatchPosition, value); }
         }
 
-        public VideoPatch currentVideoPatch;
-
-
-        public VideoPatch CurrentVideoPatch
+        public PatchPlayingType PatchPlaying
         {
-            get { return currentVideoPatch; }
-            set { SetAndNotify(ref currentVideoPatch, value);  }
+            get
+            {
+                if (CurrentVideoPatch == null) return PatchPlayingType.NoPatch;
+                return PatchPlayingType.PatchOnly;
+            }
         }
 
+        Patch currentPatch;
+        public Patch CurrentPatch
+        {
+            get { return currentPatch; }
+            set
+            {
+                SetAndNotify(ref currentPatch, value);
+                this.NotifyByExpression(z => z.CurrentSubtitles);
+                this.NotifyByExpression(z => z.CurrentVideoPatch);
+                this.NotifyByExpression(z => z.PatchPlaying);
+            }
+        }
 
+        public SubtitlePatch CurrentSubtitles { get { if (currentPatch == null) return null; return currentPatch.Subtitles; } }
+        public VideoPatch CurrentVideoPatch { get { if (currentPatch == null) return null; return currentPatch.Video; } }
 
         public PatchSelection PatchSelection
         {
