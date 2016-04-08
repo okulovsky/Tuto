@@ -119,7 +119,6 @@
     <Compile Include="BatchWorks\YoutubeWork.cs" />
     <Compile Include="Model\EditorModel\EditorModel.cs" />
     <Compile Include="Model\EditorModel\Locations.cs" />
-    <Compile Include="Model\EditorModel\Montage\Sign.cs" />
     <Compile Include="Model\EditorModel\Statuses.cs" />
     <Compile Include="Model\EditorModel\WindowState\ArrangeModes.cs" />
     <Compile Include="Model\EditorModel\WindowState\PatchSelection.cs" />

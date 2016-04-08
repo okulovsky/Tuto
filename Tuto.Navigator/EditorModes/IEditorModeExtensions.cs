@@ -89,7 +89,7 @@ namespace Editor
                     return true;
 
                 case KeyboardCommands.SpeedDown:
-                    Model.WindowState.SpeedRatio -= 0.5;
+                        Model.WindowState.SpeedRatio -= 0.5;
                     Model.WindowState.SpeedRatio = Math.Max(0.5, Model.WindowState.SpeedRatio);
                     return true;
             }

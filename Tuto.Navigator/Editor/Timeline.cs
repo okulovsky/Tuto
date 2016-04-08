@@ -230,13 +230,6 @@ namespace Tuto.Navigator.Editor
 			}
             drawingContext.DrawGeometry(Brushes.Red, soundpen, streamGeometry);
 
-			foreach(var e in model.Signs)
-			{
-				var point = GetCoordinate(e.Time);
-				point = new Point(point.X, point.Y + RowHeight / 2);
-				drawingContext.DrawEllipse(Brushes.Orange, null, point, RowHeight/4, RowHeight/4);
-			}
-
 			//if (editorModel.WindowState.CurrentMode == EditorModes.Border && model.Borders!=null)
 			//	foreach (var e in model.Borders)
 			//	{
