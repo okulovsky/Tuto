@@ -158,9 +158,27 @@ namespace Tuto.Navigator.Editor
 
 		void PauseChanged()
 		{
-			panel.Desktop.Paused=model.WindowState.Paused;
-            panel.Face.Paused=model.WindowState.Paused;
+            SetAllPauses();
 		}
+
+        void SetAllPauses()
+        {
+            switch (model.WindowState.PatchPlaying)
+            {
+                case PatchPlayingType.NoPatch:
+                    panel.Face.Paused = model.WindowState.Paused;
+                    panel.Desktop.Paused = model.WindowState.Paused;
+                    panel.Patch.Paused = true;
+                    break;
+                case PatchPlayingType.PatchOnly:
+                    panel.Face.Paused = true;
+                    panel.Desktop.Paused = true;
+                    panel.Patch.Paused = model.WindowState.Paused;
+                    break;
+                default:
+                    throw new ArgumentException();
+            }
+        }
 
 		void ModeChanged()
 		{
@@ -240,21 +258,8 @@ namespace Tuto.Navigator.Editor
 
         void PatchPlayingChanged()
         {
-            switch(model.WindowState.PatchPlaying)
-            {
-                case PatchPlayingType.NoPatch:
-                    panel.Face.Paused = model.WindowState.Paused;
-                    panel.Desktop.Paused = model.WindowState.Paused;
-                    panel.Patch.Paused = true;
-                    break;
-                case PatchPlayingType.PatchOnly:
-                    panel.Face.Paused = true;
-                    panel.Desktop.Paused = true;
-                    panel.Patch.Paused = false;
-                    break;
-                default:
-                    throw new ArgumentException();
-            }
+            SetAllPauses();
+            
         }
 
 		#endregion

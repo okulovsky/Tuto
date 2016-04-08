@@ -170,12 +170,17 @@ namespace Tuto.Model
             set { SetAndNotify(ref videoPatchPosition, value); }
         }
 
+        public PatchPlayingType patchPlaying;
+
         public PatchPlayingType PatchPlaying
         {
             get
             {
-                if (CurrentVideoPatch == null) return PatchPlayingType.NoPatch;
-                return PatchPlayingType.PatchOnly;
+                return patchPlaying;
+            }
+            set
+            {
+                SetAndNotify(ref patchPlaying, value);
             }
         }
 
