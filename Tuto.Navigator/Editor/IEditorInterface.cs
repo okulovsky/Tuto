@@ -24,9 +24,12 @@ namespace Tuto.Navigator.Editor
         void SetRatio(double ratio);
         IVideoInterface Face { get; }
         IVideoInterface Desktop { get; }
+        IVideoInterface Patch { get;  }
         void SetArrangeMode(ArrangeModes mode);
 
         void SetSubtitles(SubtitlePatch patch);
+
+        void SetVideoPatch(VideoPatch patch);
 
         void Refresh();
 

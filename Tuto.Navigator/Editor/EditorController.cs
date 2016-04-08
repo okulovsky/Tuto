@@ -1,6 +1,7 @@
 ﻿using Editor;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,6 +37,7 @@ namespace Tuto.Navigator.Editor
 			model.WindowState.SubsrcibeByExpression(z => z.DesktopVideoIsVisible, VideoVisibilityChanged);
             model.WindowState.SubsrcibeByExpression(z => z.ArrangeMode, ArrangeModeChanged);
             model.WindowState.SubsrcibeByExpression(z => z.CurrentSubtitles, SubtitlesChanged);
+            model.WindowState.SubsrcibeByExpression(z => z.CurrentVideoPatch, VideoPatchChanged);
 
             ModeChanged();
             RatioChanged();
@@ -208,6 +210,22 @@ namespace Tuto.Navigator.Editor
         void SubtitlesChanged()
         {
             panel.SetSubtitles(model.WindowState.CurrentSubtitles);
+        }
+        
+
+        void VideoPatchChanged()
+        {
+            var patch = model.WindowState.CurrentVideoPatch;
+            panel.SetVideoPatch(patch);
+            if (patch==null)
+            {
+                panel.Patch.Stop();
+                panel.Patch.Visibility=false;
+                return;
+            }
+            var filePath = Path.Combine(model.Videotheque.PatchFolder.FullName,patch.RelativeFileName);
+            panel.Patch.SetFile(new FileInfo(filePath));
+            panel.Patch.PlayPause(false);
         }
 		#endregion
 	}

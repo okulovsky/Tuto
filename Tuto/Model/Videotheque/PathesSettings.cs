@@ -18,5 +18,8 @@ namespace Tuto.Model
         public string ModelPath { get; set; }
         [DataMember]
         public string TempPath { get; set; }
+
+        [DataMember]
+        public string PatchPath { get; set; }
     }
 }

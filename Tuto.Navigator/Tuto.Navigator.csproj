@@ -175,6 +175,9 @@
     <Compile Include="Editor\SubtitlesPanel.xaml.cs">
       <DependentUpon>SubtitlesPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Editor\VideoPatchPanel.xaml.cs">
+      <DependentUpon>VideoPatchPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Editor\VideoPlayerPanel.xaml.cs">
       <DependentUpon>VideoPlayerPanel.xaml</DependentUpon>
     </Compile>
@@ -252,6 +255,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Editor\SubtitlesPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Editor\VideoPatchPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

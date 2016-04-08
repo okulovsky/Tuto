@@ -15,6 +15,8 @@ namespace Tuto.Navigator
         public VideoPlayerPanelVideoWrap(MediaElement wrappedOver)
         {
             this.wrappedOver = wrappedOver;
+            wrappedOver.LoadedBehavior = MediaState.Manual;
+            
         }
 
         public int Position

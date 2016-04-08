@@ -161,6 +161,21 @@ namespace Tuto.Model
             set { SetAndNotify(ref currentSubtitles, value); }
         }
 
+        int videoPatchPosition;
+        public int VideoPatchPosition
+        {
+            get { return videoPatchPosition;}
+            set { SetAndNotify(ref videoPatchPosition, value); }
+        }
+
+        public VideoPatch currentVideoPatch;
+
+
+        public VideoPatch CurrentVideoPatch
+        {
+            get { return currentVideoPatch; }
+            set { SetAndNotify(ref currentVideoPatch, value);  }
+        }
 
 
 

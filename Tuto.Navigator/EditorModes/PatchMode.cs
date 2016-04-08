@@ -22,9 +22,17 @@ namespace Editor
             this.PlayWithoutDeletions();
 
             int ms = Model.WindowState.CurrentPosition;
-            Model.WindowState.CurrentSubtitles = Model.Montage.Patches
-                .Where(z => z.Subtitles!=null && z.Begin <= ms && z.End >= ms )
+            var actualPatches = Model.Montage.Patches
+                .Where(z=>z.Begin <= ms && z.End >= ms );
+
+            Model.WindowState.CurrentSubtitles=actualPatches
+                .Where(z=>z.Subtitles!=null)
                 .Select(z=>z.Subtitles)
+                .FirstOrDefault();
+
+            Model.WindowState.CurrentVideoPatch = actualPatches
+                .Where(z => z.Video != null)
+                .Select(z => z.Video)
                 .FirstOrDefault();
         }
 

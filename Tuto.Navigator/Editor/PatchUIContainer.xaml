@@ -8,6 +8,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <Grid x:Name="Container" x:FieldModifier="public" Width="100" Height="100">
+            <ed:VideoPatchPanel x:Name="VideoPatch"/>
             <ed:SubtitlesPanel x:Name="Subtitles"/>
         </Grid>
     </Grid>

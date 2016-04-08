@@ -27,11 +27,10 @@ namespace Tuto.Navigator.Editor
             
             Face = new VideoPlayerPanelVideoWrap(FaceVideo);
             Desktop = new VideoPlayerPanelVideoWrap(DesktopVideo);
+            Patch = new VideoPlayerPanelVideoWrap(PatchContainer.VideoPatch.patch);
             ModelView.TimeSelected += OnTimeSelected;
             Slider.TimeSelected += OnTimeSelected;
             PatchView.TimeSelected += OnTimeSelected;
-            FaceVideo.LoadedBehavior = MediaState.Manual;
-            DesktopVideo.LoadedBehavior = MediaState.Manual;
             DesktopVideo.Volume = 0;
 			MouseDown+=(s,a)=>Focus();
 			KeyDown += VideoPlayerPanel_KeyDown;
@@ -120,7 +119,14 @@ namespace Tuto.Navigator.Editor
 
         public void SetSubtitles(SubtitlePatch patch)
         {
+            PatchContainer.Subtitles.Visibility = patch == null ? Visibility.Hidden : Visibility.Visible;
             PatchContainer.Subtitles.DataContext = patch;
+        }
+
+        public void SetVideoPatch(VideoPatch patch)
+        {
+            PatchContainer.VideoPatch.Visibility = patch == null ? Visibility.Hidden : Visibility.Visible;
+            PatchContainer.VideoPatch.DataContext = patch;
         }
 
         public void SetRatio(double ratio)
@@ -136,6 +142,12 @@ namespace Tuto.Navigator.Editor
         }
 
         public IVideoInterface Desktop
+        {
+            get;
+            private set;
+        }
+
+        public IVideoInterface Patch
         {
             get;
             private set;
