@@ -248,6 +248,7 @@ namespace Tuto.Navigator.Editor
             if (patch==null)
             {
                 panel.SetSubtitles(null);
+                panel.SetVideoPatch(null);
                 panel.Patch.Visibility = false;
                 panel.Face.Muted = false;
                 panel.Patch.Die();
