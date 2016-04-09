@@ -14,7 +14,13 @@ namespace Tuto.Model
         SubtitlePatch Subtitles;
 
         [DataMember]
-        VideoPatch Video;
+        VideoFilePatch Video;
+
+        [DataMember]
+        ImagePatch Image;
+
+        [DataMember]
+        TutoPatch Tuto;
 
         public PatchData Data
         {
@@ -22,12 +28,16 @@ namespace Tuto.Model
             {
                 if (Subtitles != null) return Subtitles;
                 if (Video != null) return Video;
+                if (Image != null) return Image;
+                if (Tuto != null) return Tuto;
                 return null;
             }
             set
             {
                 Subtitles = value as SubtitlePatch;
-                Video = value as VideoPatch;
+                Video = value as VideoFilePatch;
+                Image = value as ImagePatch;
+                Tuto = value as TutoPatch;
             }
         }
     }

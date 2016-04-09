@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Tuto.Model;
+using Tuto.Navigator.ViewModels;
 
 namespace Tuto.Navigator.Editor
 {
@@ -117,16 +118,26 @@ namespace Tuto.Navigator.Editor
             }
         }
 
-        public void SetSubtitles(SubtitlePatch patch)
+        public void SetPatch(PatchData patch)
         {
-            PatchContainer.Subtitles.Visibility = patch == null ? Visibility.Hidden : Visibility.Visible;
-            PatchContainer.Subtitles.DataContext = patch;
-        }
+            PatchContainer.Subtitles.Visibility = patch is SubtitlePatch ? Visibility.Visible : Visibility.Hidden;
+            PatchContainer.Subtitles.DataContext = patch as SubtitlePatch;
 
-        public void SetVideoPatch(VideoPatch patch)
-        {
-            PatchContainer.VideoPatch.Visibility = patch == null ? Visibility.Hidden : Visibility.Visible;
-            PatchContainer.VideoPatch.DataContext = patch;
+            PatchContainer.VideoPatch.Visibility = patch is VideoPatchBase ? Visibility.Visible : Visibility.Hidden;
+            PatchContainer.VideoPatch.DataContext = patch as VideoPatchBase;
+
+            PatchContainer.Image.Visibility = patch is ImagePatch ? Visibility.Visible : Visibility.Hidden;
+            PatchContainer.Image.DataContext = patch as ImagePatch;
+            if (patch is ImagePatch)
+            {
+                var p = patch as ImagePatch;
+                var model = (EditorModel)DataContext;
+                var videotheque = model.Videotheque;
+                var path = System.IO.Path.Combine(videotheque.PatchFolder.FullName, p.RelativeFilePath);
+                var uri = new Uri(path);
+                PatchContainer.Image.image.Source = new BitmapImage(uri);
+            }
+            
         }
 
         public void SetRatio(double ratio)

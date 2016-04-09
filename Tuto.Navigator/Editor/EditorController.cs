@@ -247,27 +247,20 @@ namespace Tuto.Navigator.Editor
             
             if (patch==null)
             {
-                panel.SetSubtitles(null);
-                panel.SetVideoPatch(null);
+                panel.SetPatch(null);
                 panel.Patch.Visibility = false;
                 panel.Face.Muted = false;
                 panel.Patch.Die();
                 return;
             }
 
-
-            if (patch.Type == PatchType.Subtitles)
-            {
-                panel.SetSubtitles(model.WindowState.CurrentPatch.Data as SubtitlePatch);
-                return;
-            }
-
+            panel.SetPatch(patch.Data);
+            
             if (patch.IsVideoPatch)
             {
-                panel.SetVideoPatch(patch.VideoData);
                 panel.Patch.Visibility = true;
-                var filePath = Path.Combine(model.Videotheque.PatchFolder.FullName, patch.VideoData.RelativeFileName);
-                panel.Patch.SetFile(new FileInfo(filePath));
+                var filePath = patch.VideoData.GetFileName(model.Videotheque);
+                panel.Patch.SetFile(filePath);
                 panel.Patch.Paused = false;
                 panel.Patch.Muted = patch.VideoData.OverlayType != VideoPatchOverlayType.Replace;
                 panel.Face.Muted = patch.VideoData.OverlayType == VideoPatchOverlayType.Replace;

@@ -73,7 +73,7 @@
 
         </StackPanel>
         <Border>
-            <ed:VideoPlayerPanel x:Name="player"/>
+            <ed:VideoPlayerPanel x:Name="player" DataContext="{Binding}"/>
         </Border>
     </DockPanel>
 </UserControl>

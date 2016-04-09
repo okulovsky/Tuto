@@ -10,6 +10,7 @@
         <Grid x:Name="Container" x:FieldModifier="public" Width="100" Height="100">
             <ed:VideoPatchPanel x:Name="VideoPatch"/>
             <ed:SubtitlesPanel x:Name="Subtitles"/>
+            <ed:ImagePatchPanel x:Name="Image"/>
         </Grid>
     </Grid>
 </UserControl>

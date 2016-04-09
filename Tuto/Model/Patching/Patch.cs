@@ -26,8 +26,8 @@ namespace Tuto.Model
 
         public PatchData Data { get { if (Bucket == null) return null; return Bucket.Data; } set { Bucket.Data = value; } }
 
-        public bool IsVideoPatch { get { return Data is VideoPatch; } }
-        public VideoPatch VideoData { get { return Data as VideoPatch; } }
+        public bool IsVideoPatch { get { return Data is VideoPatchBase; } }
+        public VideoPatchBase VideoData { get { return Data as VideoPatchBase; } }
 
         public Patch()
         {
@@ -35,15 +35,5 @@ namespace Tuto.Model
         }
 
 
-        public PatchType Type
-        {
-            get
-            {
-                if (Data == null) return PatchType.Empty;
-                if (Data is SubtitlePatch) return PatchType.Subtitles;
-                if (Data is VideoPatch) return PatchType.Video;
-                return PatchType.Empty;
-            }
-        }
     }
 }

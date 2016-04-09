@@ -31,6 +31,7 @@ namespace Editor
             if (p==null)
             {
                 TryStopVideoPatch(Model.WindowState.CurrentPosition);
+                Model.WindowState.CurrentPatch = null;
                 return;
             }
 
@@ -46,8 +47,7 @@ namespace Editor
             if (!p.IsVideoPatch)
             {
                 TryStopVideoPatch(Model.WindowState.CurrentPosition);
-                if (p != Model.WindowState.CurrentPatch)
-                    Model.WindowState.CurrentPatch = p;
+                Model.WindowState.CurrentPatch = p;
             }
 
 

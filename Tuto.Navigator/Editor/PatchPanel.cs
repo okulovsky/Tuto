@@ -37,14 +37,24 @@ namespace Tuto.Navigator.Editor
             var createVideo = new MenuItem { Header = "Add video" };
             createVideo.Click += AddVideo;
 
+            var createImage = new MenuItem { Header = "Add image" };
+            createImage.Click += createImage_Click;
+
             forExisting = new ContextMenu { Items = { delete } };
-            forEmpty = new ContextMenu { Items = { createSubs, createVideo } };
+            forEmpty = new ContextMenu { Items = { createSubs, createVideo, createImage } };
+        }
+
+        void createImage_Click(object sender, RoutedEventArgs e)
+        {
+            var ms = MsAtPoint(menuCalled);
+            model.Patches.Add(new Patch { Begin = ms, End = ms + 1000, Data = new ImagePatch { RelativeFilePath = "test.jpg" } });
+       
         }
 
         void AddVideo(object sender, RoutedEventArgs e)
         {
             var ms = MsAtPoint(menuCalled);
-            model.Patches.Add(new Patch { Begin = ms, End = ms + 1000, Data = new VideoPatch { RelativeFileName = "test.mp4" } });
+            model.Patches.Add(new Patch { Begin = ms, End = ms + 1000, Data = new VideoFilePatch { RelativeFileName = "test.mp4" } });
         }
 
         void AddSubtitles(object sender, RoutedEventArgs e)
@@ -211,6 +221,7 @@ namespace Tuto.Navigator.Editor
 
         SolidColorBrush SubtitlesBrush = Brushes.Blue;
         SolidColorBrush VideoBrush = Brushes.Green;
+        SolidColorBrush ImageBrush = Brushes.Red;
         Pen Pen = new Pen(Brushes.Transparent, 0);
         Pen SelectedPen = new Pen(Brushes.Gold, 2);
 
@@ -246,13 +257,8 @@ namespace Tuto.Navigator.Editor
             if (selection != null && selection.Item == data) pen = SelectedPen;
 
             var brush = SubtitlesBrush;
-            switch(data.Type)
-            {
-                case  PatchType.Video:
-                    brush = VideoBrush;
-                    break;
-            }
-
+            if (data.IsVideoPatch) brush = VideoBrush;
+            if (data.Data is ImagePatch) brush = ImageBrush;
             
             foreach (var e in GetRects(data.Begin, data.End, RelativeBarHeight, 1))
             {

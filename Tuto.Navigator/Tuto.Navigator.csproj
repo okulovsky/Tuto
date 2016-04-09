@@ -166,6 +166,9 @@
       <DependentUpon>HelpWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Editor\IEditorInterface.cs" />
+    <Compile Include="Editor\ImagePatchPanel.xaml.cs">
+      <DependentUpon>ImagePatchPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Editor\InfoWindow.xaml.cs">
       <DependentUpon>InfoWindow.xaml</DependentUpon>
     </Compile>
@@ -245,6 +248,10 @@
     <Page Include="Editor\HelpWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Editor\ImagePatchPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Editor\InfoWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -26,10 +26,7 @@ namespace Tuto.Navigator.Editor
         IVideoInterface Desktop { get; }
         IVideoInterface Patch { get;  }
         void SetArrangeMode(ArrangeModes mode);
-
-        void SetSubtitles(SubtitlePatch patch);
-
-        void SetVideoPatch(VideoPatch patch);
+        void SetPatch(PatchData patch);
 
         void Refresh();
 

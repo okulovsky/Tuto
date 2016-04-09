@@ -125,6 +125,7 @@
     <Compile Include="Model\EditorModel\WindowState\PatchSelectionType.cs" />
     <Compile Include="Model\MyPath.cs" />
     <Compile Include="Model\Names.cs" />
+    <Compile Include="Model\Patching\ImagePatch.cs" />
     <Compile Include="Model\Patching\Patch.cs" />
     <Compile Include="Model\Patching\PatchBucket.cs" />
     <Compile Include="Model\Patching\PatchData.cs" />
