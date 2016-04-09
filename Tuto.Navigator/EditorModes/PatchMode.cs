@@ -71,7 +71,7 @@ namespace Editor
 
         void ContinueVideoPatch(Patch p)
         {
-            if (p.VideoData.Duration > 0 && Model.WindowState.VideoPatchPosition == p.VideoData.Duration)
+            if (Model.WindowState.PatchPlaying== PatchPlayingType.PatchOnly && p.VideoData.Duration > 0 && Model.WindowState.VideoPatchPosition == p.VideoData.Duration)
                 TryStopVideoPatch(Model.WindowState.CurrentPatch.End + 1);
 
             if (p.VideoData.OverlayType== VideoPatchOverlayType.KeepSoundAddSilence)
