@@ -32,25 +32,25 @@ namespace Tuto.Navigator.Editor
 
             var delete = new MenuItem { Header = "Delete" };
             delete.Click += delete_Click;
-            var create = new MenuItem { Header = "Add subtitles" };
-            create.Click += AddSubtitles;
-            create = new MenuItem { Header = "Add video" };
-            create.Click += AddVideo;
+            var createSubs = new MenuItem { Header = "Add subtitles" };
+            createSubs.Click += AddSubtitles;
+            var createVideo = new MenuItem { Header = "Add video" };
+            createVideo.Click += AddVideo;
 
             forExisting = new ContextMenu { Items = { delete } };
-            forEmpty = new ContextMenu { Items = { create } };
+            forEmpty = new ContextMenu { Items = { createSubs, createVideo } };
         }
 
         void AddVideo(object sender, RoutedEventArgs e)
         {
             var ms = MsAtPoint(menuCalled);
-            model.Patches.Add(new Patch { Begin = ms, End = ms + 1000, Video = new VideoPatch { RelativeFileName = "test.mp4" } });
+            model.Patches.Add(new Patch { Begin = ms, End = ms + 1000, Data = new VideoPatch { RelativeFileName = "test.mp4" } });
         }
 
         void AddSubtitles(object sender, RoutedEventArgs e)
         {
             var ms = MsAtPoint(menuCalled);
-            model.Patches.Add(new Patch { Begin = ms, End = ms + 1000, Subtitles = new SubtitlePatch { Text = "AAAAAAAAA!" } });
+            model.Patches.Add(new Patch { Begin = ms, End = ms + 1000, Data = new SubtitlePatch { Text = "AAAAAAAAA!" } });
         }
 
         void delete_Click(object sender, RoutedEventArgs e)

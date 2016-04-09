@@ -197,8 +197,8 @@ namespace Tuto.Model
             }
         }
 
-        public SubtitlePatch CurrentSubtitles { get { if (currentPatch == null) return null; return currentPatch.Subtitles; } }
-        public VideoPatch CurrentVideoPatch { get { if (currentPatch == null) return null; return currentPatch.Video; } }
+        public SubtitlePatch CurrentSubtitles { get { if (currentPatch == null) return null; return currentPatch.Data as SubtitlePatch; } }
+        public VideoPatch CurrentVideoPatch { get { if (currentPatch == null) return null; return currentPatch.Data as VideoPatch; } }
 
         public PatchSelection PatchSelection
         {

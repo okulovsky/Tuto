@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Tuto.Model
 {
     [DataContract]
-    public class VideoPatch
+    public class VideoPatch : PatchData
     {
         [DataMember]
         public string RelativeFileName { get; set; }

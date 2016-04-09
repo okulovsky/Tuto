@@ -22,16 +22,26 @@ namespace Tuto.Model
         [DataMember]
         public int End { get; set; }
         [DataMember]
-        public SubtitlePatch Subtitles { get; set; }
-        [DataMember]
-        public VideoPatch Video { get; set; }
+        PatchBucket Bucket { get; set; }
+
+        public PatchData Data { get { if (Bucket == null) return null; return Bucket.Data; } set { Bucket.Data = value; } }
+
+        public bool IsVideoPatch { get { return Data is VideoPatch; } }
+        public VideoPatch VideoData { get { return Data as VideoPatch; } }
+
+        public Patch()
+        {
+            Bucket = new PatchBucket();
+        }
+
 
         public PatchType Type
         {
             get
             {
-                if (Subtitles != null) return PatchType.Subtitles;
-                if (Video != null) return PatchType.Video;
+                if (Data == null) return PatchType.Empty;
+                if (Data is SubtitlePatch) return PatchType.Subtitles;
+                if (Data is VideoPatch) return PatchType.Video;
                 return PatchType.Empty;
             }
         }

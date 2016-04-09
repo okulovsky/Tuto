@@ -8,9 +8,7 @@ using System.Threading.Tasks;
 namespace Tuto.Model
 {
     [DataContract]
-    public class SubtitlePatch : PatchData
+    public class PatchData
     {
-        [DataMember]
-        public string Text { get; set; }
     }
 }
