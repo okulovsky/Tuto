@@ -47,5 +47,7 @@ namespace Tuto.Navigator.Editor
 
         void Die();
         bool Loaded { get; }
+
+        bool Muted { set; }
     }
 }

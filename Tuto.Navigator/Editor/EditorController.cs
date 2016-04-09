@@ -34,8 +34,7 @@ namespace Tuto.Navigator.Editor
 			model.WindowState.SubsrcibeByExpression(z => z.FaceVideoIsVisible, VideoVisibilityChanged);
 			model.WindowState.SubsrcibeByExpression(z => z.DesktopVideoIsVisible, VideoVisibilityChanged);
             model.WindowState.SubsrcibeByExpression(z => z.ArrangeMode, ArrangeModeChanged);
-            model.WindowState.SubsrcibeByExpression(z => z.CurrentSubtitles, SubtitlesChanged);
-            model.WindowState.SubsrcibeByExpression(z => z.CurrentVideoPatch, VideoPatchChanged);
+            model.WindowState.SubsrcibeByExpression(z => z.CurrentPatch, CurrentPatchChanged);
             model.WindowState.SubsrcibeByExpression(z => z.VideoPatchPosition, VideoPatchPositionChanged);
             model.WindowState.SubsrcibeByExpression(z => z.PatchPlaying, PatchPlayingChanged);
 
@@ -43,8 +42,7 @@ namespace Tuto.Navigator.Editor
             RatioChanged();
             ArrangeModeChanged();
             VideoVisibilityChanged();
-            SubtitlesChanged();
-            VideoPatchChanged();
+            CurrentPatchChanged();
             PositionChanged();
             VideoPatchPositionChanged();
             PauseChanged();
@@ -120,8 +118,11 @@ namespace Tuto.Navigator.Editor
 
             if (model.WindowState.PatchPlaying != PatchPlayingType.NoPatch)
             {
-                model.WindowState.VideoPatchPosition = panel.Patch.Position;
-                model.WindowState.CurrentVideoPatch.Duration = panel.Patch.GetDuration();
+                if (model.WindowState.CurrentPatch!=null && model.WindowState.CurrentPatch.IsVideoPatch)
+                {
+                    model.WindowState.VideoPatchPosition = panel.Patch.Position;
+                    model.WindowState.CurrentPatch.VideoData.Duration = panel.Patch.GetDuration();
+                }
             }
 
 			supressPositionChanged = false;
@@ -175,8 +176,13 @@ namespace Tuto.Navigator.Editor
                     panel.Desktop.Paused = true;
                     panel.Patch.Paused = model.WindowState.Paused;
                     break;
-                default:
-                    throw new ArgumentException();
+                case PatchPlayingType.PatchAlong:
+                    panel.Face.Paused = model.WindowState.Paused;
+                    panel.Desktop.Paused = model.WindowState.Paused;
+                    panel.Patch.Paused = model.WindowState.Paused;
+                    break;
+
+                    
             }
         }
 
@@ -235,31 +241,42 @@ namespace Tuto.Navigator.Editor
             panel.SetArrangeMode(model.WindowState.ArrangeMode);
         }
 
-        void SubtitlesChanged()
+        void CurrentPatchChanged()
         {
-            panel.SetSubtitles(model.WindowState.CurrentSubtitles);
-        }
-        
-
-        void VideoPatchChanged()
-        {
-            var patch = model.WindowState.CurrentVideoPatch;
-            panel.SetVideoPatch(patch);
-            panel.Patch.Visibility = patch != null;
+            var patch = model.WindowState.CurrentPatch;
+            
             if (patch==null)
             {
+                panel.SetSubtitles(null);
+                panel.Patch.Visibility = false;
+                panel.Face.Muted = false;
                 panel.Patch.Die();
                 return;
             }
-            var filePath = Path.Combine(model.Videotheque.PatchFolder.FullName,patch.RelativeFileName);
-            panel.Patch.SetFile(new FileInfo(filePath));
-            panel.Patch.Paused=false;
+
+
+            if (patch.Type == PatchType.Subtitles)
+            {
+                panel.SetSubtitles(model.WindowState.CurrentPatch.Data as SubtitlePatch);
+                return;
+            }
+
+            if (patch.IsVideoPatch)
+            {
+                panel.SetVideoPatch(patch.VideoData);
+                panel.Patch.Visibility = true;
+                var filePath = Path.Combine(model.Videotheque.PatchFolder.FullName, patch.VideoData.RelativeFileName);
+                panel.Patch.SetFile(new FileInfo(filePath));
+                panel.Patch.Paused = false;
+                panel.Patch.Muted = patch.VideoData.OverlayType != VideoPatchOverlayType.Replace;
+                panel.Face.Muted = patch.VideoData.OverlayType == VideoPatchOverlayType.Replace;
+                return;
+            }
         }
 
         void PatchPlayingChanged()
         {
             SetAllPauses();
-            
         }
 
 		#endregion

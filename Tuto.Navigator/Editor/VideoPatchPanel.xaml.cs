@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Tuto.Model;
 
 namespace Tuto.Navigator.Editor
 {
@@ -23,6 +24,10 @@ namespace Tuto.Navigator.Editor
         public VideoPatchPanel()
         {
             InitializeComponent();
+            overlay.Items.Add(VideoPatchOverlayType.Replace);
+            overlay.Items.Add(VideoPatchOverlayType.KeepSoundAddSilence); ;
+            overlay.Items.Add(VideoPatchOverlayType.KeepSoundTruncateVideo);
+
         }
     }
 }

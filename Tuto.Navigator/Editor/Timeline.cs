@@ -149,16 +149,16 @@ namespace Tuto.Navigator.Editor
 
             if (editorModel.WindowState.PatchPlaying != PatchPlayingType.NoPatch 
                 && editorModel.WindowState.CurrentPatch!=null 
-                && editorModel.WindowState.CurrentVideoPatch!=null
+                && editorModel.WindowState.CurrentPatch.IsVideoPatch
                 )
             {
                 var current = editorModel.WindowState.VideoPatchPosition;
                 var availableLength = editorModel.WindowState.CurrentPatch.End - editorModel.WindowState.CurrentPatch.Begin + 2 * EdgeInMS;
                 int whereSlider=0;
                 
-                if (editorModel.WindowState.CurrentVideoPatch.Duration>0)
+                if (editorModel.WindowState.CurrentPatch.VideoData.Duration>0)
                 {
-                    double k = ((double)current) / editorModel.WindowState.CurrentVideoPatch.Duration;
+                    double k = ((double)current) / editorModel.WindowState.CurrentPatch.VideoData.Duration;
                     whereSlider = (int)(k * availableLength);
                 }
                 else

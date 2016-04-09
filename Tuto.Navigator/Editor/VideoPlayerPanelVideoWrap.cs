@@ -85,5 +85,13 @@ namespace Tuto.Navigator
                 return -1;
             return (int)wrappedOver.NaturalDuration.TimeSpan.TotalMilliseconds;
         }
+
+        public bool Muted
+        {
+            set
+            {
+                wrappedOver.Volume = value ? 0 : 100;
+            }
+        }
     }
 }

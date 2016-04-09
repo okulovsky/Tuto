@@ -27,8 +27,7 @@ namespace Editor
         {
             var MS = Model.WindowState.CurrentPosition;
             var p = Model.Montage.Patches.Where(z => z.Begin <= MS && z.End >= MS).FirstOrDefault();
-            var old = Model.WindowState.CurrentPatch;
-         
+            
             if (p==null)
             {
                 TryStopVideoPatch(Model.WindowState.CurrentPosition);
@@ -37,7 +36,10 @@ namespace Editor
 
             if (p.IsVideoPatch)
             {
-                ProcessVideoPatchCheckTime(p,forceTransition);
+                if (p != Model.WindowState.CurrentPatch || forceTransition)
+                    StartVideoPatch(p);
+                else
+                    ContinueVideoPatch(p);
                 return;
             }
 
@@ -51,15 +53,8 @@ namespace Editor
 
         }
 
-        void ProcessVideoPatchCheckTime(Patch p, bool forceTransition)
+        void StartVideoPatch(Patch p)
         {
-            if (!forceTransition && p == Model.WindowState.CurrentPatch)
-            {
-                if (Model.WindowState.CurrentVideoPatch.Duration > 0 && Model.WindowState.VideoPatchPosition == Model.WindowState.CurrentVideoPatch.Duration)
-                    TryStopVideoPatch(Model.WindowState.CurrentPatch.End + 1);
-                return;
-            }
-
             Model.WindowState.CurrentPatch = p;
             if (p.Begin == p.End || p.VideoData.Duration <= 0) Model.WindowState.VideoPatchPosition = 0;
             else
@@ -67,8 +62,22 @@ namespace Editor
                 double k = ((double)(Model.WindowState.CurrentPosition - p.Begin)) / (p.End - p.Begin);
                 Model.WindowState.VideoPatchPosition = (int)(k * p.VideoData.Duration);
             }
-            Model.WindowState.PatchPlaying = PatchPlayingType.PatchOnly;
 
+            if (p.VideoData.OverlayType== VideoPatchOverlayType.Replace)
+                Model.WindowState.PatchPlaying = PatchPlayingType.PatchOnly;
+            else
+                Model.WindowState.PatchPlaying = PatchPlayingType.PatchAlong;
+        }
+
+        void ContinueVideoPatch(Patch p)
+        {
+            if (p.VideoData.Duration > 0 && Model.WindowState.VideoPatchPosition == p.VideoData.Duration)
+                TryStopVideoPatch(Model.WindowState.CurrentPatch.End + 1);
+
+            if (p.VideoData.OverlayType== VideoPatchOverlayType.KeepSoundAddSilence)
+                    if (Model.WindowState.CurrentPosition >= p.End-100)
+                        Model.WindowState.PatchPlaying = PatchPlayingType.PatchOnly;
+            
         }
 
         void TryStopVideoPatch(int whereToReturn)
@@ -78,6 +87,8 @@ namespace Editor
             Model.WindowState.PatchPlaying = PatchPlayingType.NoPatch;
             Model.WindowState.CurrentPatch = null;
         }
+
+        
 
         public void MouseClick(int SelectedLocation, bool alternative)
         {

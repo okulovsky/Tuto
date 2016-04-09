@@ -191,15 +191,9 @@ namespace Tuto.Model
             set
             {
                 SetAndNotify(ref currentPatch, value);
-                this.NotifyByExpression(z => z.CurrentSubtitles);
-                this.NotifyByExpression(z => z.CurrentVideoPatch);
-                this.NotifyByExpression(z => z.PatchPlaying);
             }
         }
-
-        public SubtitlePatch CurrentSubtitles { get { if (currentPatch == null) return null; return currentPatch.Data as SubtitlePatch; } }
-        public VideoPatch CurrentVideoPatch { get { if (currentPatch == null) return null; return currentPatch.Data as VideoPatch; } }
-
+        
         public PatchSelection PatchSelection
         {
             get;

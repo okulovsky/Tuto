@@ -7,6 +7,13 @@ using System.Threading.Tasks;
 
 namespace Tuto.Model
 {
+    public enum VideoPatchOverlayType
+    {
+        Replace,
+        KeepSoundTruncateVideo,
+        KeepSoundAddSilence
+    }
+
     [DataContract]
     public class VideoPatch : PatchData
     {
@@ -14,5 +21,7 @@ namespace Tuto.Model
         public string RelativeFileName { get; set; }
         [DataMember]
         public int Duration { get; set; }
+        [DataMember]
+        public VideoPatchOverlayType OverlayType { get; set; }
     }
 }
