@@ -156,12 +156,16 @@ namespace Tuto.Navigator.Editor
 
 
                 SelectionType? type = null;
-                double delta = 0;
-                if (TestEdge(p, e.Begin, -EdgeWidth, ref delta)) type = SelectionType.LeftDrag;
-                if (TestEdge(p, e.End, EdgeWidth, ref delta)) type = SelectionType.RightDrag;
+
+                if (GetLeftGeometries(e).Any(z => z.FillContains(p)))
+                    type = SelectionType.LeftDrag;
+                if (GetRightGeometries(e).Any(z => z.FillContains(p)))
+                    type = SelectionType.RightDrag;
 
                 if (type == null) continue;
 
+                var delta = ((int)p.Y) % RowHeight;
+                
                 if (e.End - e.Begin < 100 && delta > EdgeHalf)
                     type = SelectionType.Drag;
 
@@ -211,15 +215,29 @@ namespace Tuto.Navigator.Editor
         Pen SelectedPen = new Pen(Brushes.Gold, 2);
 
 
-        void DrawGeometry(DrawingContext context, Point p, Func<Point,Geometry> geometry, Brush Brush, Pen pen)
+        IEnumerable<StreamGeometry> GetLeftGeometries(Patch data)
         {
-            context.DrawGeometry(Brush, pen, geometry(p));
+            var p = GetCoordinate(data.Begin);
+            p.X -= EdgeWidth - 1;
+            yield return GetLeftGeometry(p);
             if (p.X + EdgeWidth > Width)
-                context.DrawGeometry(Brush, pen, geometry(new Point(Width - p.X - EdgeWidth, p.Y + RowHeight)));
+                yield return GetLeftGeometry(new Point(Width - p.X - EdgeWidth, p.Y + RowHeight));
             if (p.X < 0)
-                context.DrawGeometry(Brush, pen, geometry(new Point(Width + p.X, p.Y - RowHeight)));
+                yield return GetLeftGeometry(new Point(Width + p.X, p.Y - RowHeight));
+        }
+
+        IEnumerable<StreamGeometry> GetRightGeometries(Patch data)
+        {   
+            var p = GetCoordinate(data.End);
+            p.X -= 1;
+            yield return GetRightGeometry(p);
+            if (p.X + EdgeWidth > Width)
+                yield return GetRightGeometry(new Point(Width - p.X - EdgeWidth, p.Y + RowHeight));
+            if (p.X < 0)
+                yield return GetRightGeometry(new Point(Width + p.X, p.Y - RowHeight));
 
         }
+
 
         void DrawPatch(DrawingContext context, Patch data)
         {
@@ -243,14 +261,10 @@ namespace Tuto.Navigator.Editor
                 context.DrawLine(pen, e.BottomLeft, e.BottomRight);
                 
             }
-            var point = GetCoordinate(data.Begin);
-            point.X -= EdgeWidth-1;
-            DrawGeometry(context, point, GetLeftGeometry, brush, pen);
-            point = GetCoordinate(data.End);
-            point.X -= 1;
-            DrawGeometry(context, point, GetRightGeometry, brush, pen);
-
-         
+            foreach(var e in GetLeftGeometries(data).Concat(GetRightGeometries(data)))
+            {
+                context.DrawGeometry(brush, pen, e);
+            }
         }
 
         protected override void OnRender(DrawingContext drawingContext)
