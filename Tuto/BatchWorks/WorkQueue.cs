@@ -56,19 +56,29 @@ namespace Tuto.BatchWorks
                         currentProcess = (e as ProcessBatchWork).Process;
 
                     var task = GetNextTask(e);
-                    e.Work();
+                    if (task == e) //for atomic work
+                    {
+                        e.Work();
+                        e.Status = BatchWorkStatus.Success;
+                    }
+
                     while (task != e)
                     {
                         if (!(task is CompositeWork))
                         {
+                            if (task.Parent != null)
+                                task.Parent.Status = BatchWorkStatus.Running;
                             task.Status = BatchWorkStatus.Running;
                             task.Work();
                             task.Status = BatchWorkStatus.Success;
                         }
                         else
                         {
-                            task = GetNextTask(e);
+                            if (task.ChildWorks.Count(x => x.Status == BatchWorkStatus.Success) == task.ChildWorks.Count)
+                                task.Status = BatchWorkStatus.Success;
                         }
+
+                        task = GetNextTask(e);
                     }
                     e.Status = BatchWorkStatus.Success;
                     currentIndex++;
@@ -103,7 +113,7 @@ namespace Tuto.BatchWorks
         {
             if (work.ChildWorks != null)
                 foreach (var e in work.ChildWorks)
-                    if (e.Status == BatchWorkStatus.Pending)
+                    if (e.Status == BatchWorkStatus.Pending || e.Status == BatchWorkStatus.Running)
                         return GetNextTask(e);
             return work;
         }
@@ -118,35 +128,16 @@ namespace Tuto.BatchWorks
             }
         }
 
-        private void FilteredAdd(List<BatchWork> allWorks, BatchWork work)
-        {
-            if (!(work is CompositeWork))
-                    allWorks.Add(work);
-        }
-
-        private List<BatchWork> GetFilteredWorks(BatchWork work)
+        private bool ShouldWeDoThisWork(BatchWork work) // filterer
         {
             if (work.Finished() && !work.Forced)
-                return new List<BatchWork>();
-
-            var allWorks = new List<BatchWork>();
-
-            if (work is CompositeWork)
-            {
-                foreach (var e in (work as CompositeWork).Tasks)
-                {
-                    if (e.Finished()) continue;
-                    if (WorkSettings.AudioCleanSettings.CurrentOption == Options.Skip && e is CreateCleanSoundWork)
-                        continue;
-                    if (!WorkSettings.AutoUploadVideo && e is YoutubeWork)
-                        continue; 
-                    Run(e);
-                    FilteredAdd(allWorks, e);
-                }
-            }
-
-            FilteredAdd(allWorks, work);
-            return allWorks;
+                return false;
+            if (work.Finished()) return false;
+            if (WorkSettings.AudioCleanSettings.CurrentOption == Options.Skip && work is CreateCleanSoundWork)
+                return false;
+            if (!WorkSettings.AutoUploadVideo && work is YoutubeWork)
+                return false;
+            return true;
         }
 
         public void Run(IEnumerable<BatchWork> works)
@@ -155,13 +146,10 @@ namespace Tuto.BatchWorks
                 Run(e);
         }
 
-        public void NewRun(BatchWork work)
+        public void UnpackWork(BatchWork work)
         {
             if (work is CompositeWork)
             {
-                var compWork = work as CompositeWork;
-                ///insert new node and put in it
-                //Work.Add(work);
                 AddNode(work, null);
             }
         }
@@ -186,16 +174,29 @@ namespace Tuto.BatchWorks
             {
                 if (parent.ChildWorks == null)
                     parent.ChildWorks = new ObservableCollection<BatchWork>();
-                parent.ChildWorks.Add(work);
-                work.Parent = parent;
+                if (ShouldWeDoThisWork(work))
+                {
+                    parent.ChildWorks.Add(work);
+                    work.Parent = parent;
+                }
             }
         }
 
         public void Run(BatchWork work)
         {
             wasException = false;
-            NewRun(work);
-            Work.Add(work);
+            var worksInQueue = this.Work
+                    .Where(x => x.Status == BatchWorkStatus.Pending || x.Status == BatchWorkStatus.Running)
+                    .ToList(); //for duplicates removing
+            if (worksInQueue.Any(x => x.Model == work.Model && x.GetType() == work.GetType()))
+                return; //reject work as duplicate at top level
+
+            UnpackWork(work); //prepare tree in work
+
+            lock (addLock)
+            {
+                Work.Add(work);
+            }
 
             if (!queueWorking && Work.Count != 0)
             {
@@ -203,26 +204,6 @@ namespace Tuto.BatchWorks
                 queueThread.Start();
                 queueWorking = true;
             }
-
-            //       var worksIdentifiers = this.Work
-            //               .Where(x => x.Status == BatchWorkStatus.Pending || x.Status == BatchWorkStatus.Running)
-            //               .ToList(); //for duplicates removing
-
-            //       var newWork = GetFilteredWorks(work);
-            //       lock (addLock)
-            //       {
-            //           foreach (var e in newWork)
-            //           {
-            //               if (worksIdentifiers.Count(x => x.Model == e.Model && e.GetType() == x.GetType()) != 0)
-            //                   continue;
-            //               Work.Add(e);
-            //if (e.Model!=null)
-            //	e.Model.Statuses.InQueue = true;
-            //           }
-
-
-            //       }
-
         }
 
         public void RemoveOldTasks()
