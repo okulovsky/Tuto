@@ -15,9 +15,10 @@ namespace Tuto.BatchWorks
         private FileInfo from { get; set; }
         private FileInfo to { get; set; }
 
-        public MoveFile(FileInfo from, FileInfo to)
+        public MoveFile(FileInfo from, FileInfo to, EditorModel model, params string[] additionalArgs)
         {
-            Name = string.Format("Move \"{0}\" to Output folder", from.FullName);
+            Name = string.Format("Move \"{0}\" to Output folder", to.Name);
+            Model = model;
             this.from = from;
             this.to = to;
         }

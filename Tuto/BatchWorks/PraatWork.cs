@@ -15,7 +15,7 @@ namespace Tuto.BatchWorks
         public PraatWork(EditorModel model)
         {
             Model = model;
-            Name = "Praat working: " + model.Locations.FaceVideo.FullName;
+            Name = "Praat working: " + model.RawLocation.Name;
         }
 
         const string SilentLabel = "--";

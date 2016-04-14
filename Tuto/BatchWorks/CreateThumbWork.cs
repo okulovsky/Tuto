@@ -18,7 +18,6 @@ namespace Tuto.BatchWorks
             this.Source = source;
             this.Model = model;
             Forced = forced;
-            BeforeWorks.Add(new CreateCleanSoundWork(model.Locations.FaceVideo, model, false));
         }
 
         public FileInfo Source;

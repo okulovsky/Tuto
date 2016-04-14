@@ -23,6 +23,7 @@ namespace Tuto.BatchWorks
 
         public PatchWork(PatchModel model, bool fadeMode, EditorModel emodel, bool forced)
         {
+            //NOT WORKING NOW
             this.pmodel = model;
             this.Model = emodel;
             Forced = forced;
@@ -34,14 +35,14 @@ namespace Tuto.BatchWorks
                     var patchInfo = ep.FullName;
                     var name = Path.Combine(Model.Locations.TemporalDirectory.FullName, patchInfo.Name);
                     var fileInPatches = new FileInfo(ep.Path.LocalPath);
-                    BeforeWorks.Add(new PreparePatchWork(emodel, fileInPatches, new FileInfo(name), false));
+                    //BeforeWorks.Add(new PreparePatchWork(emodel, fileInPatches, new FileInfo(name), false));
                 }
                 else if (!ep.FullName.Exists)
                 {
                     
                     var m = emodel.Videotheque.EditorModels.First(x => x.Montage.RawVideoHash == ep.ModelHash);             
                     var epInfo = m.Montage.Information.Episodes[ep.EpisodeNumber];
-                    BeforeWorks.Add(new AssemblyEpisodeWork(m, epInfo));
+                    //BeforeWorks.Add(new AssemblyEpisodeWork(m, epInfo));
                 }
             }
         }

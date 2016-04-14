@@ -9,6 +9,7 @@ using System.IO;
 using Tuto.Model;
 using System.ComponentModel;
 using System.Threading;
+using System.Collections.ObjectModel;
 
 namespace Tuto.BatchWorks
 {
@@ -26,6 +27,7 @@ namespace Tuto.BatchWorks
     {
         public virtual EditorModel Model { get; set; }
         public bool NeedToRewrite { get; set; }
+        public ObservableCollection<BatchWork> ChildWorks { get; set; }
 
 
         public virtual void Work() { }
@@ -46,9 +48,6 @@ namespace Tuto.BatchWorks
         {
             return GetTempFile(info, "-tmp");
         }
-
-        public List<BatchWork> BeforeWorks = new List<BatchWork>();
-        public List<BatchWork> AfterWorks = new List<BatchWork>();
 
         public virtual bool Finished() { return false; }
         public bool Forced { get; set; }

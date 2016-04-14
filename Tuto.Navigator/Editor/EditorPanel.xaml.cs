@@ -34,12 +34,22 @@ namespace Tuto.Navigator.Editor
             InitializeComponent();
             DataContextChanged += EditorPanel_DataContextChanged;
 
+            Func<bool> areEpisodesNamed = () => { return model.Montage.Information.Episodes.Count(x => x.Name == "") == 0; };
+            Action requestEpisodeNames = () =>
+            {
+                MessageBox.Show("Please, fill episodes info.");
+                titles_Click("", null);
+            };
+
 			backButton.Click += (s, a) =>
 				{
 					if (model != null)
 					{
 						model.Save();
-						model.WindowState.OnGetBack();
+                        if (!areEpisodesNamed())
+                            requestEpisodeNames();
+                        else
+                            model.WindowState.OnGetBack();
 					}
 						
 				};

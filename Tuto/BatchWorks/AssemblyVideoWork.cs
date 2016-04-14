@@ -10,28 +10,21 @@ using Tuto.TutoServices.Assembler;
 
 namespace Tuto.BatchWorks
 {
-    public class AssemblyVideoWork : FFmpegWork
+    public class AssemblyVideoWork : CompositeWork
     {
-
-        private List<string> filesToDelIfAborted { get; set; }
-        private bool crossFades {get; set;}
-        private List<AvsNode> episodes { get; set; }
-
         public AssemblyVideoWork (EditorModel model)
         {
             Model = model;
-            crossFades = model.Videotheque.Data.EditorSettings.CrossFadesEnabled;
-            Name = "Assembly video: " + model.Locations.FaceVideo.Directory.FullName;
-            filesToDelIfAborted = new List<string>();
-            var service = new AssemblerService(crossFades);
-            episodes = service.GetEpisodesNodes(Model);
+            Name = "Assembly video: " + model.RawLocation.Name;
+            var service = new AssemblerService(model.Videotheque.Data.EditorSettings.CrossFadesEnabled);
+            var episodes = service.GetEpisodesNodes(Model);
 
             for (var episodeNumber = 0; episodeNumber < episodes.Count; episodeNumber++)
             {
                 if (Model.Montage.Information.Episodes[episodeNumber].OutputType == OutputTypes.None)
                     continue;
                 var episodeInfo = model.Montage.Information.Episodes[episodeNumber];
-                BeforeWorks.Add(new AssemblyEpisodeWork(model,episodeInfo));
+                Tasks.Add(new AssemblyEpisodeWork(model,episodeInfo));
             }
         }
     }

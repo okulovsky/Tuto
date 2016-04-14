@@ -10,56 +10,21 @@ using Tuto.TutoServices.Assembler;
 
 namespace Tuto.BatchWorks
 {
-    public class AssemblyEpisodeWork : FFmpegWork
+    public class AssemblyEpisodeWork : CompositeWork // composite work
     {
-        private List<string> filesToDelIfAborted { get; set; }
-        private bool crossFades {get; set;}
-        private EpisodInfo episodeInfo { get; set; }
-        private int episodeNumber { get; set; }
-        private AvsNode episodeNode { get; set; }
-
         public AssemblyEpisodeWork(EditorModel model, EpisodInfo episodeInfo)
         {
             Model = model;
-            var videoFile = Model.Locations.GetOutputFile(episodeInfo);
-            crossFades = model.Videotheque.Data.EditorSettings.CrossFadesEnabled;
-            Name = "Assembly episode: " + videoFile.FullName;
-            this.episodeInfo = episodeInfo;
-            this.episodeNode = episodeNode;
-            this.episodeNumber = Model.Montage.Information.Episodes.IndexOf(episodeInfo);
-            filesToDelIfAborted = new List<string>();
+            var videoFile = model.Locations.GetOutputFile(episodeInfo);
+            Tasks.Add(new ConvertDesktopWork(model, false));
+            Tasks.Add(new ConvertFaceWork(model, false));
+            Tasks.Add(new CreateCleanSoundWork(model.Locations.FaceVideo, model, false));
+            Tasks.Add(new AtomicAssemblyEpisodeWork(model,episodeInfo)); // this work itself
 
-            episodeNode = new AssemblerService(crossFades).GetEpisodesNodes(model)[episodeNumber];
-            BeforeWorks.Add(new ConvertDesktopWork(model, false));
-            BeforeWorks.Add(new ConvertFaceWork(model, false));
-            BeforeWorks.Add(new CreateCleanSoundWork(model.Locations.FaceVideo, model, false));
-            AfterWorks.Add(new NormalizeSoundWork(Model, videoFile));
-            AfterWorks[AfterWorks.Count - 1].TaskFinished += (s, a) => OnTaskFinished();
-        }
-
-        public override void Work()
-        {
-            var args = @"-i ""{0}"" -q:v 0 -vf ""scale=1280:720, fps=25"" -q:v 0 -acodec libmp3lame -ac 2 -ar 44100 -ab 32k ""{1}""";
-            var avsContext = new AvsContext();
-            episodeNode.SerializeToContext(avsContext);
-            var avsScript = avsContext.Serialize(Model);
-            var avsFile = Model.Locations.GetAvsStriptFile(episodeNumber);
-
-            File.WriteAllText(avsFile.FullName, avsScript, Encoding.GetEncoding("Windows-1251"));
-
-            var videoFile = Model.Locations.GetOutputFile(episodeInfo);
-            if (videoFile.Exists) videoFile.Delete();
-
-            args = string.Format(args, avsFile.FullName, videoFile.FullName);
-            filesToDelIfAborted.Add(videoFile.FullName);
-            RunProcess(args, Model.Videotheque.Locations.FFmpegExecutable.FullName);
-        }
-
-        public override void Clean()
-        {
-            FinishProcess();
-            foreach (var e in filesToDelIfAborted)
-                TryToDelete(e);
+            var task = new NormalizeSoundWork(Model, videoFile);
+            task.Name = "Normalize audio: " + episodeInfo.Name;
+            Name = "Assembly episode: " + episodeInfo.Name;
+            Tasks.Add(task);
         }
     }
 }

@@ -11,12 +11,11 @@ using Tuto.TutoServices;
 namespace Tuto.BatchWorks
 {
     //работа-метка, поэтому метода Work() нет
-    public class MakeAll : BatchWork
+    public class MakeAll : CompositeWork
     {
         public MakeAll(EditorModel model)
         {
-            BeforeWorks.Add(new AssemblyVideoWork(model));
-
+            Tasks.Add(new AssemblyVideoWork(model));
             var serv = new AssemblerService(true);
             var episodes = serv.GetEpisodesNodes(model);
 
@@ -28,16 +27,16 @@ namespace Tuto.BatchWorks
                 if (model.Montage.Information.Episodes[episodeNumber].OutputType == OutputTypes.None)
                     continue;
 
-                if (model.Montage.Information.Episodes[episodeNumber].PatchModel != null)
-                {
-                    BeforeWorks.Add(new PatchWork(model.Montage.Information.Episodes[episodeNumber].PatchModel,
-                                                  model.Videotheque.Data.EditorSettings.CrossFadesEnabled,
-                                                  model,
-                                                  true));
-                    var patchedLocation = model.Locations.GetFinalOutputFile(episodeNumber);
-                    AfterWorks.Add(new YoutubeWork(model, episodeNumber, patchedLocation));
-                    continue;
-                }
+                //if (model.Montage.Information.Episodes[episodeNumber].PatchModel != null)
+                //{
+                //    BeforeWorks.Add(new PatchWork(model.Montage.Information.Episodes[episodeNumber].PatchModel,
+                //                                  model.Videotheque.Data.EditorSettings.CrossFadesEnabled,
+                //                                  model,
+                //                                  true));
+                //    var patchedLocation = model.Locations.GetFinalOutputFile(episodeNumber);
+                //    AfterWorks.Add(new YoutubeWork(model, episodeNumber, patchedLocation));
+                //    continue;
+                //}
 
                 var from = model.Locations.GetOutputFile(episodeNumber);
                 var to = model.Locations.GetFinalOutputFile(episodeNumber);
@@ -45,8 +44,9 @@ namespace Tuto.BatchWorks
                 if (model.Montage.Information.Episodes[episodeNumber].OutputType == OutputTypes.Patch)
                     continue;
 
-                AfterWorks.Add(new MoveFile(from, to));
-                AfterWorks.Add(new YoutubeWork(model, episodeNumber, to));
+                var task = new MoveFile(from, to, model);
+                Tasks.Add(task);
+                Tasks.Add(new YoutubeWork(model, episodeNumber, to));
             }
         }
     }

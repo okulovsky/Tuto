@@ -41,6 +41,7 @@ namespace Tuto.BatchWorks
 
         private void Execute()
         {
+            return;
             while (currentIndex < this.Work.Count && queueWorking)
             {
                 BatchWork e = Work[currentIndex];
@@ -96,7 +97,7 @@ namespace Tuto.BatchWorks
 
         private void FilteredAdd(List<BatchWork> allWorks, BatchWork work)
         {
-            if (!(work is MakeAll) && !(work is AssemblyVideoWork))
+            if (!(work is CompositeWork))
                     allWorks.Add(work);
         }
 
@@ -107,24 +108,21 @@ namespace Tuto.BatchWorks
 
             var allWorks = new List<BatchWork>();
 
-            foreach (var e in work.BeforeWorks)
-            {   
-                if (e.Finished()) continue;
-                if (WorkSettings.AudioCleanSettings.CurrentOption == Model.Options.Skip && e is CreateCleanSoundWork)
-                    continue;
-                Run(e);
-                FilteredAdd(allWorks, e);
+            if (work is CompositeWork)
+            {
+                foreach (var e in (work as CompositeWork).Tasks)
+                {
+                    if (e.Finished()) continue;
+                    if (WorkSettings.AudioCleanSettings.CurrentOption == Options.Skip && e is CreateCleanSoundWork)
+                        continue;
+                    if (!WorkSettings.AutoUploadVideo && e is YoutubeWork)
+                        continue; 
+                    Run(e);
+                    FilteredAdd(allWorks, e);
+                }
             }
 
             FilteredAdd(allWorks, work);
-
-            foreach (var e in work.AfterWorks)
-            {
-                if (e.Finished()) continue;
-                if (WorkSettings.AutoUploadVideo == false && e is YoutubeWork) continue;
-                allWorks.Add(e);
-            }
-
             return allWorks;
         }
 
@@ -134,32 +132,74 @@ namespace Tuto.BatchWorks
                 Run(e);
         }
 
+        public void NewRun(BatchWork work)
+        {
+            if (!(work is CompositeWork))
+            {
+                Work.Add(work);
+            }
+            else
+            {
+                var compWork = work as CompositeWork;
+                ///insert new node and put in it
+                //Work.Add(work);
+                AddNode(work, null);
+            }
+        }
+
+        public void AddNode(BatchWork work, BatchWork parent)
+        {
+            if (work is CompositeWork)
+            {
+                var compWork = work as CompositeWork;
+                if (parent != null)
+                {
+                    if (parent.ChildWorks == null) parent.ChildWorks = new ObservableCollection<BatchWork>();
+                    parent.ChildWorks.Add(work);
+                }
+                foreach (var e in compWork.Tasks)
+                {
+                    AddNode(e, work);
+                }
+            }
+            else
+            {
+                if (parent.ChildWorks == null)
+                    parent.ChildWorks = new ObservableCollection<BatchWork>();
+                parent.ChildWorks.Add(work);
+            }
+        }
+
         public void Run(BatchWork work)
         {
             wasException = false;
-            var newWork = GetFilteredWorks(work);
-            lock (addLock)
-            {
-                var worksIdentifiers = this.Work
-                    .Where(x => x.Status == BatchWorkStatus.Pending || x.Status == BatchWorkStatus.Running)
-                    .Select(x => x.Name).ToList(); //for duplicates removing
+            NewRun(work);
+            var a = work;
+            Work.Add(work);
 
-                foreach (var e in newWork)
-                {
-                    if (worksIdentifiers.Contains(e.Name))
-                        continue;
-                    this.Work.Add(e);
-					if (e.Model!=null)
-						e.Model.Statuses.InQueue = true;
-                }
+     //       var worksIdentifiers = this.Work
+     //               .Where(x => x.Status == BatchWorkStatus.Pending || x.Status == BatchWorkStatus.Running)
+     //               .ToList(); //for duplicates removing
 
-                if (!queueWorking && Work.Count != 0)
-                {
-                    queueThread = new Thread(Execute);
-                    queueThread.Start();
-                    queueWorking = true;
-                }
-            }
+     //       var newWork = GetFilteredWorks(work);
+     //       lock (addLock)
+     //       {
+     //           foreach (var e in newWork)
+     //           {
+     //               if (worksIdentifiers.Count(x => x.Model == e.Model && e.GetType() == x.GetType()) != 0)
+     //                   continue;
+     //               Work.Add(e);
+					//if (e.Model!=null)
+					//	e.Model.Statuses.InQueue = true;
+     //           }
+
+     //           if (!queueWorking && Work.Count != 0)
+     //           {
+     //               queueThread = new Thread(Execute);
+     //               queueThread.Start();
+     //               queueWorking = true;
+     //           }
+     //       }
             
         }
 
@@ -178,7 +218,7 @@ namespace Tuto.BatchWorks
             var selectedIndex = index == -1 ? currentIndex : index;
             if (selectedIndex > currentIndex)
             {
-                this.Work[selectedIndex].Status = BatchWorkStatus.Cancelled;
+                Work[selectedIndex].Status = BatchWorkStatus.Cancelled;
                 return;
             }
 
@@ -192,16 +232,16 @@ namespace Tuto.BatchWorks
             {
                 if (i == currentIndex)
                 {
-                    this.Work[i].Status = BatchWorkStatus.Aborted;
+                    Work[i].Status = BatchWorkStatus.Aborted;
                 }
                 else
-                    this.Work[i].Status = BatchWorkStatus.Cancelled;
+                    Work[i].Status = BatchWorkStatus.Cancelled;
             }
         }
 
         private void CleanQueue()
         {
-            this.Work.Clear();
+            Work.Clear();
             currentIndex = 0;
         }
     }
