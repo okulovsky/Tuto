@@ -59,7 +59,17 @@ namespace Tuto.BatchWorks
         public int Progress
         {
             get { return progress; }
-            set { progress = Math.Min(100, Math.Max(0,value)); NotifyPropertyChanged();}
+            set
+            {
+                var delta = value - progress;
+                progress = Math.Min(100, Math.Max(0,value));
+                NotifyPropertyChanged();
+                if (Parent != null)
+                {
+                    var tasksCount = Parent.ChildWorks.Count;
+                    Parent.Progress = Parent.Progress + (int)((double)delta / tasksCount);
+                }
+            }
         }
 
         BatchWorkStatus status;
