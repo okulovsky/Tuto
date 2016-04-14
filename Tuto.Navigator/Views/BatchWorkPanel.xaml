@@ -41,7 +41,13 @@
                     <HierarchicalDataTemplate x:Key="NameTemplate" 
                             ItemsSource="{Binding ChildWorks}" 
                             ItemTemplate="{StaticResource ChildTemplate}">
-                        <TextBlock Text="{Binding Name}" FontWeight="Bold" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Name}" />
+                            <Grid>
+                                <ProgressBar Margin="5 0 0 0" Minimum="0" Maximum="100" Value="{Binding Progress}"></ProgressBar>
+                                <TextBlock TextAlignment="Center" Margin="5 0 0 0" Width="80"  Text="{Binding Status}"></TextBlock>
+                            </Grid>
+                        </StackPanel>
                     </HierarchicalDataTemplate>
                 </Grid.Resources>
                 <TreeView ItemsSource="{Binding Works}" ItemTemplate="{StaticResource NameTemplate}" x:Name="myTreeView" />

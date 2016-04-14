@@ -41,7 +41,6 @@ namespace Tuto.BatchWorks
 
         private void Execute()
         {
-            return;
             while (currentIndex < this.Work.Count && queueWorking)
             {
                 BatchWork e = Work[currentIndex];
@@ -55,7 +54,21 @@ namespace Tuto.BatchWorks
                 {
                     if (e is ProcessBatchWork)
                         currentProcess = (e as ProcessBatchWork).Process;
-                    e.Work();
+
+                    var task = GetNextTask(e);
+                    while (task != e)
+                    {
+                        if (!(task is CompositeWork))
+                        {
+                            task.Status = BatchWorkStatus.Running;
+                            task.Work();
+                            task.Status = BatchWorkStatus.Success;
+                        }
+                        else
+                        {
+                            task = GetNextTask(e);
+                        }
+                    }
                     e.Status = BatchWorkStatus.Success;
                     currentIndex++;
                 }
@@ -83,6 +96,15 @@ namespace Tuto.BatchWorks
                 currentIndex = 0;
                 Dispatcher.Invoke(this.Work.Clear);
             }
+        }
+
+        private BatchWork GetNextTask(BatchWork work)
+        {
+            if (work.ChildWorks != null)
+                foreach (var e in work.ChildWorks)
+                    if (e.Status == BatchWorkStatus.Pending)
+                        return GetNextTask(e);
+            return work;
         }
 
         private void CancelTasksAfterException()
@@ -156,6 +178,7 @@ namespace Tuto.BatchWorks
                 {
                     if (parent.ChildWorks == null) parent.ChildWorks = new ObservableCollection<BatchWork>();
                     parent.ChildWorks.Add(work);
+                    work.Parent = parent;
                 }
                 foreach (var e in compWork.Tasks)
                 {
@@ -167,6 +190,7 @@ namespace Tuto.BatchWorks
                 if (parent.ChildWorks == null)
                     parent.ChildWorks = new ObservableCollection<BatchWork>();
                 parent.ChildWorks.Add(work);
+                work.Parent = parent;
             }
         }
 

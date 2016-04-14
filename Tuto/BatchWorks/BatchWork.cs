@@ -28,6 +28,7 @@ namespace Tuto.BatchWorks
         public virtual EditorModel Model { get; set; }
         public bool NeedToRewrite { get; set; }
         public ObservableCollection<BatchWork> ChildWorks { get; set; }
+        public BatchWork Parent { get; set; }
 
 
         public virtual void Work() { }
