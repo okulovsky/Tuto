@@ -15,7 +15,7 @@ namespace Tuto.BatchWorks
         public AssemblyVideoWork (EditorModel model)
         {
             Model = model;
-            Name = "Assembly video: " + model.RawLocation.Name;
+            Name = "Assembling video: " + model.RawLocation.Name;
             var service = new AssemblerService(model.Videotheque.Data.EditorSettings.CrossFadesEnabled);
             var episodes = service.GetEpisodesNodes(Model);
 

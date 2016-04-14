@@ -16,14 +16,19 @@ namespace Tuto.BatchWorks
         {
             Model = model;
             var videoFile = model.Locations.GetOutputFile(episodeInfo);
-            Tasks.Add(new ConvertDesktopWork(model, false));
-            Tasks.Add(new ConvertFaceWork(model, false));
-            Tasks.Add(new CreateCleanSoundWork(model.Locations.FaceVideo, model, false));
-            Tasks.Add(new AtomicAssemblyEpisodeWork(model,episodeInfo)); // this work itself
+            var convertDesktop = new ConvertDesktopWork(model, false);
+            var convertFace = new ConvertFaceWork(model, false);
+            var createSoundWork = new CreateCleanSoundWork(model.Locations.FaceVideo, model, false);
+            convertDesktop.Name = "Converting Desktop video";
+            convertFace.Name = "Converting Face video";
+            createSoundWork.Name = "Cleaning sound";
+            Tasks.Add(convertDesktop);
+            Tasks.Add(convertFace);
+            Tasks.Add(createSoundWork);
+            Tasks.Add(new AtomicAssemblyEpisodeWork(model,episodeInfo)); // atomic version
 
             var task = new NormalizeSoundWork(Model, videoFile);
-            task.Name = "Normalize audio: " + episodeInfo.Name;
-            Name = "Assembly episode: " + episodeInfo.Name;
+            Name = "Assembling episode: " + episodeInfo.Name;
             Tasks.Add(task);
         }
     }

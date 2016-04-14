@@ -21,7 +21,7 @@ namespace Tuto.BatchWorks
         {
             Model = model;
             var videoFile = Model.Locations.GetOutputFile(episodeInfo);
-            Name = "Assembly episode: " + episodeInfo.Name;
+            Name = "Assembling";
             this.episodeInfo = episodeInfo;
             this.episodeNumber = Model.Montage.Information.Episodes.IndexOf(episodeInfo);
             filesToDelIfAborted = new List<string>();

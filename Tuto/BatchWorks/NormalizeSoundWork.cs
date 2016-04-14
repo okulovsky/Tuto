@@ -17,7 +17,7 @@ namespace Tuto.BatchWorks
         public NormalizeSoundWork(EditorModel model, FileInfo src)
         {
             Model = model;
-            Name = "Normalize sound: " + src.FullName;
+            Name = "Normalizing sound";
             videoFile = src;
             filesToDelIfAborted = new List<string>();
         }

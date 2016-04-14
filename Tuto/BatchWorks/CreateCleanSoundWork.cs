@@ -16,7 +16,7 @@ namespace Tuto.BatchWorks
 
         public CreateCleanSoundWork(FileInfo source, EditorModel model, bool forced)
         {
-            Name = "Make clean sound: " + model.RawLocation.Name;
+            Name = "Cleaning sound sound: " + model.RawLocation.Name;
             Model = model;
             this.source = source;
             this.Forced = forced;

@@ -14,7 +14,7 @@ namespace Tuto.BatchWorks
     {
         public CreateThumbWork(FileInfo source, EditorModel model, bool forced)
         {
-            Name = "Thumb Video: " + source;
+            Name = "Thumbing Video: " + source;
             this.Source = source;
             this.Model = model;
             Forced = forced;

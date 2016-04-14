@@ -66,8 +66,8 @@ namespace Tuto.BatchWorks
                 NotifyPropertyChanged();
                 if (Parent != null)
                 {
-                    var tasksCount = Parent.ChildWorks.Count;
-                    Parent.Progress = Parent.Progress + (int)((double)delta / tasksCount);
+                    var tasksCount = Parent.ChildWorks.Count - Parent.ChildWorks.Count(x => x is MoveFile); //cause MoveFile is way to fast
+                    Parent.Progress = Parent.Progress + (int)Math.Ceiling((double)delta / tasksCount);
                 }
             }
         }

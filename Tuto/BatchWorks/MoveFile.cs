@@ -17,7 +17,7 @@ namespace Tuto.BatchWorks
 
         public MoveFile(FileInfo from, FileInfo to, EditorModel model, params string[] additionalArgs)
         {
-            Name = string.Format("Move \"{0}\" to Output folder", to.Name);
+            Name = string.Format("Moving \"{0}\" to Output folder", to.Name);
             Model = model;
             this.from = from;
             this.to = to;

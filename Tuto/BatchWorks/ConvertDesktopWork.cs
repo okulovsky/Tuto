@@ -14,7 +14,7 @@ namespace Tuto.BatchWorks
         public ConvertDesktopWork(EditorModel model, bool forced)
         {
             Model = model;
-            Name = "Converting Desktop: " + model.RawLocation.Name;
+            Name = "Converting Desktop video: " + model.RawLocation.Name;
             source = Model.Locations.DesktopVideo;
             Forced = forced;
         }

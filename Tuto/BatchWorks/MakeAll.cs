@@ -15,6 +15,7 @@ namespace Tuto.BatchWorks
     {
         public MakeAll(EditorModel model)
         {
+            Name = "Make all for: " + model.RawLocation.Name;
             Tasks.Add(new AssemblyVideoWork(model));
             var serv = new AssemblerService(true);
             var episodes = serv.GetEpisodesNodes(model);

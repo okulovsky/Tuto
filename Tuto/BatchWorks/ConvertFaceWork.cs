@@ -15,7 +15,7 @@ namespace Tuto.BatchWorks
         public ConvertFaceWork(EditorModel model, bool forced)
         {
             Model = model;
-            Name = "Converting Face: " + Model.RawLocation.Name;
+            Name = "Converting Face video: " + Model.RawLocation.Name;
             source = Model.Locations.FaceVideo;
             Forced = forced;
         }
