@@ -56,6 +56,7 @@ namespace Tuto.BatchWorks
                         currentProcess = (e as ProcessBatchWork).Process;
 
                     var task = GetNextTask(e);
+                    e.Work();
                     while (task != e)
                     {
                         if (!(task is CompositeWork))
@@ -156,11 +157,7 @@ namespace Tuto.BatchWorks
 
         public void NewRun(BatchWork work)
         {
-            if (!(work is CompositeWork))
-            {
-                Work.Add(work);
-            }
-            else
+            if (work is CompositeWork)
             {
                 var compWork = work as CompositeWork;
                 ///insert new node and put in it
@@ -198,33 +195,34 @@ namespace Tuto.BatchWorks
         {
             wasException = false;
             NewRun(work);
-            var a = work;
             Work.Add(work);
 
-     //       var worksIdentifiers = this.Work
-     //               .Where(x => x.Status == BatchWorkStatus.Pending || x.Status == BatchWorkStatus.Running)
-     //               .ToList(); //for duplicates removing
+            if (!queueWorking && Work.Count != 0)
+            {
+                queueThread = new Thread(Execute);
+                queueThread.Start();
+                queueWorking = true;
+            }
 
-     //       var newWork = GetFilteredWorks(work);
-     //       lock (addLock)
-     //       {
-     //           foreach (var e in newWork)
-     //           {
-     //               if (worksIdentifiers.Count(x => x.Model == e.Model && e.GetType() == x.GetType()) != 0)
-     //                   continue;
-     //               Work.Add(e);
-					//if (e.Model!=null)
-					//	e.Model.Statuses.InQueue = true;
-     //           }
+            //       var worksIdentifiers = this.Work
+            //               .Where(x => x.Status == BatchWorkStatus.Pending || x.Status == BatchWorkStatus.Running)
+            //               .ToList(); //for duplicates removing
 
-     //           if (!queueWorking && Work.Count != 0)
-     //           {
-     //               queueThread = new Thread(Execute);
-     //               queueThread.Start();
-     //               queueWorking = true;
-     //           }
-     //       }
-            
+            //       var newWork = GetFilteredWorks(work);
+            //       lock (addLock)
+            //       {
+            //           foreach (var e in newWork)
+            //           {
+            //               if (worksIdentifiers.Count(x => x.Model == e.Model && e.GetType() == x.GetType()) != 0)
+            //                   continue;
+            //               Work.Add(e);
+            //if (e.Model!=null)
+            //	e.Model.Statuses.InQueue = true;
+            //           }
+
+
+            //       }
+
         }
 
         public void RemoveOldTasks()
