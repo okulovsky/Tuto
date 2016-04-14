@@ -130,6 +130,7 @@ namespace Tuto.BatchWorks
 
         private bool ShouldWeDoThisWork(BatchWork work) // filterer
         {
+            
             if (work.Finished() && !work.Forced)
                 return false;
             if (work.Finished()) return false;
