@@ -55,8 +55,8 @@ namespace Tuto.BatchWorks
 
         public string Name { get; set; }
 
-        private int progress;
-        public int Progress
+        private double progress;
+        public double Progress
         {
             get { return progress; }
             set
@@ -67,7 +67,7 @@ namespace Tuto.BatchWorks
                 if (Parent != null)
                 {
                     var tasksCount = Parent.ChildWorks.Count - Parent.ChildWorks.Count(x => x is MoveFile); //cause MoveFile is way to fast
-                    Parent.Progress = Parent.Progress + (int)Math.Ceiling((double)delta / tasksCount);
+                    Parent.Progress = Parent.Progress + (double)delta / tasksCount;
                 }
             }
         }
