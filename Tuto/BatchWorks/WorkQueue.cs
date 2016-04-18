@@ -66,8 +66,6 @@ namespace Tuto.BatchWorks
                     {
                         if (!(task is CompositeWork))
                         {
-                            if (task.Parent != null)
-                                task.Parent.Status = BatchWorkStatus.Running;
                             task.Status = BatchWorkStatus.Running;
                             task.Work();
                             task.Status = BatchWorkStatus.Success;
@@ -217,29 +215,12 @@ namespace Tuto.BatchWorks
                 }
         }
 
-        public void CancelTask(int index)
+        public void CancelTask(BatchWork work)
         {
-            var selectedIndex = index == -1 ? currentIndex : index;
-            if (selectedIndex > currentIndex)
-            {
-                Work[selectedIndex].Status = BatchWorkStatus.Cancelled;
-                return;
-            }
-
-            queueThread.Abort();
-            queueWorking = false;
+            var a = work;
             if (currentProcess != null && !currentProcess.HasExited)
             {
                 currentProcess.Kill();
-            }
-            for (var i = currentIndex; i < this.Work.Count; i++)
-            {
-                if (i == currentIndex)
-                {
-                    Work[i].Status = BatchWorkStatus.Aborted;
-                }
-                else
-                    Work[i].Status = BatchWorkStatus.Cancelled;
             }
         }
 

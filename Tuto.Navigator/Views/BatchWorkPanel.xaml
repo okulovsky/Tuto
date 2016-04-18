@@ -36,6 +36,7 @@
                                 <ProgressBar Margin="5 0 0 0" Minimum="0" Maximum="100" Value="{Binding Progress}"></ProgressBar>
                                 <TextBlock TextAlignment="Center" Margin="5 0 0 0" Width="80"  Text="{Binding Status}"></TextBlock>
                             </Grid>
+                            <TextBlock Text="{Binding ExceptionMessage}"></TextBlock>
                         </StackPanel>
                     </HierarchicalDataTemplate>
                     <HierarchicalDataTemplate x:Key="NameTemplate" 
@@ -47,10 +48,13 @@
                                 <ProgressBar Margin="5 0 0 0" Minimum="0" Maximum="100" Value="{Binding Progress}"></ProgressBar>
                                 <TextBlock TextAlignment="Center" Margin="5 0 0 0" Width="80"  Text="{Binding Status}"></TextBlock>
                             </Grid>
+                            <TextBlock Text="{Binding ExceptionMessage}"></TextBlock>
                         </StackPanel>
                     </HierarchicalDataTemplate>
                 </Grid.Resources>
-                <TreeView ItemsSource="{Binding Works}" ItemTemplate="{StaticResource NameTemplate}" x:Name="myTreeView" />
+                <ScrollViewer Height="100">
+                    <TreeView ItemsSource="{Binding Works}" ItemTemplate="{StaticResource NameTemplate}" SelectedItemChanged="TreeView_OnSelectedItemChanged"  x:Name="myTreeView" />
+                </ScrollViewer>
             </Grid>
         </DockPanel>
     </Expander>

@@ -76,7 +76,13 @@ namespace Tuto.BatchWorks
         public BatchWorkStatus Status
         {
             get { return status; }
-            set { status = value; NotifyPropertyChanged(); }
+            set
+            {
+                if (Parent != null && value == BatchWorkStatus.Running)
+                    Parent.Status = BatchWorkStatus.Running;
+                status = value;
+                NotifyPropertyChanged();
+            }
         }
 
         public void TryToDelete(FileInfo info)
