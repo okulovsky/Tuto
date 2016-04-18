@@ -205,28 +205,12 @@ namespace Tuto.BatchWorks
         {
             if (work is CompositeWork)
             {
-                
+                work.Status = BatchWorkStatus.Cancelled;
+                CancelCompositeWork(work);
             }
             else
             {
-                if (work.Parent != null)
-                    foreach (var e in work.Parent.ChildWorks)
-                    {
-                        e.Parent.Status = BatchWorkStatus.Cancelled;
-                        if (e.Status == BatchWorkStatus.Running)
-                        {
-                            AbortTask(e);
-                        }
-                        else 
-                        e.Status = BatchWorkStatus.Cancelled;
-                    }
-
-                if (work.Status == BatchWorkStatus.Running)
-                {
-                    AbortTask(work);
-                }
-                else if (work.Status == BatchWorkStatus.Pending)
-                    work.Status = BatchWorkStatus.Cancelled;
+                CancelAtomicWork(work);
             }   
         }
 
@@ -239,6 +223,40 @@ namespace Tuto.BatchWorks
             queueThread.Start();
             work.Status = BatchWorkStatus.Aborted;
             wasWorkAborted = false;
+        }
+
+        private void CancelAtomicWork(BatchWork work)
+        {
+            if (work.Parent != null)
+                foreach (var e in work.Parent.ChildWorks)
+                {
+                    e.Parent.Status = BatchWorkStatus.Cancelled;
+                    if (e.Status == BatchWorkStatus.Running)
+                    {
+                        AbortTask(e);
+                    }
+                    else
+                        e.Status = BatchWorkStatus.Cancelled;
+                }
+
+            if (work.Status == BatchWorkStatus.Running)
+            {
+                AbortTask(work);
+            }
+            else if (work.Status == BatchWorkStatus.Pending)
+                work.Status = BatchWorkStatus.Cancelled;
+        }
+
+        private void CancelCompositeWork(BatchWork work)
+        {
+            if (work.ChildWorks != null)
+                foreach (var e in work.ChildWorks)
+                {
+                    if (e.Status == BatchWorkStatus.Running)
+                        AbortTask(e);
+                    else
+                        e.Status = BatchWorkStatus.Cancelled;
+                }    
         }
 
         private void CleanQueue()
