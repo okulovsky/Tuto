@@ -49,7 +49,7 @@ namespace Tuto.BatchWorks
                     var task = GetNextTask(e);
                     if (task == e) //for atomic work
                     {
-                        e.Work();
+                        if (ShouldWeDoThisWork(e)) e.Work(); else e.Progress = 100;
                         e.Status = BatchWorkStatus.Success;
                     }
 
@@ -58,7 +58,7 @@ namespace Tuto.BatchWorks
                         if (!(task is CompositeWork))
                         {
                             task.Status = BatchWorkStatus.Running;
-                            task.Work();
+                            if (ShouldWeDoThisWork(task)) task.Work(); else task.Progress = 100;
                             task.Status = BatchWorkStatus.Success;
                         }
                         else
@@ -102,21 +102,13 @@ namespace Tuto.BatchWorks
             return work;
         }
 
-        private void CancelTasksAfterException()
-        {
-            lock (addLock)
-            {
-                for (var i = currentIndex + 1; i < this.Work.Count; i++)
-                    this.Work[i].Status = BatchWorkStatus.Cancelled;
-                currentIndex = this.Work.Count;
-            }
-        }
-
         private bool ShouldWeDoThisWork(BatchWork work) // filterer
         {
             
             if (work.Finished() && !work.Forced)
                 return false;
+            if (work.Finished() && work.Forced)
+                return true;
             if (work.Finished()) return false;
             if (WorkSettings.AudioCleanSettings.CurrentOption == Options.Skip && work is CreateCleanSoundWork)
                 return false;
@@ -203,6 +195,8 @@ namespace Tuto.BatchWorks
 
         public void CancelTask(BatchWork work)
         {
+            if (work == null)
+                return;
             if (work is CompositeWork)
             {
                 work.Status = BatchWorkStatus.Cancelled;
