@@ -256,7 +256,8 @@ namespace Tuto.BatchWorks
                         AbortTask(e);
                     else
                         e.Status = BatchWorkStatus.Cancelled;
-                }    
+                    CancelCompositeWork(e);
+                } 
         }
 
         private void CleanQueue()
