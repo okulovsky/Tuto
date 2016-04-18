@@ -1,13 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Collections.Concurrent;
-using System.Diagnostics;
 using System.Collections.ObjectModel;
 using System.Windows.Threading;
 using Tuto.Model;
@@ -30,7 +24,7 @@ namespace Tuto.BatchWorks
         private bool queueWorking { get; set; }
         private int currentIndex { get; set; }
         private Thread queueThread { get; set; }
-        private Process currentProcess;
+        private bool wasWorkAborted;
         public Dispatcher Dispatcher { get; set; }
 
 
@@ -44,7 +38,7 @@ namespace Tuto.BatchWorks
             while (currentIndex < this.Work.Count && queueWorking)
             {
                 BatchWork e = Work[currentIndex];
-                if (e.Status == BatchWorkStatus.Cancelled)
+                if (e.Status == BatchWorkStatus.Cancelled || e.Status == BatchWorkStatus.Aborted)
                 {
                     currentIndex++;
                     continue;
@@ -52,9 +46,6 @@ namespace Tuto.BatchWorks
                 e.Status = BatchWorkStatus.Running;
                 try
                 {
-                    if (e is ProcessBatchWork)
-                        currentProcess = (e as ProcessBatchWork).Process;
-
                     var task = GetNextTask(e);
                     if (task == e) //for atomic work
                     {
@@ -81,20 +72,15 @@ namespace Tuto.BatchWorks
                     e.Status = BatchWorkStatus.Success;
                     currentIndex++;
                 }
-                catch (ThreadAbortException)
-                {
-                    e.Status = BatchWorkStatus.Aborted;
-                    e.Clean();
-                    wasException = true;
-                    CancelTasksAfterException();
-                }
                 catch (Exception ex)
                 {
-                    e.Status = BatchWorkStatus.Failure;
-                    e.ExceptionMessage = ex.Message;
-                    e.Clean();
-                    wasException = true;
-                    CancelTasksAfterException();
+                    if (!wasWorkAborted)
+                    {
+                        e.Status = BatchWorkStatus.Failure;
+                        e.ExceptionMessage = ex.Message;
+                        e.Clean();
+                        wasException = true;
+                    }
                 };
 				if (e.Model!=null)
 					e.Model.Statuses.InQueue = ModelInQueue(e.Model);
@@ -217,11 +203,42 @@ namespace Tuto.BatchWorks
 
         public void CancelTask(BatchWork work)
         {
-            var a = work;
-            if (currentProcess != null && !currentProcess.HasExited)
+            if (work is CompositeWork)
             {
-                currentProcess.Kill();
+                
             }
+            else
+            {
+                if (work.Parent != null)
+                    foreach (var e in work.Parent.ChildWorks)
+                    {
+                        e.Parent.Status = BatchWorkStatus.Cancelled;
+                        if (e.Status == BatchWorkStatus.Running)
+                        {
+                            AbortTask(e);
+                        }
+                        else 
+                        e.Status = BatchWorkStatus.Cancelled;
+                    }
+
+                if (work.Status == BatchWorkStatus.Running)
+                {
+                    AbortTask(work);
+                }
+                else if (work.Status == BatchWorkStatus.Pending)
+                    work.Status = BatchWorkStatus.Cancelled;
+            }   
+        }
+
+        private void AbortTask(BatchWork work)
+        {
+            wasWorkAborted = true;
+            queueThread.Abort();
+            work.Clean();
+            queueThread = new Thread(Execute);
+            queueThread.Start();
+            work.Status = BatchWorkStatus.Aborted;
+            wasWorkAborted = false;
         }
 
         private void CleanQueue()
