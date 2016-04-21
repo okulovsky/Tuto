@@ -43,10 +43,10 @@ namespace Tuto.BatchWorks
                     currentIndex++;
                     continue;
                 }
+                var task = GetNextTask(e);
                 e.Status = BatchWorkStatus.Running;
                 try
                 {
-                    var task = GetNextTask(e);
                     if (task == e) //for atomic work
                     {
                         if (ShouldWeDoThisWork(e)) e.Work(); else e.Progress = 100;
@@ -76,12 +76,12 @@ namespace Tuto.BatchWorks
                 {
                     if (!wasWorkAborted)
                     {
-                        if (e.Parent != null)
-                            foreach (var t in e.Parent.ChildWorks)
+                        if (task.Parent != null)
+                            foreach (var t in task.Parent.ChildWorks)
                                 CancelTask(t); //cancel tasks on one level with failed
-                        e.Status = BatchWorkStatus.Failure;
-                        e.ExceptionMessage = ex.Message;
-                        e.Clean();
+                        task.Status = BatchWorkStatus.Failure;
+                        task.ExceptionMessage = ex.Message;
+                        task.Clean();
                         wasException = true;
                     }
                 };
