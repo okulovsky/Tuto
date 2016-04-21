@@ -214,6 +214,7 @@ namespace Tuto.Publishing.Youtube
                 videosInsertRequest.ProgressChanged += OnProgressChanged;
 				videosInsertRequest.ResponseReceived += v => { result = v.Id; };
                 videosInsertRequest.UploadAsync().RunSync();
+               
 			}
 			return result;
 		}
