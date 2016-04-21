@@ -104,16 +104,10 @@ namespace Tuto.BatchWorks
 
         private bool ShouldWeDoThisWork(BatchWork work) // filterer
         {
-            
-            if (work.Finished() && !work.Forced)
-                return false;
-            if (work.Finished() && work.Forced)
-                return true;
-            if (work.Finished()) return false;
-            if (WorkSettings.AudioCleanSettings.CurrentOption == Options.Skip && work is CreateCleanSoundWork)
-                return false;
-            if (!WorkSettings.AutoUploadVideo && work is YoutubeWork)
-                return false;
+            if (work.Forced) return true;
+            if (work.Finished() && !work.Forced || work.Finished()) return false;
+            if (WorkSettings.AudioCleanSettings.CurrentOption == Options.Skip && work is CreateCleanSoundWork) return false;
+            if (!WorkSettings.AutoUploadVideo && work is YoutubeWork) return false;
             return true;
         }
 
@@ -165,6 +159,7 @@ namespace Tuto.BatchWorks
             var worksInQueue = this.Work
                     .Where(x => x.Status == BatchWorkStatus.Pending || x.Status == BatchWorkStatus.Running)
                     .ToList(); //for duplicates removing
+
             if (worksInQueue.Any(x => x.Model == work.Model && x.GetType() == work.GetType()))
                 return; //reject work as duplicate at top level
 
