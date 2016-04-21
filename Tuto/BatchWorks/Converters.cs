@@ -10,14 +10,16 @@ namespace Tuto.BatchWorks
 {
     public class StatusConverter : IValueConverter
     {
+        //for backgrounds
         public Dictionary<BatchWorkStatus, string> colors = new Dictionary<BatchWorkStatus, string>()
         {
-            {BatchWorkStatus.Running, "White" },
+            {BatchWorkStatus.Running, "LightGreen" },
             {BatchWorkStatus.Aborted, "Red" },
             {BatchWorkStatus.Cancelled, "LightGray" },
-            {BatchWorkStatus.Pending, "Yellow" },
+            {BatchWorkStatus.Pending, "White" },
             {BatchWorkStatus.Failure, "Red" },
-            {BatchWorkStatus.Success, "White" },
+            {BatchWorkStatus.Success, "LightGreen" },
+            {BatchWorkStatus.Attention, "Yellow" }
         };
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
