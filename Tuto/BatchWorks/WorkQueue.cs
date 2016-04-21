@@ -76,6 +76,9 @@ namespace Tuto.BatchWorks
                 {
                     if (!wasWorkAborted)
                     {
+                        if (e.Parent != null)
+                            foreach (var t in e.Parent.ChildWorks)
+                                CancelTask(t); //cancel tasks on one level with failed
                         e.Status = BatchWorkStatus.Failure;
                         e.ExceptionMessage = ex.Message;
                         e.Clean();
@@ -190,8 +193,7 @@ namespace Tuto.BatchWorks
 
         public void CancelTask(BatchWork work)
         {
-            if (work == null)
-                return;
+            if (work == null) return;
             if (work is CompositeWork)
             {
                 work.Status = BatchWorkStatus.Cancelled;
@@ -245,7 +247,8 @@ namespace Tuto.BatchWorks
                         AbortTask(e);
                     else
                         e.Status = BatchWorkStatus.Cancelled;
-                    CancelCompositeWork(e);
+                    if (e is CompositeWork) CancelCompositeWork(e);
+                    else CancelAtomicWork(e);
                 } 
         }
 
