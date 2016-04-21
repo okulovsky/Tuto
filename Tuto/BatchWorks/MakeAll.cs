@@ -19,7 +19,7 @@ namespace Tuto.BatchWorks
             Tasks.Add(new AssemblyVideoWork(model));
             var serv = new AssemblerService(true);
             var episodes = serv.GetEpisodesNodes(model);
-            Tasks.Add(new UploadVideoWork(model, false));
+
             //с эпизодами надо что-то решить, в силу того, что эпизодинфо не знает нужной инфы, другого выхода не вижу
             //мы это уже обсуждали, но так и не пришли ни к чему ((
 
@@ -48,7 +48,8 @@ namespace Tuto.BatchWorks
                 var task = new MoveFile(from, to, model);
                 Tasks.Add(task);
             }
-            
+
+            Tasks.Add(new UploadVideoWork(model, false));
         }
     }
 }

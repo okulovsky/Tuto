@@ -23,7 +23,11 @@ namespace Tuto.BatchWorks
             Model = model;
             this.episodeNumber = number;
             episode = Model.Montage.Information.Episodes[number];
-            this.pathToFile = Model.Locations.GetOutputFile(episode);
+
+            var assembledFile = Model.Locations.GetOutputFile(episode);
+            var finalFile = Model.Locations.GetFinalOutputFile(number);
+
+            pathToFile = assembledFile.Exists ? assembledFile : finalFile;
             Forced = forced;
             Name = "Uploading: " + episode.Name;
         }
