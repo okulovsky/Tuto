@@ -16,7 +16,8 @@ namespace Tuto.BatchWorks
         public MakeAll(EditorModel model)
         {
             Name = "Make all for: " + model.RawLocation.Name;
-            Tasks.Add(new AssemblyVideoWork(model));
+            var videoWork = new AssemblyVideoWork(model);
+            Tasks.Add(videoWork);
             var serv = new AssemblerService(true);
             var episodes = serv.GetEpisodesNodes(model);
 
@@ -45,8 +46,11 @@ namespace Tuto.BatchWorks
                 if (model.Montage.Information.Episodes[episodeNumber].OutputType == OutputTypes.Patch)
                     continue;
 
+                
                 var task = new MoveFile(from, to, model);
-                Tasks.Add(task);
+
+                videoWork.Tasks.Select(x => x as CompositeWork).ElementAt(episodeNumber).Tasks.Add(task);
+
             }
 
             Tasks.Add(new UploadVideoWork(model, false));

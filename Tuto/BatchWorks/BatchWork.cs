@@ -20,7 +20,8 @@ namespace Tuto.BatchWorks
         Success,
         Failure,
         Aborted,
-        Cancelled
+        Cancelled,
+        Attention
     }
 
     public abstract class BatchWork : NotifierModel
@@ -78,11 +79,8 @@ namespace Tuto.BatchWorks
             get { return status; }
             set
             {
-                if (Parent != null && value == BatchWorkStatus.Running)
-                    Parent.Status = BatchWorkStatus.Running; //Running means running for all Parents too
-                if (Parent != null && value == BatchWorkStatus.Failure)
-                    Parent.Status = BatchWorkStatus.Failure; // Failure means failure for all Parents too
-                //but cancelled doens't mean cancel for Parent
+                if (Parent != null && (value == BatchWorkStatus.Running || value == BatchWorkStatus.Failure))
+                    Parent.Status = value; //Running and failure means status for all Parents too
                 status = value;
                 NotifyPropertyChanged();
             }

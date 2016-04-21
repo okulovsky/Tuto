@@ -37,23 +37,23 @@ namespace Tuto.BatchWorks
         {
             while (currentIndex < this.Work.Count && queueWorking)
             {
-                BatchWork e = Work[currentIndex];
-                if (e.Status == BatchWorkStatus.Cancelled || e.Status == BatchWorkStatus.Aborted)
+                BatchWork rootTask = Work[currentIndex];
+                if (rootTask.Status == BatchWorkStatus.Cancelled || rootTask.Status == BatchWorkStatus.Aborted)
                 {
                     currentIndex++;
                     continue;
                 }
-                var task = GetNextTask(e);
-                e.Status = BatchWorkStatus.Running;
+                var task = GetNextTask(rootTask);
+                rootTask.Status = BatchWorkStatus.Running;
                 try
                 {
-                    if (task == e) //for atomic work
+                    if (task == rootTask) //for atomic work
                     {
-                        if (ShouldWeDoThisWork(e)) e.Work(); else e.Progress = 100;
-                        e.Status = BatchWorkStatus.Success;
+                        if (ShouldWeDoThisWork(rootTask)) rootTask.Work(); else rootTask.Progress = 100;
+                        rootTask.Status = BatchWorkStatus.Success;
                     }
 
-                    while (task != e)
+                    while (task != rootTask)
                     {
                         if (!(task is CompositeWork))
                         {
@@ -65,11 +65,18 @@ namespace Tuto.BatchWorks
                         {
                             if (task.ChildWorks.Count(x => x.Status == BatchWorkStatus.Success) == task.ChildWorks.Count)
                                 task.Status = BatchWorkStatus.Success;
+                            else task.Status = BatchWorkStatus.Attention;
                         }
 
-                        task = GetNextTask(e);
+                        task = GetNextTask(rootTask);
                     }
-                    e.Status = BatchWorkStatus.Success;
+
+                    if (rootTask.ChildWorks != null)
+                    {
+                        if (rootTask.ChildWorks.Count(x => x.Status == BatchWorkStatus.Success) == rootTask.ChildWorks.Count)
+                            rootTask.Status = BatchWorkStatus.Success;
+                        else rootTask.Status = BatchWorkStatus.Attention;
+                    }
                     currentIndex++;
                 }
                 catch (Exception ex)
@@ -85,11 +92,11 @@ namespace Tuto.BatchWorks
                         wasException = true;
                     }
                 };
-				if (e.Model!=null)
-					e.Model.Statuses.InQueue = ModelInQueue(e.Model);
+				if (rootTask.Model!=null)
+					rootTask.Model.Statuses.InQueue = ModelInQueue(rootTask.Model);
             }
             queueWorking = false;
-            if (!wasException)
+            if (!wasException && false)
             {
                 currentIndex = 0;
                 Dispatcher.Invoke(this.Work.Clear);
@@ -110,7 +117,7 @@ namespace Tuto.BatchWorks
             if (work.Forced) return true;
             if (work.Finished() && !work.Forced || work.Finished()) return false;
             if (WorkSettings.AudioCleanSettings.CurrentOption == Options.Skip && work is CreateCleanSoundWork) return false;
-            if (!WorkSettings.AutoUploadVideo && work is YoutubeWork) return false;
+            if (!WorkSettings.AutoUploadVideo && (work is UploadVideoWork || work is YoutubeWork)) return false;
             return true;
         }
 
@@ -130,6 +137,8 @@ namespace Tuto.BatchWorks
 
         public void AddNode(BatchWork work, BatchWork parent)
         {
+            if (!ShouldWeDoThisWork(work))
+                return;
             if (work is CompositeWork)
             {
                 var compWork = work as CompositeWork;
