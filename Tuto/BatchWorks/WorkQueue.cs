@@ -167,6 +167,8 @@ namespace Tuto.BatchWorks
 
         public void Run(BatchWork work)
         {
+            if (work is MakeAll)
+                work = (work as CompositeWork).Tasks[0];
             wasException = false;
             var worksInQueue = this.Work
                     .Where(x => x.Status == BatchWorkStatus.Pending || x.Status == BatchWorkStatus.Running)
