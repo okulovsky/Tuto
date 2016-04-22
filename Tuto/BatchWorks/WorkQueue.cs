@@ -43,32 +43,32 @@ namespace Tuto.BatchWorks
                     currentIndex++;
                     continue;
                 }
-                var task = GetNextTask(rootTask);
+                var currentTask = GetNextTask(rootTask);
                 rootTask.Status = BatchWorkStatus.Running;
                 try
                 {
-                    if (task == rootTask) //for atomic work
+                    if (currentTask == rootTask) //for atomic work at highest level
                     {
                         if (ShouldWeDoThisWork(rootTask)) rootTask.Work(); else rootTask.Progress = 100;
                         rootTask.Status = BatchWorkStatus.Success;
                     }
 
-                    while (task != rootTask)
+                    while (currentTask != rootTask)
                     {
-                        if (!(task is CompositeWork))
+                        if (!(currentTask is CompositeWork))
                         {
-                            task.Status = BatchWorkStatus.Running;
-                            if (ShouldWeDoThisWork(task)) task.Work(); else task.Progress = 100;
-                            task.Status = BatchWorkStatus.Success;
+                            currentTask.Status = BatchWorkStatus.Running;
+                            if (ShouldWeDoThisWork(currentTask)) currentTask.Work(); else currentTask.Progress = 100;
+                            currentTask.Status = BatchWorkStatus.Success;
                         }
                         else
                         {
-                            if (task.ChildWorks.Count(x => x.Status == BatchWorkStatus.Success) == task.ChildWorks.Count)
-                                task.Status = BatchWorkStatus.Success;
-                            else task.Status = BatchWorkStatus.Attention;
+                            if (currentTask.ChildWorks.Count(x => x.Status == BatchWorkStatus.Success) == currentTask.ChildWorks.Count)
+                                currentTask.Status = BatchWorkStatus.Success;
+                            else currentTask.Status = BatchWorkStatus.Attention;
                         }
 
-                        task = GetNextTask(rootTask);
+                        currentTask = GetNextTask(rootTask);
                     }
 
                     if (rootTask.ChildWorks != null)
@@ -83,12 +83,13 @@ namespace Tuto.BatchWorks
                 {
                     if (!wasWorkAborted)
                     {
-                        if (task.Parent != null)
-                            foreach (var t in task.Parent.ChildWorks)
-                                t.Status = BatchWorkStatus.Cancelled;
-                        task.Status = BatchWorkStatus.Failure;
-                        task.ExceptionMessage = ex.Message;
-                        task.Clean();
+                        if (currentTask.Parent != null)
+                            foreach (var t in currentTask.Parent.ChildWorks)
+                                if (t.Status != BatchWorkStatus.Success)
+                                    t.Status = BatchWorkStatus.Cancelled;
+                        currentTask.Status = BatchWorkStatus.Failure;
+                        currentTask.ExceptionMessage = ex.Message;
+                        currentTask.Clean();
                         wasException = true;
                     }
                 };
@@ -96,7 +97,7 @@ namespace Tuto.BatchWorks
 					rootTask.Model.Statuses.InQueue = ModelInQueue(rootTask.Model);
             }
             queueWorking = false;
-            if (!wasException)
+            if (!wasException && false)
             {
                 currentIndex = 0;
                 Dispatcher.Invoke(this.Work.Clear);
@@ -186,6 +187,7 @@ namespace Tuto.BatchWorks
 
             if (!queueWorking && Work.Count != 0)
             {
+                currentIndex = 0;
                 queueThread = new Thread(Execute);
                 queueThread.Start();
                 queueWorking = true;
@@ -194,12 +196,16 @@ namespace Tuto.BatchWorks
 
         public void RemoveOldTasks()
         {
-            for (int i = 0; i < Work.Count; i++)
-                if (Work[i].Status != BatchWorkStatus.Pending && Work[i].Status != BatchWorkStatus.Running)
-                {
-                    Work.RemoveAt(i);
-                    i--;
-                }
+            lock(addLock)
+            {
+                for (int i = 0; i < Work.Count; i++)
+                    if (Work[i].Status != BatchWorkStatus.Pending && Work[i].Status != BatchWorkStatus.Running)
+                    {
+                        Work.RemoveAt(i);
+                        i--;
+                        currentIndex--;
+                    }
+            }
         }
 
         public void CancelTask(BatchWork work)
@@ -265,8 +271,14 @@ namespace Tuto.BatchWorks
 
         private void CleanQueue()
         {
-            Work.Clear();
-            currentIndex = 0;
+            lock (addLock)
+            {
+                Dispatcher.Invoke(Work.Clear);
+                currentIndex = 0;
+                queueWorking = false;
+                wasException = false;
+                Work.Clear();
+            }
         }
     }
 }

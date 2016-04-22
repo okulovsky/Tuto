@@ -10,12 +10,12 @@ namespace Tuto.BatchWorks
 {
     public class StatusConverter : IValueConverter
     {
-        //for backgrounds
+        //for foregrounds
         public Dictionary<BatchWorkStatus, string> colors = new Dictionary<BatchWorkStatus, string>()
         {
             {BatchWorkStatus.Running, "LightGreen" },
             {BatchWorkStatus.Aborted, "Red" },
-            {BatchWorkStatus.Cancelled, "LightGray" },
+            {BatchWorkStatus.Cancelled, "DarkGray" },
             {BatchWorkStatus.Pending, "White" },
             {BatchWorkStatus.Failure, "Red" },
             {BatchWorkStatus.Success, "LightGreen" },

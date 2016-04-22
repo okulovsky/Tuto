@@ -35,10 +35,9 @@
                 <Grid.Resources>
                     <HierarchicalDataTemplate x:Key="ChildTemplate" ItemsSource="{Binding ChildWorks}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Name}" />
                             <Grid>
-                                <ProgressBar Margin="5 0 0 0" Minimum="0" Maximum="100" Value="{Binding Progress}" Foreground="{Binding Status, Converter={StaticResource converter}}"></ProgressBar>
-                                <TextBlock TextAlignment="Center" Margin="5 0 0 0" Width="80"  Text="{Binding Status}"></TextBlock>
+                                <ProgressBar Minimum="0" Maximum="100" Value="{Binding Progress}" Foreground="{Binding Status, Converter={StaticResource converter}}"></ProgressBar>
+                                <TextBlock TextAlignment="Center" Margin="10 0 10 0"  Text="{Binding Name}"></TextBlock>
                             </Grid>
                             <TextBlock Text="{Binding ExceptionMessage}"></TextBlock>
                         </StackPanel>
@@ -47,10 +46,9 @@
                             ItemsSource="{Binding ChildWorks}" 
                             ItemTemplate="{StaticResource ChildTemplate}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Name}" />
                             <Grid>
-                                <ProgressBar Margin="5 0 0 0" Minimum="0" Maximum="100" Value="{Binding Progress}" Foreground="{Binding Status, Converter={StaticResource converter}}"></ProgressBar>
-                                <TextBlock TextAlignment="Center" Margin="5 0 0 0" Width="80"  Text="{Binding Status}"></TextBlock>
+                                <ProgressBar Minimum="0" Maximum="100" Value="{Binding Progress}" Foreground="{Binding Status, Converter={StaticResource converter}}"></ProgressBar>
+                                <TextBlock TextAlignment="Center" Margin="10 0 10 0" Text="{Binding Name}"></TextBlock>
                             </Grid>
                             <TextBlock Text="{Binding ExceptionMessage}"></TextBlock>
                         </StackPanel>
