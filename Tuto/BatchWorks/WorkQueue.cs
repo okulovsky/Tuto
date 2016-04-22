@@ -85,7 +85,7 @@ namespace Tuto.BatchWorks
                     {
                         if (task.Parent != null)
                             foreach (var t in task.Parent.ChildWorks)
-                                CancelTask(t); //cancel tasks on one level with failed
+                                t.Status = BatchWorkStatus.Cancelled;
                         task.Status = BatchWorkStatus.Failure;
                         task.ExceptionMessage = ex.Message;
                         task.Clean();

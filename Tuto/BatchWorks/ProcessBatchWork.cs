@@ -40,8 +40,12 @@ namespace Tuto.BatchWorks
 
         public void FinishProcess()
         {
-            if (Process != null && !Process.HasExited)
-                Process.Kill();
+            try
+            {
+                if (Process != null && !Process.HasExited)
+                    Process.Kill();
+            }
+            catch { }
         }
     }
 }

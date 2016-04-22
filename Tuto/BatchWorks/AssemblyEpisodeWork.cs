@@ -22,8 +22,13 @@ namespace Tuto.BatchWorks
             convertDesktop.Name = "Converting Desktop video";
             convertFace.Name = "Converting Face video";
             createSoundWork.Name = "Cleaning sound";
-            Tasks.Add(convertDesktop);
-            Tasks.Add(convertFace);
+
+            if (model.Locations.DesktopVideo.Exists)
+                Tasks.Add(convertDesktop);
+
+            if (model.Locations.FaceVideo.Exists)
+                Tasks.Add(convertFace);
+
             Tasks.Add(createSoundWork);
             Tasks.Add(new AtomicAssemblyEpisodeWork(model,episodeInfo)); // atomic version
 
