@@ -11,51 +11,29 @@ namespace Editor
 
     public class BorderMode : IEditorMode
     {
-        EditorModel model;
+        public EditorModel Model { get; private set;}
 
-        public MontageModel montage { get { return model.Montage; } }
+        public MontageModel montage { get { return Model.Montage; } }
 
         double FastSpeed;
    
 
         public BorderMode(EditorModel editorModel)
         {
-            this.model = editorModel;
-            model.GenerateBorders();
-            FastSpeed = model.Videotheque.Data.EditorSettings.DefaultFinalAcceleration;
+            this.Model = editorModel;
+            Model.GenerateBorders();
+            FastSpeed = Model.Videotheque.Data.EditorSettings.DefaultFinalAcceleration;
         }
 
         public void CheckTime()
         {
-            CheckTime(model.WindowState.CurrentPosition);
+            this.PlayWithoutDeletions();
+            ResolveSpeed();
         }
 
-        public void CheckTime(int ms)
+        public void ResolveSpeed()
         {
-
-            var index = montage.Chunks.FindIndex(ms);
-            if (index == -1)
-            {
-                model.WindowState.Paused = true;
-                return;
-            }
-
-            if (montage.Chunks[index].IsNotActive)
-            {
-                while (index < montage.Chunks.Count && montage.Chunks[index].IsNotActive)
-                    index++;
-
-                if (index >= montage.Chunks.Count)
-                {
-                    model.WindowState.Paused = true;
-                    return;
-                }
-                ms=model.WindowState.CurrentPosition = montage.Chunks[index].StartTime;
-            }
-
-            model.WindowState.FaceVideoIsVisible = montage.Chunks[index].Mode == Mode.Face;
-            model.WindowState.DesktopVideoIsVisible = montage.Chunks[index].Mode == Mode.Desktop;
-
+            var ms = Model.WindowState.CurrentPosition;
             double speed = FastSpeed;
             var bindex = montage.Borders.FindBorder(ms);
             if (bindex != -1)
@@ -72,34 +50,34 @@ namespace Editor
 
             }
 
-            model.WindowState.SpeedRatio = speed;
+            Model.WindowState.SpeedRatio = speed;
             
         }
 
 
-        public void MouseClick(int selectedLocation, MouseButtonEventArgs button)
+        public void MouseClick(int selectedLocation, bool button)
         {
-            model.WindowState.CurrentPosition = selectedLocation;
-            CheckTime(selectedLocation);
+            Model.WindowState.CurrentPosition = selectedLocation;
+            CheckTime();
         }
 
 
         public void ProcessKey(KeyboardCommandData key)
         {
-            if (CommonKeyboardProcessing.ProcessCommonKeys(model, key)) return;
-
+            if (this.ProcessNavigationKey(key)) return;
+            if (this.ProcessCommonMarkupKey(key)) return;
 
             switch (key.Command)
             {
                 case KeyboardCommands.LargeRight:
-                    var border = montage.Borders.Where(z => z.StartTime > model.WindowState.CurrentPosition).FirstOrDefault();
+                    var border = montage.Borders.Where(z => z.StartTime > Model.WindowState.CurrentPosition).FirstOrDefault();
                     if (border != null)
-                        model.WindowState.CurrentPosition = border.StartTime;
+                        Model.WindowState.CurrentPosition = border.StartTime;
                     return;
                 case KeyboardCommands.LargeLeft:
-                    var border1 = montage.Borders.Where(z => z.EndTime < model.WindowState.CurrentPosition).LastOrDefault();
+                    var border1 = montage.Borders.Where(z => z.EndTime < Model.WindowState.CurrentPosition).LastOrDefault();
                     if (border1 != null)
-                        model.WindowState.CurrentPosition = border1.StartTime;
+                        Model.WindowState.CurrentPosition = border1.StartTime;
                     return;
                 case KeyboardCommands.SpeedDown:
                     FastSpeed -= 0.5;
@@ -109,11 +87,27 @@ namespace Editor
                     FastSpeed += 0.5;
 					FastSpeed = Math.Min(3, FastSpeed);
                     return;
+                case KeyboardCommands.Face:
+                    Model.MarkHere(Mode.Face, key.Ctrl);
+                    return;
+
+                case KeyboardCommands.Desktop:
+                    Model.MarkHere(Mode.Desktop, key.Ctrl);
+                    return;
+
+                case KeyboardCommands.Drop:
+                    Model.MarkHere(Mode.Drop, key.Ctrl);
+                    return;
+
+                case KeyboardCommands.Clear:
+                    Model.RemoveChunkHere();
+                    return;
+
             }
 
 
 
-            var borderIndex = montage.Borders.FindBorder(model.WindowState.CurrentPosition);
+            var borderIndex = montage.Borders.FindBorder(Model.WindowState.CurrentPosition);
             if (borderIndex == -1) return;
             int leftBorderIndex = -1;
             int rightBorderIndex = -1;
@@ -159,11 +153,11 @@ namespace Editor
         {
             if (borderIndex == -1) return;
             var border = montage.Borders[borderIndex];
-            model.ShiftLeftChunkBorder(border.RightChunk, shiftSize);
-            model.GenerateBorders();
-            model.WindowState.CurrentPosition = montage.Borders[borderIndex].StartTime;
-            if (montage.Borders[borderIndex].IsLeftBorder) model.WindowState.SpeedRatio = 1;
-            model.OnMarkupChanged();
+            Model.ShiftLeftChunkBorder(border.RightChunk, shiftSize);
+            Model.GenerateBorders();
+            Model.WindowState.CurrentPosition = montage.Borders[borderIndex].StartTime;
+            if (montage.Borders[borderIndex].IsLeftBorder) Model.WindowState.SpeedRatio = 1;
+            Model.OnMarkupChanged();
         }
     }
 }

@@ -10,42 +10,47 @@ namespace Editor
 {
     public class GeneralMode : IEditorMode
     {
-        EditorModel model;
+        public EditorModel Model { get; private set; }
 
-        MontageModel montage { get { return model.Montage; } }
+        MontageModel montage { get { return Model.Montage; } }
 
         public GeneralMode(EditorModel edModel)
         {
-            this.model = edModel;
-            model.WindowState.FaceVideoIsVisible = model.WindowState.DesktopVideoIsVisible = true;
+            this.Model = edModel;
+            Model.WindowState.FaceVideoIsVisible = Model.WindowState.DesktopVideoIsVisible = true;
         }
 
         public void CheckTime()
         {
+            var index = montage.Chunks.FindIndex(Model.WindowState.CurrentPosition);
+            if (montage.Chunks[index].Mode == Mode.Face) Model.WindowState.ArrangeMode = ArrangeModes.BothFaceBigger;
+            if (montage.Chunks[index].Mode == Mode.Desktop) Model.WindowState.ArrangeMode = ArrangeModes.BothDesktopBigger;
+
         }
 
 
-        public void MouseClick(int selectedLocation, MouseButtonEventArgs e)
+        public void MouseClick(int selectedLocation, bool alternative)
         {
-            if (e.LeftButton == MouseButtonState.Pressed)
+            if (!alternative)
             {
                 var index = montage.Chunks.FindIndex(selectedLocation);
                 if (index == -1) return;
-                model.WindowState.CurrentPosition=montage.Chunks[index].StartTime;
+                Model.WindowState.CurrentPosition=montage.Chunks[index].StartTime;
             }
             else
             {
-                model.WindowState.CurrentPosition=selectedLocation;
+                Model.WindowState.CurrentPosition=selectedLocation;
             }
         }
-
 
         public void ProcessKey(KeyboardCommandData key)
         {
             var shiftValue = 200;
             if (key.Shift || key.Ctrl) shiftValue = 50;
-            if (CommonKeyboardProcessing.ProcessCommonKeys(model, key)) return;
-           
+
+            if (this.ProcessNavigationKey(key)) return;
+            if (this.ProcessCommonMarkupKey(key)) return;
+            if (this.DefaultSpeedKey(key)) return;
           
             switch (key.Command)
             {
@@ -74,15 +79,26 @@ namespace Editor
                     ShiftRight(shiftValue);
                     return;
 
-                case KeyboardCommands.SpeedUp:
-                    model.WindowState.SpeedRatio+=0.5;
-					model.WindowState.SpeedRatio = Math.Min(3, model.WindowState.SpeedRatio);
-                     return;
+               
 
-                case KeyboardCommands.SpeedDown:
-                    model.WindowState.SpeedRatio -= 0.5;
-					 model.WindowState.SpeedRatio = Math.Max(0.5, model.WindowState.SpeedRatio);
+                case KeyboardCommands.Face:
+                  Model.MarkHere(Mode.Face, key.Ctrl);
+                  Model.WindowState.ArrangeMode = ArrangeModes.BothFaceBigger;
                   return;
+
+                case KeyboardCommands.Desktop:
+                  Model.MarkHere(Mode.Desktop, key.Ctrl);
+                  Model.WindowState.ArrangeMode = ArrangeModes.BothDesktopBigger;
+                  return;
+
+                case KeyboardCommands.Drop:
+                  Model.MarkHere(Mode.Drop, key.Ctrl);
+                  return;
+
+                case KeyboardCommands.Clear:
+                  Model.RemoveChunkHere();
+                  return;
+
             }
 
         }
@@ -91,34 +107,34 @@ namespace Editor
 
         void ShiftLeft(int value)
         {
-            var index = model.Montage.Chunks.FindIndex(model.WindowState.CurrentPosition);
+            var index = Model.Montage.Chunks.FindIndex(Model.WindowState.CurrentPosition);
             if (index == -1) return;
-            model.ShiftLeftChunkBorder(index, value);
-            model.WindowState.CurrentPosition = model.Montage.Chunks[index].StartTime;
+            Model.ShiftLeftChunkBorder(index, value);
+            Model.WindowState.CurrentPosition = Model.Montage.Chunks[index].StartTime;
         }
 
         void ShiftRight(int value)
         {
-            var index = model.Montage.Chunks.FindIndex(model.WindowState.CurrentPosition);
+            var index = Model.Montage.Chunks.FindIndex(Model.WindowState.CurrentPosition);
             if (index == -1) return;
-            model.ShiftRightChunkBorder(index, value);
-            model.WindowState.CurrentPosition = model.Montage.Chunks[index].EndTime-2000;
+            Model.ShiftRightChunkBorder(index, value);
+            Model.WindowState.CurrentPosition = Model.Montage.Chunks[index].EndTime-2000;
         }
 
         void NextChunk()
         {
-            var index = montage.Chunks.FindIndex(model.WindowState.CurrentPosition);
+            var index = montage.Chunks.FindIndex(Model.WindowState.CurrentPosition);
             index++;
             if (index < 0 || index >= montage.Chunks.Count) return;
-            model.WindowState.CurrentPosition=montage.Chunks[index].StartTime;
+            Model.WindowState.CurrentPosition=montage.Chunks[index].StartTime;
         }
 
         void PrevChunk()
         {
-            var index = montage.Chunks.FindIndex(model.WindowState.CurrentPosition);
+            var index = montage.Chunks.FindIndex(Model.WindowState.CurrentPosition);
             index--;
             if (index < 0 || index >= montage.Chunks.Count) return;
-            model.WindowState.CurrentPosition=montage.Chunks[index].StartTime;
+            Model.WindowState.CurrentPosition=montage.Chunks[index].StartTime;
 
         }
 

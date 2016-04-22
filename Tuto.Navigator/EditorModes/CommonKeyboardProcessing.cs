@@ -62,10 +62,7 @@ namespace Editor
                     model.RemoveChunkHere();
                     return true;
 
-				case KeyboardCommands.Sign:
-					model.SignHere();
-					return true;
-              
+				
 
                 case KeyboardCommands.NewEpisodeHere:
                     model.NewEpisodeHere();

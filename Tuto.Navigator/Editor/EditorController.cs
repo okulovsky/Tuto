@@ -1,6 +1,7 @@
 ﻿using Editor;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,8 +18,6 @@ namespace Tuto.Navigator.Editor
 		EditorModel model;
 		DispatcherTimer timer;
 		const int timerInterval = 1;
-        readonly bool faceAvailable;
-        readonly bool desktopAvailable;
 
 		public EditorController(IEditorInterface panel, EditorModel model)
 		{
@@ -26,7 +25,7 @@ namespace Tuto.Navigator.Editor
 			this.model = model;
 
 			panel.ControlKeyDown += panel_KeyDown;
-			panel.TimelineMouseDown += panel_TimelineMouseDown;
+			panel.TimeSelected += panel_TimeSelected;
 
 			model.WindowState.SubsrcibeByExpression(z => z.Paused, PauseChanged);
 			model.WindowState.SubsrcibeByExpression(z => z.CurrentMode, ModeChanged);
@@ -34,37 +33,42 @@ namespace Tuto.Navigator.Editor
 			model.WindowState.SubsrcibeByExpression(z => z.CurrentPosition, PositionChanged);
 			model.WindowState.SubsrcibeByExpression(z => z.FaceVideoIsVisible, VideoVisibilityChanged);
 			model.WindowState.SubsrcibeByExpression(z => z.DesktopVideoIsVisible, VideoVisibilityChanged);
+            model.WindowState.SubsrcibeByExpression(z => z.ArrangeMode, ArrangeModeChanged);
+            model.WindowState.SubsrcibeByExpression(z => z.CurrentPatch, CurrentPatchChanged);
+            model.WindowState.SubsrcibeByExpression(z => z.VideoPatchPosition, VideoPatchPositionChanged);
+            model.WindowState.SubsrcibeByExpression(z => z.PatchPlaying, PatchPlayingChanged);
 
             ModeChanged();
             RatioChanged();
+            ArrangeModeChanged();
             VideoVisibilityChanged();
+            CurrentPatchChanged();
             PositionChanged();
+            VideoPatchPositionChanged();
             PauseChanged();
+
+            panel.Face.Die();
+            panel.Desktop.Die();
+            panel.Patch.Die();
 
             if (model.Locations.FaceVideoThumb.Exists)
             {
                 panel.Face.SetFile(model.Locations.FaceVideoThumb);
-                faceAvailable = true;
             }
             else if (model.Locations.FaceVideo.Exists)
             {
                 panel.Face.SetFile(model.Locations.FaceVideo);
-                faceAvailable = true;
             }
-            else faceAvailable = false;
-
+          
             if (model.Locations.DesktopVideoThumb.Exists)
             {
                 panel.Desktop.SetFile(model.Locations.DesktopVideoThumb);
-                desktopAvailable = true;
             }
             else if (model.Locations.DesktopVideo.Exists)
             {
                 panel.Desktop.SetFile(model.Locations.DesktopVideo);
-                desktopAvailable = true;
             }
-            else desktopAvailable = true;
-
+      
 
 			timer = new DispatcherTimer();
 			timer.Interval = TimeSpan.FromMilliseconds(timerInterval);
@@ -87,9 +91,9 @@ namespace Tuto.Navigator.Editor
 				timer.Stop();
 				model.WindowState.UnsubscribeAll(this);
 				panel.ControlKeyDown -= panel_KeyDown;
-				panel.TimelineMouseDown -= panel_TimelineMouseDown;
-                panel.Face.Stop();
-                panel.Desktop.Stop();
+				panel.TimeSelected -= panel_TimeSelected;
+                panel.Face.Die();
+                panel.Desktop.Die();
 				isDisposed = true;
 			}
 		}
@@ -101,21 +105,26 @@ namespace Tuto.Navigator.Editor
 		void CheckPlayTime()
 		{
 			supressPositionChanged = true;
-			if (faceAvailable)
+			if (!panel.Face.Paused)
 			{
                 model.WindowState.CurrentPosition = panel.Face.Position;
-				if (desktopAvailable)
+				if (!panel.Desktop.Paused)
 				{
 					var desktopVideoPosition = panel.Desktop.Position + model.Montage.SynchronizationShift;
 					if (Math.Abs(desktopVideoPosition - model.WindowState.CurrentPosition) > 50)
 						panel.Desktop.Position = model.WindowState.CurrentPosition - model.Montage.SynchronizationShift;
 				}
-				else
-				{
-					if (!model.WindowState.Paused)
-						model.WindowState.CurrentPosition += (int)(timerInterval * model.WindowState.SpeedRatio);
-				}
 			}
+
+            if (model.WindowState.PatchPlaying != PatchPlayingType.NoPatch)
+            {
+                if (model.WindowState.CurrentPatch!=null && model.WindowState.CurrentPatch.IsVideoPatch)
+                {
+                    model.WindowState.VideoPatchPosition = panel.Patch.Position;
+                    model.WindowState.CurrentPatch.VideoData.Duration = panel.Patch.GetDuration();
+                }
+            }
+
 			supressPositionChanged = false;
 
 			if (pauseRequested)
@@ -130,7 +139,7 @@ namespace Tuto.Navigator.Editor
 			currentMode.CheckTime();
 		}
 
-		void panel_TimelineMouseDown(int arg1, MouseButtonEventArgs arg2)
+		void panel_TimeSelected(int arg1, bool arg2)
 		{
 			currentMode.MouseClick(arg1, arg2);
 		}
@@ -150,16 +159,50 @@ namespace Tuto.Navigator.Editor
 
 		void PauseChanged()
 		{
-			panel.Desktop.PlayPause(model.WindowState.Paused);
-            panel.Face.PlayPause(model.WindowState.Paused);
+            SetAllPauses();
 		}
+
+        void SetAllPauses()
+        {
+            switch (model.WindowState.PatchPlaying)
+            {
+                case PatchPlayingType.NoPatch:
+                    panel.Face.Paused = model.WindowState.Paused;
+                    panel.Desktop.Paused = model.WindowState.Paused;
+                    panel.Patch.Paused = true;
+                    break;
+                case PatchPlayingType.PatchOnly:
+                    panel.Face.Paused = true;
+                    panel.Desktop.Paused = true;
+                    panel.Patch.Paused = model.WindowState.Paused;
+                    break;
+                case PatchPlayingType.PatchAlong:
+                    panel.Face.Paused = model.WindowState.Paused;
+                    panel.Desktop.Paused = model.WindowState.Paused;
+                    panel.Patch.Paused = model.WindowState.Paused;
+                    break;
+
+                    
+            }
+        }
 
 		void ModeChanged()
 		{
 			if (model.WindowState.CurrentMode == EditorModes.Border)
+            {
 				currentMode = new BorderMode(model);
+                model.WindowState.ArrangeMode = ArrangeModes.Overlay;
+            }
 			if (model.WindowState.CurrentMode == EditorModes.General)
-				currentMode = new GeneralMode(model);
+            {
+                currentMode = new GeneralMode(model);
+            }
+            if (model.WindowState.CurrentMode == EditorModes.Patch)
+            {
+                currentMode = new PatchMode(model);
+                model.WindowState.ArrangeMode = ArrangeModes.Patching;
+            }
+            panel.Refresh();
 		}
 
 		void RatioChanged()
@@ -180,11 +223,56 @@ namespace Tuto.Navigator.Editor
 			panel.Desktop.Position = model.WindowState.CurrentPosition - model.Montage.SynchronizationShift;
 		}
 
+        void VideoPatchPositionChanged()
+        {
+            if (supressPositionChanged) return;
+                
+            panel.Patch.Position = model.WindowState.VideoPatchPosition;
+        }
+
 		void VideoVisibilityChanged()
 		{
 			panel.Face.Visibility = model.WindowState.FaceVideoIsVisible;
 			panel.Desktop.Visibility = model.WindowState.DesktopVideoIsVisible;
 		}
+
+        void ArrangeModeChanged()
+        {
+            panel.SetArrangeMode(model.WindowState.ArrangeMode);
+        }
+
+        void CurrentPatchChanged()
+        {
+            var patch = model.WindowState.CurrentPatch;
+            
+            if (patch==null)
+            {
+                panel.SetPatch(null);
+                panel.Patch.Visibility = false;
+                panel.Face.Muted = false;
+                panel.Patch.Die();
+                return;
+            }
+
+            panel.SetPatch(patch.Data);
+            
+            if (patch.IsVideoPatch)
+            {
+                panel.Patch.Visibility = true;
+                var filePath = patch.VideoData.GetFileName(model.Videotheque);
+                panel.Patch.SetFile(filePath);
+                panel.Patch.Paused = false;
+                panel.Patch.Muted = patch.VideoData.OverlayType != VideoPatchOverlayType.Replace;
+                panel.Face.Muted = patch.VideoData.OverlayType == VideoPatchOverlayType.Replace;
+                return;
+            }
+        }
+
+        void PatchPlayingChanged()
+        {
+            SetAllPauses();
+        }
+
 		#endregion
 	}
 }

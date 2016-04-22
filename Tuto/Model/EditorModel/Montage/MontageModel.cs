@@ -28,8 +28,6 @@ namespace Tuto.Model
 		public int SynchronizationShift { get; set; }
 		[DataMember]
 		public bool CrossfadesEnabled { get; set; }
-		[DataMember]
-		public List<Sign> Signs { get; internal set; }
 
         /// <summary>
         /// Tokens of the episode
@@ -48,11 +46,8 @@ namespace Tuto.Model
         [DataMember]
         public List<StreamChunk> PreparedChunks { get; set; }
 
-        /// <summary>
-        /// String fixes for video, which are to encoded as subtitiles
-        /// </summary>
         [DataMember]
-        public List<SubtitleFix> SubtitleFixes { get; internal set; }
+        public List<Patch> Patches { get; internal set; }
 
         /// <summary>
         /// Borders of each chunks. This information is required by one of the editor mode, but it is completely determined by tokens, so it is not stored
@@ -72,10 +67,9 @@ namespace Tuto.Model
             Borders = new List<Border>();
             Information = new VideoInformation();
             SoundIntervals = new List<SoundInterval>();
-            SubtitleFixes = new List<SubtitleFix>();
+            Patches = new List<Patch>();
             CrossfadesEnabled = true;
-			Signs = new List<Sign>();
-        }
+		}
 
 		[Obsolete("Костыль. Убрать, когда заночу с Updater-ом")]
 		public void SetHash(string hash)

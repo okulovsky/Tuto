@@ -15,5 +15,6 @@ namespace Tuto.Model
         [EnumName("Final")]
         [Description("In this mode, you adjust borders between fragments of the different type. Pay the most attention to the borders between dropped and not-dropped fragments to eliminate scrappy voice. You also preview the video in this mode")]
         Border,
+        Patch
     }
 }

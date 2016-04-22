@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Tuto.Model;
 
 namespace Tuto.Navigator.Editor
 {
@@ -13,14 +14,22 @@ namespace Tuto.Navigator.Editor
         Face,
         Desktop,
     }
+    
+   
 
 	public interface IEditorInterface
 	{
 		event KeyEventHandler ControlKeyDown;
-		event Action<int, MouseButtonEventArgs> TimelineMouseDown;
+		event Action<int, bool> TimeSelected;
         void SetRatio(double ratio);
         IVideoInterface Face { get; }
         IVideoInterface Desktop { get; }
+        IVideoInterface Patch { get;  }
+        void SetArrangeMode(ArrangeModes mode);
+        void SetPatch(PatchData patch);
+
+        void Refresh();
+
 	}
 
     public interface IVideoInterface
@@ -28,8 +37,14 @@ namespace Tuto.Navigator.Editor
         int Position { get; set; }
         void SetFile(FileInfo location);
         bool Visibility { get; set; }
-        void PlayPause(bool pause);
 
-        void Stop();
+        bool Paused { get; set; }
+
+        int GetDuration();
+
+        void Die();
+        bool Loaded { get; }
+
+        bool Muted { set; }
     }
 }

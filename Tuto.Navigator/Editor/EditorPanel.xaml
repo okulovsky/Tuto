@@ -43,6 +43,9 @@
             <ToggleButton x:Name="borderMode" ToolTip="Mode for precise movings of the borders">
                 <Image Source="/Icons/microscope.png"/>
             </ToggleButton>
+            <ToggleButton x:Name="patchMode" ToolTip="Mode for adding subtitles, replace fragments etc">
+                <Image Source="/Icons/patch.png"/>
+            </ToggleButton>
             
             <Rectangle Height="20"/>
             <Button x:Name="sync" ToolTip="Synchronize videos">
@@ -58,8 +61,19 @@
                 <Image Source="/Icons/help.png"/>
             </Button>
         </StackPanel>
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+            <TextBlock Height="20">Absolute position</TextBlock>
+            <TextBox Height="20" BorderThickness="0" IsReadOnly="True" Text="{Binding WindowState.CurrentPositionAbsolute}"/>
+            <Rectangle Width="100"/>
+            <TextBlock Height="20">Position in episode</TextBlock>
+            <TextBox Height="20" BorderThickness="0" IsReadOnly="True"  Text="{Binding WindowState.CurrentPositionRelative}"/>
+            <Rectangle Width="100"/>
+            <TextBlock>Acceleration</TextBlock>
+            <TextBlock Height="20" Text="{Binding WindowState.SpeedRatio}"/>
+
+        </StackPanel>
         <Border>
-            <ed:VideoPlayerPanel x:Name="player"/>
+            <ed:VideoPlayerPanel x:Name="player" DataContext="{Binding}"/>
         </Border>
     </DockPanel>
 </UserControl>

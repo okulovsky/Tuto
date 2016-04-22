@@ -9,19 +9,33 @@ using System.Threading.Tasks;
 
 namespace Tuto.Model
 {
+
+    public enum PatchPlayingType
+    {
+        NoPatch,
+        PatchOnly,
+        PatchAlong
+    }
+
     [DataContract]
     public class   WindowState : NotifierModel
     {
 		internal EditorModel EditorModel;
 
-		void SetAndNotify<T>(ref T field, T value, [CallerMemberName] string propertyName=null)
-		{
-			if (!field.Equals(value))
-			{
-				field = value;
-				NotifyPropertyChanged(propertyName);
-			}
-		}
+        void SetAndNotify<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
+        {
+            if (field == null)
+            {
+                if (value == null) return;
+            }
+            else
+            {
+                if (field.Equals(value)) return;
+            }
+
+            field = value;
+            NotifyPropertyChanged(propertyName);
+        }
 
         [DataMember]
         EditorModes currentMode;
@@ -46,8 +60,7 @@ namespace Tuto.Model
             }
         }
 
-		[DataMember]
-		string currentSubtitle;
+		
 
 		public string CurrentPositionAbsolute { get; private set; }
 		public string CurrentPositionRelative { get; private set; }
@@ -131,6 +144,15 @@ namespace Tuto.Model
             }
         }
 
+        [DataMember]
+        ArrangeModes arrangeMode;
+
+        public ArrangeModes ArrangeMode
+        {
+            get { return arrangeMode; }
+            set { SetAndNotify(ref arrangeMode, value); }
+        }
+
         public event Action GetBack;
 
 		public void OnGetBack()
@@ -138,6 +160,45 @@ namespace Tuto.Model
 			if (GetBack != null)
 				GetBack();
 		}
+
+
+
+        int videoPatchPosition;
+        public int VideoPatchPosition
+        {
+            get { return videoPatchPosition;}
+            set { SetAndNotify(ref videoPatchPosition, value); }
+        }
+
+        public PatchPlayingType patchPlaying;
+
+        public PatchPlayingType PatchPlaying
+        {
+            get
+            {
+                return patchPlaying;
+            }
+            set
+            {
+                SetAndNotify(ref patchPlaying, value);
+            }
+        }
+
+        Patch currentPatch;
+        public Patch CurrentPatch
+        {
+            get { return currentPatch; }
+            set
+            {
+                SetAndNotify(ref currentPatch, value);
+            }
+        }
+        
+        public PatchSelection PatchSelection
+        {
+            get;
+            set;
+        }
 
         public WindowState()
         {

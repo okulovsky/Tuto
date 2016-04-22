@@ -146,11 +146,13 @@
     <Compile Include="EditorModes\CommonKeyboardProcessing.cs" />
     <Compile Include="EditorModes\GeneralMode.cs" />
     <Compile Include="EditorModes\IEditorMode.cs" />
+    <Compile Include="EditorModes\IEditorModeExtensions.cs" />
     <Compile Include="EditorModes\Keyboard\KeyboardCommandData.cs" />
     <Compile Include="EditorModes\Keyboard\KeyboardCommandGroup.cs" />
     <Compile Include="EditorModes\Keyboard\KeyboardCommandHelp.cs" />
     <Compile Include="EditorModes\Keyboard\KeyboardCommands.cs" />
     <Compile Include="EditorModes\Keyboard\KeyMap.cs" />
+    <Compile Include="EditorModes\PatchMode.cs" />
     <Compile Include="Editor\Converters.cs" />
     <Compile Include="Editor\EditorController.cs" />
     <Compile Include="Editor\EditorPanel.xaml.cs">
@@ -164,11 +166,20 @@
       <DependentUpon>HelpWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Editor\IEditorInterface.cs" />
+    <Compile Include="Editor\ImagePatchPanel.xaml.cs">
+      <DependentUpon>ImagePatchPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Editor\InfoWindow.xaml.cs">
       <DependentUpon>InfoWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Editor\MainEditorWindow.xaml.cs">
-      <DependentUpon>MainEditorWindow.xaml</DependentUpon>
+    <Compile Include="Editor\PatchUIContainer.xaml.cs">
+      <DependentUpon>PatchUIContainer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Editor\SubtitlesPanel.xaml.cs">
+      <DependentUpon>SubtitlesPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Editor\VideoPatchPanel.xaml.cs">
+      <DependentUpon>VideoPatchPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Editor\VideoPlayerPanel.xaml.cs">
       <DependentUpon>VideoPlayerPanel.xaml</DependentUpon>
@@ -182,6 +193,7 @@
     </Compile>
     <Compile Include="Initialization\VideothequeRequestViewModel.cs" />
     <Compile Include="Editor\VideoPlayerPanelVideoWrap.cs" />
+    <Compile Include="Editor\PatchPanel.cs" />
     <Compile Include="Views\BatchWorkPanel.xaml.cs">
       <DependentUpon>BatchWorkPanel.xaml</DependentUpon>
     </Compile>
@@ -237,13 +249,25 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Editor\ImagePatchPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Editor\InfoWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Editor\MainEditorWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="Editor\PatchUIContainer.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Editor\SubtitlesPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Editor\VideoPatchPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Editor\VideoPlayerPanel.xaml">
       <SubType>Designer</SubType>
@@ -388,6 +412,7 @@
     <Resource Include="Icons\sync.png" />
     <Resource Include="Icons\hammer.png" />
     <Resource Include="Icons\microscope.png" />
+    <Resource Include="Icons\patch.png" />
     <Content Include="NoiseReduction\cleared.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -48,6 +48,8 @@ namespace Tuto.Model
 		public DirectoryInfo ModelsFolder { get; private set; }
 		public DirectoryInfo OutputFolder { get; private set; }
 		public DirectoryInfo TempFolder { get; private set; }
+
+        public DirectoryInfo PatchFolder { get; private set; }
 		public FileInfo VideothequeSettingsFile { get; private set;  }
 		public VideothequeLocations Locations { get; private set; }
 
@@ -162,7 +164,7 @@ namespace Tuto.Model
 			Data.PathsSettings.OutputPath = RelativeOrAbsoluteDirection(OutputFolder);
 			Data.PathsSettings.ModelPath = RelativeOrAbsoluteDirection(ModelsFolder);
 			Data.PathsSettings.TempPath = RelativeOrAbsoluteDirection(TempFolder);
-
+            Data.PathsSettings.PatchPath = RelativeOrAbsoluteDirection(PatchFolder);
             HeadedJsonFormat.Write(VideothequeSettingsFile, Data);
         }
 
@@ -332,6 +334,7 @@ namespace Tuto.Model
             data.PathsSettings.ModelPath = CreateDefaultFolder(finfo, Names.DefaultModelFolder);
             data.PathsSettings.OutputPath = CreateDefaultFolder(finfo, Names.DefaultOutputFolder);
             data.PathsSettings.TempPath = CreateDefaultFolder(finfo, Names.DefaultTempFolder);
+            data.PathsSettings.PatchPath = CreateDefaultFolder(finfo, Names.DefaultPatchFolder);
 
 			HeadedJsonFormat.Write(
 				finfo,
@@ -405,7 +408,8 @@ namespace Tuto.Model
             ModelsFolder = CheckVideothequeSubdirectory(Data.PathsSettings.ModelPath, Names.DefaultModelFolder, ui, "Can't locate the folder where the markup (the result of your work) is stored)");
             OutputFolder = CheckVideothequeSubdirectory(Data.PathsSettings.OutputPath, Names.DefaultOutputFolder, ui, "Can't locate the folder with the output video will be stored");
             TempFolder = CheckVideothequeSubdirectory(Data.PathsSettings.TempPath, Names.DefaultTempFolder, ui, "Can't locate the folder with the temporary files");
-		}
+            PatchFolder = CheckVideothequeSubdirectory(Data.PathsSettings.PatchPath, Names.DefaultPatchFolder, ui, "Can't locate the folder with patches");
+        }
 		#endregion
 		#region Loading files
 
@@ -501,9 +505,9 @@ namespace Tuto.Model
                rawLocation = new DirectoryInfo("Z:\\");
             }
 
-			if (container.MontageModel.Signs == null)
-				container.MontageModel.Signs = new List<Sign>();
-
+            if (container.MontageModel.Patches == null)
+                container.MontageModel.Patches = new List<Patch>();
+		
             var model = new EditorModel(file, rawLocation, this, container.MontageModel, container.WindowState);
             SaveEditorModel(model);
             return model;

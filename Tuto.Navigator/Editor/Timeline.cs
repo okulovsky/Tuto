@@ -5,12 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using Tuto.Model;
 
 namespace Tuto.Navigator.Editor
 {
-    public class TimelineBase : FrameworkElement
+    public class TimelineBase : UserControl
     {
 
         protected EditorModel editorModel { get { return (EditorModel)DataContext; } }
@@ -18,6 +19,11 @@ namespace Tuto.Navigator.Editor
 
         protected readonly int RowHeight = 20;
         protected readonly int msInRow = 300000;
+        protected readonly int EdgeWidth = 20;
+
+        protected int EdgeInMS { get { return (int)(msInRow * EdgeWidth / ActualWidth); } }
+
+        protected const int EdgeHalf = 10;
 
         protected readonly Brush[] fills = new Brush[] { Brushes.White, Brushes.MistyRose, Brushes.LightGreen, Brushes.LightBlue };
         protected readonly Pen borderPen = new Pen(Brushes.Black, 1);
@@ -31,6 +37,16 @@ namespace Tuto.Navigator.Editor
             var totalLength = 60 * 60 * 1000;
             var rows = (int)Math.Ceiling(((double)totalLength) / msInRow);
             return new Size(availableSize.Width, rows * RowHeight + 5);
+        }
+
+        protected TimelineBase()
+        {
+            this.DataContextChanged += (s, a) =>
+            {
+                if (editorModel == null) return;
+                InvalidateVisual();
+                editorModel.WindowState.PropertyChanged += (ss, aa) => InvalidateVisual();
+            };
         }
 
         protected override Size ArrangeOverride(Size finalSize)
@@ -97,6 +113,14 @@ namespace Tuto.Navigator.Editor
                 context.DrawLine(pen, new Point(0, end.Y), end);
             }
         }
+
+        public event Action<int, bool> TimeSelected;
+
+        protected void OnTimeSelected(int ms, bool alternative)
+        {
+            if (TimeSelected != null)
+                TimeSelected(ms, alternative);
+        }
     }
 
 
@@ -104,18 +128,48 @@ namespace Tuto.Navigator.Editor
     {
         public Slider()
         {
-            this.DataContextChanged += (s, a) => {
-                if (editorModel == null) return;
-                InvalidateVisual();
-                editorModel.WindowState.PropertyChanged += (ss, aa) => InvalidateVisual();
-            };
+            MouseDown += Slider_MouseDown;
+        }
+
+        void Slider_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (editorModel==null) return;
+            OnTimeSelected(MsAtPoint(e.GetPosition(this)),e.RightButton == System.Windows.Input.MouseButtonState.Pressed);
         }
 
         protected override void OnRender(DrawingContext drawingContext)
         {
             if (editorModel == null) return;
-            var point = GetCoordinate(editorModel.WindowState.CurrentPosition);
-            drawingContext.DrawLine(currentPen, point, new Point(point.X, point.Y + RowHeight));
+
+            if (editorModel.WindowState.PatchPlaying != PatchPlayingType.PatchOnly)
+            {
+                var point = GetCoordinate(editorModel.WindowState.CurrentPosition);
+                drawingContext.DrawLine(currentPen, point, new Point(point.X, point.Y + RowHeight));
+            }
+
+            if (editorModel.WindowState.PatchPlaying != PatchPlayingType.NoPatch 
+                && editorModel.WindowState.CurrentPatch!=null 
+                && editorModel.WindowState.CurrentPatch.IsVideoPatch
+                )
+            {
+                var current = editorModel.WindowState.VideoPatchPosition;
+                var availableLength = editorModel.WindowState.CurrentPatch.End - editorModel.WindowState.CurrentPatch.Begin + 2 * EdgeInMS;
+                int whereSlider=0;
+                
+                if (editorModel.WindowState.CurrentPatch.VideoData.Duration>0)
+                {
+                    double k = ((double)current) / editorModel.WindowState.CurrentPatch.VideoData.Duration;
+                    whereSlider = (int)(k * availableLength);
+                }
+                else
+                {
+                    whereSlider = current;
+                }
+                var  point = GetCoordinate(editorModel.WindowState.CurrentPatch.Begin-EdgeInMS+whereSlider);
+                point.Y += RowHeight;
+                drawingContext.DrawLine(currentPen, point, new Point(point.X, point.Y - EdgeHalf));
+
+            }
         }
     }
 
@@ -123,13 +177,14 @@ namespace Tuto.Navigator.Editor
     {
         public ModelView()
         {
-            this.DataContextChanged += (s, a) => {
-                if (editorModel == null) return;
-                InvalidateVisual();
-                editorModel.MarkupChanged += (ss, aa) => InvalidateVisual();
-            };
+            MouseDown += ModelView_MouseDown;
         }
 
+        void ModelView_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (editorModel == null) return;
+            OnTimeSelected(MsAtPoint(e.GetPosition(this)), e.RightButton == System.Windows.Input.MouseButtonState.Pressed);
+        }
 
         Brush soundBrush = new SolidColorBrush(Color.FromArgb(150, 0, 0, 0));
         Pen soundpen = new Pen(Brushes.Transparent, 0);
@@ -207,13 +262,6 @@ namespace Tuto.Navigator.Editor
 				geometryContext.LineTo(new Point(ps.X,ps.Y+RowHeight/2),false,false);
 			}
             drawingContext.DrawGeometry(Brushes.Red, soundpen, streamGeometry);
-
-			foreach(var e in model.Signs)
-			{
-				var point = GetCoordinate(e.Time);
-				point = new Point(point.X, point.Y + RowHeight / 2);
-				drawingContext.DrawEllipse(Brushes.Orange, null, point, RowHeight/4, RowHeight/4);
-			}
 
 			//if (editorModel.WindowState.CurrentMode == EditorModes.Border && model.Borders!=null)
 			//	foreach (var e in model.Borders)

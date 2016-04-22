@@ -21,7 +21,7 @@ namespace Tuto.Navigator.ViewModels
     public class VideothequeModel: NotifierModel
     {
         public SearchViewModel Search { get; private set; }
-        List<VideoViewModel> allModels;
+        public List<VideoViewModel> AllModels { get; private set; }
         List<EditorModel> models { get; set; }
 
         public event Action<VideoViewModel> OpenEditor;
@@ -78,7 +78,7 @@ namespace Tuto.Navigator.ViewModels
         void Filter()
         {
 
-            IEnumerable<VideoViewModel> en = allModels;
+            IEnumerable<VideoViewModel> en = AllModels;
             if (!string.IsNullOrWhiteSpace(Search.TextSearch))
             {
                 var keyword = Search.TextSearch.ToLower();
@@ -104,13 +104,13 @@ namespace Tuto.Navigator.ViewModels
 
         void UpdateSubdirectories()
         {
-            allModels = new List<VideoViewModel>();
+            AllModels = new List<VideoViewModel>();
             foreach (var e in videotheque.EditorModels)
             {
                 var m = new VideoViewModel(e);
                 m.OpenMe += OpenVideoViewModel;
                 m.SubsrcibeByExpression(z => z.Selected, UpdateStatistics);
-				allModels.Add(m);
+				AllModels.Add(m);
             }
             Filter();
         }
@@ -124,7 +124,7 @@ namespace Tuto.Navigator.ViewModels
         void UpdateStatistics()
         {
             StatisticsViewModel stat = new StatisticsViewModel();
-            foreach(var e in allModels.Where(z=>z.Selected))
+            foreach(var e in AllModels.Where(z=>z.Selected))
             {
                 stat.EpisodesCount += e.Model.Montage.Information.Episodes.Count;
                 stat.TotalClean += (int)e.Model.Montage.Information.Episodes.Sum(z => z.Duration.TotalMinutes);
@@ -154,7 +154,7 @@ namespace Tuto.Navigator.ViewModels
                 foreach (var e in Subdirectories)
                     e.Selected = true;
             else
-                foreach (var e in allModels)
+                foreach (var e in AllModels)
                     e.Selected = false;
         }
 

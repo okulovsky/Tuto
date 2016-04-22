@@ -12,9 +12,12 @@ namespace Tuto.Navigator
     public class VideoPlayerPanelVideoWrap : IVideoInterface
     {
         MediaElement wrappedOver;
+
         public VideoPlayerPanelVideoWrap(MediaElement wrappedOver)
         {
             this.wrappedOver = wrappedOver;
+            wrappedOver.LoadedBehavior = MediaState.Manual;
+            Loaded=false;
         }
 
         public int Position
@@ -32,6 +35,7 @@ namespace Tuto.Navigator
 
         public void SetFile(System.IO.FileInfo location)
         {
+            Loaded = true;
             wrappedOver.Source = new Uri(location.FullName);
         }
 
@@ -43,23 +47,51 @@ namespace Tuto.Navigator
             }
             set
             {
-                wrappedOver.Visibility = value?System.Windows.Visibility.Visible :  System.Windows.Visibility.Collapsed;
+                wrappedOver.Visibility = value?System.Windows.Visibility.Visible :  System.Windows.Visibility.Hidden;
             }
         }
 
-        public void PlayPause(bool pause)
+        bool paused = true;
+
+        public bool Paused
         {
-            if (pause) wrappedOver.Pause();
-            else wrappedOver.Play();
+            get { return paused; }
+            set
+            {
+                if (value)
+                    wrappedOver.Pause();
+                else
+                    wrappedOver.Play();
+                paused = value;
+            }
         }
 
-        public void Stop()
+        public bool Loaded { get; private set; }
+
+        public void Die()
         {
             try
             {
+                paused = true;
+                Loaded = false;
                 wrappedOver.Dispatcher.Invoke(new Action(wrappedOver.Stop));
             }
             catch { }
+        }
+
+        public int GetDuration()
+        {
+            if (!wrappedOver.NaturalDuration.HasTimeSpan)
+                return -1;
+            return (int)wrappedOver.NaturalDuration.TimeSpan.TotalMilliseconds;
+        }
+
+        public bool Muted
+        {
+            set
+            {
+                wrappedOver.Volume = value ? 0 : 100;
+            }
         }
     }
 }

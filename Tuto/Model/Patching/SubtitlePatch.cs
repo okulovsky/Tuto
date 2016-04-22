@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace Tuto.Model
 {
-	[DataContract]
-	public class Sign
-	{
-		public int Time { get; set; }
-	}
+    [DataContract]
+    public class SubtitlePatch : PatchData
+    {
+        [DataMember]
+        public string Text { get; set; }
+    }
 }
