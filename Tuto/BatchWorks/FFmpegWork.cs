@@ -55,7 +55,7 @@ namespace Tuto.BatchWorks
                     string[] parts = e.Data.Split(new string[] { " ", "=" }, StringSplitOptions.RemoveEmptyEntries);
                     var timeDraft = TimeSpan.Parse(parts[9]);
                     var currentTimeInSeconds = timeDraft.TotalSeconds;
-                    Progress = (short)Math.Round(currentTimeInSeconds * 100 / TotalSeconds, 0);
+                    Progress = currentTimeInSeconds * 100 / TotalSeconds;
                 }
             }
         }

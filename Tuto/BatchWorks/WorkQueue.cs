@@ -1,13 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Collections.Concurrent;
-using System.Diagnostics;
 using System.Collections.ObjectModel;
 using System.Windows.Threading;
 using Tuto.Model;
@@ -30,7 +24,7 @@ namespace Tuto.BatchWorks
         private bool queueWorking { get; set; }
         private int currentIndex { get; set; }
         private Thread queueThread { get; set; }
-        private Process currentProcess;
+        private bool wasWorkAborted;
         public Dispatcher Dispatcher { get; set; }
 
 
@@ -43,38 +37,63 @@ namespace Tuto.BatchWorks
         {
             while (currentIndex < this.Work.Count && queueWorking)
             {
-                BatchWork e = Work[currentIndex];
-                if (e.Status == BatchWorkStatus.Cancelled)
+                BatchWork rootTask = Work[currentIndex];
+                if (rootTask.Status == BatchWorkStatus.Cancelled || rootTask.Status == BatchWorkStatus.Aborted)
                 {
                     currentIndex++;
                     continue;
                 }
-                e.Status = BatchWorkStatus.Running;
+                var task = GetNextTask(rootTask);
+                rootTask.Status = BatchWorkStatus.Running;
                 try
                 {
-                    if (e is ProcessBatchWork)
-                        currentProcess = (e as ProcessBatchWork).Process;
-                    e.Work();
-                    e.Status = BatchWorkStatus.Success;
+                    if (task == rootTask) //for atomic work
+                    {
+                        if (ShouldWeDoThisWork(rootTask)) rootTask.Work(); else rootTask.Progress = 100;
+                        rootTask.Status = BatchWorkStatus.Success;
+                    }
+
+                    while (task != rootTask)
+                    {
+                        if (!(task is CompositeWork))
+                        {
+                            task.Status = BatchWorkStatus.Running;
+                            if (ShouldWeDoThisWork(task)) task.Work(); else task.Progress = 100;
+                            task.Status = BatchWorkStatus.Success;
+                        }
+                        else
+                        {
+                            if (task.ChildWorks.Count(x => x.Status == BatchWorkStatus.Success) == task.ChildWorks.Count)
+                                task.Status = BatchWorkStatus.Success;
+                            else task.Status = BatchWorkStatus.Attention;
+                        }
+
+                        task = GetNextTask(rootTask);
+                    }
+
+                    if (rootTask.ChildWorks != null)
+                    {
+                        if (rootTask.ChildWorks.Count(x => x.Status == BatchWorkStatus.Success) == rootTask.ChildWorks.Count)
+                            rootTask.Status = BatchWorkStatus.Success;
+                        else rootTask.Status = BatchWorkStatus.Attention;
+                    }
                     currentIndex++;
-                }
-                catch (ThreadAbortException)
-                {
-                    e.Status = BatchWorkStatus.Aborted;
-                    e.Clean();
-                    wasException = true;
-                    CancelTasksAfterException();
                 }
                 catch (Exception ex)
                 {
-                    e.Status = BatchWorkStatus.Failure;
-                    e.ExceptionMessage = ex.Message;
-                    e.Clean();
-                    wasException = true;
-                    CancelTasksAfterException();
+                    if (!wasWorkAborted)
+                    {
+                        if (task.Parent != null)
+                            foreach (var t in task.Parent.ChildWorks)
+                                CancelTask(t); //cancel tasks on one level with failed
+                        task.Status = BatchWorkStatus.Failure;
+                        task.ExceptionMessage = ex.Message;
+                        task.Clean();
+                        wasException = true;
+                    }
                 };
-				if (e.Model!=null)
-					e.Model.Statuses.InQueue = ModelInQueue(e.Model);
+				if (rootTask.Model!=null)
+					rootTask.Model.Statuses.InQueue = ModelInQueue(rootTask.Model);
             }
             queueWorking = false;
             if (!wasException)
@@ -84,48 +103,22 @@ namespace Tuto.BatchWorks
             }
         }
 
-        private void CancelTasksAfterException()
+        private BatchWork GetNextTask(BatchWork work)
         {
-            lock (addLock)
-            {
-                for (var i = currentIndex + 1; i < this.Work.Count; i++)
-                    this.Work[i].Status = BatchWorkStatus.Cancelled;
-                currentIndex = this.Work.Count;
-            }
+            if (work.ChildWorks != null)
+                foreach (var e in work.ChildWorks)
+                    if (e.Status == BatchWorkStatus.Pending || e.Status == BatchWorkStatus.Running)
+                        return GetNextTask(e);
+            return work;
         }
 
-        private void FilteredAdd(List<BatchWork> allWorks, BatchWork work)
+        private bool ShouldWeDoThisWork(BatchWork work) // filterer
         {
-            if (!(work is MakeAll) && !(work is AssemblyVideoWork))
-                    allWorks.Add(work);
-        }
-
-        private List<BatchWork> GetFilteredWorks(BatchWork work)
-        {
-            if (work.Finished() && !work.Forced)
-                return new List<BatchWork>();
-
-            var allWorks = new List<BatchWork>();
-
-            foreach (var e in work.BeforeWorks)
-            {   
-                if (e.Finished()) continue;
-                if (WorkSettings.AudioCleanSettings.CurrentOption == Model.Options.Skip && e is CreateCleanSoundWork)
-                    continue;
-                Run(e);
-                FilteredAdd(allWorks, e);
-            }
-
-            FilteredAdd(allWorks, work);
-
-            foreach (var e in work.AfterWorks)
-            {
-                if (e.Finished()) continue;
-                if (WorkSettings.AutoUploadVideo == false && e is YoutubeWork) continue;
-                allWorks.Add(e);
-            }
-
-            return allWorks;
+            if (work.Forced) return true;
+            if (work.Finished() && !work.Forced || work.Finished()) return false;
+            if (WorkSettings.AudioCleanSettings.CurrentOption == Options.Skip && work is CreateCleanSoundWork) return false;
+            if (!WorkSettings.AutoUploadVideo && (work is UploadVideoWork || work is YoutubeWork)) return false;
+            return true;
         }
 
         public void Run(IEnumerable<BatchWork> works)
@@ -134,33 +127,69 @@ namespace Tuto.BatchWorks
                 Run(e);
         }
 
-        public void Run(BatchWork work)
+        public void UnpackWork(BatchWork work)
         {
-            wasException = false;
-            var newWork = GetFilteredWorks(work);
-            lock (addLock)
+            if (work is CompositeWork)
             {
-                var worksIdentifiers = this.Work
-                    .Where(x => x.Status == BatchWorkStatus.Pending || x.Status == BatchWorkStatus.Running)
-                    .Select(x => x.Name).ToList(); //for duplicates removing
+                AddNode(work, null);
+            }
+        }
 
-                foreach (var e in newWork)
+        public void AddNode(BatchWork work, BatchWork parent)
+        {
+            if (!ShouldWeDoThisWork(work))
+                return;
+            if (work is CompositeWork)
+            {
+                var compWork = work as CompositeWork;
+                if (parent != null)
                 {
-                    if (worksIdentifiers.Contains(e.Name))
-                        continue;
-                    this.Work.Add(e);
-					if (e.Model!=null)
-						e.Model.Statuses.InQueue = true;
+                    if (parent.ChildWorks == null) parent.ChildWorks = new ObservableCollection<BatchWork>();
+                    parent.ChildWorks.Add(work);
+                    work.Parent = parent;
                 }
-
-                if (!queueWorking && Work.Count != 0)
+                foreach (var e in compWork.Tasks)
                 {
-                    queueThread = new Thread(Execute);
-                    queueThread.Start();
-                    queueWorking = true;
+                    AddNode(e, work);
                 }
             }
-            
+            else
+            {
+                if (parent.ChildWorks == null)
+                    parent.ChildWorks = new ObservableCollection<BatchWork>();
+                if (ShouldWeDoThisWork(work))
+                {
+                    parent.ChildWorks.Add(work);
+                    work.Parent = parent;
+                }
+            }
+        }
+
+        public void Run(BatchWork work)
+        {
+            if (work is MakeAll)
+                work = (work as CompositeWork).Tasks[0];
+            wasException = false;
+            var worksInQueue = this.Work
+                    .Where(x => x.Status == BatchWorkStatus.Pending || x.Status == BatchWorkStatus.Running)
+                    .ToList(); //for duplicates removing
+
+            if (worksInQueue.Any(x => x.Model == work.Model && x.GetType() == work.GetType()))
+                return; //reject work as duplicate at top level
+
+            UnpackWork(work); //prepare tree in work
+
+            lock (addLock)
+            {
+                Work.Add(work);
+            }
+
+            if (!queueWorking && Work.Count != 0)
+            {
+                queueThread = new Thread(Execute);
+                queueThread.Start();
+                queueWorking = true;
+            }
         }
 
         public void RemoveOldTasks()
@@ -173,35 +202,70 @@ namespace Tuto.BatchWorks
                 }
         }
 
-        public void CancelTask(int index)
+        public void CancelTask(BatchWork work)
         {
-            var selectedIndex = index == -1 ? currentIndex : index;
-            if (selectedIndex > currentIndex)
+            if (work == null) return;
+            if (work is CompositeWork)
             {
-                this.Work[selectedIndex].Status = BatchWorkStatus.Cancelled;
-                return;
+                work.Status = BatchWorkStatus.Cancelled;
+                CancelCompositeWork(work);
             }
+            else
+            {
+                CancelAtomicWork(work);
+            }   
+        }
 
+        private void AbortTask(BatchWork work)
+        {
+            wasWorkAborted = true;
             queueThread.Abort();
-            queueWorking = false;
-            if (currentProcess != null && !currentProcess.HasExited)
-            {
-                currentProcess.Kill();
-            }
-            for (var i = currentIndex; i < this.Work.Count; i++)
-            {
-                if (i == currentIndex)
+            work.Clean();
+            queueThread = new Thread(Execute);
+            queueThread.Start();
+            work.Status = BatchWorkStatus.Aborted;
+            wasWorkAborted = false;
+        }
+
+        private void CancelAtomicWork(BatchWork work)
+        {
+            if (work.Parent != null)
+                foreach (var e in work.Parent.ChildWorks)
                 {
-                    this.Work[i].Status = BatchWorkStatus.Aborted;
+                    e.Parent.Status = BatchWorkStatus.Cancelled;
+                    if (e.Status == BatchWorkStatus.Running)
+                    {
+                        AbortTask(e);
+                    }
+                    else
+                        e.Status = BatchWorkStatus.Cancelled;
                 }
-                else
-                    this.Work[i].Status = BatchWorkStatus.Cancelled;
+
+            if (work.Status == BatchWorkStatus.Running)
+            {
+                AbortTask(work);
             }
+            else if (work.Status == BatchWorkStatus.Pending)
+                work.Status = BatchWorkStatus.Cancelled;
+        }
+
+        private void CancelCompositeWork(BatchWork work)
+        {
+            if (work.ChildWorks != null)
+                foreach (var e in work.ChildWorks)
+                {
+                    if (e.Status == BatchWorkStatus.Running)
+                        AbortTask(e);
+                    else
+                        e.Status = BatchWorkStatus.Cancelled;
+                    if (e is CompositeWork) CancelCompositeWork(e);
+                    else CancelAtomicWork(e);
+                } 
         }
 
         private void CleanQueue()
         {
-            this.Work.Clear();
+            Work.Clear();
             currentIndex = 0;
         }
     }

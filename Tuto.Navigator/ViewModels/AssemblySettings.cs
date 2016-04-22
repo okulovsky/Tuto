@@ -54,7 +54,7 @@ namespace Tuto.Navigator.ViewModels
                     for (var i = 0; i < m.Montage.Information.Episodes.Count; i++)
                     {
                         var episode = m.Locations.GetFinalOutputFile(i);
-                        tasks.Add(new YoutubeWork(m, i, episode));
+                        tasks.Add(new UploadVideoWork(m, true));
                     }
                 }
                 foreach (var e in tasks)

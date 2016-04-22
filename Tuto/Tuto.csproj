@@ -97,6 +97,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblerService.cs" />
+    <Compile Include="BatchWorks\Converters.cs" />
+    <Compile Include="BatchWorks\UploadVideoWork.cs" />
+    <Compile Include="BatchWorks\AtomicAssemblyEpisodeWork.cs" />
     <Compile Include="BatchWorks\AssemblyEpisodeWork.cs" />
     <Compile Include="BatchWorks\AssemblyVideoWork.cs" />
     <Compile Include="BatchWorks\BatchWork.cs" />
@@ -105,6 +108,7 @@
     <Compile Include="BatchWorks\ConvertVideoWork.cs" />
     <Compile Include="BatchWorks\CreateCleanSoundWork.cs" />
     <Compile Include="BatchWorks\CreateThumbWork.cs" />
+    <Compile Include="BatchWorks\CompositeWork.cs" />
     <Compile Include="BatchWorks\MakeAll.cs" />
     <Compile Include="BatchWorks\MoveFile.cs" />
     <Compile Include="BatchWorks\NewSoundAnalysisWork.cs" />

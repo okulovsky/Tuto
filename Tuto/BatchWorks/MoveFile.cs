@@ -15,9 +15,10 @@ namespace Tuto.BatchWorks
         private FileInfo from { get; set; }
         private FileInfo to { get; set; }
 
-        public MoveFile(FileInfo from, FileInfo to)
+        public MoveFile(FileInfo from, FileInfo to, EditorModel model, params string[] additionalArgs)
         {
-            Name = string.Format("Move \"{0}\" to Output folder", from.FullName);
+            Name = string.Format("Moving \"{0}\" to Output folder", to.Name);
+            Model = model;
             this.from = from;
             this.to = to;
         }
@@ -27,6 +28,7 @@ namespace Tuto.BatchWorks
             if (File.Exists(to.FullName))
                 to.Delete();
             File.Move(from.FullName, to.FullName);
+            Progress = 100;
             OnTaskFinished();
         }
     }

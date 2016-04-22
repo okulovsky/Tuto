@@ -1,10 +1,15 @@
 ﻿<UserControl x:Class="Tuto.Navigator.Views.BatchWorkPanel"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:tuto="clr-namespace:Tuto.BatchWorks;assembly=Tuto"
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="400">
+    <UserControl.Resources>
+        <tuto:StatusConverter x:Key="converter"/>
+    </UserControl.Resources>
     <Expander>
         <Expander.Header>
             <DockPanel>
@@ -25,28 +30,36 @@
                 <Button DockPanel.Dock="Right" Width="100" Content="Clear" Command="{Binding Clear}"/>
                 <Rectangle/>
             </DockPanel>
-            <DataGrid IsReadOnly="true" x:Name="Tasks" ItemsSource="{Binding Works}" AutoGenerateColumns="False" VerticalScrollBarVisibility="Auto" MaxHeight="300">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
-                    <DataGridTextColumn Header="Status" Binding="{Binding Status}"/>
-                    
-                    <DataGridTemplateColumn Header="Progress">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <ProgressBar Minimum="0" Maximum="100" Value="{Binding Progress}"></ProgressBar>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    
-                    <DataGridTemplateColumn Header="Exception">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBox TextWrapping="Wrap" Text="{Binding ExceptionMessage}"/>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
-            </DataGrid>
+
+            <Grid>
+                <Grid.Resources>
+                    <HierarchicalDataTemplate x:Key="ChildTemplate" ItemsSource="{Binding ChildWorks}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Name}" />
+                            <Grid>
+                                <ProgressBar Margin="5 0 0 0" Minimum="0" Maximum="100" Value="{Binding Progress}" Foreground="{Binding Status, Converter={StaticResource converter}}"></ProgressBar>
+                                <TextBlock TextAlignment="Center" Margin="5 0 0 0" Width="80"  Text="{Binding Status}"></TextBlock>
+                            </Grid>
+                            <TextBlock Text="{Binding ExceptionMessage}"></TextBlock>
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+                    <HierarchicalDataTemplate x:Key="NameTemplate" 
+                            ItemsSource="{Binding ChildWorks}" 
+                            ItemTemplate="{StaticResource ChildTemplate}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Name}" />
+                            <Grid>
+                                <ProgressBar Margin="5 0 0 0" Minimum="0" Maximum="100" Value="{Binding Progress}" Foreground="{Binding Status, Converter={StaticResource converter}}"></ProgressBar>
+                                <TextBlock TextAlignment="Center" Margin="5 0 0 0" Width="80"  Text="{Binding Status}"></TextBlock>
+                            </Grid>
+                            <TextBlock Text="{Binding ExceptionMessage}"></TextBlock>
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+                </Grid.Resources>
+                <ScrollViewer Height="100">
+                    <TreeView ItemsSource="{Binding Works}" ItemTemplate="{StaticResource NameTemplate}" SelectedItemChanged="TreeView_OnSelectedItemChanged"  x:Name="myTreeView" />
+                </ScrollViewer>
+            </Grid>
         </DockPanel>
     </Expander>
 </UserControl>

@@ -142,7 +142,7 @@ namespace Editor
                     var episode = model.Locations.GetOutputFile(i);
                     if (!episode.Exists)
                         episode = new FileInfo(System.IO.Path.Combine(model.Videotheque.OutputFolder.FullName, episode.Name));
-                    Program.WorkQueue.Run(new YoutubeWork(model, i, episode));
+                    Program.WorkQueue.Run(new YoutubeWork(model, i, true));
                 }
 
             };

@@ -9,6 +9,7 @@ using System.IO;
 using Tuto.Model;
 using System.ComponentModel;
 using System.Threading;
+using System.Collections.ObjectModel;
 
 namespace Tuto.BatchWorks
 {
@@ -19,13 +20,16 @@ namespace Tuto.BatchWorks
         Success,
         Failure,
         Aborted,
-        Cancelled
+        Cancelled,
+        Attention
     }
 
     public abstract class BatchWork : NotifierModel
     {
         public virtual EditorModel Model { get; set; }
         public bool NeedToRewrite { get; set; }
+        public ObservableCollection<BatchWork> ChildWorks { get; set; }
+        public BatchWork Parent { get; set; }
 
 
         public virtual void Work() { }
@@ -47,26 +51,39 @@ namespace Tuto.BatchWorks
             return GetTempFile(info, "-tmp");
         }
 
-        public List<BatchWork> BeforeWorks = new List<BatchWork>();
-        public List<BatchWork> AfterWorks = new List<BatchWork>();
-
         public virtual bool Finished() { return false; }
         public bool Forced { get; set; }
 
         public string Name { get; set; }
 
-        private int progress;
-        public int Progress
+        private double progress;
+        public double Progress
         {
             get { return progress; }
-            set { progress = Math.Min(100, Math.Max(0,value)); NotifyPropertyChanged();}
+            set
+            {
+                var delta = value - progress;
+                progress = Math.Min(100, Math.Max(0,value));
+                NotifyPropertyChanged();
+                if (Parent != null)
+                {
+                    var tasksCount = Parent.ChildWorks.Count;
+                    Parent.Progress = Parent.Progress + delta / tasksCount;
+                }
+            }
         }
 
         BatchWorkStatus status;
         public BatchWorkStatus Status
         {
             get { return status; }
-            set { status = value; NotifyPropertyChanged(); }
+            set
+            {
+                if (Parent != null && (value == BatchWorkStatus.Running || value == BatchWorkStatus.Failure))
+                    Parent.Status = value; //Running and failure means status for all Parents too
+                status = value;
+                NotifyPropertyChanged();
+            }
         }
 
         public void TryToDelete(FileInfo info)

@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Tuto.Navigator.ViewModels;
 
 namespace Tuto.Navigator.Views
 {
@@ -23,6 +24,12 @@ namespace Tuto.Navigator.Views
         public BatchWorkPanel()
         {
             InitializeComponent();
+        }
+
+        //costyl because TreeView doesn't have SelectedItem, so casual binding doesn't work
+        private void TreeView_OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            ((BatchWorkQueueViewModel)DataContext).SelectedWork = (BatchWorks.BatchWork)e.NewValue;
         }
     }
 }
