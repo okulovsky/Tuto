@@ -97,7 +97,7 @@ namespace Tuto.BatchWorks
 					rootTask.Model.Statuses.InQueue = ModelInQueue(rootTask.Model);
             }
             queueWorking = false;
-            if (!wasException && false)
+            if (!wasException)
             {
                 currentIndex = 0;
                 Dispatcher.Invoke(this.Work.Clear);
