@@ -8,7 +8,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="400">
     <UserControl.Resources>
-        <tuto:StatusConverter x:Key="converter"/>
+        <tuto:StatusConverterForeground x:Key="foreground"/>
+        <tuto:StatusConverterBackGround x:Key="background"/>
     </UserControl.Resources>
     <Expander>
         <Expander.Header>
@@ -36,7 +37,9 @@
                     <HierarchicalDataTemplate x:Key="ChildTemplate" ItemsSource="{Binding ChildWorks}">
                         <StackPanel Orientation="Horizontal">
                             <Grid>
-                                <ProgressBar Minimum="0" Maximum="100" Value="{Binding Progress}" Foreground="{Binding Status, Converter={StaticResource converter}}"></ProgressBar>
+                                <ProgressBar Minimum="0" Maximum="100" Value="{Binding Progress}" 
+                                             Foreground="{Binding Status, Converter={StaticResource foreground}}"
+                                             Background="{Binding Status, Converter={StaticResource background}}"></ProgressBar>
                                 <TextBlock TextAlignment="Center" Margin="10 0 10 0"  Text="{Binding Name}"></TextBlock>
                             </Grid>
                             <TextBlock Text="{Binding ExceptionMessage}"></TextBlock>
@@ -47,7 +50,9 @@
                             ItemTemplate="{StaticResource ChildTemplate}">
                         <StackPanel Orientation="Horizontal">
                             <Grid>
-                                <ProgressBar Minimum="0" Maximum="100" Value="{Binding Progress}" Foreground="{Binding Status, Converter={StaticResource converter}}"></ProgressBar>
+                                <ProgressBar Minimum="0" Maximum="100" Value="{Binding Progress}" 
+                                             Foreground="{Binding Status, Converter={StaticResource foreground}}"
+                                             Background="{Binding Status, Converter={StaticResource background}}"></ProgressBar>
                                 <TextBlock TextAlignment="Center" Margin="10 0 10 0" Text="{Binding Name}"></TextBlock>
                             </Grid>
                             <TextBlock Text="{Binding ExceptionMessage}"></TextBlock>
