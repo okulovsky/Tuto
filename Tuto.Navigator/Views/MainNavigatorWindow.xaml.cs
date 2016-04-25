@@ -37,7 +37,8 @@ namespace Tuto.Navigator.Views
             {
                 var model = (MainModel)DataContext;
                 var video = model.VideothequeModel.AllModels.Where(z => z.Name == RequestedModel).FirstOrDefault();
-                video.Edit.Execute(null);
+                if (video!=null)
+					video.Edit.Execute(null);
             }
         }
 

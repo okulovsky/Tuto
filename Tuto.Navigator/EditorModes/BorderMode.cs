@@ -155,6 +155,7 @@ namespace Editor
             var border = montage.Borders[borderIndex];
             Model.ShiftLeftChunkBorder(border.RightChunk, shiftSize);
             Model.GenerateBorders();
+			if (borderIndex >= montage.Borders.Count) return;
             Model.WindowState.CurrentPosition = montage.Borders[borderIndex].StartTime;
             if (montage.Borders[borderIndex].IsLeftBorder) Model.WindowState.SpeedRatio = 1;
             Model.OnMarkupChanged();
