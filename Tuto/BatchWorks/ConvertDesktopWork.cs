@@ -15,7 +15,7 @@ namespace Tuto.BatchWorks
         {
             Model = model;
             Name = "Converting Desktop video: " + model.RawLocation.Name;
-            source = Model.Locations.DesktopVideo;
+            Source = Model.Locations.DesktopVideo;
             Forced = forced;
         }
 
@@ -27,7 +27,7 @@ namespace Tuto.BatchWorks
         public override void Clean()
         {
             FinishProcess();
-            TryToDelete(tempFile.FullName);
+            TryToDelete(TempFile.FullName);
         }
     }
 }

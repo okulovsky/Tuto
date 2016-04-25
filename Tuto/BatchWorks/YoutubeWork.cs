@@ -27,7 +27,7 @@ namespace Tuto.BatchWorks
             var assembledFile = Model.Locations.GetOutputFile(episode);
             var finalFile = Model.Locations.GetFinalOutputFile(number);
 
-            pathToFile = assembledFile.Exists ? assembledFile : finalFile;
+            pathToFile = File.Exists(assembledFile.FullName) ? assembledFile : finalFile;
             Forced = forced;
             Name = "Uploading: " + episode.Name;
         }
