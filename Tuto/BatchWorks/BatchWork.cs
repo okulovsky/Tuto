@@ -79,7 +79,7 @@ namespace Tuto.BatchWorks
             get { return status; }
             set
             {
-                if (Parent != null && (value == BatchWorkStatus.Running || value == BatchWorkStatus.Failure))
+                if (Parent != null && (value == BatchWorkStatus.Running || value == BatchWorkStatus.Failure) && Parent.Status != value )
                     Parent.Status = value; //Running and failure means status for all Parents too
                 status = value;
                 NotifyPropertyChanged();

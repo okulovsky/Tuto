@@ -16,7 +16,7 @@ namespace Tuto.BatchWorks
         {
             Model = model;
             Name = "Converting Face video: " + Model.RawLocation.Name;
-            source = Model.Locations.FaceVideo;
+            Source = Model.Locations.FaceVideo;
             Forced = forced;
         }
 
@@ -28,7 +28,7 @@ namespace Tuto.BatchWorks
         public override void Clean()
         {
             FinishProcess();
-            TryToDelete(tempFile.FullName);
+            TryToDelete(TempFile.FullName);
         }
     }
 }
