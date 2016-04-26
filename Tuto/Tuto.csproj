@@ -140,6 +140,7 @@
     <Compile Include="Model\Videotheque\IVideothequeLoadingUI.cs" />
     <Compile Include="Model\Videotheque\LoadingUIDecorator.cs" />
     <Compile Include="Model\Videotheque\Settings\VideothequeEditor.cs" />
+    <Compile Include="Model\Videotheque\VideoReport.cs" />
     <Compile Include="Model\Videotheque\VideothequeLoadingRequestItem.cs" />
     <Compile Include="Model\EditorModel\FileContainer.cs" />
     <Compile Include="Model\Current\AllProjectData.cs" />

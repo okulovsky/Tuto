@@ -160,12 +160,34 @@ namespace Tuto.Model
 
         public void Save()
         {
-			Data.PathsSettings.RawPath = RelativeOrAbsoluteDirection(RawFolder);
-			Data.PathsSettings.OutputPath = RelativeOrAbsoluteDirection(OutputFolder);
-			Data.PathsSettings.ModelPath = RelativeOrAbsoluteDirection(ModelsFolder);
-			Data.PathsSettings.TempPath = RelativeOrAbsoluteDirection(TempFolder);
+            Data.PathsSettings.RawPath = RelativeOrAbsoluteDirection(RawFolder);
+            Data.PathsSettings.OutputPath = RelativeOrAbsoluteDirection(OutputFolder);
+            Data.PathsSettings.ModelPath = RelativeOrAbsoluteDirection(ModelsFolder);
+            Data.PathsSettings.TempPath = RelativeOrAbsoluteDirection(TempFolder);
             Data.PathsSettings.PatchPath = RelativeOrAbsoluteDirection(PatchFolder);
             HeadedJsonFormat.Write(VideothequeSettingsFile, Data);
+            if (!string.IsNullOrEmpty(Data.ResultingJsonRelativeLocation) && EditorModels!=null)
+            {
+               
+                    var report = EditorModels
+                        .SelectMany(Model =>
+                                Enumerable.Range(0, Model.Montage.Information.Episodes.Count)
+                                .Select(Number => new { Model, Number, Episodes = Model.Montage.Information.Episodes[Number] }))
+                        .Select(z => new VideoReport
+                        {
+                            Duration = z.Episodes.Duration,
+                            Title = z.Episodes.Name,
+                            Guid = z.Episodes.Guid,
+                            EpisodeNumber = z.Number,
+                            OriginalLocation = z.Model.Montage.DisplayedRawLocation
+                        })
+                    .ToList();
+                    File.WriteAllText(
+                        Path.Combine(this.VideothequeSettingsFile.Directory.FullName, Data.ResultingJsonRelativeLocation),
+                        Newtonsoft.Json.JsonConvert.SerializeObject(report, Newtonsoft.Json.Formatting.Indented)
+                        );
+                
+            }
         }
 
         void SaveStartupFile()

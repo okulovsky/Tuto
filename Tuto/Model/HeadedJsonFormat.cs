@@ -12,7 +12,7 @@ namespace Tuto.Model
     public static class HeadedJsonFormat
     {
         const string VersionMarker= " Version ";
-
+        
         public static T ReadWithoutHeader<T>(Stream stream)
         {
             var data = (T)new DataContractJsonSerializer(typeof(T)).ReadObject(stream);
