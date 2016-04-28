@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{E69F7E9F-ED66-4935-8976-FF548AE72AEC}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Tuto</RootNamespace>
     <AssemblyName>Tuto</AssemblyName>
@@ -121,6 +121,8 @@
     <Compile Include="BatchWorks\RepairVideoWork.cs" />
     <Compile Include="BatchWorks\WorkQueue.cs" />
     <Compile Include="BatchWorks\YoutubeWork.cs" />
+    <Compile Include="ConsoleMode\ConsoleLoadingUI.cs" />
+    <Compile Include="ConsoleMode\Tuto.Program.cs" />
     <Compile Include="Model\EditorModel\EditorModel.cs" />
     <Compile Include="Model\EditorModel\Locations.cs" />
     <Compile Include="Model\EditorModel\Statuses.cs" />

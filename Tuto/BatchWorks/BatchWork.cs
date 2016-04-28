@@ -31,6 +31,17 @@ namespace Tuto.BatchWorks
         public ObservableCollection<BatchWork> ChildWorks { get; set; }
         public BatchWork Parent { get; set; }
 
+        public IEnumerable<BatchWork> WorkTree
+        {
+            get
+            {
+                yield return this;
+                if (ChildWorks!=null)
+                    foreach(var e in ChildWorks)
+                        yield return e;
+            }
+        }
+
 
         public virtual void Work() { }
         public virtual void Clean() { }

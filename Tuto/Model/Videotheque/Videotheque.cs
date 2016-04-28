@@ -104,12 +104,15 @@ namespace Tuto.Model
             CreateModels(ui);
         }
 
-		public static Videotheque Load(string videothequeFileName, IVideothequeLoadingUI ui, bool ignoreExternalSoftware)
+		public static Videotheque Load(string videothequeFileName, IVideothequeLoadingUI ui, bool ignoreExternalSoftware, string customProgramFolder=null)
 		{
 			ui = new LoadingUIDecorator(ui);
 			Videotheque v = new Videotheque();
-			v.ProgramFolder = new FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).Directory;
-			v.Locations = new VideothequeLocations(v);
+            if (customProgramFolder == null)
+                v.ProgramFolder = new FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).Directory;
+            else
+                v.ProgramFolder = new DirectoryInfo(customProgramFolder);
+            v.Locations = new VideothequeLocations(v);
 			try
 			{
 				if (!ignoreExternalSoftware)
