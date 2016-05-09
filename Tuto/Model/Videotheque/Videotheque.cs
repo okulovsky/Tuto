@@ -169,7 +169,7 @@ namespace Tuto.Model
             Data.PathsSettings.TempPath = RelativeOrAbsoluteDirection(TempFolder);
             Data.PathsSettings.PatchPath = RelativeOrAbsoluteDirection(PatchFolder);
             HeadedJsonFormat.Write(VideothequeSettingsFile, Data);
-            if (!string.IsNullOrEmpty(Data.ResultingJsonRelativeLocation) && EditorModels!=null)
+            if (!string.IsNullOrEmpty(Data.EditorSettings.ResultingJsonRelativeLocation) && EditorModels!=null)
             {
                
                     var report = EditorModels
@@ -186,7 +186,7 @@ namespace Tuto.Model
                         })
                     .ToList();
                     File.WriteAllText(
-                        Path.Combine(this.VideothequeSettingsFile.Directory.FullName, Data.ResultingJsonRelativeLocation),
+                        Path.Combine(this.VideothequeSettingsFile.Directory.FullName, Data.EditorSettings.ResultingJsonRelativeLocation),
                         Newtonsoft.Json.JsonConvert.SerializeObject(report, Newtonsoft.Json.Formatting.Indented)
                         );
                 

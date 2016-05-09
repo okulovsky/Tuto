@@ -15,8 +15,9 @@ namespace Tuto.Model
 
         [DataMember]
         public bool CrossFadesEnabled { get; set; }
-        
 
+        [DataMember]
+        public string ResultingJsonRelativeLocation { get; set; }
         public VideothequeEditorSettings()
         {
             DefaultFinalAcceleration = 1;

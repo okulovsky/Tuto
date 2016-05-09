@@ -21,8 +21,7 @@ namespace Tuto.Model
         public PathsSettings PathsSettings { get; set; }
         [DataMember]
         public VideothequeEditorSettings EditorSettings { get; set; }
-        [DataMember]
-        public string ResultingJsonRelativeLocation { get; set; }
+       
         
 
         public VideothequeData()
