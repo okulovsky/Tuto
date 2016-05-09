@@ -211,18 +211,8 @@ namespace Tuto.Model
             }
         }
 
-        void SaveStartupFile()
-        {
-            HeadedJsonFormat.Write(Locations.StartupSettings, StartupSettings);
-        }
 
-        public void SaveEditorModel(EditorModel model)
-        {
-            var container = new FileContainer { MontageModel = model.Montage, WindowState = model.WindowState };
-            HeadedJsonFormat.Write(model.ModelFileLocation, container);
-        }
-            }
-        }
+         
 
         void SaveStartupFile()
         {
