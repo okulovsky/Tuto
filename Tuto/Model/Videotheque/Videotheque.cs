@@ -221,6 +221,19 @@ namespace Tuto.Model
             var container = new FileContainer { MontageModel = model.Montage, WindowState = model.WindowState };
             HeadedJsonFormat.Write(model.ModelFileLocation, container);
         }
+            }
+        }
+
+        void SaveStartupFile()
+        {
+            HeadedJsonFormat.Write(Locations.StartupSettings, StartupSettings);
+        }
+
+        public void SaveEditorModel(EditorModel model)
+        {
+            var container = new FileContainer { MontageModel = model.Montage, WindowState = model.WindowState };
+            HeadedJsonFormat.Write(model.ModelFileLocation, container);
+        }
 		#region Checking procedures 
 		static T Check<T>(
 			T path, 
