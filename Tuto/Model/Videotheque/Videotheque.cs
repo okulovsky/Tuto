@@ -161,6 +161,26 @@ namespace Tuto.Model
 				return path.FullName;
 		}
 
+
+
+        void UpdateJson(string path, List<VideoReport> reports)
+        {
+            var existing = Newtonsoft.Json.JsonConvert.DeserializeObject<List<VideoReport>>(File.ReadAllText(path));
+            var replacements = reports.ToDictionary(z => z.Guid, z => z);
+            for (int i = 0; i < existing.Count; i++)
+            {
+                var key = existing[i].Guid;
+                if (replacements.ContainsKey(key))
+                {
+                    existing[i] = replacements[key];
+                    replacements.Remove(key);
+                }
+            }
+            existing.AddRange(replacements.Values);
+            File.WriteAllText(path,Newtonsoft.Json.JsonConvert.SerializeObject(existing)
+            );
+        }
+
         public void Save()
         {
             Data.PathsSettings.RawPath = RelativeOrAbsoluteDirection(RawFolder);
@@ -169,13 +189,14 @@ namespace Tuto.Model
             Data.PathsSettings.TempPath = RelativeOrAbsoluteDirection(TempFolder);
             Data.PathsSettings.PatchPath = RelativeOrAbsoluteDirection(PatchFolder);
             HeadedJsonFormat.Write(VideothequeSettingsFile, Data);
-            if (!string.IsNullOrEmpty(Data.ResultingJsonRelativeLocation) && EditorModels!=null)
+            if (!string.IsNullOrEmpty(Data.EditorSettings.ResultingJsonRelativeLocation) && EditorModels!=null)
             {
                
                     var report = EditorModels
                         .SelectMany(Model =>
                                 Enumerable.Range(0, Model.Montage.Information.Episodes.Count)
                                 .Select(Number => new { Model, Number, Episodes = Model.Montage.Information.Episodes[Number] }))
+                        .Where(z=>z.Episodes.OutputType== OutputTypes.Output)
                         .Select(z => new VideoReport
                         {
                             Duration = z.Episodes.Duration,
@@ -185,11 +206,8 @@ namespace Tuto.Model
                             OriginalLocation = z.Model.Montage.DisplayedRawLocation
                         })
                     .ToList();
-                    File.WriteAllText(
-                        Path.Combine(this.VideothequeSettingsFile.Directory.FullName, Data.ResultingJsonRelativeLocation),
-                        Newtonsoft.Json.JsonConvert.SerializeObject(report, Newtonsoft.Json.Formatting.Indented)
-                        );
-                
+                    var path = Path.Combine(this.VideothequeSettingsFile.Directory.FullName, Data.EditorSettings.ResultingJsonRelativeLocation);
+                    UpdateJson(path,report);
             }
         }
 
@@ -203,7 +221,6 @@ namespace Tuto.Model
             var container = new FileContainer { MontageModel = model.Montage, WindowState = model.WindowState };
             HeadedJsonFormat.Write(model.ModelFileLocation, container);
         }
-
 		#region Checking procedures 
 		static T Check<T>(
 			T path, 
@@ -278,7 +295,6 @@ namespace Tuto.Model
 				);
 		}
 		#endregion
-
 		#region Basic loading procedures
 		void LoadBuiltInSoftware(IVideothequeLoadingUI ui)
         {
