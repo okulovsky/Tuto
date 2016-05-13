@@ -140,6 +140,7 @@ namespace Tuto.Model
 				v.LoadBinaryHashes(ui);
 				v.LoadContainers(ui);
                 v.CreateModels(ui);
+                v.CheckGUIDCorrectness(ui);
 
 				v.LoadPublishing(ui);
 
@@ -177,7 +178,7 @@ namespace Tuto.Model
                 }
             }
             existing.AddRange(replacements.Values);
-            File.WriteAllText(path,Newtonsoft.Json.JsonConvert.SerializeObject(existing)
+            File.WriteAllText(path,Newtonsoft.Json.JsonConvert.SerializeObject(existing, Newtonsoft.Json.Formatting.Indented)
             );
         }
 
@@ -299,6 +300,42 @@ namespace Tuto.Model
 		}
 		#endregion
 		#region Basic loading procedures
+
+
+        void CheckGUIDCorrectness(IVideothequeLoadingUI ui)
+        {
+            var problems = EditorModels
+                .SelectMany(model => model.Montage.Information.Episodes.Select(episode => new { model, episode }))
+                .GroupBy(x => x.episode.Guid)
+                .Where(x => x.Count() > 1)
+                .ToList();
+
+            foreach (var p in problems)
+            {
+                
+                var prompt = "Duplicating GUID '"+p.Key+"' for episodes in videotheque. Select which episode gets a new guid";
+                var options = p
+                    .Select(z => new VideothequeLoadingRequestItem { 
+                        Type = VideothequeLoadingRequestItemType.NoFile, 
+                        Prompt = z.model.Montage.DisplayedRawLocation+", "+z.episode.Name })
+                    .ToList();
+                options.Add(new VideothequeLoadingRequestItem
+                    {
+                        Type=VideothequeLoadingRequestItemType.NoFile,
+                        Prompt="Don't change anything yet. I will review the episodes and decide later."
+                    });
+                var item = ui.Request(prompt, options.ToArray());
+                var index = options.IndexOf(item);
+                if (index == options.Count - 1)
+                    continue;
+                var pair = p.Skip(index).First();
+                pair.episode.Guid = Guid.NewGuid();
+                SaveEditorModel(pair.model);
+            }
+            
+        }
+
+
 		void LoadBuiltInSoftware(IVideothequeLoadingUI ui)
         {
 		

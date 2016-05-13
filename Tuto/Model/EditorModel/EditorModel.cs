@@ -297,7 +297,7 @@ namespace Tuto.Model
                 if (!currentChunk.StartsNewEpisode && currentChunk.Mode == oldChunk.Mode)
                     continue;
                 // or flush adjacent chunks into one and start new sequence
-                if (oldChunk.Length != 0)
+                if (oldChunk.Length != 0 || oldChunk.Mode == Mode.Drop)
                 {
                     var preparedChunk = new StreamChunk(
                         oldChunk.StartTime,
