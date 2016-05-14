@@ -4,7 +4,7 @@
         xmlns:model="clr-namespace:Tuto.Model;assembly=Tuto"
         xmlns:views="clr-namespace:Tuto.Navigator.Views"
         xmlns:editor="clr-namespace:Tuto.Navigator.Editor"
-        Title="{Binding WindowTitle}" Height="350" Width="800"
+        Title="{Binding Caption}" Height="350" Width="800"
         >
     <Window.Resources>
         <views:BoolToVisibilityConverter x:Key="BTV"/>

@@ -23,6 +23,16 @@ namespace Tuto.Navigator.ViewModels
 
         public EditorModel CurrentVideo { get; private set; }
 
+        string caption;
+        public string Caption
+        {
+            get { return caption; }
+            set
+            {
+                caption = value;
+                this.NotifyPropertyChanged();
+            }
+        }
         
         MainMode mode;
         public MainMode Mode 
@@ -44,6 +54,7 @@ namespace Tuto.Navigator.ViewModels
             VideothequeModel = new VideothequeModel(videotheque);
             VideothequeModel.OpenEditor += OpenEditor;
             Mode = MainMode.Videotheque;
+            Caption = videotheque.VideothequeSettingsFile.Name;
         }
 
         void OpenEditor(VideoViewModel obj)
@@ -51,12 +62,14 @@ namespace Tuto.Navigator.ViewModels
             CurrentVideo = obj.Model;
             obj.Model.WindowState.GetBack+=BackToNavigator;
             Mode = MainMode.Video;
+            Caption = CurrentVideo.Montage.DisplayedRawLocation;
         }
 
         void BackToNavigator()
         {
             CurrentVideo = null;
             Mode = MainMode.Videotheque;
+            Caption = VideothequeModel.Videotheque.VideothequeSettingsFile.Name;
         }
 
 
