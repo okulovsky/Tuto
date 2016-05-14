@@ -15,14 +15,12 @@ namespace Tuto.Model
         public VoiceSettings VoiceSettings { get; set; }
         [DataMember]
         public WorkSettings WorkSettings { get; set; }
-		//[DataMember]
-		//public VideoSettings VideoSettings { get; set;} 
         [DataMember]
         public PathsSettings PathsSettings { get; set; }
         [DataMember]
         public VideothequeEditorSettings EditorSettings { get; set; }
-       
-        
+        [DataMember]
+        public OutputSettings OutputSettings { get; set; }
 
         public VideothequeData()
 		{

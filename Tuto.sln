@@ -23,8 +23,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{EE9437
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tuto.Publishing", "Tuto.Publishing.Youtube\Tuto.Publishing.csproj", "{7983CF24-AEF3-4301-B7FB-C378A03F7654}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "V3Updater", "V3Updater\V3Updater.csproj", "{91DC5E44-FF03-460A-B09E-73DC1AF8F166}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject", "TestProject\TestProject.csproj", "{D63804F0-A392-4CE0-8AC7-7841997E1438}"
@@ -34,8 +32,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeByGitUpdater", "TimeByGitUpdater\TimeByGitUpdater.csproj", "{DE45F750-D886-4CE8-9C1F-75D237BC57E9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Delfu", "Delfu\Delfu.csproj", "{6AE1CF1E-1971-4DB5-8C3B-00843080F67D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tuto.Publisher", "Tuto.Publisher\Tuto.Publisher.csproj", "{7E217709-A22E-4E5F-A62E-FB8DCDE2B063}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diff", "Diff\Diff.csproj", "{B73C9CBE-395C-4147-A717-BF541BF0A0BA}"
 EndProject
@@ -69,16 +65,6 @@ Global
 		{4FA14AD4-526B-4E66-8EF2-DE0F70D25DBA}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{4FA14AD4-526B-4E66-8EF2-DE0F70D25DBA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{4FA14AD4-526B-4E66-8EF2-DE0F70D25DBA}.Release|x86.ActiveCfg = Release|Any CPU
-		{7983CF24-AEF3-4301-B7FB-C378A03F7654}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7983CF24-AEF3-4301-B7FB-C378A03F7654}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7983CF24-AEF3-4301-B7FB-C378A03F7654}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{7983CF24-AEF3-4301-B7FB-C378A03F7654}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{7983CF24-AEF3-4301-B7FB-C378A03F7654}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{7983CF24-AEF3-4301-B7FB-C378A03F7654}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7983CF24-AEF3-4301-B7FB-C378A03F7654}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7983CF24-AEF3-4301-B7FB-C378A03F7654}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{7983CF24-AEF3-4301-B7FB-C378A03F7654}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{7983CF24-AEF3-4301-B7FB-C378A03F7654}.Release|x86.ActiveCfg = Release|Any CPU
 		{91DC5E44-FF03-460A-B09E-73DC1AF8F166}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{91DC5E44-FF03-460A-B09E-73DC1AF8F166}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91DC5E44-FF03-460A-B09E-73DC1AF8F166}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -119,16 +105,6 @@ Global
 		{6AE1CF1E-1971-4DB5-8C3B-00843080F67D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{6AE1CF1E-1971-4DB5-8C3B-00843080F67D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{6AE1CF1E-1971-4DB5-8C3B-00843080F67D}.Release|x86.ActiveCfg = Release|Any CPU
-		{7E217709-A22E-4E5F-A62E-FB8DCDE2B063}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7E217709-A22E-4E5F-A62E-FB8DCDE2B063}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7E217709-A22E-4E5F-A62E-FB8DCDE2B063}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{7E217709-A22E-4E5F-A62E-FB8DCDE2B063}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{7E217709-A22E-4E5F-A62E-FB8DCDE2B063}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{7E217709-A22E-4E5F-A62E-FB8DCDE2B063}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7E217709-A22E-4E5F-A62E-FB8DCDE2B063}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7E217709-A22E-4E5F-A62E-FB8DCDE2B063}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{7E217709-A22E-4E5F-A62E-FB8DCDE2B063}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{7E217709-A22E-4E5F-A62E-FB8DCDE2B063}.Release|x86.ActiveCfg = Release|Any CPU
 		{B73C9CBE-395C-4147-A717-BF541BF0A0BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B73C9CBE-395C-4147-A717-BF541BF0A0BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B73C9CBE-395C-4147-A717-BF541BF0A0BA}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU

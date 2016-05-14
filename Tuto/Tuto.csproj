@@ -141,6 +141,7 @@
     <Compile Include="Model\Publishing\PublishingSettings.cs" />
     <Compile Include="Model\Videotheque\IVideothequeLoadingUI.cs" />
     <Compile Include="Model\Videotheque\LoadingUIDecorator.cs" />
+    <Compile Include="Model\Videotheque\Settings\OutputSettings.cs" />
     <Compile Include="Model\Videotheque\Settings\VideothequeEditor.cs" />
     <Compile Include="Model\Videotheque\VideoReport.cs" />
     <Compile Include="Model\Videotheque\VideothequeLoadingRequestItem.cs" />

@@ -49,54 +49,10 @@ namespace V3Updater
 			Recursive(new DirectoryInfo(fromWhere), new DirectoryInfo(fromWhere), newPlaceD, prefix);
 		}
 
-		static IEnumerable<IMaterialSource> SourcesFactory()
-		{
-			yield break;
-		}
-
-		static void ParsePublishing(string oldPath, string videothequePath, string name)
-		{
-			var dir = new DirectoryInfo(oldPath);
-			var v = Videotheque.Load(videothequePath, null, true);
-			var pubModel = v.CreateNewPublishingModel(name);
-			var globalData = CourseTreeData.Load(dir);
-			pubModel.CourseStructure = globalData.Structure;
-			pubModel.Videos = globalData.Videos;
-			pubModel.Settings = HeadedJsonFormat.Read<PublishingSettings>(dir);
-			var clipFile = dir.GetFiles("YoutubeClip.layer.txt").First();
-			pubModel.YoutubeClipData = HeadedJsonFormat.Read<DataLayer<YoutubeClip>>(clipFile,null,-1);
-			var listFile = dir.GetFiles("YoutubePlaylist.layer.txt").First();
-			pubModel.YoutubePlaylistData = HeadedJsonFormat.Read<DataLayer<YoutubePlaylist>>(listFile,null,-1);
-			pubModel.Save();
-		}
 
 
 		static void Main(string[] args)
 		{
-			if (false)
-			{
-				UpdateOldLocalTutoFiles(
-					@"D:\HACKERDOM\Input",
-					@"D:\Montage\Models\OldHackerdomLectures",
-					"Hackerdom\\");
-			}
-			if (false)
-			{
-				ParsePublishing(
-					@"D:\hackerdom-publishing\VideoData",
-					@"D:\Montage\videotheque",
-					"Hackerdom"
-					);
-			}
-
-			if (true)
-			{
-				ParsePublishing(
-					@"D:\lhps-pub\VideoData",
-					@"D:\Montage\videotheque",
-					"LHPS"
-					);
-			}
 
 			if (false)
 			{

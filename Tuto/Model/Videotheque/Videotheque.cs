@@ -190,7 +190,7 @@ namespace Tuto.Model
             Data.PathsSettings.TempPath = RelativeOrAbsoluteDirection(TempFolder);
             Data.PathsSettings.PatchPath = RelativeOrAbsoluteDirection(PatchFolder);
             HeadedJsonFormat.Write(VideothequeSettingsFile, Data);
-            if (!string.IsNullOrEmpty(Data.EditorSettings.ResultingJsonRelativeLocation) && EditorModels!=null)
+            if (!string.IsNullOrEmpty(Data.OutputSettings.SummaryJsonFile) && EditorModels!=null)
             {
                
                     var report = EditorModels
@@ -207,7 +207,7 @@ namespace Tuto.Model
                             OriginalLocation = z.Model.Montage.DisplayedRawLocation
                         })
                     .ToList();
-                    var path = Path.Combine(this.VideothequeSettingsFile.Directory.FullName, Data.EditorSettings.ResultingJsonRelativeLocation);
+                    var path = Path.Combine(this.VideothequeSettingsFile.Directory.FullName, Data.OutputSettings.SummaryJsonFile);
                     UpdateJson(path,report);
             }
         }
@@ -479,6 +479,7 @@ namespace Tuto.Model
 			VideothequeSettingsFile = vfinfo;
 			Data = HeadedJsonFormat.Read<VideothequeData>(VideothequeSettingsFile);
             if (Data.EditorSettings == null) Data.EditorSettings = new VideothequeEditorSettings();
+            if (Data.OutputSettings == null) Data.OutputSettings = new OutputSettings();
 		}
 
 		void CheckSubdirectories(IVideothequeLoadingUI ui)
