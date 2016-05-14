@@ -62,8 +62,6 @@ namespace Tuto.Model
         List<EditorModel> models;
         public IEnumerable<EditorModel> EditorModels { get { return models; } }
 
-		List<PublishingModel> publisingModels;
-		public IEnumerable<PublishingModel> PublishingModels { get { return publisingModels; } }
 		
 		public IEnumerable<Tuple<EditorModel,EpisodInfo>> Episodes
 		{
@@ -78,17 +76,7 @@ namespace Tuto.Model
             return Episodes.Where(z => z.Item2.Guid == guid).FirstOrDefault();
         }
 
-        public PublishingModel CreateNewPublishingModel(string name)
-        {
-            var model = new PublishingModel();
-            model.Videotheque = this;
-            publisingModels.Add(model);
-            model.NonDistributedVideos = nonDistributed;
-            model.Location = new FileInfo(Path.Combine(ModelsFolder.FullName, name + "." + Names.PublishingModelExtension));
-            return model;
-        }
 
-		List<VideoPublishSummary> nonDistributed;
 
 		private Videotheque()
 		{
@@ -142,7 +130,6 @@ namespace Tuto.Model
                 v.CreateModels(ui);
                 v.CheckGUIDCorrectness(ui);
 
-				v.LoadPublishing(ui);
 
 				ui.ExitSuccessfully();
 				return v;
@@ -634,54 +621,8 @@ namespace Tuto.Model
 
 
 
-		void LoadPublishing(IVideothequeLoadingUI ui)
-		{
-			ui.StartPOSTWork("Loading publishing models");
-			var models = new List<Tuple<PublishingModel, FileInfo>>();
-			LoadFiles<PublishingModel>(ModelsFolder, Names.PublishingModelExtension, models);
-			publisingModels = new List<PublishingModel>();
-			foreach(var e in models)
-			{
-				e.Item1.Videotheque = this;
-				e.Item1.Location = e.Item2;
-				publisingModels.Add(e.Item1);
-			}
-			ui.CompletePOSTWork(true);
+	
 
-			nonDistributed = new List<VideoPublishSummary>();
-			foreach (var e in PublishingModels)
-				e.NonDistributedVideos = nonDistributed;
-			UpdateNonDistributedVideos();
-            
-            foreach(var e in PublishingModels
-								.Where(z=>z.YoutubeClipData!=null)
-								.SelectMany(z=>z.YoutubeClipData.Records))
-            {
-                var ep = FindEpisode(e.Guid);
-                if (ep != null && ep.Item2.YoutubeId!=null)
-                    e.Data.Id = ep.Item2.YoutubeId;
-            }
-
-
-		}
-
-		public void UpdateNonDistributedVideos()
-		{
-			nonDistributed.Clear();
-			foreach(var m in EditorModels)
-				foreach (var e in m.Montage.Information.Episodes)
-				{
-					if (publisingModels.SelectMany(z => z.Videos).Any(z => z.Guid == e.Guid)) continue;
-					nonDistributed.Add(new VideoPublishSummary
-					{
-						Guid = e.Guid,
-						Duration = e.Duration,
-						Name = e.Name,
-						OrdinalSuffix = m.Montage.DisplayedRawLocation + "-"
-								+ m.Montage.Information.Episodes.IndexOf(e)
-					});
-				}
-		}
 		#endregion
 	}
 }
