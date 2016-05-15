@@ -101,7 +101,7 @@
 
             </Grid>
         </GroupBox>
-        <GroupBox>
+        <GroupBox DataContext="{Binding OutputSettings}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2*"></ColumnDefinition>
