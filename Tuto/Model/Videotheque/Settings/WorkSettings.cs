@@ -63,7 +63,8 @@ namespace Tuto.Model
         public DesktopThumbSettings DesktopThumbSettings { get; set; }
         [DataMember]
         public bool AutoUploadVideo { get; set; }
-
+		[DataMember]
+		public bool NormilizeSound { get; set; }
         [DataMember]
         public bool ShowProcesses { get; set; }
 

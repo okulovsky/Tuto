@@ -32,9 +32,14 @@ namespace Tuto.BatchWorks
             Tasks.Add(createSoundWork);
             Tasks.Add(new AtomicAssemblyEpisodeWork(model,episodeInfo)); // atomic version
 
-            var task = new NormalizeSoundWork(Model, videoFile);
-            Name = "Assembling episode: " + episodeInfo.Name;
-            Tasks.Add(task);
-        }
+			if (model.Videotheque.Data.WorkSettings.NormilizeSound)
+			{
+				var task = new NormalizeSoundWork(Model, videoFile);
+				Tasks.Add(task);
+			}
+
+			Name = "Assembling episode: " + episodeInfo.Name;
+         
+		}
     }
 }

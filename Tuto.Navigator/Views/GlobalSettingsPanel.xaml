@@ -59,8 +59,8 @@
                     Show processes window (for debugging purposes only)
                 </CheckBox>
                 
-                <CheckBox Grid.Column="0"  Grid.Row="6" Grid.ColumnSpan="2" IsChecked="{Binding AutoUploadVideo}">
-                    Upload video to Youtube
+                <CheckBox Grid.Column="0"  Grid.Row="6" Grid.ColumnSpan="2" IsChecked="{Binding NormalizeSound}">
+                    Normalize sound
                 </CheckBox>
             </Grid>
         </GroupBox>
