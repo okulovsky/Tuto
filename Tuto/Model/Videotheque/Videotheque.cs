@@ -169,6 +169,25 @@ namespace Tuto.Model
             );
         }
 
+		public void CreateSummary(string path)
+		{
+			var report = EditorModels
+						.SelectMany(Model =>
+								Enumerable.Range(0, Model.Montage.Information.Episodes.Count)
+								.Select(Number => new { Model, Number, Episodes = Model.Montage.Information.Episodes[Number] }))
+						.Where(z => z.Episodes.OutputType == OutputTypes.Output)
+						.Select(z => new VideoReport
+						{
+							Duration = z.Episodes.Duration,
+							Title = z.Episodes.Name,
+							Guid = z.Episodes.Guid,
+							EpisodeNumber = z.Number,
+							OriginalLocation = z.Model.Montage.DisplayedRawLocation
+						})
+					.ToList();
+			UpdateJson(path, report);
+		}
+
         public void Save()
         {
             Data.PathsSettings.RawPath = RelativeOrAbsoluteDirection(RawFolder);
@@ -179,23 +198,8 @@ namespace Tuto.Model
             HeadedJsonFormat.Write(VideothequeSettingsFile, Data);
             if (!string.IsNullOrEmpty(Data.OutputSettings.SummaryJsonFile) && EditorModels!=null)
             {
-               
-                    var report = EditorModels
-                        .SelectMany(Model =>
-                                Enumerable.Range(0, Model.Montage.Information.Episodes.Count)
-                                .Select(Number => new { Model, Number, Episodes = Model.Montage.Information.Episodes[Number] }))
-                        .Where(z=>z.Episodes.OutputType== OutputTypes.Output)
-                        .Select(z => new VideoReport
-                        {
-                            Duration = z.Episodes.Duration,
-                            Title = z.Episodes.Name,
-                            Guid = z.Episodes.Guid,
-                            EpisodeNumber = z.Number,
-                            OriginalLocation = z.Model.Montage.DisplayedRawLocation
-                        })
-                    .ToList();
-                    var path = Path.Combine(this.VideothequeSettingsFile.Directory.FullName, Data.OutputSettings.SummaryJsonFile);
-                    UpdateJson(path,report);
+				var path = Path.Combine(this.VideothequeSettingsFile.Directory.FullName, Data.OutputSettings.SummaryJsonFile);
+				CreateSummary(path);
             }
         }
 
