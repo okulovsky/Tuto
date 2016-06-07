@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="Tuto.Navigator.Views.SearchPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="30" d:DesignWidth="600">
+    <StackPanel Orientation="Horizontal">
+        <Button Command="{Binding Refresh}">
+            <Image Width="20" Height="20" Source="/Icons/refresh.png"/>
+        </Button>
+        <Rectangle Width="20"/>
+        <Label Content="Search" VerticalAlignment="Center"/>
+        <TextBox Text="{Binding TextSearch,UpdateSourceTrigger=PropertyChanged}" Width="100" VerticalAlignment="Center"/>
+        <Rectangle Width="20"/>
+        <CheckBox Content="Only with source" IsChecked="{Binding OnlyWithSource}" VerticalAlignment="Center"/>
+        <Rectangle Width="20"/>
+        <Label>Sorting</Label>
+        <ComboBox SelectedItem="{Binding SortType}" ItemsSource="{Binding SortTypes}" Width="100"/>
+        <Rectangle Width="20"/>
+        <Button Command="{Binding SelectAll}" Content="De/select all"/>
+    </StackPanel>
+</UserControl>

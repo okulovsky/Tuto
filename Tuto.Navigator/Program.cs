@@ -11,12 +11,33 @@ using Editor;
 using System.Threading;
 using Tuto.BatchWorks;
 using Tuto.Publishing.Youtube;
+using Tuto.Navigator.ViewModels;
+using Tuto.Navigator.Views;
 
 namespace Tuto.Navigator
 {
     public static class Program
     {
         static Videotheque videotheque;
+
+		static bool Backdoor()
+		{
+			return false;
+			foreach (var e in videotheque.EditorModels)
+				if (e.Montage.Information != null)
+				{
+					bool found = false;
+					foreach (var i in e.Montage.Information.Episodes)
+						if (i.OutputType == OutputTypes.Patch)
+						{
+							found = true;
+							i.OutputType = OutputTypes.Output;
+						}
+					if (found)
+						e.Save();
+				}
+			return true;
+		}
 
         [STAThread]
         public static void Main(string[] args)
@@ -39,17 +60,23 @@ namespace Tuto.Navigator
 				return;
 			}
 
+			if (Backdoor()) return;
+
+
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             //YoutubeApisProcessor.Initialize(videotheque.TempFolder);
 
             var mainWindow = new MainNavigatorWindow();
             WorkQueue = new WorkQueue(videotheque.Data.WorkSettings);
             WorkQueue.Dispatcher = mainWindow.Dispatcher;
-            var globalModel = new VideothequeModel(videotheque);
-            globalModel.FillQueue();
+            var globalModel = new MainModel(videotheque);
+            globalModel.VideothequeModel.FillQueue();
 
             mainWindow.DataContext = globalModel;
             mainWindow.WindowState = System.Windows.WindowState.Maximized;
+
+            if (args.Length > 1)
+                mainWindow.RequestedModel = args[1];
 
 			string directoryName = args[0];
 			if (File.Exists(args[0]))

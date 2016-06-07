@@ -10,12 +10,12 @@ using Tuto.Model;
 
 namespace Tuto.BatchWorks
 {
-    public class PraatWork : BatchWork
+    public class PraatWork : ProcessBatchWork
     {
         public PraatWork(EditorModel model)
         {
             Model = model;
-            Name = "Praat working: " + model.Locations.FaceVideo.FullName;
+            Name = "Praat working: " + model.RawLocation.Name;
         }
 
         const string SilentLabel = "--";

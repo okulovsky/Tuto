@@ -9,19 +9,33 @@ using System.Threading.Tasks;
 
 namespace Tuto.Model
 {
+
+    public enum PatchPlayingType
+    {
+        NoPatch,
+        PatchOnly,
+        PatchAlong
+    }
+
     [DataContract]
     public class   WindowState : NotifierModel
     {
 		internal EditorModel EditorModel;
 
-		void SetAndNotify<T>(ref T field, T value, [CallerMemberName] string propertyName=null)
-		{
-			if (!field.Equals(value))
-			{
-				field = value;
-				NotifyPropertyChanged(propertyName);
-			}
-		}
+        void SetAndNotify<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
+        {
+            if (field == null)
+            {
+                if (value == null) return;
+            }
+            else
+            {
+                if (field.Equals(value)) return;
+            }
+
+            field = value;
+            NotifyPropertyChanged(propertyName);
+        }
 
         [DataMember]
         EditorModes currentMode;
@@ -46,6 +60,8 @@ namespace Tuto.Model
             }
         }
 
+		
+
 		public string CurrentPositionAbsolute { get; private set; }
 		public string CurrentPositionRelative { get; private set; }
 
@@ -63,7 +79,7 @@ namespace Tuto.Model
 					episode++;
 				}
 				bool ends = e.EndTime>CurrentPosition;
-				if (e.Mode != Editor.Mode.Drop)
+				if (e.Mode != Mode.Drop)
 				{
 					if (ends) 
 						msFromStart+=CurrentPosition-e.StartTime;
@@ -127,19 +143,62 @@ namespace Tuto.Model
 				SetAndNotify(ref desktopVideoIsVisible, value);
             }
         }
-        [DataMember]
-        string currentSubtitle;
 
-		[Obsolete]
-        public string CurrentSubtitle
+        [DataMember]
+        ArrangeModes arrangeMode;
+
+        public ArrangeModes ArrangeMode
         {
-            get { return currentSubtitle; }
+            get { return arrangeMode; }
+            set { SetAndNotify(ref arrangeMode, value); }
+        }
+
+        public event Action GetBack;
+
+		public void OnGetBack()
+		{
+			if (GetBack != null)
+				GetBack();
+		}
+
+
+
+        int videoPatchPosition;
+        public int VideoPatchPosition
+        {
+            get { return videoPatchPosition;}
+            set { SetAndNotify(ref videoPatchPosition, value); }
+        }
+
+        public PatchPlayingType patchPlaying;
+
+        public PatchPlayingType PatchPlaying
+        {
+            get
+            {
+                return patchPlaying;
+            }
             set
             {
-				SetAndNotify(ref currentSubtitle, value);
+                SetAndNotify(ref patchPlaying, value);
             }
         }
 
+        Patch currentPatch;
+        public Patch CurrentPatch
+        {
+            get { return currentPatch; }
+            set
+            {
+                SetAndNotify(ref currentPatch, value);
+            }
+        }
+        
+        public PatchSelection PatchSelection
+        {
+            get;
+            set;
+        }
 
         public WindowState()
         {

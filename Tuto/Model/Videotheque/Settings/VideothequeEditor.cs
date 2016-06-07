@@ -15,7 +15,6 @@ namespace Tuto.Model
 
         [DataMember]
         public bool CrossFadesEnabled { get; set; }
-        
 
         public VideothequeEditorSettings()
         {

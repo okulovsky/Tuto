@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
+using System.Linq;
 
 namespace Tuto
 {
@@ -35,6 +36,21 @@ namespace Tuto
 				Subscribers[memberName] = handler;
 			else
 				Subscribers[memberName] += handler;
+		}
+
+		public void UnsubscribeAll(object obj)
+		{
+			foreach(var e in Subscribers.Keys.ToList())
+			{
+				var value = Subscribers[e];
+				if (value == null) continue;
+				foreach(var x in value.GetInvocationList())
+				{
+					if (x.Target == obj)
+						value -= (Action)x;
+				}
+				Subscribers[e] = value;
+			}
 		}
     }
 

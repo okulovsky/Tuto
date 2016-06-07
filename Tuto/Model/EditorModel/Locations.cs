@@ -102,8 +102,10 @@ namespace Tuto.Model
         {
             var fname = model.Montage.DisplayedRawLocation;
             fname = MyPath.CreateHierarchicalName(fname);
-            fname += "-" + episodeNumber + " " + model.Montage.Information.Episodes[episodeNumber].Name + ".avi";
-
+            fname += "-" + episodeNumber + " " + model.Montage.Information.Episodes[episodeNumber].Name;
+            if (model.Videotheque.Data.OutputSettings.IncludeGUIDInOutputFileName)
+                fname += " [" + model.Montage.Information.Episodes[episodeNumber].Guid.ToString() + "]";
+            fname+=".avi";
             return new FileInfo(Path.Combine(model.Videotheque.OutputFolder.FullName, fname));
         }
 

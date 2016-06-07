@@ -48,6 +48,8 @@ namespace Tuto.Model
 		public DirectoryInfo ModelsFolder { get; private set; }
 		public DirectoryInfo OutputFolder { get; private set; }
 		public DirectoryInfo TempFolder { get; private set; }
+
+        public DirectoryInfo PatchFolder { get; private set; }
 		public FileInfo VideothequeSettingsFile { get; private set;  }
 		public VideothequeLocations Locations { get; private set; }
 
@@ -60,8 +62,6 @@ namespace Tuto.Model
         List<EditorModel> models;
         public IEnumerable<EditorModel> EditorModels { get { return models; } }
 
-		List<PublishingModel> publisingModels;
-		public IEnumerable<PublishingModel> PublishingModels { get { return publisingModels; } }
 		
 		public IEnumerable<Tuple<EditorModel,EpisodInfo>> Episodes
 		{
@@ -76,17 +76,7 @@ namespace Tuto.Model
             return Episodes.Where(z => z.Item2.Guid == guid).FirstOrDefault();
         }
 
-        public PublishingModel CreateNewPublishingModel(string name)
-        {
-            var model = new PublishingModel();
-            model.Videotheque = this;
-            publisingModels.Add(model);
-            model.NonDistributedVideos = nonDistributed;
-            model.Location = new FileInfo(Path.Combine(ModelsFolder.FullName, name + "." + Names.PublishingModelExtension));
-            return model;
-        }
 
-		List<VideoPublishSummary> nonDistributed;
 
 		private Videotheque()
 		{
@@ -102,12 +92,15 @@ namespace Tuto.Model
             CreateModels(ui);
         }
 
-		public static Videotheque Load(string videothequeFileName, IVideothequeLoadingUI ui, bool ignoreExternalSoftware)
+		public static Videotheque Load(string videothequeFileName, IVideothequeLoadingUI ui, bool ignoreExternalSoftware, string customProgramFolder=null)
 		{
 			ui = new LoadingUIDecorator(ui);
 			Videotheque v = new Videotheque();
-			v.ProgramFolder = new FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).Directory;
-			v.Locations = new VideothequeLocations(v);
+            if (customProgramFolder == null)
+                v.ProgramFolder = new FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).Directory;
+            else
+                v.ProgramFolder = new DirectoryInfo(customProgramFolder);
+            v.Locations = new VideothequeLocations(v);
 			try
 			{
 				if (!ignoreExternalSoftware)
@@ -135,8 +128,8 @@ namespace Tuto.Model
 				v.LoadBinaryHashes(ui);
 				v.LoadContainers(ui);
                 v.CreateModels(ui);
+                v.CheckGUIDCorrectness(ui);
 
-				v.LoadPublishing(ui);
 
 				ui.ExitSuccessfully();
 				return v;
@@ -156,15 +149,58 @@ namespace Tuto.Model
 				return path.FullName;
 		}
 
+
+
+        void UpdateJson(string path, List<VideoReport> reports)
+        {
+            var existing = Newtonsoft.Json.JsonConvert.DeserializeObject<List<VideoReport>>(File.ReadAllText(path));
+            var replacements = reports.ToDictionary(z => z.Guid, z => z);
+            for (int i = 0; i < existing.Count; i++)
+            {
+                var key = existing[i].Guid;
+                if (replacements.ContainsKey(key))
+                {
+                    existing[i] = replacements[key];
+                    replacements.Remove(key);
+                }
+            }
+            existing.AddRange(replacements.Values);
+            File.WriteAllText(path,Newtonsoft.Json.JsonConvert.SerializeObject(existing, Newtonsoft.Json.Formatting.Indented)
+            );
+        }
+
         public void Save()
         {
-			Data.PathsSettings.RawPath = RelativeOrAbsoluteDirection(RawFolder);
-			Data.PathsSettings.OutputPath = RelativeOrAbsoluteDirection(OutputFolder);
-			Data.PathsSettings.ModelPath = RelativeOrAbsoluteDirection(ModelsFolder);
-			Data.PathsSettings.TempPath = RelativeOrAbsoluteDirection(TempFolder);
-
+            Data.PathsSettings.RawPath = RelativeOrAbsoluteDirection(RawFolder);
+            Data.PathsSettings.OutputPath = RelativeOrAbsoluteDirection(OutputFolder);
+            Data.PathsSettings.ModelPath = RelativeOrAbsoluteDirection(ModelsFolder);
+            Data.PathsSettings.TempPath = RelativeOrAbsoluteDirection(TempFolder);
+            Data.PathsSettings.PatchPath = RelativeOrAbsoluteDirection(PatchFolder);
             HeadedJsonFormat.Write(VideothequeSettingsFile, Data);
+            if (!string.IsNullOrEmpty(Data.OutputSettings.SummaryJsonFile) && EditorModels!=null)
+            {
+               
+                    var report = EditorModels
+                        .SelectMany(Model =>
+                                Enumerable.Range(0, Model.Montage.Information.Episodes.Count)
+                                .Select(Number => new { Model, Number, Episodes = Model.Montage.Information.Episodes[Number] }))
+                        .Where(z=>z.Episodes.OutputType== OutputTypes.Output)
+                        .Select(z => new VideoReport
+                        {
+                            Duration = z.Episodes.Duration,
+                            Title = z.Episodes.Name,
+                            Guid = z.Episodes.Guid,
+                            EpisodeNumber = z.Number,
+                            OriginalLocation = z.Model.Montage.DisplayedRawLocation
+                        })
+                    .ToList();
+                    var path = Path.Combine(this.VideothequeSettingsFile.Directory.FullName, Data.OutputSettings.SummaryJsonFile);
+                    UpdateJson(path,report);
+            }
         }
+
+
+         
 
         void SaveStartupFile()
         {
@@ -176,7 +212,6 @@ namespace Tuto.Model
             var container = new FileContainer { MontageModel = model.Montage, WindowState = model.WindowState };
             HeadedJsonFormat.Write(model.ModelFileLocation, container);
         }
-
 		#region Checking procedures 
 		static T Check<T>(
 			T path, 
@@ -251,8 +286,43 @@ namespace Tuto.Model
 				);
 		}
 		#endregion
-
 		#region Basic loading procedures
+
+
+        void CheckGUIDCorrectness(IVideothequeLoadingUI ui)
+        {
+            var problems = EditorModels
+                .SelectMany(model => model.Montage.Information.Episodes.Select(episode => new { model, episode }))
+                .GroupBy(x => x.episode.Guid)
+                .Where(x => x.Count() > 1)
+                .ToList();
+
+            foreach (var p in problems)
+            {
+                
+                var prompt = "Duplicating GUID '"+p.Key+"' for episodes in videotheque. Select which episode gets a new guid";
+                var options = p
+                    .Select(z => new VideothequeLoadingRequestItem { 
+                        Type = VideothequeLoadingRequestItemType.NoFile, 
+                        Prompt = z.model.Montage.DisplayedRawLocation+", "+z.episode.Name })
+                    .ToList();
+                options.Add(new VideothequeLoadingRequestItem
+                    {
+                        Type=VideothequeLoadingRequestItemType.NoFile,
+                        Prompt="Don't change anything yet. I will review the episodes and decide later."
+                    });
+                var item = ui.Request(prompt, options.ToArray());
+                var index = options.IndexOf(item);
+                if (index == options.Count - 1)
+                    continue;
+                var pair = p.Skip(index).First();
+                pair.episode.Guid = Guid.NewGuid();
+                SaveEditorModel(pair.model);
+            }
+            
+        }
+
+
 		void LoadBuiltInSoftware(IVideothequeLoadingUI ui)
         {
 		
@@ -332,6 +402,7 @@ namespace Tuto.Model
             data.PathsSettings.ModelPath = CreateDefaultFolder(finfo, Names.DefaultModelFolder);
             data.PathsSettings.OutputPath = CreateDefaultFolder(finfo, Names.DefaultOutputFolder);
             data.PathsSettings.TempPath = CreateDefaultFolder(finfo, Names.DefaultTempFolder);
+            data.PathsSettings.PatchPath = CreateDefaultFolder(finfo, Names.DefaultPatchFolder);
 
 			HeadedJsonFormat.Write(
 				finfo,
@@ -395,6 +466,7 @@ namespace Tuto.Model
 			VideothequeSettingsFile = vfinfo;
 			Data = HeadedJsonFormat.Read<VideothequeData>(VideothequeSettingsFile);
             if (Data.EditorSettings == null) Data.EditorSettings = new VideothequeEditorSettings();
+            if (Data.OutputSettings == null) Data.OutputSettings = new OutputSettings();
 		}
 
 		void CheckSubdirectories(IVideothequeLoadingUI ui)
@@ -405,7 +477,8 @@ namespace Tuto.Model
             ModelsFolder = CheckVideothequeSubdirectory(Data.PathsSettings.ModelPath, Names.DefaultModelFolder, ui, "Can't locate the folder where the markup (the result of your work) is stored)");
             OutputFolder = CheckVideothequeSubdirectory(Data.PathsSettings.OutputPath, Names.DefaultOutputFolder, ui, "Can't locate the folder with the output video will be stored");
             TempFolder = CheckVideothequeSubdirectory(Data.PathsSettings.TempPath, Names.DefaultTempFolder, ui, "Can't locate the folder with the temporary files");
-		}
+            PatchFolder = CheckVideothequeSubdirectory(Data.PathsSettings.PatchPath, Names.DefaultPatchFolder, ui, "Can't locate the folder with patches");
+        }
 		#endregion
 		#region Loading files
 
@@ -500,6 +573,10 @@ namespace Tuto.Model
                container.MontageModel.DisplayedRawLocation = file.Name;
                rawLocation = new DirectoryInfo("Z:\\");
             }
+
+            if (container.MontageModel.Patches == null)
+                container.MontageModel.Patches = new List<Patch>();
+		
             var model = new EditorModel(file, rawLocation, this, container.MontageModel, container.WindowState);
             SaveEditorModel(model);
             return model;
@@ -544,52 +621,8 @@ namespace Tuto.Model
 
 
 
-		void LoadPublishing(IVideothequeLoadingUI ui)
-		{
-			ui.StartPOSTWork("Loading publishing models");
-			var models = new List<Tuple<PublishingModel, FileInfo>>();
-			LoadFiles<PublishingModel>(ModelsFolder, Names.PublishingModelExtension, models);
-			publisingModels = new List<PublishingModel>();
-			foreach(var e in models)
-			{
-				e.Item1.Videotheque = this;
-				e.Item1.Location = e.Item2;
-				publisingModels.Add(e.Item1);
-			}
-			ui.CompletePOSTWork(true);
+	
 
-			nonDistributed = new List<VideoPublishSummary>();
-			foreach (var e in PublishingModels)
-				e.NonDistributedVideos = nonDistributed;
-			UpdateNonDistributedVideos();
-            
-            foreach(var e in PublishingModels.SelectMany(z=>z.YoutubeClipData.Records))
-            {
-                var ep = FindEpisode(e.Guid);
-                if (ep != null && ep.Item2.YoutubeId!=null)
-                    e.Data.Id = ep.Item2.YoutubeId;
-            }
-
-
-		}
-
-		public void UpdateNonDistributedVideos()
-		{
-			nonDistributed.Clear();
-			foreach(var m in EditorModels)
-				foreach (var e in m.Montage.Information.Episodes)
-				{
-					if (publisingModels.SelectMany(z => z.Videos).Any(z => z.Guid == e.Guid)) continue;
-					nonDistributed.Add(new VideoPublishSummary
-					{
-						Guid = e.Guid,
-						Duration = e.Duration,
-						Name = e.Name,
-						OrdinalSuffix = m.Montage.DisplayedRawLocation + "-"
-								+ m.Montage.Information.Episodes.IndexOf(e)
-					});
-				}
-		}
 		#endregion
 	}
 }

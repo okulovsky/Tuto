@@ -1,0 +1,26 @@
+﻿<Window x:Class="Tuto.Navigator.Views.MainNavigatorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:model="clr-namespace:Tuto.Model;assembly=Tuto"
+        xmlns:views="clr-namespace:Tuto.Navigator.Views"
+        xmlns:editor="clr-namespace:Tuto.Navigator.Editor"
+        Title="{Binding Caption}" Height="350" Width="800"
+        >
+    <Window.Resources>
+        <views:BoolToVisibilityConverter x:Key="BTV"/>
+    </Window.Resources>
+    <DockPanel>
+        <views:BatchWorkPanel 
+            DataContext="{Binding Queue}" 
+            DockPanel.Dock="Bottom"/>
+        <Grid>
+            <Grid Visibility="{Binding EditorVisible, Converter={StaticResource BTV}}">
+                <editor:EditorPanel DataContext="{Binding CurrentVideo}"
+                />
+            </Grid>
+            <Grid Visibility="{Binding VideothequeVisible, Converter={StaticResource BTV}}" >
+                <views:VideothequePanel DataContext="{Binding VideothequeModel}"/>
+            </Grid>
+        </Grid>
+    </DockPanel>
+</Window>

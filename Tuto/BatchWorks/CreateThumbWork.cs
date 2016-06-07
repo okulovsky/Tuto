@@ -10,15 +10,14 @@ using System.Threading;
 
 namespace Tuto.BatchWorks
 {
-    public class CreateThumbWork : BatchWork
+    public class CreateThumbWork : FFmpegWork
     {
         public CreateThumbWork(FileInfo source, EditorModel model, bool forced)
         {
-            Name = "Thumb Video: " + source;
+            Name = "Thumbing Video: " + source;
             this.Source = source;
             this.Model = model;
             Forced = forced;
-            BeforeWorks.Add(new CreateCleanSoundWork(model.Locations.FaceVideo, model, false));
         }
 
         public FileInfo Source;

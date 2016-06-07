@@ -16,18 +16,19 @@ using Tuto.Navigator.ViewModels;
 using Tuto.Publishing;
 using Tuto.BatchWorks;
 
-namespace Tuto.Navigator
+namespace Tuto.Navigator.ViewModels
 {
     public class VideothequeModel: NotifierModel
     {
         public SearchViewModel Search { get; private set; }
-        List<SubfolderViewModel> allModels;
+        public List<VideoViewModel> AllModels { get; private set; }
         List<EditorModel> models { get; set; }
-        public BatchWorkQueueViewModel Queue { get; private set; }
+
+        public event Action<VideoViewModel> OpenEditor;
 
         public StatisticsViewModel Statistics { get; private set; }
 
-        public ObservableCollection<SubfolderViewModel> Subdirectories
+        public ObservableCollection<VideoViewModel> Subdirectories
         {
             get { return subdirectories; }
             private set
@@ -42,7 +43,7 @@ namespace Tuto.Navigator
 
             this.videotheque = videotheque;
 
-            Queue = new BatchWorkQueueViewModel(Program.WorkQueue);
+            
 
             Search = new SearchViewModel();
             Search.PropertyChanged += (s, a) => Filter();
@@ -77,14 +78,13 @@ namespace Tuto.Navigator
         void Filter()
         {
 
-            IEnumerable<SubfolderViewModel> en = allModels;
+            IEnumerable<VideoViewModel> en = AllModels;
             if (!string.IsNullOrWhiteSpace(Search.TextSearch))
             {
                 var keyword = Search.TextSearch.ToLower();
                 en = en
-                .Select(z => new { VM = z, Rate = z.GetTextInfo().Where(x=>x!=null).Select(x => (double)NameMatchAlgorithm.MatchNames(x.ToLower(), keyword) / keyword.Length).Max() })
-                .Where(z => z.Rate > 0.8)
-                .OrderByDescending(z => z.Rate)
+                .Select(z => new { VM = z, Include = z.GetTextInfo().Where(x=>x!=null).Where(x=>x.ToLower().Contains(keyword)).Any() })
+                .Where(z => z.Include)
                 .Select(z => z.VM);           
             }
             if (Search.OnlyWithSource)
@@ -99,29 +99,36 @@ namespace Tuto.Navigator
                 default: en = en.OrderBy(z => z.Model.Montage.DisplayedRawLocation); break;
             }
 
-            Subdirectories = new ObservableCollection<SubfolderViewModel>(en);
+            Subdirectories = new ObservableCollection<VideoViewModel>(en);
         }
 
         void UpdateSubdirectories()
         {
-            allModels = new List<SubfolderViewModel>();
+            AllModels = new List<VideoViewModel>();
             foreach (var e in videotheque.EditorModels)
             {
-                var m = new SubfolderViewModel(e);
+                var m = new VideoViewModel(e);
+                m.OpenMe += OpenVideoViewModel;
                 m.SubsrcibeByExpression(z => z.Selected, UpdateStatistics);
-				allModels.Add(m);
+				AllModels.Add(m);
             }
             Filter();
+        }
+
+        void OpenVideoViewModel(VideoViewModel obj)
+        {
+            if (OpenEditor != null)
+                OpenEditor(obj);
         }
 
         void UpdateStatistics()
         {
             StatisticsViewModel stat = new StatisticsViewModel();
-            foreach(var e in allModels.Where(z=>z.Selected))
+            foreach(var e in AllModels.Where(z=>z.Selected))
             {
                 stat.EpisodesCount += e.Model.Montage.Information.Episodes.Count;
                 stat.TotalClean += (int)e.Model.Montage.Information.Episodes.Sum(z => z.Duration.TotalMinutes);
-                stat.TotalDirty += e.Model.Montage.Chunks.Where(z => z.Mode != Editor.Mode.Undefined).Sum(z=>z.Length) / 60000;
+                stat.TotalDirty += e.Model.Montage.Chunks.Where(z => z.Mode != Mode.Undefined).Sum(z=>z.Length) / 60000;
             }
             Statistics = stat;
             this.NotifyByExpression(z => z.Statistics);
@@ -147,7 +154,7 @@ namespace Tuto.Navigator
                 foreach (var e in Subdirectories)
                     e.Selected = true;
             else
-                foreach (var e in allModels)
+                foreach (var e in AllModels)
                     e.Selected = false;
         }
 
@@ -268,7 +275,7 @@ namespace Tuto.Navigator
 
         private FileInfo loadedFile;
         private Videotheque videotheque;
-        private ObservableCollection<SubfolderViewModel> subdirectories;
+        private ObservableCollection<VideoViewModel> subdirectories;
         public Videotheque Videotheque { get { return videotheque; } }
         //private FileSystemWatcher watcher;
 

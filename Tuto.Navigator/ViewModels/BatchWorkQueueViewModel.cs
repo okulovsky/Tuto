@@ -14,6 +14,7 @@ namespace Tuto.Navigator.ViewModels
         public readonly WorkQueue queue;
 
         public ObservableCollection<BatchWork> Works { get { return queue.Work; } }
+        public BatchWork SelectedWork { get; set; }
 
         public int TotalWorks { get; private set; }
         public int CompletedWorks { get; private set; }
@@ -28,7 +29,7 @@ namespace Tuto.Navigator.ViewModels
         {
             this.queue = queue;
             queue.Work.CollectionChanged += Work_CollectionChanged;
-            Cancel = new RelayCommand(() => queue.CancelTask(-1), () => TotalWorks-CompletedWorks != 0);
+            Cancel = new RelayCommand(() => queue.CancelTask(SelectedWork), () => TotalWorks-CompletedWorks != 0);
             Clear = new RelayCommand(() => queue.RemoveOldTasks());
             UpdateData();
         }

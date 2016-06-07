@@ -62,14 +62,16 @@ namespace Tuto.Publishing
 				prefix += string.Format("{0:D" + level.Digits + "}", path[levelNumber].NumberInTopic + 1);
 
 				var topic = path[levelNumber] as FolderOrLectureItem;
-				if (topic != null)
+				if (topic != null && Source.Model.Settings.EnableDescriptionContents)
 				{
 					description += level.Caption + " " + (path[levelNumber].NumberInTopic + 1) + ". " + topic.Topic.Caption + "\r\n";
 				}
 			}
 
 			dueTitle = prefix + " " + Wrap.Video.Name;
-			description += Source.Model.Settings.DescriptionPS;
+			description += Source.Model.Settings.Description;
+            if (!string.IsNullOrEmpty(Source.Model.Settings.ULearnUrlPrefix))
+                description += "\n\n"+Source.Model.Settings.ULearnUrlPrefix + Wrap.Guid;
 			description += "\n\n" + YoutubeClip.GuidMarker(Wrap.Guid);
 			dueDescription = description;
 		}
@@ -84,6 +86,7 @@ namespace Tuto.Publishing
 			var clip = new YoutubeClip { Id = YoutubeClip.Id };
 			clip.Name = dueTitle;
 			clip.Description = dueDescription;
+            
 			clip.UpdateGuid(Wrap.Guid);
             YoutubeApisProcessor.Current.UpdateVideo(clip);
 			Wrap.Store<YoutubeClip>(clip);

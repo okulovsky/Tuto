@@ -19,6 +19,7 @@ namespace Tuto.Model
 	   public const string PublishingModelExtension = "pm";
        public const string ConvertedFaceName = "face-converted.avi";
        public const string ConvertedDesktopName = "desktop-converted.avi";
+       public const string DefaultPatchFolder = "Patches";
 
     }
 }

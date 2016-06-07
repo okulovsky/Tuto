@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Editor
+namespace Tuto.Model
 {
     public enum Mode
     {

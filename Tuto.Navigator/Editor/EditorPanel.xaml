@@ -1,0 +1,79 @@
+﻿<UserControl x:Class="Tuto.Navigator.Editor.EditorPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             xmlns:ed="clr-namespace:Tuto.Navigator.Editor"
+             d:DesignHeight="400" d:DesignWidth="300">
+    <UserControl.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Width" Value="32"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+        <Style TargetType="ToggleButton">
+            <Setter Property="Width" Value="32"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+        
+    </UserControl.Resources>
+    <DockPanel>
+        <StackPanel Orientation="Vertical" DockPanel.Dock="Left" Margin="10" x:Name="Buttons">
+            <Button x:Name="backButton" ToolTip="Back to videos' list">
+                <Image Source="/Icons/back.png"/>
+            </Button> 
+            <Button x:Name="saveButton" ToolTip="Save changes">
+                <Image Source="/Icons/save.png"/>
+            </Button>
+            <Rectangle Height="20"/>
+          
+            <ToggleButton x:Name="play" ToolTip="Play videos">
+                <Image Source="/Icons/play.png"/>
+            </ToggleButton>
+            <ToggleButton x:Name="pause" ToolTip="Pause videos">
+                <Image Source="/Icons/pause.png"/>
+            </ToggleButton>
+
+            <Rectangle Height="20"/>
+            <ToggleButton x:Name="previewMode" ToolTip="Mode for rough markup of the video">
+                <Image Source="/Icons/hammer.png"/>
+            </ToggleButton>
+            <ToggleButton x:Name="borderMode" ToolTip="Mode for precise movings of the borders">
+                <Image Source="/Icons/microscope.png"/>
+            </ToggleButton>
+            <ToggleButton x:Name="patchMode" ToolTip="Mode for adding subtitles, replace fragments etc">
+                <Image Source="/Icons/patch.png"/>
+            </ToggleButton>
+            
+            <Rectangle Height="20"/>
+            <Button x:Name="sync" ToolTip="Synchronize videos">
+                <Image Source="/Icons/sync.png"/>
+            </Button>
+            <Button x:Name="titles" ToolTip="Name episodes">
+                <Image Source="/Icons/titles.png"/>
+            </Button>
+            <Button x:Name="makeall" ToolTip="Start videos assembly">
+                <Image Source="/Icons/montage.png"/>
+            </Button>
+            <Button x:Name="help" ToolTip="Get the help about hotkeys for editing">
+                <Image Source="/Icons/help.png"/>
+            </Button>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+            <TextBlock Height="20">Absolute position</TextBlock>
+            <TextBox Height="20" BorderThickness="0" IsReadOnly="True" Text="{Binding WindowState.CurrentPositionAbsolute}"/>
+            <Rectangle Width="100"/>
+            <TextBlock Height="20">Position in episode</TextBlock>
+            <TextBox Height="20" BorderThickness="0" IsReadOnly="True"  Text="{Binding WindowState.CurrentPositionRelative}"/>
+            <Rectangle Width="100"/>
+            <TextBlock>Acceleration</TextBlock>
+            <TextBlock Height="20" Text="{Binding WindowState.SpeedRatio}"/>
+
+        </StackPanel>
+        <Border>
+            <ed:VideoPlayerPanel x:Name="player" DataContext="{Binding}"/>
+        </Border>
+    </DockPanel>
+</UserControl>

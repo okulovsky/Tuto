@@ -13,34 +13,33 @@ namespace Tuto.BatchWorks
 {
     public class YoutubeWork : BatchWork
     {
-        EditorModel editorModel;
         int episodeNumber;
         EpisodInfo episode;
         FileInfo pathToFile;
 
 
-        public YoutubeWork(EditorModel model, int number, FileInfo path)
+        public YoutubeWork(EditorModel model, int number, bool forced)
         {
-            this.editorModel = model;
+            Model = model;
             this.episodeNumber = number;
-            episode = model.Montage.Information.Episodes[number];
-            this.pathToFile = path;
+            episode = Model.Montage.Information.Episodes[number];
+
+            var assembledFile = Model.Locations.GetOutputFile(episode);
+            var finalFile = Model.Locations.GetFinalOutputFile(number);
+
+            pathToFile = File.Exists(assembledFile.FullName) ? assembledFile : finalFile;
+            Forced = forced;
             Name = "Uploading: " + episode.Name;
         }
 
-
         public override void Work()
         {
-            var newId = YoutubeApisProcessor.Current.UploadVideo(pathToFile, episode.Name, episode.Guid);
+            if (YoutubeApisProcessor.Current == null) YoutubeApisProcessor.Initialize(Model.Videotheque.TempFolder);
+            Action<int> percentageUpdate = (int percentage) => { Progress = Math.Min(100, percentage); };
+            var newId = YoutubeApisProcessor.Current.UploadVideo(pathToFile, episode.Name, episode.Guid, percentageUpdate);
             if (episode.YoutubeId != null) YoutubeApisProcessor.Current.DeleteVideo(episode.YoutubeId);
             episode.YoutubeId = newId;
-			editorModel.Save();
-        }
-
-        
-        public override void Clean()
-        {
-            FinishProcess();
+			Model.Save();
         }
     }
 }

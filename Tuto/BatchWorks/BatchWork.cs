@@ -9,6 +9,7 @@ using System.IO;
 using Tuto.Model;
 using System.ComponentModel;
 using System.Threading;
+using System.Collections.ObjectModel;
 
 namespace Tuto.BatchWorks
 {
@@ -19,32 +20,33 @@ namespace Tuto.BatchWorks
         Success,
         Failure,
         Aborted,
-        Cancelled
+        Cancelled,
+        Attention
     }
 
     public abstract class BatchWork : NotifierModel
     {
-        public virtual Process Process { get; set; }
         public virtual EditorModel Model { get; set; }
         public bool NeedToRewrite { get; set; }
+        public ObservableCollection<BatchWork> ChildWorks { get; set; }
+        public BatchWork Parent { get; set; }
 
-        protected void RunProcess(string args, string path)
+        public IEnumerable<BatchWork> WorkTree
         {
-            Process = new Process();
-            Process.StartInfo.FileName = path;
-            Process.StartInfo.Arguments = args;
-            Process.StartInfo.UseShellExecute = Model.Videotheque.Data.WorkSettings.ShowProcesses;
-            Process.StartInfo.CreateNoWindow = !Model.Videotheque.Data.WorkSettings.ShowProcesses;
-            Process.Start();
-            Process.WaitForExit();
-            if (Process.ExitCode != 0)
-                throw new ArgumentException(
-                    string.Format("Process' exit code not equals zero. \n Exe: \"{0}\" \n Args: {1} \n Full: \"{0}\" {1}", path, args));
+            get
+            {
+                yield return this;
+                if (ChildWorks!=null)
+                    foreach(var e in ChildWorks)
+                        yield return e;
+            }
         }
+
 
         public virtual void Work() { }
         public virtual void Clean() { }
         public virtual bool WorkIsRequired() { return true; }
+        
 
         public FileInfo GetTempFile(FileInfo info, string suffix)
         {
@@ -60,18 +62,39 @@ namespace Tuto.BatchWorks
             return GetTempFile(info, "-tmp");
         }
 
-        public List<BatchWork> BeforeWorks = new List<BatchWork>();
-        public List<BatchWork> AfterWorks = new List<BatchWork>();
-
         public virtual bool Finished() { return false; }
         public bool Forced { get; set; }
 
         public string Name { get; set; }
+
+        private double progress;
+        public double Progress
+        {
+            get { return progress; }
+            set
+            {
+                var delta = value - progress;
+                progress = Math.Min(100, Math.Max(0,value));
+                NotifyPropertyChanged();
+                if (Parent != null)
+                {
+                    var tasksCount = Parent.ChildWorks.Count;
+                    Parent.Progress = Parent.Progress + delta / tasksCount;
+                }
+            }
+        }
+
         BatchWorkStatus status;
         public BatchWorkStatus Status
         {
             get { return status; }
-            set { status = value; NotifyPropertyChanged(); }
+            set
+            {
+                if (Parent != null && (value == BatchWorkStatus.Running || value == BatchWorkStatus.Failure) && Parent.Status != value )
+                    Parent.Status = value; //Running and failure means status for all Parents too
+                status = value;
+                NotifyPropertyChanged();
+            }
         }
 
         public void TryToDelete(FileInfo info)
@@ -94,12 +117,6 @@ namespace Tuto.BatchWorks
             }
         }
 
-        public void FinishProcess()
-        {
-            if (Process != null && !Process.HasExited)
-                Process.Kill();
-        }
-
         string exceptionMessage;
         public string ExceptionMessage
         {
@@ -111,6 +128,7 @@ namespace Tuto.BatchWorks
         public event EventHandler TaskFinished;
         public void OnTaskFinished()
         {
+            Progress = 100;
             if (TaskFinished != null)
                 TaskFinished(this, EventArgs.Empty);
         }

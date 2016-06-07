@@ -14,7 +14,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Tuto.Model;
-using Tuto.Model;
 
 namespace Tuto.Init
 {

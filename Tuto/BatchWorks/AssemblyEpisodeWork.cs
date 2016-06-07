@@ -10,57 +10,36 @@ using Tuto.TutoServices.Assembler;
 
 namespace Tuto.BatchWorks
 {
-    public class AssemblyEpisodeWork : BatchWork
+    public class AssemblyEpisodeWork : CompositeWork // composite work
     {
-
-        private List<string> filesToDelIfAborted { get; set; }
-        private bool crossFades {get; set;}
-        private EpisodInfo episodeInfo { get; set; }
-        private int episodeNumber { get; set; }
-        private AvsNode episodeNode { get; set; }
-
         public AssemblyEpisodeWork(EditorModel model, EpisodInfo episodeInfo)
         {
             Model = model;
-            var videoFile = Model.Locations.GetOutputFile(episodeInfo);
-            crossFades = model.Videotheque.Data.EditorSettings.CrossFadesEnabled;
-            Name = "Assembly episode: " + videoFile.FullName;
-            this.episodeInfo = episodeInfo;
-            this.episodeNode = episodeNode;
-            this.episodeNumber = Model.Montage.Information.Episodes.IndexOf(episodeInfo);
-            filesToDelIfAborted = new List<string>();
+            var videoFile = model.Locations.GetOutputFile(episodeInfo);
+            var convertDesktop = new ConvertDesktopWork(model, false);
+            var convertFace = new ConvertFaceWork(model, false);
+            var createSoundWork = new CreateCleanSoundWork(model.Locations.FaceVideo, model, false);
+            convertDesktop.Name = "Converting Desktop video";
+            convertFace.Name = "Converting Face video";
+            createSoundWork.Name = "Cleaning sound";
 
-            episodeNode = new AssemblerService(crossFades).GetEpisodesNodes(model)[episodeNumber];
-            BeforeWorks.Add(new ConvertDesktopWork(model, false));
-            BeforeWorks.Add(new ConvertFaceWork(model, false));
-            BeforeWorks.Add(new CreateCleanSoundWork(model.Locations.FaceVideo, model, false));
-            AfterWorks.Add(new NormalizeSoundWork(Model, videoFile));
-            AfterWorks[AfterWorks.Count - 1].TaskFinished += (s, a) => OnTaskFinished();
-        }
+            if (model.Locations.DesktopVideo.Exists)
+                Tasks.Add(convertDesktop);
 
-        public override void Work()
-        {
-                var args = @"-i ""{0}"" -q:v 0 -vf ""scale=1280:720, fps=25"" -q:v 0 -acodec libmp3lame -ac 2 -ar 44100 -ab 32k ""{1}""";
-                var avsContext = new AvsContext();
-                episodeNode.SerializeToContext(avsContext);
-                var avsScript = avsContext.Serialize(Model);
-                var avsFile = Model.Locations.GetAvsStriptFile(episodeNumber);
+            if (model.Locations.FaceVideo.Exists)
+                Tasks.Add(convertFace);
 
-                File.WriteAllText(avsFile.FullName, avsScript, Encoding.GetEncoding("Windows-1251"));
+            Tasks.Add(createSoundWork);
+            Tasks.Add(new AtomicAssemblyEpisodeWork(model,episodeInfo)); // atomic version
 
-                var videoFile = Model.Locations.GetOutputFile(episodeInfo);
-                if (videoFile.Exists) videoFile.Delete();
+			if (model.Videotheque.Data.WorkSettings.NormilizeSound)
+			{
+				var task = new NormalizeSoundWork(Model, videoFile);
+				Tasks.Add(task);
+			}
 
-                args = string.Format(args, avsFile.FullName, videoFile.FullName);
-                filesToDelIfAborted.Add(videoFile.FullName);
-                RunProcess(args, Model.Videotheque.Locations.FFmpegExecutable.FullName);
-        }
-
-        public override void Clean()
-        {
-            FinishProcess();
-            foreach (var e in filesToDelIfAborted)
-                TryToDelete(e);
-        }
+			Name = "Assembling episode: " + episodeInfo.Name;
+         
+		}
     }
 }

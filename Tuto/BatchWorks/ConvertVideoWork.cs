@@ -9,34 +9,34 @@ using System.Threading;
 
 namespace Tuto.BatchWorks
 {
-    public class ConvertVideoWork : BatchWork
+    public class ConvertVideoWork : FFmpegWork
     {
         public ConvertVideoWork() { }
 
-        public FileInfo source;
+        public FileInfo Source;
 
-        public FileInfo tempFile;
+        public FileInfo TempFile;
 
-        public FileInfo convertedFile;
+        private FileInfo convertedFile;
 
-        public FileInfo nonConvertedFile;
+        private FileInfo nonConvertedFile;
 
         public override void Work()
         {
-            nonConvertedFile = new FileInfo(Path.Combine(Model.Locations.TemporalDirectory.FullName, Path.ChangeExtension(source.Name, ".avi")));
-            tempFile = GetTempFile(nonConvertedFile);
+            nonConvertedFile = new FileInfo(Path.Combine(Model.Locations.TemporalDirectory.FullName, Path.ChangeExtension(Source.Name, ".avi")));
+            TempFile = GetTempFile(nonConvertedFile);
             convertedFile = GetTempFile(nonConvertedFile, "-converted");
 
-            if (!File.Exists(source.FullName))
-                throw new ArgumentException(source.FullName + " not found");      
+            if (!File.Exists(Source.FullName))
+                throw new ArgumentException(Source.FullName + " not found");      
             var args = string.Format(@"-i ""{0}"" -vf ""scale=1280:720, fps=25"" -q:v 0 -acodec libmp3lame -ar 44100 -ab 32k ""{1}"" -y",
-                   source.FullName, tempFile.FullName);
+                   Source.FullName, TempFile.FullName);
             var fullPath = Model.Videotheque.Locations.FFmpegExecutable;
             RunProcess(args, fullPath.FullName);
             Thread.Sleep(500);
             if (convertedFile.Exists)
                 convertedFile.Delete();
-            File.Move(tempFile.FullName, convertedFile.FullName);
+            File.Move(TempFile.FullName, convertedFile.FullName);
             OnTaskFinished();
         }
 
@@ -48,7 +48,7 @@ namespace Tuto.BatchWorks
         public override void Clean()
         {
             FinishProcess();
-            TryToDelete(tempFile.FullName);
+            TryToDelete(TempFile.FullName);
         }
     }
 }

@@ -37,7 +37,7 @@ namespace Tuto.Publishing
 			}
 
             videotheque = Videotheque.Load(args[0], null, true);
-            OpenModel("Hackerdom");
+            OpenModel("LHPS");
             YoutubeApisProcessor.Initialize(videotheque.TempFolder);
 			
             Application = new System.Windows.Application();

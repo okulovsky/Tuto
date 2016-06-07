@@ -14,8 +14,8 @@ namespace Tuto.BatchWorks
         public ConvertDesktopWork(EditorModel model, bool forced)
         {
             Model = model;
-            Name = "Converting Desktop: " + Model.Locations.DesktopVideo.FullName;
-            source = Model.Locations.DesktopVideo;
+            Name = "Converting Desktop video: " + model.RawLocation.Name;
+            Source = Model.Locations.DesktopVideo;
             Forced = forced;
         }
 
@@ -27,7 +27,7 @@ namespace Tuto.BatchWorks
         public override void Clean()
         {
             FinishProcess();
-            TryToDelete(tempFile.FullName);
+            TryToDelete(TempFile.FullName);
         }
     }
 }
