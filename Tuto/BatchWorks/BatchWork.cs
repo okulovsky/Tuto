@@ -31,6 +31,18 @@ namespace Tuto.BatchWorks
         public ObservableCollection<BatchWork> ChildWorks { get; set; }
         public BatchWork Parent { get; set; }
 
+        public RelayCommand CopyCmd { get; set; }
+
+        public BatchWork()
+        {
+            CopyCmd = new RelayCommand(CmCopyCmd);
+        }
+
+        void CmCopyCmd()
+        {
+            Clipboard.SetText(exceptionMessage);
+        }
+
         public IEnumerable<BatchWork> WorkTree
         {
             get

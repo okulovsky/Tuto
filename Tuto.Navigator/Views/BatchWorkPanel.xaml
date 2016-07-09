@@ -42,6 +42,7 @@
                                              Background="{Binding Status, Converter={StaticResource background}}"></ProgressBar>
                                 <TextBlock TextAlignment="Center" Margin="10 0 10 0"  Text="{Binding Name}"></TextBlock>
                             </Grid>
+                            <Button Content="Copy cmd" Command="{Binding CopyCmd}"/>
                             <TextBlock Text="{Binding ExceptionMessage}"></TextBlock>
                         </StackPanel>
                     </HierarchicalDataTemplate>

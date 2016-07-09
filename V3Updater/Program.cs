@@ -38,6 +38,8 @@ namespace V3Updater
 			container.MontageModel.SetHash(hash);
 			var relativePath = prefix+MyPath.RelativeTo(tutoFile.Directory.FullName, inputRoot.FullName);
 			container.MontageModel.DisplayedRawLocation = relativePath;
+            foreach (var e in container.MontageModel.Information.Episodes)
+                e.OutputType = OutputTypes.Output;
 			var fname = Path.Combine(newModelsDirectory.FullName, MyPath.CreateHierarchicalName(relativePath) + "." + Names.ModelExtension);
 			HeadedJsonFormat.Write(new FileInfo(fname), container);
 		}
@@ -54,13 +56,17 @@ namespace V3Updater
 		static void Main(string[] args)
 		{
 
-			if (false)
+			if (true )
 			{
 				UpdateOldLocalTutoFiles(
-					@"D:\Montage\Raw\CS2\Lecture01",
-					@"D:\Montage\Models",
-					"CS2\\Lecture01\\");
-			}
-		}
+                    @"F:\LHPS\Input\Module1",
+                    @"F:\LHPS\Models",
+					"LHPS\\");
+                UpdateOldLocalTutoFiles(
+                    @"F:\LHPS\Input\Module2 ",
+                    @"F:\LHPS\Models",
+                    "LHPS\\");
+            }
+		} 
 	}
 }
