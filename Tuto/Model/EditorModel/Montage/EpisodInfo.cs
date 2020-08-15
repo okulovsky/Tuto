@@ -44,6 +44,8 @@ namespace Tuto.Model
 
         public override bool Equals(object obj)
         {
+            if (!(obj is EpisodInfo))
+                return false;
             var item = (EpisodInfo)obj;
             return this.Guid == item.Guid;
         }
